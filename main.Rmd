@@ -113,15 +113,12 @@ The proposed algorithm goes beyond the calendar-based heatmap. The approach is d
 
 The remainder of the paper is organized as follows. Section \@ref(sec:algorithm) details the construction of the calendar layout in depth. It describes the algorithms of data transformation (Section \@ref(sec:transformation)), the available options (Section \@ref(sec:opt)), and variations of its usage (Section \@ref(sec:variations)). Section \@ref(sec:facet-calendar) explains the full faceting extension, that is equipped with formal labels and axes. An analysis of half-hourly household energy consumption, using the calendar display, is illustrated in a case study in Section \@ref(sec:case). Section \@ref(sec:discussion) discusses the limitations of calendar displays and possible new directions.
 
-# Computing multiple order-up granularities recursively from single order-up granularities {#sec:algorithm}
+# Time granularities{#sec:algorithm}
 
-## Time granularities {#sec:timegran}
 
-Time can be represented at varied levels of abstraction depending on the accuracy required for the context. Time granularity can be defined as the resolution power of the temporal qualification of a statement. Providing a formalism with the concept
-of time granularity makes it possible to model time information with respect to differently
-grained temporal domains.
-### Linear time granularities{#linear-gran-def}
+Time can be represented at varied levels of abstraction depending on the accuracy required for the context. Time granularity can be defined as the resolution power of the temporal qualification of a statement. Providing a formalism with the concept of time granularity is important to model time information across differently grained temporal domains{#Euzenat2005-de}.
 
+## Linear time granularities{#linear-gran-def}
 
 Linear granularities are defined in @Bettini1998-ed, as follows.
 
@@ -137,33 +134,17 @@ than all elements of $G(j)$, and
 
 **Definition:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity.
 
-The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. 
+
+The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
 
 
-The algorithm of transforming data for constructing a calendar plot uses linear algebra, similar to that used in the glyph map displays for spatio-temporal data [@Wickham2012glyph]. To make a year long calendar requires cells for days, embedded in blocks corresponding to months, organized into a grid layout for a year. Each month conforms to a layout of 5 rows and 7 columns, where the top left is Monday of week 1, and the bottom right is Sunday of week 5 by default. These cells provide a micro canvas on which to plot the data. The first day of the month could be any of Monday--Sunday, which is deterministic given the year of the calendar. Months are of different lengths, ranging from 28 to 31 days. Some months could extend over six weeks, but for these months the last few days are wrapped up to the top row of the block for compactness, and because it is convention. The notation for creating these cells is as follows:
+<!--need to include this \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor s/(24*7)\rfloor$ weeks and so on. -->
 
-* $k = 1, \dots , 7$ is the day of the week, that is the first day of the month.
-* $d = 28, 29, 30$ or $31$ representing the number of days in any month.
-* $(i, j)$ is the grid position where $1 \le i \le 5$, is week within the month, $1 \le j \le 7$, is day of the week.
-* $g = k, \dots,(k+d)$ indexes the day in the month, inside the 35 possible cells.
+<!-- ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="\\label{fig:linear-time} The time domain distributed as linear granularities"} -->
+<!-- knitr::include_graphics("Figs/linear-time.png") -->
+<!-- ``` -->
 
-The grid position for any day in the month is given by
-\begin{equation}
-  \begin{aligned}
-  i &= \lceil (g \text{ mod } 35) / 7\rceil, \\
-  j &= g \text{ mod } 7.
-  \end{aligned}
-  (\#eq:grid)
-\end{equation}
-
-\noindent Figure \@ref(fig:month-diagram) illustrates this $(i, j)$ layout for a month where $k=5$.
-
-```{r month-diagram, out.width = "360pt", out.height = "250pt", fig.cap = "(ref:month-diagram-cap)"}
-include_graphics("img/month.png")
-```
-
-
-### Formal conceptualisation of circular time granularities{#cirgran-def}
+## Formal conceptualisation of circular time granularities{#cirgran-def}
 
 Suppose we have a tsibble [@Wang2019-aw] with a time index in one column and keys and variables in other columns.  A time domain, as defined by Bettini, is essentially a mapping of row numbers (the index set) to the time index.  A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.
 
@@ -216,48 +197,71 @@ MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=
 
 Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year.
 
+## Computing multiple order-up granularities from single order-up granularities recursively
+
+<!-- Often sets come equipped with a natural hierarchical structure.  For example, the set of natural numbers N is equipped with a natural pre-order structure, where $n\leq n'$ whenever we can find some other number m so that $n+m=n'$. Similarly, -->
+
+The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up.
+
+Consider a hierarchy table laying out the structure of all temporal granularities we are interested to look at. The hierarchy table consists of three columns: 
+ - The first column represents the temporal granularities in ascending order. 
+ - The second column represents the constant which relates subsequent granularities.
+ - The third column provides the functional form for single-order up-granularities
+ 
+Order: Order is defined as the position of the granularity in the hierarchical table.
+If the two granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.
+
+Then it is possible to obtain all multiple-order-up granularities from this hierarchy table using a recursive relation.
+
+Suppose, for $order(x) <  order(y)$ \\
+$f(x, y)$ represents the functional form for computing granularity x_y
+$c(x, y)$ is a constant which relates x and y. 
+
+Then, 
+$f(x, y) & = f(x, x+1) + c(x, x+1)*[f(x+1, y)-1] $, for for $order(x+1) < order(y)$ can be used recursively to obtain any multiple order-up granularities. For $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+
+\begin{equation} \label{eq1}
+\begin{split}
+f(x, y) & = f(x, x+1) + c(x, x+1)*[f(x+1, y)-1] \\
+  & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) + c(x+1, x+2)[f(x+2, y) - 1] - 1]\\
+  & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) - 1] + c(x, x+1)c(x+1, x+2)[f(x+2, y) - 1]
+\end{split}
+\end{equation}
 
 
 
-## Reasons to use calendar-based graphics
 
-The purpose of the calendar display is to facilitate quick discoveries of unusual patterns in people's activities, which is consistent with why analysts should and do use data visualization. It complements the traditional graphical toolbox used to understand general trends, and better profiles vivid and detailed data stories about the way we live. Comparing the conventional displays (Figure \@ref(fig:time-series-plot) and \@ref(fig:facet-time)) with the new display (Figure \@ref(fig:facet)), it can be seen that the calendar display is more informatively compelling: when special events happened, and on what day of the week, and whether they were day or night events. For example, Figure \@ref(fig:facet) informs the reader that many events were held in Birrarung Marr on weekend days, while September's events took place on Friday evenings, which is difficult to discern from the conventional displays.
 
-\newpage
+# Obtaining multiple-order-up granularities from just granularity which relates the lowest temporal unit to the highest one in the hierarchical table.
 
-# Case study {#sec:case}
+  In the above equations, it is shown how to obtain f(x,z) given f(x,y) and the hierarchy table,  provided $order(z) > order(y) \neq order(x)$. In general,
+  
+  $f(x,z) = \sum_{i=0}^{order(z) - order(y) + 1}c(x, x+i)f(x+1, x+i)$
+    
+    We could also derive f(w, y) given f(x, y) and the hierarchy table, for $order(y)>=order(w) > order(x)$.
+  
+  $f(w,y) = f(x,y) \mod c(x,w)$, for $f(x,y) \mod c(x,w)!=0$ \\
+  $= c(x,w))$, otherwise.
 
-```{r load-elec, cache.extra = tools::md5sum("data/elec.rds")}
-```
+Let us investigate if that is true:
+  
+  f(ball, over) = 1
+f(over, quarter) = 4
+f(quarter, semester) = 2
+f(semester, match) = `1
 
-The use of the calendar display is illustrated on smart meter energy usage from four households in Melbourne, Australia. Individuals can download their own data from the energy supplier, and the data used in this section is sourced from four colleagues of the authors. The calendar display is useful to help people understand their energy use. The data contains half-hourly electricity consumption in the first half of 2018. The analysis begins by looking at the distribution over days of week, then time of day split by work days and non-work days, followed by the calendar display to inspect the daily schedules.
+then, f(ball_quarter) = 1 + 6*4 = 25, 
+f(ball, semester) = 1 + 6*4 + 5*6*1 = 55
+f(ball, semester) = 1 + 6*4 + 5*6*1 + 5*6*2*1 = 115
 
-Figure \@ref(fig:dow) shows the energy use across days of week using boxplots. Inspecting the medians across households tells us that household 3, a family size of one couple and two children, uses more energy over the week days than other households. The relatively larger boxes for household 2 indicate greater variability in daily energy consumption with noticeable variations on Thursdays, and much higher usage over the weekends. The other two households (1 and 4) tend to consume more energy with more variation on the weekends relative to the week days, reflecting work and leisure patterns.
 
-```{r dow, fig.height = 7, fig.cap = "Boxplots of daily energy usage against day of week for four households. Suggested by the medians, household 3 uses more energy than the others on the week days. By contrast, household 2 sees considerably larger variability."}
-```
-
-Figure \@ref(fig:hod) shows energy consumption against time of day, separately by week day and weekend. Household 1 is an early riser, starting their day before 6am and going back home around 6pm on week days. They switch air conditioning on when they get home from work and keep it operating until midnight, evident from the small horizontal cluster of points around 0.8 kWh. On the other hand, the stripes above 1 kWh for household 2 indicates that air conditioning may run continuously for some periods, consuming twice the energy as household 1. A third peak occurs around 3pm for household 3 only, likely coinciding when the children arrive home from school. They also have a consistent energy pattern between week days and weekends. As for household 4, their home routine starts after 6pm on week days. Figures \@ref(fig:dow) and \@ref(fig:hod), part of a traditional graphical toolkit, are useful for summarizing overall deviations across days and households.
-
-```{r hod, fig.height = 6, fig.cap = "(ref:hod-cap)"}
-```
-
-(ref:hod-cap) Scatterplots of half-hourly energy usage by time of day, with hourly averages overlaid, faceted by household and type of day. All households have different week days versus weekends daily routines. On week days, household 1 wakes up early before 6am, and household 2 around 6am, followed by household 3 and 4. The use of air conditioning is notable in households 1 and 2, as seen by horizontal clusters of points.
-
-```{r calendar-elec, fig.height = 10.5, fig.cap = "(ref:calendar-elec-cap)"}
-```
-
-(ref:calendar-elec-cap) Calendar displays faceted by each household using global scales. Long flat low energy usage indicates vacation time, and high energy consumption by household 2 is visible in January and February.
-
-Figure \@ref(fig:calendar-elec) displays the global scaling of each household's data in a calendar layout, unfolding their day-to-day life via electricity usage. Glancing over household 1, their overall energy use is relatively low. Their week day energy use is distinguishable from their weekends, indicating a working household. The air conditioner appears to be used in the summer months (January and February) for a couple of hours in the evening and weekends. In contrast, household 2 keeps a cooling system functioning for much longer hours, which becomes more evident from late Wednesday through Thursday to early Friday in mid-January. These observations help to explain the stripes and clusters of household 2 in Figure \@ref(fig:hod). It is difficult to give a succinct description of household 3 since everyday energy pattern is variable, but May and June see more structure than the previous months. Individual data can be idiosyncratic, hence aggregated plots like Figure \@ref(fig:dow) and \@ref(fig:hod) are essential for assembling pieces to form a picture. However, the calendar plots speak the stories that are untold by previous plots, for example, their vacation time. Household 1 is on vacation over three weeks of mid-June, and household 2 also took some days off in the second week of June. Further, household 3 takes one short trip in January and the another one starting in the fourth week of June. Household 4 is away over two or three weeks in early April and late June. They all tend to take breaks during June probably due to the fact that the University winter break starts in June.
-
-# Harmony and clashes based on conditioning - issue of data structure
+# Harmony and Clashes
 
 # Visualisation
 
-# Case study: Analysis on cricket {#cricket}
-
 # Case study: Analysis on smart meter data {#smartmeter}
+
+# Case study: Analysis on cricket {#cricket}
 
 # Discussion {#sec:discussion}
 
