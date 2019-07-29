@@ -263,13 +263,38 @@ We investigate some combinations of circular time granularities which facilitate
 
 Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations.
 
-Another example could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful.
+Another example could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ aare potentially useful.
 
 
 
 # Visualisation
 
-With huge amount of data currently available, it is important to visualize the distribution of the time series variable rather than any particular statistic. But which ditribution plot to draw, is based on what features of the distribution we are interested to look at, or how much display space is available to us.
+<!-- Why visualise -->
+Analysts often want to fit their data to statistical models, either to test hypotheses or predict future values. However, improper choice of models can lead to wrong predictions. One important use of visualization is exploratory data analysis, which is gaining insight into how data is distributed to inform data transformation and modeling decisions.
+
+<!-- When the data for entire population is available at our disposal, then there is no inference that is to be made for the unobserved population. We can just examine what is in front of us. -->
+
+<!-- Why distribution plot -->
+<!-- Huge data difficult to summarise using one statistic-->
+But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a dataset. Soon enough following questions like below become more interesting:  
+
+ - Are values clustered around mean/median or mostly around tails? In other words, what is the combined weight of tails relative to the rest of the distribution? 
+ 
+ - Does values rise very quickly between 25th percentile and median but not as quickly between median and 75th percentile? More generally, how the variation is the dataset changes across different percentiles/deciles?
+ 
+  - Is the tail on the left hand side longer than that on the right side? Or are they equally balanced around mean/median?
+ 
+This is when displaying a probability distribution becomes a potentially useful approach.
+
+
+<!-- What all can you see from a distribution plot-->
+
+The entire distribution can be visualized or some contextual summary statistics can be visualised to emphasize certain properties of the distribution. These properties can throw light on central tendency, skewness, kurtosis, variation of the distribution. They can also be useful in detecting extreme behavior or anolmalies in the dataset.
+
+
+
+
+hich ditribution plot to draw, is based on what features of the distribution we are interested to look at, or how much display space is available to us.
 
 Offcourse, the time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting temporal granularity along the x-axis and the other one across facets. 
 
