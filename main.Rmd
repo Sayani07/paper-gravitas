@@ -210,8 +210,7 @@ f(x, y) & = f(x, x+1) + c(x, x+1)*[f(x+1, y)-1] \\
 
 
 
-
-# Obtaining multiple-order-up granularities from just granularity which relates the lowest temporal unit to the highest one in the hierarchical table.
+Obtaining multiple-order-up granularities from just granularity which relates the lowest temporal unit to the highest one in the hierarchical table.
 
 Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to atleast have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities.
 
@@ -256,7 +255,7 @@ Analysts often want to fit their data to statistical models, either to test hypo
 
 <!-- Why distribution plot -->
 <!-- Huge data difficult to summarise using one statistic-->
-But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a dataset. Soon enough following questions like below become more interesting:  
+But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a dataset. Soon enough following questions become more interesting:  
 
  - Are values clustered around mean/median or mostly around tails? In other words, what is the combined weight of tails relative to the rest of the distribution? 
  
@@ -273,23 +272,29 @@ The entire distribution can be visualized or some contextual summary statistics 
 
 
 <!-- Lit review on statistical distribution plot-->
+## Statistical distribution plots
+
 Most commonly used techniques to display distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg, 1978] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.
 
 The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density. Violin plots [@Hintze1998-zi, 1998] display the density for all data points and not only the box. The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot (both color and width are mapped to estimated density), and an overlay of a reference distribution. The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality. The letter-value box plot [@Hofmann2017-sg, 2006] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. Because this display just adds extra letter values, it suffers from the same problems as the original box plot, and multimodality is almost impossible to spot[@Wickham_undated-vr].
+
+Moreover, much like the quartiles divide the dataset equally into four equal parts, extensions might include dividing the dataset even further. The deciles plots consist of 9 values that split the dataset into ten parts and the percentile plot consists of 99 values that split the dataset into hundred parts. A large dataset is required before the extreme percentiles can be estimated with any accuracy. 
 
 Finally, a density plot which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution. Also, a Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.
 
 
 
-Which ditribution plot to draw, is based on what features of the distribution we are interested to look at, or how much display space is available to us.
+## Distributions conditional on bivariate granularities
 
-Offcourse, the time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting temporal granularity along the x-axis and the other one across facets. 
+The time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting one temporal granularity along the x-axis and the other one across facets. 
 
-Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration.
-The harmonies when plotted together can help exploration, however, the clashes were plotted against each other is not appropriate for exploration.
+Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot.
 
+## Advice algorithm for exploring conditional probability distributions
 
-We investigate some combinations of circular time granularities which facilitate or hinder exploratory analysis. Since we are restricting ourselves to 2D space, we assume that the circular granularities are plotted across the aesthetics and facets. The combinations of circular granularities which promote the exploratory analysis through visualization are referred to as **harmonies** and the ones which impede the analysis are referred to as **clashes**.
+Recommendations for distribution plots depend on the levels(very high/high/medium/low) of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.
+
+<!-- We investigate some combinations of circular time granularities which facilitate or hinder exploratory analysis. Since we are restricting ourselves to 2D space, we assume that the circular granularities are plotted across the aesthetics and facets. The combinations of circular granularities which promote the exploratory analysis through visualization are referred to as **harmonies** and the ones which impede the analysis are referred to as **clashes**. -->
 
 
 # Case study: Analysis on smart meter data {#smartmeter}
