@@ -235,17 +235,17 @@ Then, the accessor function f can be used recursively to obtain any multiple-ord
 \begin{equation} \label{eq1}
 \begin{split}
 f_{(x,y)}(z) & = f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, y)}(z)-1) \\  
-  & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) + c(x+1, x+2)(f(x+2, y) - 1) - 1]\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
+  & =  f_{(x, x+1)}(z) + c(x, x+1)[f_{(x+1, x+2)}(z) + c(x+1, x+2)(f_{(x+2, y)}(z) - 1) - 1]\\
+  & =  f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, x+2)}(z) - 1) + c(x, x+1)c(x+1, x+2)(f_{(x+2, y)}(z) - 1)\\
+  & =  f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, x+2)}(z) - 1) + c(x, x+2)(f_{(x+2, y)}(z) - 1)\\
   &\vdots\\
-  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
-  +i, x+i+1) - 1)\\
+  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f_{(x
+  +i, x+i+1)}(z) - 1)\\
 \end{split}
 \end{equation}
 
 
-To elaborate more, let us consider the following hierarchy table.
+For illustration, let us consider the following hierarchy table.
 
 ```{r table_accessor1}
 kable(tibble::tibble(
@@ -257,24 +257,26 @@ kable(tibble::tibble(
 From Equation(1), we have
 \begin{equation} \label{eq1}
 \begin{split}
-f_(hhour, week)(z) = f_(hhour, hour)(z) + c(hhour, hour)f_(hour,day) + c(hhour, day)f(day, week)\\
-               = hhour_hour + 2hour_day + 2*24day_week
+f_{(hhour, week)}(z) & = f_{(hhour, hour)}(z) + c(hhour, hour)f_{(hour,day)}(z) + c(hhour, day)f_{(day, week)}(z) \\
+              & = {hhour\_hour}(z) + 2{hour\_day}(z) + 2*24{day\_week}(z) \\
 \end{split}
 \end{equation}
              
 
 ### Single-order-up granularities are mixed - that is circular or periodic:
       
-This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1).
+<!-- This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1). -->
 
-Consider, a hierarchy table of the form below:
+Suppose we extend the hierarchy table to include the linear granularities month and quarter. Since months consists of unequal number of days, any linear granularity which is higher in order than months will also have unequal number of days. Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months.
 
-```{r, hierarchy_tbl}
-hierarchy_model <- tibble::tibble(units = c("minute", "hour", "day", "month", "quarter", "semester", "year"), conversion_fac = c(60, 24, NA, 3, 2, 2, 1))
-knitr::kable(hierarchy_model)
+```{r table_accessor2}
+kable(tibble::tibble(
+  `linear granularities`  = c("second", "minute", "hhour", "hour", "day", "week", "month", "quarter"),
+  `Conversion factor` = c(60, 30, 2, 24, 7, "aperiodic", 3, 1), 
+  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_week", "week_month", "month_quarter", 1)), format = "markdown")
 ```
 
-The table suggests that one hour is composed of 60 minutes, 1 day is composed of 24 hours, 1 quarter is composed of 3 months, 1 semester is consists of 2 quarters and 1 year is made up of 2 semesters. These partitions are periodic, since the number of finer units within each of these coarses units are same always.
+The table suggests that one hour is composed of 60 minutes, 1 day is composed of 24 hours, 1 quarter is composed of 3 months, 1 semester is consists of 2 quarters and 1 year is made up of 2 semesters. These partitions are periodic, since the number of finer units within each of these coarser units are same always.
 
       
       
@@ -282,7 +284,7 @@ The table suggests that one hour is composed of 60 minutes, 1 day is composed of
       
 Obtaining multiple-order-up granularities from just granularity which relates the lowest temporal unit to the highest one in the hierarchical table.
 
-Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to atleast have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities.
+Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to at least have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities.
 
   In the above equations, it is shown how to obtain f(x,z) given f(x,y) and the hierarchy table,  provided $order(z) > order(y) \neq order(x)$. In general,
   
@@ -311,25 +313,25 @@ We investigate some combinations of circular time granularities which facilitate
 
 Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations.
 
-Another example could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ aare potentially useful.
+Another example could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful.
 
 
 
-# Visualisation
+# Visualization
 
-<!-- Why visualise -->
+<!-- Why visualize -->
 Analysts often want to fit their data to statistical models, either to test hypotheses or predict future values. However, improper choice of models can lead to wrong predictions. One important use of visualization is exploratory data analysis, which is gaining insight into how data is distributed to inform data transformation and modeling decisions.
 
 <!-- When the data for entire population is available at our disposal, then there is no inference that is to be made for the unobserved population. We can just examine what is in front of us. -->
 
 
 <!-- Why distribution plot -->
-<!-- Huge data difficult to summarise using one statistic-->
-But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a dataset. Soon enough following questions become more interesting:  
+<!-- Huge data difficult to summaries using one statistic-->
+But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a data set. Soon enough following questions become more interesting:  
 
  - Are values clustered around mean/median or mostly around tails? In other words, what is the combined weight of tails relative to the rest of the distribution? 
  
- - Does values rise very quickly between 25th percentile and median but not as quickly between median and 75th percentile? More generally, how the variation is the dataset changes across different percentiles/deciles?
+ - Does values rise very quickly between 25th percentile and median but not as quickly between median and 75th percentile? More generally, how the variation is the data set changes across different percentiles/deciles?
  
   - Is the tail on the left hand side longer than that on the right side? Or are they equally balanced around mean/median?
  
@@ -338,7 +340,7 @@ This is when displaying a probability distribution becomes a potentially useful 
 
 <!-- What all can you see from a distribution plot-->
 
-The entire distribution can be visualized or some contextual summary statistics can be visualised to emphasize certain properties of the distribution. These properties can throw light on central tendency, skewness, kurtosis, variation of the distribution and can also be useful in detecting extreme behavior or anolmalies in the dataset.
+The entire distribution can be visualized or some contextual summary statistics can be visualized to emphasize certain properties of the distribution. These properties can throw light on central tendency, skewness, kurtosis, variation of the distribution and can also be useful in detecting extreme behavior or anomalies in the data set.
 
 
 <!-- Lit review on statistical distribution plot-->
@@ -348,7 +350,7 @@ Most commonly used techniques to display distribution of data include the histog
 
 The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density. Violin plots [@Hintze1998-zi, 1998] display the density for all data points and not only the box. The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot (both color and width are mapped to estimated density), and an overlay of a reference distribution. The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality. The letter-value box plot [@Hofmann2017-sg, 2006] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. Because this display just adds extra letter values, it suffers from the same problems as the original box plot, and multimodality is almost impossible to spot[@Wickham_undated-vr].
 
-Moreover, much like the quartiles divide the dataset equally into four equal parts, extensions might include dividing the dataset even further. The deciles plots consist of 9 values that split the dataset into ten parts and the percentile plot consists of 99 values that split the dataset into hundred parts. A large dataset is required before the extreme percentiles can be estimated with any accuracy. 
+Moreover, much like the quartiles divide the data set equally into four equal parts, extensions might include dividing the data set even further. The deciles plots consist of 9 values that split the data set into ten parts and the percentile plot consists of 99 values that split the data set into hundred parts. A large data set is required before the extreme percentiles can be estimated with any accuracy. 
 
 Finally, a density plot which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution. Also, a Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.
 
