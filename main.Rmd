@@ -39,18 +39,19 @@ options("knitr.graphics.auto_pdf" = TRUE)
 library(knitr)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
-  fig.path = 'figure/', fig.align = 'center', fig.show = 'hold', 
-  cache = FALSE, cache.path = 'cache/', 
+  fig.path = "figure/", fig.align = "center", fig.show = "hold",
+  cache = FALSE, cache.path = "cache/",
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
 knitr::opts_knit$set(root.dir = here::here())
 ```
 
 ```{r external, include = FALSE}
-#read_chunk('scripts/main.R')
+# read_chunk('scripts/main.R')
 ```
 
 ```{r load}
+
 ```
 
 # Introduction
@@ -129,7 +130,7 @@ Suppose we have a tsibble with a time index in one column and keys and variables
 
 What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. Examples include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc. Many of these are circular, such as day-of-week, time-of-day. Some are nearly circular such as day-of-month. Some are irregular such as workingday/non-working day. Let's call all of these "calendar categorizations". Anything that maps a time index to a categorical variable can be considered a calendar categorization. We can specify the categorizations corresponding to circular granularities using modular arithmetic. The number of categories is essentially the periodicity of a circular time granularity.
 
-For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by $C_i$. Then the following categorizations can be computed.
+For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed.
 
 \begin{table}[ht]
 \begin{center}
@@ -137,19 +138,19 @@ For example, suppose the time index is in minutes, and let $n_i$ be the number o
 \toprule
 MOH: & $C_1(s)$ & $= s \mod 60$ & $n_1 =$&$60$ \\
 MOD: & $C_2(s)$ & $= s \mod `r 60*24`$ & $n_2=$&$`r 60*24`$\\
-MOW: & $C_3(s)$ & $= s \mod `r 60*24*7`$ & $n_2=$&$`r 60*24*7`$\\
+
 HOD: & $C_4(s)$ & $= \lfloor s/60\rfloor\mod 24$  & $n_4 =$&$24$ \\
 HOW: & $C_6(s)$ & $= \lfloor s/60\rfloor\mod 24*7$  & $n_5=$&$`r 24*7`$\\
-DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_5=$&$7$\\
+
+DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_6=$&$7$\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Illustrative calendar categorizations with hourly time index}
+\caption{Illustrative circular granularities with time index in minutes}
 \label{definitions}
 \end{table}
 
-
-We start with the definition of an equivalence class and then move on to define a circular granularity. 
+It is easy to note here that due to unequal length of months or years, these formulae can not be used for computing week-of-month or day-of-quarter. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities. 
 
 **Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}.
 
@@ -168,10 +169,6 @@ For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we h
 **Definition:** A **cycle** is defined as the progression of each circular granularity with modular period m through {$1,2,\dots,(m-1),0$} once.
 
 **Definition:** A **circular granule** represents an equivalence class inside each cycle.
-
-
-**Definition:** A **aperiodic circular granularity** can not be defined in terms of modular arithmetic since each coarser unit is not always made up of equal number of finer units.
-
 
 \begin{table}[ht]
 \begin{center}
@@ -200,15 +197,26 @@ Note that most of the formulas are approximations only due to unequal month and 
 
 ## Computation of multiple order-up granularities from single order-up granularities
 
-<!-- Often sets come equipped with a natural hierarchical structure.  For example, the set of natural numbers N is equipped with a natural pre-order structure, where $n\leq n'$ whenever we can find some other number m so that $n+m=n'$. Similarly, -->
 
-<!-- What is multiple and single order granularities -->
-The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up.
+<!-- What is multiple and single order up granularities -->
+The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up. 
+
+The index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data and extracting each date-time element with its own accessor function. However, table shows that it mostly allows for the creation of single-order-up granularities. 
+
+```{r table_accessor}
+kable(tibble::tibble(
+  `Categorisation` = c("Second-of-minute", "Minute-of-hour", "Hour-of-day", "Day-of-week", "Day-of-month", "Week-of-year", "Day-of-year","Month-of-year"),
+ Type = c("Periodic", "Periodic", "Periodic", "Periodic", "Aperiodic", "Aperiodic", "Aperiodic", "Periodic"),
+Accessor = c("second()", "minute()", "hour()","wday()", "mday()","week()", "yday()", "month()")), format = "latex", booktabs = TRUE)
+```
+
+Hence, the idea is to create multiple-order-granularities from single-order-up in order to incorporate and be able to access different calendar categorisation. The computation of multiple-order-up granularities from single-order-up granularities can differ if single-order-up granularities are circular or aperiodic.
+
+### All single-order-up granularities are periodic:
+
+<!-- In section \@ref(cirgran-def), the definition of calendar categorisation considers index set as set of integers to be able to perform the modular operations. However, -->
 
 
-In section \@ref(cirgran-def), the definition of calendar categorisation considers index set as set of integers to be able to perform the modular operations. However, the index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data. It not only helps to identify and parse different date-time data, it also helps to extract each date-time element with its own accessor function. However, table 5 shows that it mostly allows for the creation of some calendar categorizations, usually single-order-up. 
-
-##Reproduce Table 5 from the paper
 
 Hence, this section will talk about creating multiple-order up granularities from these single-order-up granularities. The hierarchical structure of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.
 
@@ -239,13 +247,15 @@ f(x, y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\
   & = \sum_{i=0}^{order(y) - order(x) + 1} c(x, x+i)(f_1(x+i) - 1)
 \end{split}
 \end{equation}
+
+### Single-order-up granularities are mixed - that is circular or periodic:
       
 This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1).
 
 Consider, a hierarchy table of the form below:
 
 ```{r, hierarchy_tbl}
-hierarchy_model <- tibble::tibble(units = c("minute", "hour", "day", "month", "quarter", "semester", "year"), conversion_fac  = c(60, 24, NA, 3, 2, 2, 1))
+hierarchy_model <- tibble::tibble(units = c("minute", "hour", "day", "month", "quarter", "semester", "year"), conversion_fac = c(60, 24, NA, 3, 2, 2, 1))
 knitr::kable(hierarchy_model)
 ```
 
