@@ -269,7 +269,7 @@ f_{(hhour, week)}(z) & = f_{(hhour, hour)}(z) + c(hhour, hour)f_{(hour,day)}(z) 
 \end{equation}
              
 
-## Mixed single-order-up granularities - circular or periodic
+## Mixed single-order-up granularities - circular or aperiodic
       
 <!-- This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1). -->
 
