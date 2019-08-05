@@ -3,7 +3,7 @@ title: Exploring probability distributions for bivariate temporal granularities
 authors:
 - name: Sayani Gupta
   affiliation: Department of Econometrics and Business Statistics, Monash University
-  email: earo.wang@monash.edu
+  email: Sayani.Gupta@monash.edu
 
 - name: Rob J Hyndman
   affiliation: Department of Econometrics and Business Statistics, Monash University
@@ -95,11 +95,11 @@ In particular, this work provides the following tools.
 # Time granularities{#sec:algorithm}
 
 
-Time can be represented at varied levels of abstraction depending on the accuracy required for the context. Time granularity can be defined as the resolution power of the temporal qualification of a statement. Providing a formalism with the concept of time granularity is important to model time information across differently grained temporal domains{#Euzenat2005-de}.
+Time can be represented at varied levels of abstraction depending on the accuracy required for the context. Time granularity can be defined as the resolution power of the temporal qualification of a statement. Providing a formalism with the concept of time granularity is important to model time information across differently grained temporal domains [@Euzenat2005-de].
 
 ## Linear time granularities{#linear-gran-def}
 
-Linear granularities are defined in @Bettini1998-ed, as follows.
+There has been several attempts to provide the framework for formally characterizing time-granularities and identifying their structural properties, relationships and symbolic representations. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
 
 **Definition:** A **time domain** is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
 
@@ -113,25 +113,25 @@ than all elements of $G(j)$, and
 
 **Definition:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity.
 
+The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} shows the implication of this condition.. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor s/(24*7)\rfloor$ weeks and so on.
 
-The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
+
+*These definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality.*
 
 
-<!--need to include this \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor s/(24*7)\rfloor$ weeks and so on. -->
-
-<!-- ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="\\label{fig:linear-time} The time domain distributed as linear granularities"} -->
-<!-- knitr::include_graphics("Figs/linear-time.png") -->
-<!-- ``` -->
+```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="\\label{fig:linear-time} The time domain distributed as linear granularities"}
+knitr::include_graphics("Figs/linear-time.png")
+```
 
 ## Formal conceptualisation of circular time granularities{#cirgran-def}
 
-Suppose we have a tsibble [@Wang2019-aw] with a time index in one column and keys and variables in other columns.  A time domain, as defined by Bettini, is essentially a mapping of row numbers (the index set) to the time index.  A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.
+Suppose we have a tsibble [@Wang2019-aw] with a time index in one column and keys and variables in other columns.  A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index.  A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.
 
 For circular granularities, we need a symbolic representation of time to represent periodicity, which we call 'calendar categorization'. Anything that maps a time index to a categorical variable can be considered a calendar categorization. The number of categories is essentially the periodicity of a circular time granularity.
 
 We want to use modular arithmetic on the domain of the circular granularity to define the calendar categorization. Hence, we start with the definition of equivalence classes and then move on to define a circular granularity. 
 
-**Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ = {$b \in Z | a \equiv (b \mod m)$} where $[a]$ is defined as the equivalence class to which a belongs.
+**Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}.
 
 The set of all equivalence classes of the integers for a modulus $m$ is called the ring of integers modulo $m$, denoted by $Z_m$. Thus $Z_m = \{[0], [1], ..., [m-1]\}$. However, we often write $Z_m = \{0, 1, ..., (m-1)\}$, which is the set of integers modulo $m$.
 
@@ -176,23 +176,31 @@ MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=
 
 Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year.
 
-## Computing multiple order-up granularities from single order-up granularities recursively
+
+
+## Computation of mnultiple order-up granularities from single order-up granularities
 
 <!-- Often sets come equipped with a natural hierarchical structure.  For example, the set of natural numbers N is equipped with a natural pre-order structure, where $n\leq n'$ whenever we can find some other number m so that $n+m=n'$. Similarly, -->
 
+<!-- What is multiple and single order granularities -->
 The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up.
 
-Consider a hierarchy table laying out the structure of all temporal granularities we are interested to look at, consisting of the following  three columns: 
- - The first column represents the temporal granularities in ascending order.   
- - The second column represents the constant which relates subsequent granularities.  
+
+In section \@ref(cirgran-def), the definition of calendar categorisation considers index set as set of integers to be able to perform the modular operations. However, the index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data. It not only helps to identify and parse different date-time data, it also helps to extract each date-time element with its own accessor function. However, table 5 shows that it mostly allows for the creation of some calendar categorizations, usually single-order-up. 
+
+##Reproduce Table 5 from the paper
+
+Hence, this section will talk about creating multiple-order up granularities from these single-order-up granularities. The hierarchical structure of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.
+
+Consider a hierarchy table laying out the structure of all temporal units we are interested to look at, consisting of the following  three columns: 
+ - The first column represents the temporal units in ascending order of hierarchy.   
+ - The second column represents the constant which relates subsequent temporal units.  
  - The third column provides the functional form for single-order up-granularities.  
  
-Order: Order is defined as the position of the granularity in the hierarchical table.
+Order: Order is defined as the position of the temporal units in the hierarchical table.
 If the two granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.
 
-Then it is possible to obtain all multiple-order-up granularities from this hierarchy table using a recursive relation.
-
-Suppose, for $order(x) <  order(y)$ \\
+Suppose, $order(x) <  order(y)$  
 $f(x, y)$ represents the functional form for computing granularity x_y
 $c(x, y)$ is a constant which relates x and y. 
 
@@ -206,10 +214,7 @@ f(x, y) & = f(x, x+1) + c(x, x+1)*[f(x+1, y)-1] \\
   & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) - 1] + c(x, x+1)c(x+1, x+2)[f(x+2, y) - 1]
 \end{split}
 \end{equation}
-
-
-
-
+      
 Obtaining multiple-order-up granularities from just granularity which relates the lowest temporal unit to the highest one in the hierarchical table.
 
 Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to atleast have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities.
