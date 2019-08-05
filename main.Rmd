@@ -124,13 +124,16 @@ knitr::include_graphics("Figs/linear-time.png")
 *These definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality.*
 
 
-## Formal conceptualisation of circular time granularities{#cirgran-def}
+## Formal conceptualisation of calendar categorisations{#cirgran-def}
 
+<!-- Representation with tsibble -->
 Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by Bettini, is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.
 
-What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. Examples include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc. Many of these are circular, such as day-of-week, time-of-day. Some are nearly circular such as day-of-month. Some are irregular such as workingday/non-working day. Let's call all of these "calendar categorizations". Anything that maps a time index to a categorical variable can be considered a calendar categorization. We can specify the categorizations corresponding to circular granularities using modular arithmetic. The number of categories is essentially the periodicity of a circular time granularity.
+<!-- What is calendar categorisation -->
+What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. Examples include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc. Many of these are circular, such as day-of-week, time-of-day. Some are nearly circular such as day-of-month. Some are irregular such as workingday/non-working day. Let's call all of these "calendar categorizations". Anything that maps a time index to a categorical variable can be considered a **calendar categorization**. 
 
-For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed.
+<!-- What is circular granularity and some examples -->
+We specify the circular categorizations using modular arithmetic and call these **circular granularities**. The number of categories is essentially the periodicity of a circular time granularity. For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed.
 
 \begin{table}[ht]
 \begin{center}
@@ -150,19 +153,14 @@ DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_6=$&$7$\\
 \label{definitions}
 \end{table}
 
-It is easy to note here that due to unequal length of months or years, these formulae can not be used for computing week-of-month or day-of-quarter. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities. 
+It is easy to note here that due to unequal length of some linear granularities like months or years, these formulae can not be used for computing week-of-month or day-of-year. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities. 
 
+<!-- Formal definition of circular granularity -->
 **Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}.
 
 The set of all equivalence classes of the integers for a modulus $m$ is called the ring of integers modulo $m$, denoted by $Z_m$. Thus $Z_m = \{[0], [1], ..., [m-1]\}$. However, we often write $Z_m = \{0, 1, ..., (m-1)\}$, which is the set of integers modulo $m$.
 
-<!-- A **calendar domain** is a triplet $(T; \le; M, \le)$ where $T$ is a non-empty set of time instants, m is a modular period, M is the ring of integers modulo m denoted by the set ${1,2,\dot,(m-1)}$ $\le$ is a total order on the set $M$ and   -->
-
-<!-- (Notes: a totally ordered set requires that every element in the set is comparable) -->
-
-<!-- A **calendar domain** is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a **total** order on $T$. -->
-
-**Definition:** A **periodic circular granularity** $C$ with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that $C(s) = (s\mod m)$ for $s \in Z$.
+**Definition:** A **circular granularity** $C$ with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that $C(s) = (s\mod m)$ for $s \in Z$.
 
 For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$.
 
@@ -170,83 +168,100 @@ For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we h
 
 **Definition:** A **circular granule** represents an equivalence class inside each cycle.
 
-\begin{table}[ht]
-\begin{center}
-\begin{tabular}{lr@{~}lr@{~}r}
-\toprule
-HOD: & $C_1(s)$ & $= s \mod 24$ & $n_1 =$&$24$ \\
-HOW: & $C_2(s)$ & $= s \mod `r 24*7`$ & $n_2=$&$`r 24*7`$\\
-HOM: & $C_3(s)$ & $= s \mod `r 24*30`$ (approximately) & $n_3=$&$`r 24*31`$\\
-HOY: & $C_4(s)$ & $= s \mod `r 24*365`$ (except for leap years) & $n_4=$&$`r 24*366`$\\
-DOW: & $C_5(s)$ & $= \lfloor s/24\rfloor \mod 7$ & $n_5=$&$7$\\
-DOM: & $C_6(s)$ & $= \lfloor s/24\rfloor\mod 30$  (approximately) & $n_6=$&$31$\\
-DOY: & $C_7(s)$ & $= \lfloor s/24\rfloor \mod 365$ (except for leap years) & $n_7=$&$366$\\
-WOM: & $C_8(s)$ & $=\lfloor s/168 \rfloor \mod 4$ (approximately) & $n_8 =$&$ 5$\\
-WOY: & $C_9(s)$ & $=\lfloor s/168\rfloor \mod 52$ (approximately) & $n_9 =$&$ 53$\\
-MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=$&$12$\\
-\bottomrule
-\end{tabular}
-\end{center}
-\caption{Illustrative calendar categorizations with hourly time index}
-\label{definitions}
-\end{table}
 
-Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year.
+<!-- Formal definition of aperiodic circular granularity -->
+
+**Defintion:** An **Aperiodic circular granularity** can not be defined using modular arithmetic. The modulus for these type of calendar categorisations are not constant due to unequal length of some linear granularities. 
 
 
+<!-- \begin{table}[ht] -->
+<!-- \begin{center} -->
+<!-- \begin{tabular}{lr@{~}lr@{~}r} -->
+<!-- \toprule -->
+<!-- HOD: & $C_1(s)$ & $= s \mod 24$ & $n_1 =$&$24$ \\ -->
+<!-- HOW: & $C_2(s)$ & $= s \mod `r 24*7`$ & $n_2=$&$`r 24*7`$\\ -->
+<!-- HOM: & $C_3(s)$ & $= s \mod `r 24*30`$ (approximately) & $n_3=$&$`r 24*31`$\\ -->
+<!-- HOY: & $C_4(s)$ & $= s \mod `r 24*365`$ (except for leap years) & $n_4=$&$`r 24*366`$\\ -->
+<!-- DOW: & $C_5(s)$ & $= \lfloor s/24\rfloor \mod 7$ & $n_5=$&$7$\\ -->
+<!-- DOM: & $C_6(s)$ & $= \lfloor s/24\rfloor\mod 30$  (approximately) & $n_6=$&$31$\\ -->
+<!-- DOY: & $C_7(s)$ & $= \lfloor s/24\rfloor \mod 365$ (except for leap years) & $n_7=$&$366$\\ -->
+<!-- WOM: & $C_8(s)$ & $=\lfloor s/168 \rfloor \mod 4$ (approximately) & $n_8 =$&$ 5$\\ -->
+<!-- WOY: & $C_9(s)$ & $=\lfloor s/168\rfloor \mod 52$ (approximately) & $n_9 =$&$ 53$\\ -->
+<!-- MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=$&$12$\\ -->
+<!-- \bottomrule -->
+<!-- \end{tabular} -->
+<!-- \end{center} -->
+<!-- \caption{Illustrative calendar categorizations with hourly time index} -->
+<!-- \label{definitions} -->
+<!-- \end{table} -->
+
+<!-- Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year. -->
 
 ## Computation of multiple order-up granularities from single order-up granularities
 
 
 <!-- What is multiple and single order up granularities -->
-The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up. 
+The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are **single-order-up**. 
 
-The index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data and extracting each date-time element with its own accessor function. However, table shows that it mostly allows for the creation of single-order-up granularities. 
+The index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data and extracting each date-time element with its own accessor function. However, table shows the accessor functions mostly allows for the creation of single-order-up granularities. 
 
 ```{r table_accessor}
 kable(tibble::tibble(
   `Categorisation` = c("Second-of-minute", "Minute-of-hour", "Hour-of-day", "Day-of-week", "Day-of-month", "Week-of-year", "Day-of-year","Month-of-year"),
  Type = c("Periodic", "Periodic", "Periodic", "Periodic", "Aperiodic", "Aperiodic", "Aperiodic", "Periodic"),
-Accessor = c("second()", "minute()", "hour()","wday()", "mday()","week()", "yday()", "month()")), format = "latex", booktabs = TRUE)
+Accessor = c("second()", "minute()", "hour()","wday()", "mday()","week()", "yday()", "month()")), format = "markdown")
 ```
 
-Hence, the idea is to create multiple-order-granularities from single-order-up in order to incorporate and be able to access different calendar categorisation. The computation of multiple-order-up granularities from single-order-up granularities can differ if single-order-up granularities are circular or aperiodic.
 
-### All single-order-up granularities are periodic:
+The hierarchical nature of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.The idea is to incorporate and access different calendar categorisations to account for varied levels of periodicities in the data. The computation of multiple-order-up granularities from single-order-up granularities can differ basis the single-order-up granularities are circular or aperiodic.
 
-<!-- In section \@ref(cirgran-def), the definition of calendar categorisation considers index set as set of integers to be able to perform the modular operations. However, -->
+### All single-order-up granularities are periodic
 
-
-
-Hence, this section will talk about creating multiple-order up granularities from these single-order-up granularities. The hierarchical structure of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.
-
-Consider a hierarchy table laying out the structure of all temporal units we are interested to look at, consisting of the following  three columns: 
- - The first column represents the temporal units in ascending order of hierarchy.   
- - The second column represents the constant which relates subsequent temporal units.  
- - The third column provides the functional form for single-order up-granularities.  
+**Definition**: A **hierarchy table** has three columns:  
+ - The first column represents the linear granularities in ascending order of temporal hierarchy.   
+ - The second column represents the constant which relates subsequent linear granularities.  
+ - The third column provides the accessor function for single-order up circular granularities.  
  
-Order: Order is defined as the position of the temporal units in the hierarchical table.
-If the two granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.
+**Definition**: **Order** is defined as the position of the linear granularities in the hierarchical table. 
+<!-- For example, if two linear granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.  -->
 
-Suppose, $order(x) <  order(y)$  
-$f(x, y)$ represents the functional form for computing granularity x_y
-$c(x, y)$ is a constant which relates x and y. 
 
-Then, 
-$f(x, y) = f(x, x+1) + c(x, x+1)[f(x+1, y)-1]$, for $order(x+1) < order(y)$ can be used recursively to obtain any multiple order-up granularities. For $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+<!-- , "month", "quarter","semester", "year"), -->
+
+Suppose, z is the index set of the tsibble, x,y are two linear granularities with  $order(x) <  order(y)$. Also, $f_{(x, y)}$ denotes the accessor function for computing circular granularity "x_y" and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+
+Then, the accessor function f can be used recursively to obtain any multiple-order-up granularities as follows:
 
 \begin{equation} \label{eq1}
 \begin{split}
-f(x, y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\  
+f_{(x,y)}(z) & = f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, y)}(z)-1) \\  
   & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) + c(x+1, x+2)(f(x+2, y) - 1) - 1]\\
   & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
   & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
   &\vdots\\
-  & = \sum_{i=0}^{order(y) - order(x) + 1} c(x, x+i)(f(x
+  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
   +i, x+i+1) - 1)\\
-  & = \sum_{i=0}^{order(y) - order(x) + 1} c(x, x+i)(f_1(x+i) - 1)
 \end{split}
 \end{equation}
+
+
+To elaborate more, let us consider the following hierarchy table.
+
+```{r table_accessor1}
+kable(tibble::tibble(
+  `linear granularities`  = c("second", "minute", "hhour", "hour", "day", "week"),
+  `Conversion factor` = c(60, 30, 2, 24, 7, 1), 
+  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_week", 1)), format = "markdown")
+```
+
+From Equation(1), we have
+\begin{equation} \label{eq1}
+\begin{split}
+f_(hhour, week)(z) = f_(hhour, hour)(z) + c(hhour, hour)f_(hour,day) + c(hhour, day)f(day, week)\\
+               = hhour_hour + 2hour_day + 2*24day_week
+\end{split}
+\end{equation}
+             
 
 ### Single-order-up granularities are mixed - that is circular or periodic:
       
@@ -361,7 +376,6 @@ Recommendations for distribution plots depend on the levels(very high/high/mediu
 
 # Acknowledgements {-}
 
-We would like to thank Stuart Lee and Heike Hofmann for their feedback on earlier versions of this work. We thank Thomas Lin Pedersen for pointing out some critical **ggplot2** internals, which makes the `facet_calendar()` implementation possible. We are very grateful to anonymous reviewers for helpful comments that have led to many improvements of the paper. The **sugrrants** R package is available from CRAN <https://CRAN.R-project.org/package=sugrrants> and the development version is available on Github <https://github.com/earowang/sugrrants>. All materials required to reproduce this article and a history of the changes can be found at the project's Github repository <https://github.com/earowang/paper-calendar-vis>.
 
 # Bibliography
 
