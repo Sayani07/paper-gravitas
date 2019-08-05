@@ -37,6 +37,10 @@ output:
 ```{r initial, echo = FALSE, cache = FALSE, include = FALSE}
 options("knitr.graphics.auto_pdf" = TRUE)
 library(knitr)
+library(tidyverse)
+library(lubridate)
+library(lvplot)
+library(ggridges)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -76,7 +80,7 @@ We propose that the analysis of probability distributions of smart meter data at
 The hierarchical structure of many granularities creates a natural nested ordering. For example, hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up. 
 
 <!--existing closely related work and how ours relate --> 
-[**lubridate**]([https://cran.r-project.org/package=lubridate)#acad paper in R allows creation of granularities that are mostly single-order-up like hour of the day, second of the minute. This paper utilises the nestedness of time granularities to obtain multiple-order-up granularities from single-order-up ones.
+[@Grolemund2011-qf] allows creation of granularities that are mostly single-order-up like hour of the day, second of the minute. This paper utilises the nestedness of time granularities to obtain multiple-order-up granularities from single-order-up ones.
 
 <!--actions on multiple order up - usage --> 
 Finally, visualizing data across single/multiple order-up granularities help us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. However, this approach can lead to a myriad of choices all of which are not useful. Analysts are expected to iteratively visualise these choices for exploring possible patterns in the data. But too many choices might leave him bewildered. 
@@ -197,11 +201,13 @@ For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we h
 
 <!-- Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year. -->
 
-## Computation of multiple order-up granularities from single order-up granularities
-
+## Single-order-up and multiple-order-up granularities
 
 <!-- What is multiple and single order up granularities -->
 The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are **single-order-up**. 
+
+
+# Computation of multiple order-up granularities from single order-up granularities
 
 The index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data and extracting each date-time element with its own accessor function. However, table shows the accessor functions mostly allows for the creation of single-order-up granularities. 
 
@@ -215,12 +221,12 @@ Accessor = c("second()", "minute()", "hour()","wday()", "mday()","week()", "yday
 
 The hierarchical nature of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.The idea is to incorporate and access different calendar categorisations to account for varied levels of periodicities in the data. The computation of multiple-order-up granularities from single-order-up granularities can differ basis the single-order-up granularities are circular or aperiodic.
 
-### All single-order-up granularities are periodic
+## Periodic single-order-up granularities 
 
 **Definition**: A **hierarchy table** has three columns:  
- - The first column represents the linear granularities in ascending order of temporal hierarchy.   
+ - The first column represents the linear granularities in ascending order of temporal hierarchy.  
  - The second column represents the constant which relates subsequent linear granularities.  
- - The third column provides the accessor function for single-order up circular granularities.  
+ - The third column provides the accessor function for single-order up circular granularities.    
  
 **Definition**: **Order** is defined as the position of the linear granularities in the hierarchical table. 
 <!-- For example, if two linear granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.  -->
@@ -263,7 +269,7 @@ f_{(hhour, week)}(z) & = f_{(hhour, hour)}(z) + c(hhour, hour)f_{(hour,day)}(z) 
 \end{equation}
              
 
-### Single-order-up granularities are mixed - that is circular or periodic:
+## Mixed single-order-up granularities - circular or periodic
       
 <!-- This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1). -->
 
@@ -271,52 +277,52 @@ Suppose we extend the hierarchy table to include the linear granularities month 
 
 ```{r table_accessor2}
 kable(tibble::tibble(
-  `linear granularities`  = c("second", "minute", "hhour", "hour", "day", "week", "month", "quarter"),
-  `Conversion factor` = c(60, 30, 2, 24, 7, "aperiodic", 3, 1), 
-  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_week", "week_month", "month_quarter", 1)), format = "markdown")
+  `linear granularities`  = c("second", "minute", "hhour", "hour", "day", "month", "quarter"),
+  `Conversion factor` = c(60, 30, 2, 24, "aperiodic", 3, 1), 
+  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_month", "month_quarter", 1)), format = "markdown")
 ```
 
-The table suggests that one hour is composed of 60 minutes, 1 day is composed of 24 hours, 1 quarter is composed of 3 months, 1 semester is consists of 2 quarters and 1 year is made up of 2 semesters. These partitions are periodic, since the number of finer units within each of these coarser units are same always.
+There can be three scenarios for obtaining calendar categorisation here:
+- calendar categorisation consisting of two linear granularities whose orders are less than day  
+- calendar categorisation consisting of two linear granularities whose orders are more than month  
+- calendar categorisation consisting of one linear granularity with order at most day and another with order at least month  
 
-      
-      
-      
-      
-Obtaining multiple-order-up granularities from just granularity which relates the lowest temporal unit to the highest one in the hierarchical table.
+The calendar categorisation resulting from the first two cases are periodic and has been handled in the earlier section.
 
-Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to at least have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities.
+The calendar categorisation resulting from the last case are aperiodic. Examples might include day of the quarter or hour of the month. In this section, we will see how to obtain aperiodic circular granularities of these types.
 
-  In the above equations, it is shown how to obtain f(x,z) given f(x,y) and the hierarchy table,  provided $order(z) > order(y) \neq order(x)$. In general,
+
+\begin{equation} \label{eq1}
+\begin{split}
+f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
+\end{split}
+\end{equation}
+             
+
+<!-- Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to at least have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities. -->
+
+  <!-- In the above equations, it is shown how to obtain f(x,z) given f(x,y) and the hierarchy table,  provided $order(z) > order(y) \neq order(x)$. In general, -->
+
+  <!-- $f(x,z) = \sum_{i=0}^{order(z) - order(y) + 1}c(x, x+i)f(x+1, x+i)$ -->
+
+  <!-- We could also derive f(w, y) given f(x, y) and the hierarchy table, for $order(y)>=order(w) > order(x). -->
+
+  <!-- $f(w,y) = f(x,y) \mod c(x,w)$, for $f(x,y) \mod c(x,w)!=0$ -->
+  <!-- $= c(x,w))$, otherwise. -->
+
+### Computing single-order-up granularities:
+
   
-  $f(x,z) = \sum_{i=0}^{order(z) - order(y) + 1}c(x, x+i)f(x+1, x+i)$
-    
-  We could also derive f(w, y) given f(x, y) and the hierarchy table, for $order(y)>=order(w) > order(x).
+<!-- f(ball, over) = 1 -->
+<!-- f(over, quarter) = 4 -->
+<!-- f(quarter, semester) = 2 -->
+<!-- f(semester, match) = `1 -->
+
+<!-- then, f(ball_quarter) = 1 + 6*4 = 25,  -->
+<!-- f(ball, semester) = 1 + 6*4 + 5*6*1 = 55 -->
+<!-- f(ball, semester) = 1 + 6*4 + 5*6*1 + 5*6*2*1 = 115 -->
+
   
-  $f(w,y) = f(x,y) \mod c(x,w)$, for $f(x,y) \mod c(x,w)!=0$
-  $= c(x,w))$, otherwise.
-
-Let us investigate if that is true:
-  
-f(ball, over) = 1
-f(over, quarter) = 4
-f(quarter, semester) = 2
-f(semester, match) = `1
-
-then, f(ball_quarter) = 1 + 6*4 = 25, 
-f(ball, semester) = 1 + 6*4 + 5*6*1 = 55
-f(ball, semester) = 1 + 6*4 + 5*6*1 + 5*6*2*1 = 115
-
-
-# Harmony and Clashes
-
-We investigate some combinations of circular time granularities which facilitate or hinder exploratory analysis. The combinations of circular granularities which promote the exploratory analysis through visualization are referred to as **harmonies** and the ones which impede the analysis are referred to as **clashes**.
-
-Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations.
-
-Another example could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful.
-
-
-
 # Visualization
 
 <!-- Why visualize -->
@@ -356,7 +362,158 @@ Finally, a density plot which uses a kernel density estimate to show the probabi
 
 
 
-## Distributions conditional on bivariate granularities
+
+## Harmony and Clashes
+
+We investigate some combinations of circular time granularities (periodic/aperiodic) which facilitate or hinder exploratory analysis. The combinations of circular granularities which promote the exploratory analysis through visualization are referred to as **harmonies** and the ones which impede the analysis are referred to as **clashes**.
+
+<!-- Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations. -->
+
+<!-- Another example could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful. -->
+
+
+\autoref{fig:allFig} (a) shows the letter value plot of electricity consumption of Victoria across days of the month for few months like January, February, April and December. Letter value plots convey detailed information about tails of the distribution and outliers are unexpected observations rather than extreme observations. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively. Some observations that can be made from these letter-value plots include a) Right tails for most days in January lying above the median is more extended than the left tails contrary to days in April which has longer left tails. b) Days in mid January and February are characterized by high variation in consumption level, but days in January have longer right tails. c) Last five days in December (Christmas holidays) shows low variation in consumption with longer left tails implying people typically consume less electricity. We can conclude that Month-of-Year and Day-of-Month are harmonies.
+
+
+\autoref{fig:allFig} (c) shows box plot of electricity consumption of Victoria from 2012 to 2014 across days of the year by the 1st, 15th, 29th and 31st days of the month. The box plot is a a very compact distributional summary, displaying median, quartile boundaries, hinges, whiskers and outliers. All facets do not contain data across same x-axis levels leading to difficulty in comparison across facets. Hence, Day-of-Month and Day-of-Year are clashes.
+
+Take another example \autoref{fig:allFig} (d) showing violin plot across days of the month faceted by week of the month. Violin plots are a combination of box plot and density plot. Here, the first week of the month correspond to certain days of the month which are different for different week of the month. These kinds of graphics can hinder our comprehension across different weeks of the month and can be categorized as a incompatible combination to plot.
+
+In \autoref{fig:allFig} (e), variations across week of the year conditional on week of the month can be observed through a ridge plot. The y-axis represents week of the year and the x-axis represents electricity consumption. Ridge plots are density plots all aligned to the same horizontal scale and presented with a slight overlap. They are designed to bring out changes in distributions over time. The data is distributed unequally for different levels of weeks of the year for different facets, which hinders comparison across facets. So, Week-of-Month and Week-of-Year are clashes.
+
+\autoref{fig:allFig} (f) shows decile plots of consumption across  day of the year and month of the year. Decile plots are useful in displaying distribution through deciles without much clutter. This plot, however, seem ineffective for comparison as levels of x-axis for which observed data is plotted are completely disjoint across facets. So Month-of-Year and Day-of-Year are clashes as well.
+
+
+From the above examples, we can see that the choices of the circular granularities are harmonies while some are clashes. Also since some choices work and others don't, it must be the attributes of the circular granularities or their relationships which are in play in deciding if the resulting plot would be a good candidate for exploratory analysis.
+
+
+```{r moy-dom,echo=FALSE, out.width = "70%", fig.align = 'center',fig.cap ="Letter-value plot of electricity consumption in Victoria across days of the month\n faceted by months January, February, April and December. "}
+
+# change all of these to gravitas function
+VIC <- read.csv("VIC2015/Data/demand_VIC.csv")
+VIC$Date <- as.Date(VIC$Date,origin = "1899-12-30")
+
+first_day_of_month_wday <- function(dx) {
+  day(dx) <- 1
+  wday(dx)
+}
+
+VIC <- VIC %>%mutate(Indx_Year = year(Date),
+                     Indx_Month = month(Date, label = FALSE, abbr = TRUE),
+                     Indx_Wk_Yr = week(Date),
+                     Indx_Wk_Month = ceiling((day(Date) + first_day_of_month_wday(Date) - 1) / 7),
+                     Indx_Day_Week = wday(Date, label=FALSE, abbr=TRUE,
+                                          week_start=1),
+
+                     Indx_Day_Month = day(Date),
+
+                     Indx_Day_Year =  yday(Date),
+
+                     Indx_Weekend=if_else(Indx_Day_Week %in% c(6,7),1,0),
+
+                     Indx_HlHr_day = Period,
+                     month = month(Date, label = FALSE, abbr = TRUE),
+         year =  year(Date),
+         yday =yday(Date),
+         wday = wday(Date, label=FALSE, abbr=TRUE,
+                     week_start=1),
+         bow = (wday - 1) * 48 + Period,
+         dom = day(Date),
+         bom = (dom - 1) * 48 + Period,
+         Weekend=if_else(wday %in% c(6,7),1,0),
+         Indx_hour = ceiling(Period/2),
+         Indx_Hour_Yr = Indx_hour + 24*(yday-1),
+         Indx_Hour_Month = Indx_hour + 24*(Indx_Day_Month-1),
+         Indx_Hour_Wk = Indx_hour + 24*(wday-1))
+         
+         
+
+
+VIC <- as_tibble(VIC)
+
+```
+
+
+```{r allFig, fig.height=5.5, out.width="50%", fig.pos = "p", fig.align= 'left',echo=FALSE, eval=TRUE, fig.cap="Various probability distribution plots of electricity consumption data of Victoria from 2012 to 2014. (a) Letter value plot by DoM and MoY, (b) Decile plot by HoD and DoW (c) Box plot by DoY and DoM, (d) Violin plot of DoM and WoM, (e) Ridge plot by WoM and WoY, (f) Decile plot by DoY and MoY. Only plots (a) and (b) show harmonised time variables.", fig.show = 'hold'}
+
+par(mfrow = c(3, 2))
+
+VIC%>% filter(year %in% c(2012, 2013, 2014),Indx_Month %in% c(1,2,4,12))%>% ggplot(aes(Indx_Day_Month,OperationalLessIndustrial,group = Indx_Day_Month)) + geom_lv(aes(fill=..LV..),outlier.colour = "red",outlier.shape = 1) + scale_fill_brewer()+ facet_wrap(~Indx_Month) + ylab("Electricity Demand [KWh]") + xlab("Days of the Month") + scale_x_continuous(breaks=seq(0,31,5)) + ggtitle("(a) Letter value plot")
+
+
+
+VIC_hod_dow <- VIC%>% filter(year %in% c(2012, 2013, 2014)) %>%
+  group_by(wday,Indx_hour) %>%
+  do({x <- .$OperationalLessIndustrial
+  map_dfr(.x = seq(0.1,0.9,0.1),
+          .f = ~ tibble(Quantile = .x,
+                            Value = quantile(x, probs = .x,na.rm=TRUE)))
+  }) %>%  filter(wday %in% c(1,2,6,7))
+
+VIC_hod_dow %>%ggplot(aes(x=Indx_hour,y=Value,col=as.factor(Quantile))) + geom_line() + facet_wrap(~wday)+ scale_x_continuous(breaks=seq(1, 24,5)) + ylab("")  + xlab("Day of the Week") + theme(legend.position = "none",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(b) Decile plot")
+
+
+VIC%>% filter(year %in% c(2012, 2013, 2014),Indx_Day_Month %in% c(1,15,29,31))%>% ggplot(aes(as.factor(yday),OperationalLessIndustrial,group = yday)) + geom_boxplot()+ facet_wrap(~Indx_Day_Month) + ylab("Electricity Demand [KWh]") +
+  xlab("Days of the Year") + scale_x_discrete(breaks=seq(0,366,60)) +theme(legend.position = "bottom",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(c) Boxplot")
+
+
+
+VIC%>% filter(year %in% c(2012, 2013, 2014),Indx_Wk_Month %in% c(1,2,4))%>% ggplot(aes(as.factor(Indx_Day_Month),OperationalLessIndustrial)) + geom_violin(alpha = 0.03)+ facet_wrap(~Indx_Wk_Month,nrow=3) + ylab("") + xlab("Days of the Month") + theme(legend.position = "bottom",strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks=seq(0,31,5))+ scale_y_continuous(breaks = seq(2000,9000,2000))+ ggtitle("(d) Violin plot")
+
+
+VIC%>% dplyr:::filter(year %in% c(2012, 2013, 2014),Indx_Wk_Month %in% c(1,2,5),Indx_Wk_Yr <20)%>% ggplot(aes(x=OperationalLessIndustrial,y=as.factor(Indx_Wk_Yr),group=Indx_Wk_Yr)) + geom_density_ridges2() +facet_wrap(~Indx_Wk_Month) + xlab("Electricity Demand [KWh]") + ylab("Weeks of the Year") + scale_x_continuous(breaks = seq(2000,10000,3000)) + theme(legend.position = "bottom",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(e) Ridge plot")
+
+
+VIC_moy_doy <- VIC%>% filter(year %in% c(2012, 2013, 2014)) %>%
+  group_by(Indx_Month,yday) %>%
+  do({x <- .$OperationalLessIndustrial
+  map_dfr(.x = seq(0.1,0.9,0.1),
+          .f = ~ tibble(Quantile = .x,
+                            Value = quantile(x, probs = .x,na.rm=TRUE)))
+  }) %>%  filter(Indx_Month %in% c(1,7,11))
+
+VIC_moy_doy %>%ggplot(aes(x=yday,y=Value,col=as.factor(Quantile),group=yday)) + geom_line() + facet_wrap(~Indx_Month)+ scale_x_continuous(breaks=seq(1, 336, 60)) + ylab("")  + xlab("Day of the Year") + theme(legend.position = "none",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
+
+# grid.arrange(p1,p2,p3,p4,nrow = 2)
+
+# 
+# x <- gridExtra::arrangeGrob (p5, p6, p1, p2, p3, p4,newpage = TRUE)
+# grid::grid.draw(x)
+
+# 
+# gridExtra::grid.arrange(
+#   p1,
+#   p2,
+#   p3,
+#   p4,
+#   p5,
+#   p6,
+#   nrow = 3,
+#   top = "Title of the page",
+#   bottom = grid::textGrob(
+#     "this footnote is right-justified",
+#     gp = grid::gpar(fontface = 3, fontsize = 9),
+#     hjust = 1,
+#     x = 1
+#   )
+# )
+# plot.new()
+# mtext('Various probability distribution plot of electricity consumption data of Victoria from 2012 to 2014 (top left) Letter Value plot by DoM and MoY (top right) Decile Plot by HoD and DoW (middle left) Box plot by DoY and DoM (middle right) Violin plot of DoM and WoM (bottom left) Ridge plot by WoM and WoY (bottom right) Decile plot by DoY and MoY', side = 3, line = - 10, outer = TRUE)
+```
+
+
+In \autoref{fig:allFig} (c), we have empty combinations when we plot observations with "Day-of-Month" and "Day-of-Year". Here, the 1st day of the month can never correspond to 2nd, 3rd or 4th day of the year. Hence,  "Day-of-Month" and "Day-of-Year" are clashes due to the way they map to calendar.
+
+In \autoref{fig:allFig} (a), we will not have any empty combinations because every DoM can occur in all MoY. Here, mapping from days to months is irregular in the sense that one month can consist of 28, 29, 30 or 31 days. There is no denying that the 29th, 30th or 31st day of the month needs to be analysed with caution due to the irregular mapping, however, the first 28 days of the month will occur in all months of the year.
+
+More generally, if we have two circular granularities C1 and C2 which has [A, B, C, D] and [X, Y, Z] categories/levels. When C1 and C2 are used as aesthetics or facets, problems arise when we encounter empty combinations. Let $S_{i,j}$ be the set of combination of the levels of C1 and C2. In this example, we have 12 such sets $S_{i,j}$ because i can take 4 values and j can take 3 values. The graphs that don't work are those where many of these 12 sets are empty. In other words, if there are levels of the x-axis which are not spanned by levels of the faceted variable or vice versa we will have structurally empty sets leading to potential ineffective graphs.
+
+Thus, the common link that differentiates harmonies from clashes are:
+
+  a) There should not be any levels of the faceted variable which is empty for one or more levels of the factor plotted across x-axis.
+  
+  b) There should not be any level of the factor plotted across x-axis which doesn't have values for all levels of factors plotted across facets.
+<!-- ## Distributions conditional on bivariate granularities -->
 
 The time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting one temporal granularity along the x-axis and the other one across facets. 
 
