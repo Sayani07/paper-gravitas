@@ -97,9 +97,22 @@ In particular, this work provides the following tools.
 
 <!-- The remainder of the paper is organized as follows. Section \@ref(sec:algorithm) details the construction of the calendar layout in depth. It describes the algorithms of data transformation (Section \@ref(sec:transformation)), the available options (Section \@ref(sec:opt)), and variations of its usage (Section \@ref(sec:variations)). Section \@ref(sec:facet-calendar) explains the full faceting extension, that is equipped with formal labels and axes. An analysis of half-hourly household energy consumption, using the calendar display, is illustrated in a case study in Section \@ref(sec:case). Section \@ref(sec:discussion) discusses the limitations of calendar displays and possible new directions. -->
 
-# Time granularities{#sec:algorithm}
+# Formal conceptualisation of calendar categorisations{#cirgran-def}
 
-Often we partition time into years, months, weeks, days and so on in a hierarchical manner to relate it to data. Such discrete abstractions of time can be thought of as linear time granularities [@aigner2011visualization]. Providing a formalism to this abstraction is important to model a time series across differently grained temporal domains.
+<!-- general calendar categorisation -->
+Often we partition time into months, weeks, days and so on in a hierarchical manner to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Providing a formalism to this abstraction is important to model a time series across differently grained temporal domains. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc which are useful to represent periodicity in the data. Many of these are circular, such as day-of-week, time-of-day. Some are nearly circular such as day-of-month. Some are irregular such as workingday/non-working day. Let us call all of these different abstractions of time as "calendar categorizations".
+
+These calendar categorisations can be linear, circular or aperiodic. We call the calendar categorisations as "linear" if they respect the linear progression of time. We call these _*linear time granularities*_. Examples include hours, days, weeks and months. _*Circular time granularities*_ accommodate periodicities in time such as hour of the day, and day of the week. _*Aperiodic circular granularities*_ are neither linear nor circular, such as day of the month or public holidays.
+
+<!-- <!-- Representation with tsibble -->
+<!-- Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. -->
+
+<!-- <!-- What is calendar categorisation --> 
+<!-- What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. Examples include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc. Many of these are circular, such as day-of-week, time-of-day. Some are nearly circular such as day-of-month. Some are irregular such as workingday/non-working day. Let's call all of these "calendar categorizations". Anything that maps a time index to a categorical variable can be considered a **calendar categorization**.  -->
+
+<!-- What is circular granularity and some examples -->
+<!-- We specify the circular categorizations using modular arithmetic and call these **circular granularities**. The number of categories is essentially the periodicity of a circular time granularity. For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed. -->
+
 
 ## Linear time granularities{#linear-gran-def}
 
@@ -129,14 +142,9 @@ knitr::include_graphics("Figs/linear-time.png")
 
 ## Formal conceptualisation of calendar categorisations{#cirgran-def}
 
-<!-- Representation with tsibble -->
-Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by Bettini, is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.
 
-<!-- What is calendar categorisation -->
-What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. Examples include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc. Many of these are circular, such as day-of-week, time-of-day. Some are nearly circular such as day-of-month. Some are irregular such as workingday/non-working day. Let's call all of these "calendar categorizations". Anything that maps a time index to a categorical variable can be considered a **calendar categorization**. 
 
-<!-- What is circular granularity and some examples -->
-We specify the circular categorizations using modular arithmetic and call these **circular granularities**. The number of categories is essentially the periodicity of a circular time granularity. For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed.
+
 
 \begin{table}[ht]
 \begin{center}
