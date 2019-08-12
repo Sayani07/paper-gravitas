@@ -175,31 +175,33 @@ For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we h
 
 <!-- Formal definition of aperiodic circular granularity -->
 
-**Defintion:** An **Aperiodic circular granularity** can not be defined using modular arithmetic. The modulus for these type of calendar categorisations are not constant due to unequal length of some linear granularities. 
+**Defintion:** An **Aperiodic circular granularity** can not be defined using modular arithmetic in a similar fashion. The modulus for these type of calendar categorisations are not constant due to unequal length of some linear granularities. For example, please refer to the table below:
 
 
-<!-- \begin{table}[ht] -->
-<!-- \begin{center} -->
-<!-- \begin{tabular}{lr@{~}lr@{~}r} -->
-<!-- \toprule -->
-<!-- HOD: & $C_1(s)$ & $= s \mod 24$ & $n_1 =$&$24$ \\ -->
-<!-- HOW: & $C_2(s)$ & $= s \mod `r 24*7`$ & $n_2=$&$`r 24*7`$\\ -->
-<!-- HOM: & $C_3(s)$ & $= s \mod `r 24*30`$ (approximately) & $n_3=$&$`r 24*31`$\\ -->
-<!-- HOY: & $C_4(s)$ & $= s \mod `r 24*365`$ (except for leap years) & $n_4=$&$`r 24*366`$\\ -->
-<!-- DOW: & $C_5(s)$ & $= \lfloor s/24\rfloor \mod 7$ & $n_5=$&$7$\\ -->
-<!-- DOM: & $C_6(s)$ & $= \lfloor s/24\rfloor\mod 30$  (approximately) & $n_6=$&$31$\\ -->
-<!-- DOY: & $C_7(s)$ & $= \lfloor s/24\rfloor \mod 365$ (except for leap years) & $n_7=$&$366$\\ -->
-<!-- WOM: & $C_8(s)$ & $=\lfloor s/168 \rfloor \mod 4$ (approximately) & $n_8 =$&$ 5$\\ -->
-<!-- WOY: & $C_9(s)$ & $=\lfloor s/168\rfloor \mod 52$ (approximately) & $n_9 =$&$ 53$\\ -->
-<!-- MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=$&$12$\\ -->
-<!-- \bottomrule -->
-<!-- \end{tabular} -->
-<!-- \end{center} -->
-<!-- \caption{Illustrative calendar categorizations with hourly time index} -->
-<!-- \label{definitions} -->
-<!-- \end{table} -->
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lr@{~}lr@{~}r}
+\toprule
 
-<!-- Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year. -->
+HOM: & $C_3(s)$ & $= s \mod `r 24*30`$ (approximately) & $n_3=$&$`r 24*31`$\\
+HOY: & $C_4(s)$ & $= s \mod `r 24*365`$ (except for leap years) & $n_4=$&$`r 24*366`$\\
+DOM: & $C_6(s)$ & $= \lfloor s/24\rfloor\mod 30$  (approximately) & $n_6=$&$31$\\
+DOY: & $C_7(s)$ & $= \lfloor s/24\rfloor \mod 365$ (except for leap years) & $n_7=$&$366$\\
+WOM: & $C_8(s)$ & $=\lfloor s/168 \rfloor \mod 4$ (approximately) & $n_8 =$&$ 5$\\
+WOY: & $C_9(s)$ & $=\lfloor s/168\rfloor \mod 52$ (approximately) & $n_9 =$&$ 53$\\
+MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=$&$12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Illustrative aperiodic circular granularities with time index in hours}
+\label{definitions}
+\end{table}
+
+Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year.
+
+ <!-- Why we need single order up and multiple order up granularities -->
+<!-- A time series which is characterised by being composed of repeating cycles. -->
+Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. To consider the exhaustive set of temporal regularities that might exist in the data, we can categorise the set of temporal granularities to single or multiple order up granularities.
 
 ## Single-order-up and multiple-order-up granularities
 
