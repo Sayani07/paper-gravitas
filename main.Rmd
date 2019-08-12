@@ -102,7 +102,7 @@ In particular, this work provides the following tools.
 <!-- general calendar categorisation -->
 Often we partition time into months, weeks, days and so on in a hierarchical manner to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, workingday/non-workingday, etc which are useful to represent different periodicities in the data. Let us call all of these different abstractions of time as "calendar categorizations".
 
-These calendar categorisations can be linear, circular or aperiodic. The calendar categorisations as "linear" if they respect the linear progression of time. We call these **linear time granularities**. Examples include hours, days, weeks and months. **Circular time granularities** accommodate periodicities in time such as hour of the day, and day of the week. **Aperiodic circular granularities** are neither linear nor circular, such as day of the month or public holidays.
+These calendar categorisations can be linear, circular or aperiodic. The calendar categorisations as "linear" if they respect the linear progression of time. We call these **linear time granularities**. Examples include hours, days, weeks and months. **Circular time granularities** accommodate periodicities in time such as hour of the day, and day of the week. **Aperiodic time granularities** are neither linear nor circular, such as day of the month or public holidays.
 
 <!-- <!-- Representation with tsibble -->
 <!-- Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. -->
@@ -138,14 +138,11 @@ The first condition implies that the granules in a linear granularity are non-ov
 knitr::include_graphics("Figs/linear-time.png")
 ```
 
-*These definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality.*
+The definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality. Hence, there is a need to define circular time granularities in a different approach. 
 
+## Circular time granularities{#circular-gran-def}
 
-## Formal conceptualisation of calendar categorisations{#cirgran-def}
-
-
-
-
+Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity.
 
 \begin{table}[ht]
 \begin{center}
@@ -165,7 +162,9 @@ DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_6=$&$7$\\
 \label{definitions}
 \end{table}
 
-It is easy to note here that due to unequal length of some linear granularities like months or years, these formulae can not be used for computing week-of-month or day-of-year. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities. 
+<!-- It is easy to note here that due to unequal length of some linear granularities like months or years, these formulae can not be used for computing week-of-month or day-of-year. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities.  -->
+
+We want to use modular arithmetic to define circular granularity. Hence, we start with the definition of equivalence classes and then move on to define a circular granularity. 
 
 <!-- Formal definition of circular granularity -->
 **Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}.
@@ -180,7 +179,7 @@ For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we h
 
 **Definition:** A **circular granule** represents an equivalence class inside each cycle.
 
-
+## Aperiodic time granularities{#aperiodic-gran-def}
 <!-- Formal definition of aperiodic circular granularity -->
 
 **Defintion:** An **Aperiodic circular granularity** can not be defined using modular arithmetic in a similar fashion. The modulus for these type of calendar categorisations are not constant due to unequal length of some linear granularities. For example, please refer to the table below:
@@ -205,19 +204,20 @@ MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=
 \label{definitions}
 \end{table}
 
-Note that most of the formulas are approximations only due to unequal month and year lengths, and due to the fact that there are not an integer number of weeks per month or weeks per year.
-
  <!-- Why we need single order up and multiple order up granularities -->
 <!-- A time series which is characterised by being composed of repeating cycles. -->
+
+
 Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. To consider the exhaustive set of temporal regularities that might exist ein the data, we can categorise the set of temporal granularities to single or multiple order up granularities.
 
-## Single-order-up and multiple-order-up granularities
+# Single-order-up and multiple-order-up granularities
 
 <!-- What is multiple and single order up granularities -->
 The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are **single-order-up**. 
 
+## Computation of single-order-up granularities
 
-# Computation of multiple order-up granularities from single order-up granularities
+## Computation of multiple order-up granularities 
 
 The index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data and extracting each date-time element with its own accessor function. However, table shows the accessor functions mostly allows for the creation of single-order-up granularities. 
 
@@ -231,7 +231,7 @@ Accessor = c("second()", "minute()", "hour()","wday()", "mday()","week()", "yday
 
 The hierarchical nature of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.The idea is to incorporate and access different calendar categorisations to account for varied levels of periodicities in the data. The computation of multiple-order-up granularities from single-order-up granularities can differ basis the single-order-up granularities are circular or aperiodic.
 
-## Periodic single-order-up granularities 
+### Periodic single-order-up granularities 
 
 **Definition**: A **hierarchy table** has three columns:  
  - The first column represents the linear granularities in ascending order of temporal hierarchy.  
@@ -279,7 +279,7 @@ f_{(hhour, week)}(z) & = f_{(hhour, hour)}(z) + c(hhour, hour)f_{(hour,day)}(z) 
 \end{equation}
              
 
-## Mixed single-order-up granularities - circular or aperiodic
+### Mixed single-order-up granularities - circular or aperiodic
       
 <!-- This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1). -->
 
@@ -320,7 +320,6 @@ f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
   <!-- $f(w,y) = f(x,y) \mod c(x,w)$, for $f(x,y) \mod c(x,w)!=0$ -->
   <!-- $= c(x,w))$, otherwise. -->
 
-### Computing single-order-up granularities:
 
   
 <!-- f(ball, over) = 1 -->
