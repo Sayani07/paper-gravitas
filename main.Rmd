@@ -142,7 +142,7 @@ The definitions and rules for linear granularities are inadequate to reflect per
 
 ## Circular time granularities{#circular-gran-def}
 
-Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity.
+A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index in a tsibble[@Wang2019-aw] for a given key. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity.
 
 \begin{table}[ht]
 \begin{center}
@@ -215,7 +215,10 @@ Identifying repeating (periodic/aperiodic) patterns are necessary in revealing p
 <!-- What is multiple and single order up granularities -->
 The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are **single-order-up**. 
 
-## Computation of single-order-up granularities
+## Single-order-up granularities
+
+<!-- some discussions on primary units of calendar -->
+The day is the basic unit of time underlying all calendars.  The most common  way of defining days are from sunrise to sunrise (Hindu calendar, for example) or from sunset to sunset (Islamic and Hebrew calendars). Further, various calendars use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where Greeks and Romans separate the "day" and "night" into 12 hours each. In London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds".
 
 ## Computation of multiple order-up granularities 
 
@@ -307,29 +310,9 @@ The calendar categorization resulting from the last case are aperiodic. Examples
 f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
 \end{split}
 \end{equation}
+
+Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the yearnand if the year is a leap year to obtain day of the month.
              
-
-<!-- Suppose, we are not given the intermediate single-order-up granularities but still want all possible multiple order-up granularties. In that case, it is necessary to at least have the have the functional form that relates the smallest temporal unit to the highest temporal unit. In that case, we are able to form single-order-up from this functional relationship and still use the recursive relation to get the multiple order-up granularities. -->
-
-  <!-- In the above equations, it is shown how to obtain f(x,z) given f(x,y) and the hierarchy table,  provided $order(z) > order(y) \neq order(x)$. In general, -->
-
-  <!-- $f(x,z) = \sum_{i=0}^{order(z) - order(y) + 1}c(x, x+i)f(x+1, x+i)$ -->
-
-  <!-- We could also derive f(w, y) given f(x, y) and the hierarchy table, for $order(y)>=order(w) > order(x). -->
-
-  <!-- $f(w,y) = f(x,y) \mod c(x,w)$, for $f(x,y) \mod c(x,w)!=0$ -->
-  <!-- $= c(x,w))$, otherwise. -->
-
-
-  
-<!-- f(ball, over) = 1 -->
-<!-- f(over, quarter) = 4 -->
-<!-- f(quarter, semester) = 2 -->
-<!-- f(semester, match) = `1 -->
-
-<!-- then, f(ball_quarter) = 1 + 6*4 = 25,  -->
-<!-- f(ball, semester) = 1 + 6*4 + 5*6*1 = 55 -->
-<!-- f(ball, semester) = 1 + 6*4 + 5*6*1 + 5*6*2*1 = 115 -->
 
   
 # Visualization
