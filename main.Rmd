@@ -524,6 +524,57 @@ Levels are categorized as very high/high/medium/low each for the facet variable 
 
 # Case study: Analysis on smart meter data {#smartmeter}
 
+
+Smart meters provide large quantities of measurements on energy usage for households across Australia, and indeed many parts of the world. Households are distributed geographically, and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. 
+
+<!-- Existing approaches, why we need to drill down, or why we want to -- probability distributions -->
+It is common to see aggregates of usage across households, total kwh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
+
+
+One of the customer trial [smart-meter]z conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers across different temporal granularities. 
+
+
+```{r search_gran}
+
+library(gravitas)
+library(tsibble)
+load("data/smart_meter_13_cust1.rda")
+load("data/smart_meter_13_cust2.rda")
+load("data/smart_meter_13_cust3.rda")
+
+data_sm1 <- smart_meter_13_cust1 %>% as_tsibble()
+data_sm2 <- smart_meter_13_cust2 %>% as_tsibble()
+data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
+```
+
+
+<!-- Refine your search of possible temporal granularities by altering arguments in search_gran() -->
+
+<!-- The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be “month”. -->
+
+
+<!-- # ```{r} -->
+<!-- # library(gravitas) -->
+<!-- # library(dplyr) -->
+<!-- # data_sm %>% search_gran(ugran = "year", filter_in = "event_key", filter_out = c("quarter", "semester")) -->
+<!-- # ``` -->
+
+<!-- # ```{r} -->
+<!-- # data_sm %>% harmony(ugran = "month", filter_in = "event_key", filter_out = c("quarter", "semester"), facet_h = 31) -->
+<!-- # ``` -->
+
+```{r}
+data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile")
+
+data_sm2 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile")
+
+data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile")
+
+
+```
+
+
+
 # Case study: Analysis on cricket {#cricket}
 
 # Discussion {#sec:discussion}
