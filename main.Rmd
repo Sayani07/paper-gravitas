@@ -533,6 +533,8 @@ It is common to see aggregates of usage across households, total kwh used each h
 
 One of the customer trial [smart-meter]z conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers across different temporal granularities. 
 
+Let us compare the energy consumption for two households from the customer trials.
+
 
 ```{r search_gran}
 
@@ -547,7 +549,7 @@ data_sm2 <- smart_meter_13_cust2 %>% as_tsibble()
 data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
 ```
 
-
+For the purpose of this analysis. We only take the data for the year 2013. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
 <!-- Refine your search of possible temporal granularities by altering arguments in search_gran() -->
 
 <!-- The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be “month”. -->
@@ -563,15 +565,36 @@ data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
 <!-- # data_sm %>% harmony(ugran = "month", filter_in = "event_key", filter_out = c("quarter", "semester"), facet_h = 31) -->
 <!-- # ``` -->
 
-```{r}
-data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile")
 
-data_sm2 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile")
 
-data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile")
+```{r cust1_hour-day_day-week}
+data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") +  ggtitle("Boxplot of energy consumption for Customer 1")
+```
+<!-- # ``````{r cust2_hour-day_day-week} -->
+<!-- # data_sm2 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") + ggtitle("Boxplot of energy consumption for Customer 2") -->
+<!-- # ``` -->
 
+``````{r cust3_hour-day_day-week}
+data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") + ggtitle("Boxplot of energy consumption for Customer 3")
+```
+
+
+
+```{r cust1_hhour-day_day-week}
+data_sm1 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") +  ggtitle("Boxplot of energy consumption for Customer 1")
+```
+
+<!-- # ```{r cust2_hhour-day_day-week} -->
+<!-- # data_sm2 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 2") -->
+<!-- # ``` -->
+
+```{r cust3_hhour-day_day-week}
+data_sm3 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 3")
+```
 
 ```
+
+
 
 
 
