@@ -312,7 +312,7 @@ f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
 \end{split}
 \end{equation}
 
-Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the yearnand if the year is a leap year to obtain day of the month.
+Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the year and if the year is a leap year to obtain day of the month.
              
 
   
@@ -532,7 +532,7 @@ Smart meters provide large quantities of measurements on energy usage for househ
 It is common to see aggregates of usage across households, total kwh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
 
 
-One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggreagation or looking only at coarser temporal units. The idea here is to show how looking at time across different granularities together can help identify different behavioral patterns.
+One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at time across different granularities together can help identify different behavioral patterns.
 
 
 
@@ -556,7 +556,7 @@ data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
 
 <!-- Refine your search of possible temporal granularities by altering arguments in search_gran() -->
 
-<!-- The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be “month”. -->
+<!-- The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarse temporal unit can be set to be “month”. -->
 
 
 <!-- # ```{r} -->
@@ -571,7 +571,7 @@ data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
 
  -  Hourly usage across months of the year
 
-\autoref{fig:cust1_hd_my} shows the distribution of hourly comsumption of the households across different months of the year. The two households are similar when it comes to their usage in the morning hours. The first household's extreme behavior is different from that of second household in the month of May and June in the evening hours (represented by higher 90th percentile energy usage). However, the 75th percentile of energy consumption for those two months are higher for the second household than for the first and their median consumption is more or less similar. This implies that consuming more energy in the evening is more typical for household 2. For the evenings of OCtober, November and December, it is clear that household 1 typically consumes much less energy than household 2. Moreover, the second household has a steep evening peak (75th percentile above 0.50 KwH) across most months in contrast to the first household who has a steep evening peak only in the month of May and June with 75th percentile consumption falling below 0.25 KwH. This might be an indication that of usage of heater in the winter months for the first household, whereas the second household uses both air conditioner in hot months and heater in cold months or the number of members in the household vary widely. All of these can be explained with more demographics of the househols and weather conditions in that area.
+\autoref{fig:cust1_hd_my} shows the distribution of hourly consumption of the households across different months of the year. The two households are similar when it comes to their usage in the morning hours. The first household's extreme behavior is different from that of second household in the month of May and June in the evening hours (represented by higher 90th percentile energy usage). However, the 75th percentile of energy consumption for those two months are higher for the second household than for the first and their median consumption is more or less similar. This implies that consuming more energy in the evening is more typical for household 2. For the evenings of October, November and December, it is clear that household 1 typically consumes much less energy than household 2. Moreover, the second household has a steep evening peak (75th percentile above 0.50 KwH) across most months in contrast to the first household who has a steep evening peak only in the month of May and June with 75th percentile consumption falling below 0.25 KwH. This might be an indication that of usage of heater in the winter months for the first household, whereas the second household uses both air conditioner in hot months and heater in cold months or the number of members in the household vary widely. All of these can be explained with more demographics of the household and weather conditions in that area.
 
 Let us dive deeper and see the hourly usage across different days of the week for these two households.
 
@@ -613,7 +613,7 @@ data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = 
 ```
 
 
-\autoref{fig:cust1_hd_my} shows distribution of hourly eenrgy usage for two households across different days of the week through decile plots. It is clear that household 1 deviates from their typical behavior only on weekends. A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do? \autoref{cust1_dw_my} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November nad December saw higher ebergy usage than typical even on other weekdays. Still for this household, it can safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
+\autoref{fig:cust1_hd_my} shows distribution of hourly energy usage for two households across different days of the week through decile plots. It is clear that household 1 deviates from their typical behavior only on weekends. A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do? \autoref{cust1_dw_my} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November and December saw higher energy usage than typical even on other weekdays. Still for this household, it can safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
 
 /autoref{fig:cust3_dw_my} shows that the second household uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday looks quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
 
@@ -647,7 +647,7 @@ Now, let us check which half hours are the most active for Household 1. For most
 <!-- ```{r cust1_hhour-day_day-week} -->
 <!-- data_sm1 %>% -->
 <!--    filter(lubridate::hour(reading_datetime)>=23) %>% -->
-<!--   granplot("hhour_day","day_week", response = "general_sxupply_kwh", plot_type = "lv") + -->
+<!--   granplot("hhour_day","day_week", response = "general_supply_kwh", plot_type = "lv") + -->
 <!--   ggtitle("Letter value plot of energy consumption across half-hour of the day across days of the week for Household 1") -->
 <!-- ``` -->
 
