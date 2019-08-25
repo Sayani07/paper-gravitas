@@ -31,6 +31,7 @@ output:
     #base_format: rticles::asa_article
     fig_height: 5
     fig_width: 8
+    fig_caption: yes
     dev: "pdf"
 ---
 
@@ -44,7 +45,7 @@ library(ggridges)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
-  cache = FALSE, cache.path = "cache/",
+  cache = TRUE, cache.path = "cache/",
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
 knitr::opts_knit$set(root.dir = here::here())
@@ -531,9 +532,9 @@ Smart meters provide large quantities of measurements on energy usage for househ
 It is common to see aggregates of usage across households, total kwh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
 
 
-One of the customer trial [smart-meter]z conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers across different temporal granularities. 
+One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggreagation or looking only at coarser temporal units.
 
-Let us compare the energy consumption for two households from the customer trials.
+Let us compare the energy consumption distribution for two households from the customer trials.
 
 
 ```{r search_gran}
@@ -550,6 +551,7 @@ data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
 ```
 
 For the purpose of this analysis. We only take the data for the year 2013. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
+
 <!-- Refine your search of possible temporal granularities by altering arguments in search_gran() -->
 
 <!-- The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be “month”. -->
@@ -565,32 +567,62 @@ For the purpose of this analysis. We only take the data for the year 2013. Let u
 <!-- # data_sm %>% harmony(ugran = "month", filter_in = "event_key", filter_out = c("quarter", "semester"), facet_h = 31) -->
 <!-- # ``` -->
 
+ -  Hourly usage across months of the year
+
+(in Figure \@ref(fig:cust1_hd_my)) shows the distribution of hourly comsumption of the households across different months of the year. The two households are similar when it comes to your usage in the morning hours. wThe second household has an evening peak across all months in contrast to the first household who has a steep evening peak only in the month of May and June. This suggests an use of heater in the winter months for the first household, whereas the second household uses both air conditioner in hot months and heater in cold months. Let us dive deeper and see the hourly usage across different days of the week for these two households.
+
+
+```{r cust1_hd_my, fig.cap="(ref:cust1_hd_my)"}
+
+library(ggplot2)
+data_sm1 %>% granplot("month_year", "hour_day", response = "general_supply_kwh", plot_type = "quantile") +  ggtitle("Letter value plot of energy consumption across hours of day by month of years for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+(ref:cust1_hd_my-cap) Something that I am yet to write
+
+```{r cust3_hour_day-month_year}
+data_sm3 %>% granplot("month_year", "hour_day", "general_supply_kwh", plot_type = "quantile", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("Letter value plot of energy consumption across hours of day by month of years for Household 2") + scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+``` 
+
+-  Hourly usage across days of the week
+
+Hourly usage for two households across different days of the week are shown through decile plots. It is clear that energy conusmption only goes up for few hours in the evening. It goes much higher in the weekends implying that there are hardly any activities that take place during weekdays. Whereas, for the second household, there are two peaks - once during the day and one in the evening. Also, the difference between the energy consumption is not very different between weekdays and weekends. This suggests that the household might uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week.
 
 
 ```{r cust1_hour-day_day-week}
-data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") +  ggtitle("Boxplot of energy consumption for Customer 1")
+data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +  ggtitle("Boxplot of energy consumption for Customer 1")
 ```
 <!-- # ``````{r cust2_hour-day_day-week} -->
 <!-- # data_sm2 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") + ggtitle("Boxplot of energy consumption for Customer 2") -->
 <!-- # ``` -->
 
 ``````{r cust3_hour-day_day-week}
-data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") + ggtitle("Boxplot of energy consumption for Customer 3")
+data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 3")
 ```
 
+-  Half-Hourly usage across days of the week
+
+Now, let us check which half hours are the most active for Household 1. For most days, half hours between 34th and 38th  half hour of the day are higher than other days. The energy consumption in these hours on Fridays match with that os Saturday and Sunday.
 
 
-```{r cust1_hhour-day_day-week}
-data_sm1 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") +  ggtitle("Boxplot of energy consumption for Customer 1")
-```
 
-<!-- # ```{r cust2_hhour-day_day-week} -->
-<!-- # data_sm2 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 2") -->
-<!-- # ``` -->
+<!-- ```{r cust1_hhour-day_day-week} -->
+<!-- data_sm1 %>% -->
+<!--    filter(lubridate::hour(reading_datetime)>=23) %>% -->
+<!--   granplot("hhour_day","day_week", response = "general_sxupply_kwh", plot_type = "lv") + -->
+<!--   ggtitle("Letter value plot of energy consumption across half-hour of the day across days of the week for Household 1") -->
+<!-- ``` -->
 
-```{r cust3_hhour-day_day-week}
-data_sm3 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 3")
-```
+<!-- <!-- # ```{r cust2_hhour-day_day-week} --> -->
+<!-- <!-- # data_sm2 %>% granplot("day_week", "week_month", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 2") --> -->
+<!-- <!-- # ``` --> -->
+
+<!-- ```{r cust3_hhour-day_day-week} -->
+<!-- data_sm3 %>% create_gran("hhour_day") %>% -->
+<!--    filter(hhour_day>=23) %>% -->
+<!--   granplot("hhour_day","day_week",response = "general_supply_kwh", plot_type = "lv") + -->
+<!--   ggtitle("Letter value plot of energy consumption across half-hour of the day across days of the week for Household 1") -->
+<!-- ``` -->
 
 ```
 
