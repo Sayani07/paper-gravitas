@@ -569,18 +569,30 @@ For the purpose of this analysis. We only take the data for the year 2013. Let u
 
  -  Hourly usage across months of the year
 
-(in Figure \@ref(fig:cust1_hd_my)) shows the distribution of hourly comsumption of the households across different months of the year. The two households are similar when it comes to your usage in the morning hours. wThe second household has an evening peak across all months in contrast to the first household who has a steep evening peak only in the month of May and June. This suggests an use of heater in the winter months for the first household, whereas the second household uses both air conditioner in hot months and heater in cold months. Let us dive deeper and see the hourly usage across different days of the week for these two households.
+\autoref{fig:cust1_hd_my} shows the distribution of hourly comsumption of the households across different months of the year. The two households are similar when it comes to their usage in the morning hours. The first household's extreme behavior is different from that of second household in the month of May and June in the evening hours (represented by higher 90th percentile energy usage). However, the 75th percentile of energy consumption for those two months are higher for the second household than for the first and their median consumption is more or less similar. This implies that consuming more energy in the evening is more typical for household 2. For the evenings of OCtober, November and December, it is clear that household 1 typically consumes much less energy than household 2. Moreover, the second household has a steep evening peak (75th percentile above 0.50 KwH) across most months in contrast to the first household who has a steep evening peak only in the month of May and June with 75th percentile consumption falling below 0.25 KwH. This might be an indication that of usage of heater in the winter months for the first household, whereas the second household uses both air conditioner in hot months and heater in cold months or the number of members in the household vary widely. All of these can be explained with more demographics of the househols and weather conditions in that area.
 
+Let us dive deeper and see the hourly usage across different days of the week for these two households.
 
-```{r cust1_hd_my, fig.cap="(ref:cust1_hd_my)"}
+<!-- ```{r cust1_hd_my} -->
+
+<!-- library(ggplot2) -->
+<!-- data_sm1 %>%  -->
+<!--   group_by(month_year = lubridate::month(reading_datetime), -->
+<!--            hour_day = lubridate::hour(reading_datetime)) %>%  -->
+<!--   summarise(hourly_tot = mean(general_supply_kwh)) %>%  -->
+<!--   ggplot(aes(x = hour_day, y = month_year)) + facet_wrap(~ month_year)+ -->
+<!--   geom_point() +  -->
+<!--   ggtitle("Bar plot of energy consumption across hours of day by month of years for Household 1") -->
+<!-- ``` -->
+
+```{r cust1_hd_my}
 
 library(ggplot2)
-data_sm1 %>% granplot("month_year", "hour_day", response = "general_supply_kwh", plot_type = "quantile") +  ggtitle("Letter value plot of energy consumption across hours of day by month of years for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+data_sm1 %>% granplot("month_year", "hour_day", response = "general_supply_kwh", plot_type = "quantile", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +  ggtitle("Letter value plot of energy consumption across hours of day by month of years for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
 ```
 
-(ref:cust1_hd_my-cap) Something that I am yet to write
 
-```{r cust3_hour_day-month_year}
+```{r cust3_hd_my}
 data_sm3 %>% granplot("month_year", "hour_day", "general_supply_kwh", plot_type = "quantile", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("Letter value plot of energy consumption across hours of day by month of years for Household 2") + scale_y_continuous(breaks = seq(0, 1.5, 0.25))
 ``` 
 
