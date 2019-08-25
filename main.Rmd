@@ -45,7 +45,7 @@ library(ggridges)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
-  cache = TRUE, cache.path = "cache/",
+  cache = FALSE, cache.path = "cache/",
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
 knitr::opts_knit$set(root.dir = here::here())
@@ -532,9 +532,11 @@ Smart meters provide large quantities of measurements on energy usage for househ
 It is common to see aggregates of usage across households, total kwh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
 
 
-One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggreagation or looking only at coarser temporal units.
+One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggreagation or looking only at coarser temporal units. The idea here is to show how looking at time across different granularities together can help identify different behavioral patterns.
 
-Let us compare the energy consumption distribution for two households from the customer trials.
+
+
+Let us compare the energy consumption distribution for two households from the customer trials. For the purpose of this analysis, we only take the data for the year 2013. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
 
 
 ```{r search_gran}
@@ -550,7 +552,7 @@ data_sm2 <- smart_meter_13_cust2 %>% as_tsibble()
 data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
 ```
 
-For the purpose of this analysis. We only take the data for the year 2013. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
+
 
 <!-- Refine your search of possible temporal granularities by altering arguments in search_gran() -->
 
@@ -597,37 +599,44 @@ data_sm3 %>% granplot("month_year", "hour_day", "general_supply_kwh", plot_type 
 
 -  Hourly usage across days of the week
 
-\autoref{fig:cust1_hd_my} shows distribution of hourly eenrgy usage for two households across different days of the week through decile plots. It is clear that household 1 deviates from their typical behavior only on weekends. A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do? \autoref{cust1_dw_my} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November nad December saw higher ebergy usage than typical even on other weekdays. Still for this household, it can safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
-
-/autoref{fig:cust3_dw_my} shows that the second household uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday looks quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
-
-```{r cust3_dw_my}
-library(ggplot2)
-
-data_sm1 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +  ggtitle("LV plot of energy consumption across hours of day by month of years for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
-```
-
-
-```{r cust3_dw_my}
-library(ggplot2)
-
-data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across hours of day by month of years for Household 3")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
-```
-
-
-
 
 
 ```{r cust1_hour-day_day-week}
-data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile") +  ggtitle("Boxplot of energy consumption for Customer 1")
+data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") +  ggtitle("Boxplot of energy consumption for Customer 1")
 ```
 <!-- # ``````{r cust2_hour-day_day-week} -->
 <!-- # data_sm2 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") + ggtitle("Boxplot of energy consumption for Customer 2") -->
 <!-- # ``` -->
 
 ``````{r cust3_hour-day_day-week}
-data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "decile") + ggtitle("Boxplot of energy consumption for Customer 3")
+data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") + ggtitle("Boxplot of energy consumption for Customer 3")
 ```
+
+
+\autoref{fig:cust1_hd_my} shows distribution of hourly eenrgy usage for two households across different days of the week through decile plots. It is clear that household 1 deviates from their typical behavior only on weekends. A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do? \autoref{cust1_dw_my} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November nad December saw higher ebergy usage than typical even on other weekdays. Still for this household, it can safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
+
+/autoref{fig:cust3_dw_my} shows that the second household uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday looks quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
+
+
+-  Across days of the week by months
+
+```{r cust1_dw_my}
+library(ggplot2)
+
+data_sm1 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +  ggtitle("LV plot of energy consumption across days of week by month of years for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+
+```{r cust3_dw_my}
+library(ggplot2)
+
+data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days of week by month of years for Household 3")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+
+
+
+
 
 -  Half-Hourly usage across days of the week
 
