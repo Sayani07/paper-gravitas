@@ -139,32 +139,11 @@ data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = 
 ```
 
 
-A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do? Figure \ref{cust1_dw_my} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November and December saw higher energy usage than typical even on other weekdays. Still for this household, it can be safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
-
-Figure \ref{fig:cust3_dw_my} shows that the second household uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday looks quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
-
-
 -  Across days of the week by months
 
+A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do? Figure \ref{fig:cust1_my_dw} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November and December saw higher energy usage than typical even on other weekdays. Still for this household, it can be safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
 
-```{r cust1_my_dw, fig.cap="Letter value plots of energy consumption across days of the week and months for the first household. Letter value plots convey detailed information about tails of the distribution and outliers are unexpected observations rather than extreme observations. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively.Outliers are colored in red. It can be noted that they do not typically consume more than 0.25 KwH in the weekdays. Their tail behaviors are not so distinctly visible because of the consistency in their behavior."}
-
-library(ggplot2)
-
-data_sm1 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days-week by month-year for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
-
-```
-
-
-
-
-```{r cust3_my_dw, fig.cap="Letter value plots of energy consumption across days of the week and months for the first household. Contrary to the first household, outliers appear at an energy usage beyond 0.75 KwH. The extreme values in the tail of the distribution are represented by different letter values. In March, once can observe the F letter value to range between 0.75 to 1.25 KwH on weekends and between 0.25 to 0.75 KwH on weekdays (represented by letter value D), which is far more higher than subsequent months and comparable to summer month December. For unusual days or more volatile days of the week, one can expect to see more distinct letter values.This reinforces the fact that their behavior changes across months but not so much between days of the week."}
-
-library(ggplot2)
-
-data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days of week by month of years for Household 2")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
-```
-
+Figure \ref{fig:cust3_my_dw} shows that the second household uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday looks quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
 
 
 To summarise, we can posit the following for the two households:
@@ -176,3 +155,21 @@ To summarise, we can posit the following for the two households:
 
 
 We can keep on slicing and dicing the data in a similar fashion and derive more insights about the behavior of these households.
+
+
+
+
+```{r cust1_my_dw, fig.cap = "Letter value plots of energy consumption across days of the week and months for the first household. Letter value plots convey detailed information about tails of the distribution and outliers are unexpected observations rather than extreme observations. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively.Outliers are colored in red. It can be noted that they do not typically consume more than 0.25 KwH in the weekdays. Their tail behaviors are not so distinctly visible because of the consistency in their behavior."}
+
+data_sm1 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days-week by month-year for Household 1")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+
+
+
+```{r cust3_my_dw, fig.cap = "Letter value plots of energy consumption across days of the week and months for the first household. Contrary to the first household, outliers appear at an energy usage beyond 0.75 KwH. The extreme values in the tail of the distribution are represented by different letter values. In March, once can observe the F letter value to range between 0.75 to 1.25 KwH on weekends and between 0.25 to 0.75 KwH on weekdays (represented by letter value D), which is far more higher than subsequent months and comparable to summer month December. For unusual days or more volatile days of the week, one can expect to see more distinct letter values.This reinforces the fact that their behavior changes across months but not so much between days of the week."}
+
+data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days of week by month of years for Household 2")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+
