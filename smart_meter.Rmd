@@ -95,8 +95,8 @@ data_sm1 %>%
            response = "general_supply_kwh", 
            plot_type = "quantile", 
            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
-  ggtitle("Quantile plot of energy consumption across hours of day by month of years for Household 1") +
-  scale_y_continuous(breaks = seq(0, 1.5, 0.25)) +
+  #ggtitle("Quantile plot of energy consumption across hours of day by month of years for Household 1") +
+  scale_y_continuous(breaks = seq(0, 1.5, 0.25)) +ggtitle("") +
   scale_x_discrete(breaks = seq(0,23,2))
 ```
 
@@ -107,8 +107,8 @@ data_sm3 %>%
   filter(month_year != "Mar") %>% 
     granplot("month_year", "hour_day", "general_supply_kwh",
              plot_type = "quantile", 
-             quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + 
-  ggtitle("Quantile plot of energy consumption across hours of day by month of years for Household 2") + 
+             quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("") +
+  #ggtitle("Quantile plot of energy consumption across hours of day by month of years for Household 2") + 
   scale_y_continuous(breaks = seq(0, 1.5, 0.25)) +
   scale_x_discrete(breaks = seq(0,23,2))
 ``` 
@@ -123,7 +123,9 @@ Figure \ref{fig:cust3_hd_dw} shows the distribution of hourly energy usage acros
 
 ```{r cust1_hd_dw, fig.cap="Violin plots of hourly consumption across different day of the week for the first household.  A long-tailed violin for an hour would imply that the energy distribution is skewed to either right or left, whereas a bulge shaped distribution implies that the energy behavior is more predictable and energy consumption in those hours can only vary in that range where the bulge appears. If an hour has a distribution that seems like a straight line, they are extremely volatile. On weekdays, hours between 17 to 19 hours seems to be extremely volatile compared to other hours. On weekends, energy consumption is volatile even in morning hours. "}
 
-data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") +  ggtitle("Violin plot of energy consumption across hour-of-day and day-of-week for Household 1") + scale_x_discrete(breaks = seq(0,23,3)) +
+data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") + ggtitle("") +
+  #ggtitle("Violin plot of energy consumption across hour-of-day and day-of-week for Household 1") 
+  scale_x_discrete(breaks = seq(0,23,3)) +
   scale_y_continuous(breaks = seq(0, 1.5, 0.25))
 ```
 <!-- # ``````{r cust2_hour-day_day-week} -->
@@ -131,7 +133,10 @@ data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = 
 <!-- # ``` -->
 
 ```{r cust3_hd_dw, fig.cap ="Violin plots of hourly consumption across different day of the week for the second household. Hours before 10am and after 10pm have a bulge implying those hours are pretty consistent. Hours in between these have a long right tail which are even higher for weekends."}
-data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") + ggtitle("Violin plot of energy consumption across hour-of-day and day-of-week for Household 2") + scale_x_discrete(breaks = seq(0,23,3)) +
+data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") +
+  #ggtitle("Violin plot of energy consumption across hour-of-day and day-of-week for Household 2") +
+  scale_x_discrete(breaks = seq(0,23,3)) +
+  ggtitle("") +
   scale_y_continuous(breaks = seq(0, 1.5, 0.25))
 ```
 
@@ -143,24 +148,13 @@ A plot of the distribution across months of the year and days of the week might 
 Figure \ref{fig:cust3_my_dw} shows that the second household uniformly distributes their regular activity like using dishwasher or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday look quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
 
 
-To summarise, we can posit the following for the two households:
-
- - First household typically doesn't routinely use air conditioners in summer(December), or heaters in winter months (May and June). They are strictly 9 to 5 professionals, hence their energy consumption during day time is pretty consistent and only peaks up during a few hours in the evening. They do all energy-intensive chores (e.g. laundry, vacuum cleaning) mostly on the weekends.
- 
- 
- - Second household typically use air conditioners in summer months and heaters in winter months. This might be a family with children with stay-at-home parents/ work-from-home professionals with extremely varying energy consumption peaking up from noon. Their weekday behavior is not distinctly different from weekends. Also, they are more likely to distribute their energy-intensive chores throughout the week and not leave all them for the weekends.
-
-
-We can keep on slicing and dicing the data similarly and derive more insights about the behavior of these households.
-
-
 
 
 ```{r cust1_my_dw, fig.cap = "Letter value plots of energy consumption across days of the week and months for the first household. Letter value plots convey detailed information about tails of the distribution and outliers are unexpected observations rather than extreme observations. M, F, E, D and C represents 50, 25, 12.5, 6.25 and 3.13 percent of the tail area respectively.Outliers are colored in red. It can be noted that they do not typically consume more than 0.25 KwH in the weekdays. Their tail behaviors are not so distinctly visible because of the consistency in their behavior."}
 
 data_sm1 %>% granplot("month_year", 
                       "day_week", 
-                      response = "general_supply_kwh", plot_type = "lv") +    ggtitle("LV plot of energy consumption across days-week by month-year for Household 1") +
+                      response = "general_supply_kwh", plot_type = "lv") +  ggtitle("") +  #ggtitle("LV plot of energy consumption across days-week by month-year for Household 1") +
   scale_y_continuous(breaks = seq(0, 1.5, 0.25))
 ```
 
@@ -169,7 +163,52 @@ data_sm1 %>% granplot("month_year",
 
 ```{r cust3_my_dw, fig.cap = "Letter value plots of energy consumption across days of the week and months for the first household. Contrary to the first household, outliers appear at an energy usage beyond 0.75 KwH. The extreme values in the tail of the distribution are represented by different letter values. In March, once can observe the F letter value to range between 0.75 to 1.25 KwH on weekends and between 0.25 to 0.75 KwH on weekdays -represented by letter value D, which is far more higher than subsequent months and comparable to summer month December. For unusual days or more volatile days of the week, one can expect to see more distinct letter values.This reinforces the fact that their behavior changes across months but not so much between days of the week."}
 
-data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days of week by month of years for Household 2") + scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("") +
+  #ggtitle("LV plot of energy consumption across days of week by month of years for Household 2") + 
+  scale_y_continuous(breaks = seq(0, 1.5, 0.25))
 ```
+
+
+-  Across week of the month and weekends
+
+Another aspect which might of interest is how these households distribute their monthly chores between Saturday and Sunday across weeks of the month. "Monthly" chores might include washing mattress, comforters, bed and pillow covers, vacuum cloth furniture or cleaning dishwasher or oven. Also some households might visit friends and family or have them come over on weekends at least once a month. Figures \ref{fig:cust1_wm_wndwd} and \ref{fig:cust3_wm_wndwd} shows that the letter value plot of energy consumption for Saturday and Sunday across weeks of the months. 
+
+Figure \ref{fig:cust1_wm_wndwd} shows that median consumption of energy is higher on Sundays. Also Sundays have longer right-tails than Saturdays across all weeks of the month implying that Sunday is a little more active day for the household. And the forth weekend of the month, either they take it easy on themselves or stay out of their house for trips/visit friends.
+
+
+Figure \ref{fig:cust3_wm_wndwd} shows that household 2 has all-absorbing Sundays. They are either busy with weekly chores or have the entire family stay at home every Sunday. The first Saturday of the month looks pretty consistent compared to any other weeks of the month, implying either they are out for work/trips/visiting family. Also, 4th Sunday of the month has a long right tail implying they choose the last week of the month for doing their "monthly" chores.
+
+
+```{r cust1_wm_wndwd, fig.cap = "Letter value plot of energy consumption for Saturday and Sunday across weeks of the month for household 1. The 4th week of the month sees low energy consumption for both Saturdays and Sundays.Typically Sundays are heavier on energy than Saturdays."}
+
+data_sm1 %>% 
+   create_gran("day_week") %>% 
+  filter(day_week %in%c("Sat", "Sun")) %>% 
+  granplot("day_week", "week_month" , response = "general_supply_kwh", plot_type = "lv") +  ggtitle("") +
+  #ggtitle("Boxplot plot of energy consumption across days of week by month of years for Household 2") +
+  scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+```{r cust3_wm_wndwd, fig.cap = "Letter value plot of energy consumption for Saturday and Sunday across weeks of the month for household 2. The forth  Sunday has high energy consumption and long right tails implying they choose the last Sunday of the month either to do monthly chores or have friends come over. The first Saturday of the week seems quite and consistent for this household."}
+
+data_sm3 %>%
+  create_gran("day_week") %>% 
+  filter(day_week %in%c("Sat", "Sun")) %>% 
+  granplot("day_week", "week_month" , response = "general_supply_kwh", plot_type = "lv") + ggtitle("") +
+  #ggtitle("Boxplot plot of energy consumption across days of week by month of years for Household 2") + 
+  scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
+
+
+
+To summarise, we can posit the following for the two households:
+
+ - First household typically doesn't routinely use air conditioners in summer(December), or heaters in winter months (May and June). They are strictly 9 to 5 professionals, hence their energy consumption during day time is pretty consistent and only peaks up during a few hours in the evening. They do all energy-intensive chores (e.g. laundry, vacuum cleaning) mostly on the weekends.
+Also, part of the forth weekend of the month is spent out of the house visiting friends/family or going out for leisure trips.
+ 
+ 
+ - Second household typically use air conditioners in summer months and heaters in winter months. This might be a family with children with stay-at-home parents/ work-from-home professionals with extremely varying energy consumption peaking up from noon. Their weekday behavior is not distinctly different from weekends. Also, they are more likely to distribute their energy-intensive chores throughout the week and not leave all them for the weekends. Sundays are still pretty heavy on energy for this household when all members stay at home. Also, they sometimes spend the last Sunday of the month doing "monthly" chores or have people come over.
+
+We can keep on slicing and dicing the data similarly and derive more insights about the behavior of these households.
 
 
