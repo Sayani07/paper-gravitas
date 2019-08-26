@@ -25,7 +25,6 @@ opts_chunk$set(
 knitr::opts_knit$set(root.dir = here::here())
 ```
 
-# Case study: Analysis on smart meter data {#smartmeter}
 
 
 Smart meters provide large quantities of measurements on energy usage for households across Australia, and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. 
@@ -38,7 +37,7 @@ One of the customer trial [@smart-meter] conducted as part of the Smart Grid Sma
 
 
 
-Let us compare the energy consumption distribution for two households from the customer trials. For this analysis, we only take the data for the year 2013. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
+Let us compare the energy consumption distribution for two households from the customer trials. For this analysis, we only take the data for the year 2013. The first household has data from April and the second household has data from March. For the purpose of comparison, data for both households have been observed from April. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
 
 
 ```{r search_gran}
