@@ -219,7 +219,30 @@ The hierarchical structure of time creates a natural nested ordering, where hour
 ## Single-order-up granularities
 
 <!-- some discussions on primary units of calendar -->
-The day is the basic unit of time underlying all calendars.  The most common  way of defining days are from sunrise to sunrise (Hindu calendar, for example) or from sunset to sunset (Islamic and Hebrew calendars). Further, various calendars use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where Greeks and Romans separate the "day" and "night" into 12 hours each. In London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds".
+The day is the basic unit of time underlying all calendars.  The most common  way of defining days are from sunrise to sunrise (Hindu calendar, for example) or from sunset to sunset (Islamic and Hebrew calendars). Further, various calendars use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where Greeks and Romans separate the "day" and "night" into 12 hours each. In London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". 
+
+
+Let us define the arrangement of these coarser temporal units from finer temporal units in an hierarchy table. For example, in "Mayan" calendar, one day is referred to as 1 kin and they believed that the universe is destroyed at the start of every cycle (2,880,000 days). The Mayan calendar was structured as follows: 
+
+ - 1 kin = 1 day
+ - 1 uinal = 20 kin
+ - 1 tun  = 18 uinal
+ - 1 katun = 20 tun
+ - 1 baktun = 20 katun
+
+Thus, the hierarchy table for the "Mayan" calendar would look like the following:
+
+
+| Temporal units	| Conversion factor 	| conversion in days 	| single-order-up accessors 	|
+|------------	|-------------------	|--------------------	|---------------------------	|
+| 1 kin      	| 1 day             	|                    	| kin_uinal                 	|
+| 1 uinal    	| 20 kin            	| 20 days            	| uinal_tun                 	|
+| 1 tun      	| 18 uinal          	| 360 days           	| tun_katun                 	|
+| 1 katun    	| 20 tun            	| 7200 days          	| katun_baktun              	|
+| 1 baktun   	| 20 katun          	| 144,000 days       	| 1                         	|
+
+Single-order-up granularities like kin_uinal(kin of the uinal), uinal_tun(uinal of the tun) can be computed using modular arithmatic in this periodic set up.
+
 
 ## Computation of multiple order-up granularities 
 
@@ -525,148 +548,6 @@ Levels are categorized as very high/high/medium/low each for the facet variable 
 
 # Case study: Analysis on smart meter data {#smartmeter}
 
-Smart meters provide large quantities of measurements on energy usage for households across Australia, and indeed many parts of the world. Households are distributed geographically, and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. 
-
-<!-- Existing approaches, why we need to drill down, or why we want to -- probability distributions -->
-It is common to see aggregates of usage across households, total kwh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
-
-
-One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in NewCastle, New South Wales and some parts of Sydney provides customer wise data on half hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at time across different granularities together can help identify different behavioral patterns.
-
-
-
-Let us compare the energy consumption distribution for two households from the customer trials. For the purpose of this analysis, we only take the data for the year 2013. Let us look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
-
-
-```{r search_gran}
-
-library(gravitas)
-library(tsibble)
-load("data/smart_meter_13_cust1.rda")
-load("data/smart_meter_13_cust2.rda")
-load("data/smart_meter_13_cust3.rda")
-
-data_sm1 <- smart_meter_13_cust1 %>% as_tsibble()
-data_sm2 <- smart_meter_13_cust2 %>% as_tsibble()
-data_sm3 <- smart_meter_13_cust3 %>% as_tsibble()
-```
-
-
-
-<!-- Refine your search of possible temporal granularities by altering arguments in search_gran() -->
-
-<!-- The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarse temporal unit can be set to be “month”. -->
-
-
-<!-- # ```{r} -->
-<!-- # library(gravitas) -->
-<!-- # library(dplyr) -->
-<!-- # data_sm %>% search_gran(ugran = "year", filter_in = "event_key", filter_out = c("quarter", "semester")) -->
-<!-- # ``` -->
-
-<!-- # ```{r} -->
-<!-- # data_sm %>% harmony(ugran = "month", filter_in = "event_key", filter_out = c("quarter", "semester"), facet_h = 31) -->
-<!-- # ``` -->
-
- -  Hourly usage across months of the year
-
-Figure \ref{fig:cust1_hd_my} and \ref{fig:cust3_hd_my} shows the distribution of hourly consumption of household 1 and 2 across different months of the year. The two households are similar when it comes to their usage in the morning hours. The first household's extreme behavior is different from that of second household in the month of May and June in the evening hours (represented by higher 90th percentile energy usage). However, the 75th percentile of energy consumption for those two months are higher for the second household than for the first and their median consumption is more or less similar. This implies that consuming more energy in the evening is more typical for household 2. For the evenings of October, November and December, it is clear that household 1 typically consumes much less energy than household 2. Moreover, the second household has a steep evening peak (75th percentile above 0.50 KwH) across most months in contrast to the first household who has a steep evening peak only in the month of May and June with 75th percentile consumption falling below 0.25 KwH. This might be an indication that of usage of heater in the winter months for the first household, whereas the second household uses both air conditioner in hot months and heater in cold months or the number of members in the household vary widely. All of these can be explained with more demographics of the household and weather conditions in that area.
-
-Let us dive deeper and see the hourly usage across different days of the week for these two households.
-
-<!-- ```{r cust1_hd_my} -->
-
-<!-- library(ggplot2) -->
-<!-- data_sm1 %>%  -->
-<!--   group_by(month_year = lubridate::month(reading_datetime), -->
-<!--            hour_day = lubridate::hour(reading_datetime)) %>%  -->
-<!--   summarise(hourly_tot = mean(general_supply_kwh)) %>%  -->
-<!--   ggplot(aes(x = hour_day, y = month_year)) + facet_wrap(~ month_year)+ -->
-<!--   geom_point() +  -->
-<!--   ggtitle("Bar plot of energy consumption across hours of day by month of years for Household 1") -->
-<!-- ``` -->
-
-```{r cust1_hd_my, fig.cap="Quantile plots of hourly consumption across different months for the first household. 10th, 25th, 50th, 75th and 90th percentile are shown. For example, 90th percentile might denote behavior which are extreme and 50th percentile corresponds to a more typical behavior. Evening hours generally exhibits a peak. Some extreme behavior is exhibited in the evening hours of May and June, however, overall energy comsumption does not seem to vary much across months. Median and 75th percentile is less than 0.25 KwH across most months."}
-library(ggplot2)
-data_sm1 %>% 
-  granplot("month_year", "hour_day", 
-           response = "general_supply_kwh", 
-           plot_type = "quantile", 
-           quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
-  ggtitle("Quantile plot of energy consumption across hours of day by month of years for Household 1") +
-  scale_y_continuous(breaks = seq(0, 1.5, 0.25)) +
-  scale_x_discrete(breaks = seq(0,23,2))
-```
-
-
-```{r cust3_hd_my, fig.cap="Quantile plots of hourly consumption across different months for the second household. 10th, 25th, 50th, 75th and 90th percentile are shown. Distinct evening peaks for few hours across all months. The median comsumption also varies across months. This household varies their behavior with seasons and are likely to be using heaters in colder months and air conditioners in hot months like January. This is evident from the 75th and 90th percentile of consumption."}
-data_sm3 %>% 
-  create_gran("month_year") %>% 
-  filter(month_year != "Mar") %>% 
-    granplot("month_year", "hour_day", "general_supply_kwh",
-             plot_type = "quantile", 
-             quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + 
-  ggtitle("Quantile plot of energy consumption across hours of day by month of years for Household 2") + 
-  scale_y_continuous(breaks = seq(0, 1.5, 0.25)) +
-  scale_x_discrete(breaks = seq(0,23,2))
-``` 
-
--  Hourly usage across days of the week
-
-
-Figure \ref{fig:cust1_hd_dw} shows distribution of hourly energy usage across different days of the week through violin plots for household 1. Energy consumption typically goes up between 16 to 18 hours. On weekends, the energy consumption for these hours are even higher. The straight lines in the violin plot for weekends at 17th and 18th hours suggest that the distribution of energy consumption is uniform demonstrating that any energy value has equal probability in falling in that hour. This suggests that these hours are extremely volatile based on weather conditions/months. Energy consumption distribution in the morning hours of weekdays have a bulge between 0 to 0.25 KwH, indicating that if we pick up any typical week day, we can say with reasoable certainty that the energy consumption would fall in that range. This is not true for the 17th or 18th hour of the day. The consistent behavior in the morning hours can be attributed to the fact that members in this household are not stay-at-home parents/ working from home professionals.
-
-
-Figure \ref{fig:cust3_hd_dw} shows distribution of hourly energy usage across different days of the week through violin plots for Household 2. Contrary to household 1, household 2's energy consumption increases through noon to 7pm. We can't say with certainty if the morning hours from 10am would manifest a higher or lower level of energy consumption for this household. This indicates that this household might have kids or someone working from home. 
-
-```{r cust1_hd_dw, fig.cap="Violin plots of hourly consumption across different day of the week for the first household.  A long tailed violin for an hour would imply that the energy distribution is skewed to either right or left, whereas a bulge shaped distribution implies that the energy behavior is more predictable and energy consumption in those hours can only vary in that range where the bulge appears. If an hour has a distribution that seems like a straight line, they are extremely volatile. On weekdays, hours between 17 to 19 hours seems to be extremely volatile comapred to other hours. On weekends, energy consumption is volatile even in morning hours. "}
-
-data_sm1 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") +  ggtitle("Violin plot of energy consumption across hour-of-day and day-of-week for Household 1") + scale_x_discrete(breaks = seq(0,23,3))
-```
-<!-- # ``````{r cust2_hour-day_day-week} -->
-<!-- # data_sm2 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "quantile") + ggtitle("Boxplot of energy consumption for Customer 2") -->
-<!-- # ``` -->
-
-```{r cust3_hd_dw, fig.cap ="Violin plots of hourly consumption across different day of the week for the second household. Hours before 10am and after 10pm have a bulge implying those hours are pretty consistent. Hours in between these have a long right tail which are even higher for weekends."}
-data_sm3 %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") + ggtitle("Violin plot of energy consumption across hour-of-day and day-of-week for Household 2") + scale_x_discrete(breaks = seq(0,23,3))
-```
-
-
--  Across days of the week by months
-
-A plot of the distribution across months of the year and days of the week might throw some light on the extreme behavior we saw in May and June. Was it only for the months May and June, that this household consumed more energy than they usually do \? Figure \ref{fig:cust1_my_dw} shows that it is not only those months that saw high energy consumption on Saturday and Sundays. In fact, months like November and December saw higher energy usage than typical even on other weekdays. Still for this household, it can be safely said that most of their activities which involve higher energy consumption are concentrated on weekends. The behavior of the weekends, as can be observed from the letter values of energy consumption, are different across months which can be attributed to weather conditions. 
-
-Figure \ref{fig:cust3_my_dw} shows that the second household uniformly distribute their regular activity like using dish washer or heater/air conditioner throughout the week. The distribution of energy consumption on Monday, Friday and Sunday looks quite similar for December. Also, for other months, it is not very clear if weekend behavior varies distinctly from weekday behavior. 
-
-
-To summarise, we can posit the following for the two households:
-
- - First household tpically doesn't routinely use air conditioners in summer(December), or heaters in winter months (May and June). They are strictly 9 to 5 professsionals, hence their energy consumption during day time is pretty consistent and only peaks up during few hours in the evening. They do all energy intensive chores (e.g. laundry, vacuum cleaning) mostly in the weekends.
- 
- 
- - Second household tpically use air conditioners in summer months and heaters in winter months. This might be a family with children with stay-at-home parents/ work-from-home professionals with extremely varying energy consumption peaking up from noon. Their weekday behavior is not distinctly different from weekends. Also, they are more likely to distribute their energy intensive chores through out the week and not leave all them for the weekends.
-
-
-We can keep on slicing and dicing the data in a similar fashion and derive more insights about the behavior of these households.
-
-
-
-
-```{r cust1_my_dw, fig.cap = "Letter value plots of energy consumption across days of the week and months for the first household. Letter value plots convey detailed information about tails of the distribution and outliers are unexpected observations rather than extreme observations. M, F, E, D and C represents 50, 25, 12.5, 6.25 and 3.13 percent of the tail area respectively.Outliers are colored in red. It can be noted that they do not typically consume more than 0.25 KwH in the weekdays. Their tail behaviors are not so distinctly visible because of the consistency in their behavior."}
-
-data_sm1 %>% granplot("month_year", 
-                      "day_week", 
-                      response = "general_supply_kwh", plot_type = "lv") +    ggtitle("LV plot of energy consumption across days-week by month-year for Household 1") +
-  scale_y_continuous(breaks = seq(0, 1.5, 0.25))
-```
-
-
-
-
-```{r cust3_my_dw, fig.cap = "Letter value plots of energy consumption across days of the week and months for the first household. Contrary to the first household, outliers appear at an energy usage beyond 0.75 KwH. The extreme values in the tail of the distribution are represented by different letter values. In March, once can observe the F letter value to range between 0.75 to 1.25 KwH on weekends and between 0.25 to 0.75 KwH on weekdays -represented by letter value D, which is far more higher than subsequent months and comparable to summer month December. For unusual days or more volatile days of the week, one can expect to see more distinct letter values.This reinforces the fact that their behavior changes across months but not so much between days of the week."}
-
-data_sm3 %>% granplot("month_year", "day_week", response = "general_supply_kwh", plot_type = "lv") +  ggtitle("LV plot of energy consumption across days of week by month of years for Household 2")+ scale_y_continuous(breaks = seq(0, 1.5, 0.25))
-```
 
 
 

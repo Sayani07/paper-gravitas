@@ -1,9 +1,11 @@
 ---
-title: "Case study: Analysis of smart meter data"
+title: 'Case study: Analysis of smart meter data'
 author: "Sayani Gupta"
 date: "25/08/2019"
-output: 
-  pdf_document: 
+output:
+  html_document:
+    df_print: paged
+  pdf_document:
     fig_caption: yes
 ---
 
