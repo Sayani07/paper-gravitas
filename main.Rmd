@@ -42,6 +42,9 @@ library(tidyverse)
 library(lubridate)
 library(lvplot)
 library(ggridges)
+library(viridis)
+library(tsibble)
+library(gravitas)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -554,6 +557,242 @@ Levels are categorized as very high/high/medium/low each for the facet variable 
 
 
 # Case study: Analysis on cricket {#cricket}
+
+Th application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL 2008 from https://www.kaggle.com/littleraj30/indian-premier-league-2019-ball-by-ball. There are many interesting questions that can possibly be answered with such a dataset, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+
+
+The dataset contains the information on match_id, inning, batting team, bowling team, over of the innings, balls of the over, total runs and many more. A hierarchy table like [] can be construed for this game format:
+
+```{r hierarchy, echo=TRUE}
+hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), convert_fct  = c(1, 6, 20, 2, 1))
+hierarchy_model
+```
+
+
+Each team is given a two-and-a-half-minute "strategic timeout" during each innings; one must be taken by the bowling team between the ends of the 6th and 9th overs, and one by the batting team between the ends of the 13th and 16th overs.
+
+Suppose, we are interested to see how the distribution of scores vary from the start to the end of the game. Let us brainstorm some of the questions that might help us comprehend that.
+
+a) What is the most common pattern for batting and bowling teams across balls, overs, innings and matches? Which are the teams which are typical and which are exceptions?
+
+b) How the scores vary per each over each periodic granularities like ball of the over, ball of the innings, over of the inning, over of the match, inning of the match and others.
+ 
+We will look at the ball by ball data for all batting teams.Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true.
+
+```{r read_data, echo=TRUE}
+# reading ball by ball data
+cricket <-  read_csv("deliveries.csv")
+
+
+# removing cases where length of overs were more or less than 6 
+# extra run is wide_runs + noball_runs + bye_runs +  legbye_runs + penalty_runs
+
+# cricket_filter <- data %>% 
+#   filter(extra_runs == 0)%>%
+#   group_by(batting_team, match_id, inning, over) %>% 
+#   summarise(n = length(ball)) %>% 
+#   filter(n==6) %>% 
+#   mutate(key = paste(batting_team, match_id, inning, over, sep = "_"))
+# 
+# 
+# cricket_periodic <- cricket %>% 
+#   mutate(cricket_key = paste(batting_team, match_id, inning, over, sep = "_")) %>% 
+#   filter(cricket_key %in% cricket_filter$key) %>% 
+#   mutate(balls = purrr::rep_along(match_id, 1:6))
+
+
+# 
+# match_select <- cricket %>% 
+#    filter(ball<=6) %>%
+#   group_by(batting_team, match_id, inning)%>%
+#   summarise(n = length(over)) %>% filter(n==120) %>% 
+#   mutate(key = paste(batting_team, match_id, inning, over, sep = "_"))
+# 
+# cricket %>% 
+#   group_by(match_id, inning, batting_team) %>% 
+#   summarise(n_over = length(over))
+
+
+# each over needs to have 6 balls
+
+cricket_fltr_ball <- cricket %>% 
+    filter(wide_runs + noball_runs== 0) %>%    # filtering out scores that are gained by no balls or wide
+  # still have to filter out overs for which number of balls per over less than 6
+    group_by(batting_team, match_id, inning, over) %>% 
+    summarise(n_over = length(ball)) %>% 
+    filter(n_over==6) %>% 
+    mutate(key = paste(batting_team, match_id, inning, over, sep = "_"))
+  
+
+cricket_over_crctd <- cricket %>% 
+   mutate(cricket_key = paste(batting_team, match_id, inning, over, sep = "_")) %>% 
+   filter(cricket_key %in% cricket_fltr_ball$key) %>% 
+    filter(wide_runs + noball_runs== 0) %>% 
+   mutate(ball_per_over = purrr::rep_along(match_id, 1:6))
+
+# each innings need to have 20 overs
+
+cricket_fltr_over <- cricket_over_crctd %>%
+  filter(inning %in% c(1,2)) %>% 
+  group_by(inning, match_id) %>%
+           summarise(n = length(over)) %>% filter(n==120) %>% 
+           mutate(key = paste(match_id, inning, sep = "_"))
+  
+cricket_over_inning_crctd <- cricket_over_crctd %>% 
+   mutate(over_key = paste(match_id, inning, sep = "_")) %>% 
+   filter(over_key %in% cricket_fltr_over$key) %>% 
+    filter(wide_runs + noball_runs== 0) %>% 
+   mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>% 
+   filter(inning %in% c(1,2)) 
+
+
+# each match needs to have 2 innings
+
+cricket_filtr_inning <- cricketdata %>% group_by(match_id) %>% summarise(length(inning)) %>% filter(`length(inning)`==240) 
+  
+cricketdata <- cricket_over_inning_crctd %>% 
+         filter(match_id %in% cricket_filtr_inning$match_id) %>% 
+    filter(wide_runs + noball_runs== 0) %>% 
+   mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>% 
+   filter(inning %in% c(1,2)) 
+
+save(cricketdata, file = "data/cricketdata.rda")
+
+cricket_tsibble <- cricketdata %>% 
+  mutate(data_index = row_number()) %>%
+  as_tsibble(index = data_index) 
+
+cricketdata %>% mutate(data_index = row_number()) %>% as_tsibble(index = data_index) %>% dynamic_create_gran(hierarchy_model, "ball_over")
+
+```
+
+
+data_MI_dec <- data_MI %>%
+  group_by(balls_game) %>%
+  do({x <- .$total_runs
+  map_dfr(.x = c(0.25,0.5, 0.75, 0.9),
+          .f = ~ tibble(Quantile = .x,
+                            Value = quantile(x, probs = .x,na.rm=TRUE)))
+  })
+
+
+data_MI_dec %>%
+  ggplot(aes(x = balls_game,y = Value,col = as.factor(Quantile))) +
+  geom_step() +
+  xlab("Balls per match") + scale_x_continuous(breaks = seq(1, 120, 12)) +
+  ggtitle("Quartile plot of total runs per ball across balls per match")
+
+```
+
+The scores/ball increases from 1st to 120th ball in the 90th percentile. In the last 2 overs, players are more vulnerable to get more scores, which is evident from the fact that in 90 percent of cases, their scores vary between 4 and 6. Till around 50th ball, players play safe and may get no runs per ball in 25% of the times, after which they more likely to get one score per ball.
+
+```{r over, echo=TRUE}
+data_MI %>% ggplot(aes(x = as.factor(over), y= total_runs)) + ggtitle("Letter value plot of runs per ball across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match")
+
+# data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over")
+```
+
+In the first two overs, players play really safe and make no runs 50% of the times. The median is constant at 1 for all overs after the 2nd over. It is interesting to see the distribution of tails in this plot. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively. Till the first four overs, scoring a 4 or a 6 is extreme. The region which covers the tail 3.13% falls between 4 and 6 till up to 13th over. It is interesting to see how the letter values of scores (D, E and F) moves up, as we move towards the end of the game. 
+
+
+```{r quarter, echo=TRUE}
+data_MI %>% ggplot(aes(x = as.factor(quarter_match), y= total_runs)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per ball across each quarter of a match")
+
+# data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball")
+```
+
+4th quarter of the match witnesses low density(mass) at scores 0, 1 and more at 4/6. The density at score 6 increases with the quarters of the match.
+
+
+```{r semester, echo=TRUE}
+# data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match")
+
+data_MI %>% ggplot(aes(x = total_runs, y= as.factor(semester_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per ball across each semesters of a match")
+
+# data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges(
+#     geom = "density_ridges_gradient", calc_ecdf = TRUE,
+#     quantiles = 4, quantile_lines = TRUE
+#   )  + ylab("semester") + xlab(" Total runs per ball") +
+#   scale_fill_viridis(discrete = TRUE, name = "Quartiles")
+```
+
+
+
+In the second semester of the game, there is more probability to score more than zero as can be seen from the drop in peaks of the distribution at 0 and increased peak at 1, 2, 4 and 6.
+      
+Now, it will be interesting to see the distribution of runs per ball across two categorisation together:
+
+
+```{r bivariate1, echo=TRUE}
+# data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match")
+
+data_MI %>% ggplot(aes(x = as.factor(over_quarter), y = total_runs))+  geom_violin()+
+                     facet_wrap(~quarter_semester) + xlab("overs per quarter")+ ylab(" Total runs per ball") + ggtitle("Boxplot of runs per ball across each over_quarter and quarter_semester") 
+```
+
+# runs per over - as variation would be more
+
+```{r checking}
+data_MI_over <- data_MI %>% group_by(match_id, over) %>% summarise(runs_over = sum(total_runs)) %>% 
+    mutate(quarter_match = case_when(
+    
+    between(over,1,5) ~ 1,
+    between(over,6,10) ~ 2,
+    between(over,11,15) ~ 3,
+    between(over,16,20) ~ 4
+  )) %>% 
+   mutate(semester_match = case_when(
+    
+    between(quarter_match,1,2) ~ 1,
+    between(quarter_match,3,4) ~ 2
+  ))  %>% 
+   mutate(over_quarter = 
+  if_else(over%%5==0,5, over%%5)
+   ) %>%  mutate(quarter_semester = 
+  if_else(quarter_match%%2==0,2, quarter_match%%2)
+   ) %>% 
+  rename(over_match = over)
+
+
+```
+
+
+
+```{r over_match, echo=TRUE}
+data_MI_over %>% ggplot(aes(x = as.factor(over_match), y= runs_over)) + ggtitle("Letter value plot of runs per over across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match")
+
+# data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over")
+```
+
+
+
+```{r over_quarter, echo=TRUE}
+data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match")
+
+
+data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match") + facet_grid(~quarter_match)
+
+# data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball")
+```
+
+
+```{r quarter_match, echo=TRUE}
+# data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match")
+
+data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(quarter_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match")
+
+data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(over_quarter))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match") + facet_wrap(~quarter_match)
+
+# data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges(
+#     geom = "density_ridges_gradient", calc_ecdf = TRUE,
+#     quantiles = 4, quantile_lines = TRUE
+#   )  + ylab("semester") + xlab(" Total runs per ball") +
+#   scale_fill_viridis(discrete = TRUE, name = "Quartiles")
+```
+
+
+
+
 
 # Discussion {#sec:discussion}
 
