@@ -295,9 +295,10 @@ For illustration, let us consider the following hierarchy table.
 
 ```{r table_accessor1}
 kable(tibble::tibble(
-  `linear granularities`  = c("second", "minute", "hhour", "hour", "day", "week"),
-  `Conversion factor` = c(60, 30, 2, 24, 7, 1), 
-  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_week", 1)), format = "markdown")
+  `linear granularities` = c("second", "minute", "hhour", "hour", "day", "week"),
+  `Conversion factor` = c(60, 30, 2, 24, 7, 1),
+  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_week", 1)
+), format = "markdown")
 ```
 
 From Equation(1), we have
@@ -317,9 +318,10 @@ Suppose we extend the hierarchy table to include the linear granularities month 
 
 ```{r table_accessor2}
 kable(tibble::tibble(
-  `linear granularities`  = c("second", "minute", "hhour", "hour", "day", "month", "quarter"),
-  `Conversion factor` = c(60, 30, 2, 24, "aperiodic", 3, 1), 
-  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_month", "month_quarter", 1)), format = "markdown")
+  `linear granularities` = c("second", "minute", "hhour", "hour", "day", "month", "quarter"),
+  `Conversion factor` = c(60, 30, 2, 24, "aperiodic", 3, 1),
+  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_month", "month_quarter", 1)
+), format = "markdown")
 ```
 
 There can be three scenarios for obtaining calendar categorization here:
@@ -410,46 +412,51 @@ From the above examples, we can see that the choices of the circular granulariti
 
 # change all of these to gravitas function
 VIC <- read.csv("VIC2015/Data/demand_VIC.csv")
-VIC$Date <- as.Date(VIC$Date,origin = "1899-12-30")
+VIC$Date <- as.Date(VIC$Date, origin = "1899-12-30")
 
 first_day_of_month_wday <- function(dx) {
   day(dx) <- 1
   wday(dx)
 }
 
-VIC <- VIC %>%mutate(Indx_Year = year(Date),
-                     Indx_Month = month(Date, label = FALSE, abbr = TRUE),
-                     Indx_Wk_Yr = week(Date),
-                     Indx_Wk_Month = ceiling((day(Date) + first_day_of_month_wday(Date) - 1) / 7),
-                     Indx_Day_Week = wday(Date, label=FALSE, abbr=TRUE,
-                                          week_start=1),
+VIC <- VIC %>% mutate(
+  Indx_Year = year(Date),
+  Indx_Month = month(Date, label = FALSE, abbr = TRUE),
+  Indx_Wk_Yr = week(Date),
+  Indx_Wk_Month = ceiling((day(Date) + first_day_of_month_wday(Date) - 1) / 7),
+  Indx_Day_Week = wday(Date,
+    label = FALSE, abbr = TRUE,
+    week_start = 1
+  ),
 
-                     Indx_Day_Month = day(Date),
+  Indx_Day_Month = day(Date),
 
-                     Indx_Day_Year =  yday(Date),
+  Indx_Day_Year = yday(Date),
 
-                     Indx_Weekend=if_else(Indx_Day_Week %in% c(6,7),1,0),
+  Indx_Weekend = if_else(Indx_Day_Week %in% c(6, 7), 1, 0),
 
-                     Indx_HlHr_day = Period,
-                     month = month(Date, label = FALSE, abbr = TRUE),
-         year =  year(Date),
-         yday =yday(Date),
-         wday = wday(Date, label=FALSE, abbr=TRUE,
-                     week_start=1),
-         bow = (wday - 1) * 48 + Period,
-         dom = day(Date),
-         bom = (dom - 1) * 48 + Period,
-         Weekend=if_else(wday %in% c(6,7),1,0),
-         Indx_hour = ceiling(Period/2),
-         Indx_Hour_Yr = Indx_hour + 24*(yday-1),
-         Indx_Hour_Month = Indx_hour + 24*(Indx_Day_Month-1),
-         Indx_Hour_Wk = Indx_hour + 24*(wday-1))
-         
-         
+  Indx_HlHr_day = Period,
+  month = month(Date, label = FALSE, abbr = TRUE),
+  year = year(Date),
+  yday = yday(Date),
+  wday = wday(Date,
+    label = FALSE, abbr = TRUE,
+    week_start = 1
+  ),
+  bow = (wday - 1) * 48 + Period,
+  dom = day(Date),
+  bom = (dom - 1) * 48 + Period,
+  Weekend = if_else(wday %in% c(6, 7), 1, 0),
+  Indx_hour = ceiling(Period / 2),
+  Indx_Hour_Yr = Indx_hour + 24 * (yday - 1),
+  Indx_Hour_Month = Indx_hour + 24 * (Indx_Day_Month - 1),
+  Indx_Hour_Wk = Indx_hour + 24 * (wday - 1)
+)
+
+
 
 
 VIC <- as_tibble(VIC)
-
 ```
 
 
@@ -457,49 +464,65 @@ VIC <- as_tibble(VIC)
 
 par(mfrow = c(3, 2))
 
-VIC%>% filter(year %in% c(2012, 2013, 2014),Indx_Month %in% c(1,2,4,12))%>% ggplot(aes(Indx_Day_Month,OperationalLessIndustrial,group = Indx_Day_Month)) + geom_lv(aes(fill=..LV..),outlier.colour = "red",outlier.shape = 1) + scale_fill_brewer()+ facet_wrap(~Indx_Month) + ylab("Electricity Demand [KWh]") + xlab("Days of the Month") + scale_x_continuous(breaks=seq(0,31,5)) + ggtitle("(a) Letter value plot")
+VIC %>% filter(year %in% c(2012, 2013, 2014), Indx_Month %in% c(1, 2, 4, 12)) %>% ggplot(aes(Indx_Day_Month, OperationalLessIndustrial, group = Indx_Day_Month)) + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1) + scale_fill_brewer() + facet_wrap(~Indx_Month) + ylab("Electricity Demand [KWh]") + xlab("Days of the Month") + scale_x_continuous(breaks = seq(0, 31, 5)) + ggtitle("(a) Letter value plot")
 
 
 
-VIC_hod_dow <- VIC%>% filter(year %in% c(2012, 2013, 2014)) %>%
-  group_by(wday,Indx_hour) %>%
-  do({x <- .$OperationalLessIndustrial
-  map_dfr(.x = seq(0.1,0.9,0.1),
-          .f = ~ tibble(Quantile = .x,
-                            Value = quantile(x, probs = .x,na.rm=TRUE)))
-  }) %>%  filter(wday %in% c(1,2,6,7))
+VIC_hod_dow <- VIC %>%
+  filter(year %in% c(2012, 2013, 2014)) %>%
+  group_by(wday, Indx_hour) %>%
+  do({
+    x <- .$OperationalLessIndustrial
+    map_dfr(
+      .x = seq(0.1, 0.9, 0.1),
+      .f = ~ tibble(
+        Quantile = .x,
+        Value = quantile(x, probs = .x, na.rm = TRUE)
+      )
+    )
+  }) %>%
+  filter(wday %in% c(1, 2, 6, 7))
 
-VIC_hod_dow %>%ggplot(aes(x=Indx_hour,y=Value,col=as.factor(Quantile))) + geom_line() + facet_wrap(~wday)+ scale_x_continuous(breaks=seq(1, 24,5)) + ylab("")  + xlab("Day of the Week") + theme(legend.position = "none",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(b) Decile plot")
-
-
-VIC%>% filter(year %in% c(2012, 2013, 2014),Indx_Day_Month %in% c(1,15,29,31))%>% ggplot(aes(as.factor(yday),OperationalLessIndustrial,group = yday)) + geom_boxplot()+ facet_wrap(~Indx_Day_Month) + ylab("Electricity Demand [KWh]") +
-  xlab("Days of the Year") + scale_x_discrete(breaks=seq(0,366,60)) +theme(legend.position = "bottom",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(c) Box plot")
-
-
-
-VIC%>% filter(year %in% c(2012, 2013, 2014),Indx_Wk_Month %in% c(1,2,4))%>% ggplot(aes(as.factor(Indx_Day_Month),OperationalLessIndustrial)) + geom_violin(alpha = 0.03)+ facet_wrap(~Indx_Wk_Month,nrow=3) + ylab("") + xlab("Days of the Month") + theme(legend.position = "bottom",strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks=seq(0,31,5))+ scale_y_continuous(breaks = seq(2000,9000,2000))+ ggtitle("(d) Violin plot")
-
-
-VIC%>% dplyr:::filter(year %in% c(2012, 2013, 2014),Indx_Wk_Month %in% c(1,2,5),Indx_Wk_Yr <20)%>% ggplot(aes(x=OperationalLessIndustrial,y=as.factor(Indx_Wk_Yr),group=Indx_Wk_Yr)) + geom_density_ridges2() +facet_wrap(~Indx_Wk_Month) + xlab("Electricity Demand [KWh]") + ylab("Weeks of the Year") + scale_x_continuous(breaks = seq(2000,10000,3000)) + theme(legend.position = "bottom",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(e) Ridge plot")
+VIC_hod_dow %>% ggplot(aes(x = Indx_hour, y = Value, col = as.factor(Quantile))) + geom_line() + facet_wrap(~wday) + scale_x_continuous(breaks = seq(1, 24, 5)) + ylab("") + xlab("Day of the Week") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(b) Decile plot")
 
 
-VIC_moy_doy <- VIC%>% filter(year %in% c(2012, 2013, 2014)) %>%
-  group_by(Indx_Month,yday) %>%
-  do({x <- .$OperationalLessIndustrial
-  map_dfr(.x = seq(0.1,0.9,0.1),
-          .f = ~ tibble(Quantile = .x,
-                            Value = quantile(x, probs = .x,na.rm=TRUE)))
-  }) %>%  filter(Indx_Month %in% c(1,7,11))
+VIC %>%
+  filter(year %in% c(2012, 2013, 2014), Indx_Day_Month %in% c(1, 15, 29, 31)) %>%
+  ggplot(aes(as.factor(yday), OperationalLessIndustrial, group = yday)) + geom_boxplot() + facet_wrap(~Indx_Day_Month) + ylab("Electricity Demand [KWh]") +
+  xlab("Days of the Year") + scale_x_discrete(breaks = seq(0, 366, 60)) + theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(c) Box plot")
 
-VIC_moy_doy %>%ggplot(aes(x=yday,y=Value,col=as.factor(Quantile),group=yday)) + geom_line() + facet_wrap(~Indx_Month)+ scale_x_continuous(breaks=seq(1, 336, 60)) + ylab("")  + xlab("Day of the Year") + theme(legend.position = "none",strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
+
+
+VIC %>% filter(year %in% c(2012, 2013, 2014), Indx_Wk_Month %in% c(1, 2, 4)) %>% ggplot(aes(as.factor(Indx_Day_Month), OperationalLessIndustrial)) + geom_violin(alpha = 0.03) + facet_wrap(~Indx_Wk_Month, nrow = 3) + ylab("") + xlab("Days of the Month") + theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks = seq(0, 31, 5)) + scale_y_continuous(breaks = seq(2000, 9000, 2000)) + ggtitle("(d) Violin plot")
+
+
+VIC %>% dplyr:::filter(year %in% c(2012, 2013, 2014), Indx_Wk_Month %in% c(1, 2, 5), Indx_Wk_Yr < 20) %>% ggplot(aes(x = OperationalLessIndustrial, y = as.factor(Indx_Wk_Yr), group = Indx_Wk_Yr)) + geom_density_ridges2() + facet_wrap(~Indx_Wk_Month) + xlab("Electricity Demand [KWh]") + ylab("Weeks of the Year") + scale_x_continuous(breaks = seq(2000, 10000, 3000)) + theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(e) Ridge plot")
+
+
+VIC_moy_doy <- VIC %>%
+  filter(year %in% c(2012, 2013, 2014)) %>%
+  group_by(Indx_Month, yday) %>%
+  do({
+    x <- .$OperationalLessIndustrial
+    map_dfr(
+      .x = seq(0.1, 0.9, 0.1),
+      .f = ~ tibble(
+        Quantile = .x,
+        Value = quantile(x, probs = .x, na.rm = TRUE)
+      )
+    )
+  }) %>%
+  filter(Indx_Month %in% c(1, 7, 11))
+
+VIC_moy_doy %>% ggplot(aes(x = yday, y = Value, col = as.factor(Quantile), group = yday)) + geom_line() + facet_wrap(~Indx_Month) + scale_x_continuous(breaks = seq(1, 336, 60)) + ylab("") + xlab("Day of the Year") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
 
 # grid.arrange(p1,p2,p3,p4,nrow = 2)
 
-# 
+#
 # x <- gridExtra::arrangeGrob (p5, p6, p1, p2, p3, p4,newpage = TRUE)
 # grid::grid.draw(x)
 
-# 
+#
 # gridExtra::grid.arrange(
 #   p1,
 #   p2,
@@ -551,6 +574,73 @@ Levels are categorized as very high/high/medium/low each for the facet variable 
 
 # Case study: Analysis on smart meter data {#smartmeter}
 
+Smart meters provide large quantities of measurements on energy usage for households across Australia, and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. 
+
+<!-- Existing approaches, why we need to drill down, or why we want to -- probability distributions -->
+It is common to see aggregates of usage across households, total kwh used each half-hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
+
+
+One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on half-hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the time across different granularities together can help identify different behavioral patterns.
+
+Let us see the behavior of typical and extreme behaviors of 50 households of this trial. We want to  look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
+
+
+```{r search_gran}
+
+library(gravitas)
+library(tsibble)
+load("data/sm_cust50.RData")
+
+
+library(ggplot2)
+sm_cust50 %>%
+  granplot("month_year", "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  ggtitle("Quantile plot across hour-of-day by month-ofyear") + ggtitle("") +
+  scale_x_discrete(breaks = seq(0, 23, 2)) + scale_color_brewer(type = "div",
+                                                                palette = "Dark2", direction = -1)
+
+#observation: the two peaks of the day are more ditinct in winter months compared to summaer months, where the energy profile is quite flat.
+
+# Hourly usage across days of the week
+sm_cust50 %>%
+  granplot("day_week", 
+           "hour_day",
+           "general_supply_kwh", 
+           plot_type = "quantile", 
+          quantile_prob = c(0.25, 0.5, 0.75),
+           response = "general_supply_kwh") +
+  ggtitle("") +
+  ggtitle("Quantile plot across hour-of-day and day-of-week") +
+  scale_x_discrete(breaks = seq(0, 23, 3)) +
+  scale_color_brewer(type = "div",
+                     palette = "Dark2", direction = -1)
+#observation: on saturday and sunday morning peaks are higher and little late (in absolte time) than other weekdays
+
+
+# Across days of the week by months
+sm_cust50 %>%
+  granplot("month_year",
+    "day_week",
+    response = "general_supply_kwh", plot_type = "quantile", 
+          quantile_prob = c(0.25, 0.5, 0.75)) + ggtitle("") +
+  ggtitle("Quantile plot across day-of-week by month-of-year") 
+
+# Across week of the month and weekends
+
+sm_cust50 %>%
+  create_gran("day_week") %>%
+  filter(day_week %in% c("Sat", "Sun")) %>%
+  granplot("day_week", "week_month",
+           response = "general_supply_kwh",
+           plot_type = "lv") + 
+  ggtitle("") +
+  ggtitle("Letter value plot across day-of-week by week-of-month") +
+  scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+```
 
 
 
@@ -564,7 +654,7 @@ Th application is not only restricted to temporal data. We provide an example of
 The dataset contains the information on match_id, inning, batting team, bowling team, over of the innings, balls of the over, total runs and many more. A hierarchy table like [] can be construed for this game format:
 
 ```{r hierarchy, echo=TRUE}
-hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), convert_fct  = c(1, 6, 20, 2, 1))
+hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), convert_fct = c(1, 6, 20, 2, 1))
 hierarchy_model
 ```
 
@@ -580,215 +670,177 @@ b) How the scores vary per each over each periodic granularities like ball of th
 We will look at the ball by ball data for all batting teams.Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true.
 
 ```{r read_data, echo=TRUE}
-# reading ball by ball data
-cricket <-  read_csv("deliveries.csv")
 
-
-# removing cases where length of overs were more or less than 6 
-# extra run is wide_runs + noball_runs + bye_runs +  legbye_runs + penalty_runs
-
-# cricket_filter <- data %>% 
-#   filter(extra_runs == 0)%>%
-#   group_by(batting_team, match_id, inning, over) %>% 
-#   summarise(n = length(ball)) %>% 
-#   filter(n==6) %>% 
-#   mutate(key = paste(batting_team, match_id, inning, over, sep = "_"))
-# 
-# 
-# cricket_periodic <- cricket %>% 
-#   mutate(cricket_key = paste(batting_team, match_id, inning, over, sep = "_")) %>% 
-#   filter(cricket_key %in% cricket_filter$key) %>% 
-#   mutate(balls = purrr::rep_along(match_id, 1:6))
-
-
-# 
-# match_select <- cricket %>% 
-#    filter(ball<=6) %>%
-#   group_by(batting_team, match_id, inning)%>%
-#   summarise(n = length(over)) %>% filter(n==120) %>% 
-#   mutate(key = paste(batting_team, match_id, inning, over, sep = "_"))
-# 
-# cricket %>% 
-#   group_by(match_id, inning, batting_team) %>% 
-#   summarise(n_over = length(over))
-
-
-# each over needs to have 6 balls
-
-cricket_fltr_ball <- cricket %>% 
-    filter(wide_runs + noball_runs== 0) %>%    # filtering out scores that are gained by no balls or wide
-  # still have to filter out overs for which number of balls per over less than 6
-    group_by(batting_team, match_id, inning, over) %>% 
-    summarise(n_over = length(ball)) %>% 
-    filter(n_over==6) %>% 
-    mutate(key = paste(batting_team, match_id, inning, over, sep = "_"))
-  
-
-cricket_over_crctd <- cricket %>% 
-   mutate(cricket_key = paste(batting_team, match_id, inning, over, sep = "_")) %>% 
-   filter(cricket_key %in% cricket_fltr_ball$key) %>% 
-    filter(wide_runs + noball_runs== 0) %>% 
-   mutate(ball_per_over = purrr::rep_along(match_id, 1:6))
-
-# each innings need to have 20 overs
-
-cricket_fltr_over <- cricket_over_crctd %>%
-  filter(inning %in% c(1,2)) %>% 
-  group_by(inning, match_id) %>%
-           summarise(n = length(over)) %>% filter(n==120) %>% 
-           mutate(key = paste(match_id, inning, sep = "_"))
-  
-cricket_over_inning_crctd <- cricket_over_crctd %>% 
-   mutate(over_key = paste(match_id, inning, sep = "_")) %>% 
-   filter(over_key %in% cricket_fltr_over$key) %>% 
-    filter(wide_runs + noball_runs== 0) %>% 
-   mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>% 
-   filter(inning %in% c(1,2)) 
-
-
-# each match needs to have 2 innings
-
-cricket_filtr_inning <- cricketdata %>% group_by(match_id) %>% summarise(length(inning)) %>% filter(`length(inning)`==240) 
-  
-cricketdata <- cricket_over_inning_crctd %>% 
-         filter(match_id %in% cricket_filtr_inning$match_id) %>% 
-    filter(wide_runs + noball_runs== 0) %>% 
-   mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>% 
-   filter(inning %in% c(1,2)) 
-
-save(cricketdata, file = "data/cricketdata.rda")
-
-cricket_tsibble <- cricketdata %>% 
+cricket_tsibble <- cricketdata %>%
   mutate(data_index = row_number()) %>%
-  as_tsibble(index = data_index) 
+  as_tsibble(index = data_index)
 
-cricketdata %>% mutate(data_index = row_number()) %>% as_tsibble(index = data_index) %>% dynamic_create_gran(hierarchy_model, "ball_over")
+cricket_tsibble %>% dynamic_create_gran(
+  "ball_over",
+  hierarchy_model
+)
 
+cricket_tsibble %>% granplot("ball_over", "inning_match",
+  hierarchy_model,
+  response = "total_runs",
+  plot_type = "boxplot"
+)
+
+
+cricket_tsibble %>% granplot("over_inning",
+  "inning_match",
+  hierarchy_model,
+  response = "total_runs",
+  plot_type = "quantile"
+)
+
+
+cricket_tsibble %>%
+  dynamic_create_gran(
+    "over_inning",
+    hierarchy_model
+  ) %>%
+  dynamic_create_gran(
+    "inning_match",
+    hierarchy_model
+  ) %>%
+  granplot(
+    gran1 = "inning_match",
+    gran2 = "over_inning",
+    hierarchy_model,
+    response = "total_runs",
+    plot_type = "quantile"
+  )
+
+
+cricket_tsibble %>%
+  dynamic_create_gran(
+    "ball_over",
+    hierarchy_model
+  ) %>%
+  dynamic_create_gran(
+    "over_match",
+    hierarchy_model
+  ) %>%
+  # as_tibble() %>%
+  # group_by(match_id, inning, batting_team, over_inning,inning_match) %>%
+  # summarise(total_over = sum(total_runs)) %>%
+  granplot(
+    gran1 = "ball_over",
+    gran2 = "over_match",
+    hierarchy_model,
+    response = "total_runs",
+    plot_type = "quantile"
+  )
 ```
 
 
-data_MI_dec <- data_MI %>%
-  group_by(balls_game) %>%
-  do({x <- .$total_runs
-  map_dfr(.x = c(0.25,0.5, 0.75, 0.9),
-          .f = ~ tibble(Quantile = .x,
-                            Value = quantile(x, probs = .x,na.rm=TRUE)))
-  })
-
-
-data_MI_dec %>%
-  ggplot(aes(x = balls_game,y = Value,col = as.factor(Quantile))) +
-  geom_step() +
-  xlab("Balls per match") + scale_x_continuous(breaks = seq(1, 120, 12)) +
-  ggtitle("Quartile plot of total runs per ball across balls per match")
-
-```
 
 The scores/ball increases from 1st to 120th ball in the 90th percentile. In the last 2 overs, players are more vulnerable to get more scores, which is evident from the fact that in 90 percent of cases, their scores vary between 4 and 6. Till around 50th ball, players play safe and may get no runs per ball in 25% of the times, after which they more likely to get one score per ball.
 
-```{r over, echo=TRUE}
-data_MI %>% ggplot(aes(x = as.factor(over), y= total_runs)) + ggtitle("Letter value plot of runs per ball across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match")
+<!-- # ```{r over, echo=TRUE} -->
+<!-- # data_MI %>% ggplot(aes(x = as.factor(over), y= total_runs)) + ggtitle("Letter value plot of runs per ball across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match") -->
 
-# data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over")
-```
+<!-- # data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over") -->
+<!-- ``` -->
 
-In the first two overs, players play really safe and make no runs 50% of the times. The median is constant at 1 for all overs after the 2nd over. It is interesting to see the distribution of tails in this plot. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively. Till the first four overs, scoring a 4 or a 6 is extreme. The region which covers the tail 3.13% falls between 4 and 6 till up to 13th over. It is interesting to see how the letter values of scores (D, E and F) moves up, as we move towards the end of the game. 
-
-
-```{r quarter, echo=TRUE}
-data_MI %>% ggplot(aes(x = as.factor(quarter_match), y= total_runs)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per ball across each quarter of a match")
-
-# data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball")
-```
-
-4th quarter of the match witnesses low density(mass) at scores 0, 1 and more at 4/6. The density at score 6 increases with the quarters of the match.
+<!-- In the first two overs, players play really safe and make no runs 50% of the times. The median is constant at 1 for all overs after the 2nd over. It is interesting to see the distribution of tails in this plot. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively. Till the first four overs, scoring a 4 or a 6 is extreme. The region which covers the tail 3.13% falls between 4 and 6 till up to 13th over. It is interesting to see how the letter values of scores (D, E and F) moves up, as we move towards the end of the game.  -->
 
 
-```{r semester, echo=TRUE}
-# data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match")
+<!-- ```{r quarter, echo=TRUE} -->
+<!-- data_MI %>% ggplot(aes(x = as.factor(quarter_match), y= total_runs)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per ball across each quarter of a match") -->
 
-data_MI %>% ggplot(aes(x = total_runs, y= as.factor(semester_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per ball across each semesters of a match")
+<!-- # data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball") -->
+<!-- ``` -->
 
-# data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges(
-#     geom = "density_ridges_gradient", calc_ecdf = TRUE,
-#     quantiles = 4, quantile_lines = TRUE
-#   )  + ylab("semester") + xlab(" Total runs per ball") +
-#   scale_fill_viridis(discrete = TRUE, name = "Quartiles")
-```
+<!-- 4th quarter of the match witnesses low density(mass) at scores 0, 1 and more at 4/6. The density at score 6 increases with the quarters of the match. -->
 
 
+<!-- ```{r semester, echo=TRUE} -->
+<!-- # data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match") -->
 
-In the second semester of the game, there is more probability to score more than zero as can be seen from the drop in peaks of the distribution at 0 and increased peak at 1, 2, 4 and 6.
-      
-Now, it will be interesting to see the distribution of runs per ball across two categorisation together:
+<!-- data_MI %>% ggplot(aes(x = total_runs, y= as.factor(semester_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per ball across each semesters of a match") -->
 
-
-```{r bivariate1, echo=TRUE}
-# data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match")
-
-data_MI %>% ggplot(aes(x = as.factor(over_quarter), y = total_runs))+  geom_violin()+
-                     facet_wrap(~quarter_semester) + xlab("overs per quarter")+ ylab(" Total runs per ball") + ggtitle("Boxplot of runs per ball across each over_quarter and quarter_semester") 
-```
-
-# runs per over - as variation would be more
-
-```{r checking}
-data_MI_over <- data_MI %>% group_by(match_id, over) %>% summarise(runs_over = sum(total_runs)) %>% 
-    mutate(quarter_match = case_when(
-    
-    between(over,1,5) ~ 1,
-    between(over,6,10) ~ 2,
-    between(over,11,15) ~ 3,
-    between(over,16,20) ~ 4
-  )) %>% 
-   mutate(semester_match = case_when(
-    
-    between(quarter_match,1,2) ~ 1,
-    between(quarter_match,3,4) ~ 2
-  ))  %>% 
-   mutate(over_quarter = 
-  if_else(over%%5==0,5, over%%5)
-   ) %>%  mutate(quarter_semester = 
-  if_else(quarter_match%%2==0,2, quarter_match%%2)
-   ) %>% 
-  rename(over_match = over)
-
-
-```
+<!-- # data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges( -->
+<!-- #     geom = "density_ridges_gradient", calc_ecdf = TRUE, -->
+<!-- #     quantiles = 4, quantile_lines = TRUE -->
+<!-- #   )  + ylab("semester") + xlab(" Total runs per ball") + -->
+<!-- #   scale_fill_viridis(discrete = TRUE, name = "Quartiles") -->
+<!-- ``` -->
 
 
 
-```{r over_match, echo=TRUE}
-data_MI_over %>% ggplot(aes(x = as.factor(over_match), y= runs_over)) + ggtitle("Letter value plot of runs per over across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match")
+<!-- In the second semester of the game, there is more probability to score more than zero as can be seen from the drop in peaks of the distribution at 0 and increased peak at 1, 2, 4 and 6. -->
 
-# data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over")
-```
+<!-- Now, it will be interesting to see the distribution of runs per ball across two categorisation together: -->
 
 
+<!-- ```{r bivariate1, echo=TRUE} -->
+<!-- # data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match") -->
 
-```{r over_quarter, echo=TRUE}
-data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match")
+<!-- data_MI %>% ggplot(aes(x = as.factor(over_quarter), y = total_runs))+  geom_violin()+ -->
+<!--                      facet_wrap(~quarter_semester) + xlab("overs per quarter")+ ylab(" Total runs per ball") + ggtitle("Boxplot of runs per ball across each over_quarter and quarter_semester")  -->
+<!-- ``` -->
+
+<!-- # runs per over - as variation would be more -->
+
+<!-- ```{r checking} -->
+<!-- data_MI_over <- data_MI %>% group_by(match_id, over) %>% summarise(runs_over = sum(total_runs)) %>%  -->
+<!--     mutate(quarter_match = case_when( -->
+
+<!--     between(over,1,5) ~ 1, -->
+<!--     between(over,6,10) ~ 2, -->
+<!--     between(over,11,15) ~ 3, -->
+<!--     between(over,16,20) ~ 4 -->
+<!--   )) %>%  -->
+<!--    mutate(semester_match = case_when( -->
+
+<!--     between(quarter_match,1,2) ~ 1, -->
+<!--     between(quarter_match,3,4) ~ 2 -->
+<!--   ))  %>%  -->
+<!--    mutate(over_quarter =  -->
+<!--   if_else(over%%5==0,5, over%%5) -->
+<!--    ) %>%  mutate(quarter_semester =  -->
+<!--   if_else(quarter_match%%2==0,2, quarter_match%%2) -->
+<!--    ) %>%  -->
+<!--   rename(over_match = over) -->
 
 
-data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match") + facet_grid(~quarter_match)
-
-# data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball")
-```
+<!-- ``` -->
 
 
-```{r quarter_match, echo=TRUE}
-# data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match")
 
-data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(quarter_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match")
+<!-- ```{r over_match, echo=TRUE} -->
+<!-- data_MI_over %>% ggplot(aes(x = as.factor(over_match), y= runs_over)) + ggtitle("Letter value plot of runs per over across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match") -->
 
-data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(over_quarter))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match") + facet_wrap(~quarter_match)
+<!-- # data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over") -->
+<!-- ``` -->
 
-# data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges(
-#     geom = "density_ridges_gradient", calc_ecdf = TRUE,
-#     quantiles = 4, quantile_lines = TRUE
-#   )  + ylab("semester") + xlab(" Total runs per ball") +
-#   scale_fill_viridis(discrete = TRUE, name = "Quartiles")
-```
+
+
+<!-- ```{r over_quarter, echo=TRUE} -->
+<!-- data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match") -->
+
+
+<!-- data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match") + facet_grid(~quarter_match) -->
+
+<!-- # data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball") -->
+<!-- ``` -->
+
+
+<!-- ```{r quarter_match, echo=TRUE} -->
+<!-- # data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match") -->
+
+<!-- data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(quarter_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match") -->
+
+<!-- data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(over_quarter))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match") + facet_wrap(~quarter_match) -->
+
+<!-- # data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges( -->
+<!-- #     geom = "density_ridges_gradient", calc_ecdf = TRUE, -->
+<!-- #     quantiles = 4, quantile_lines = TRUE -->
+<!-- #   )  + ylab("semester") + xlab(" Total runs per ball") + -->
+<!-- #   scale_fill_viridis(discrete = TRUE, name = "Quartiles") -->
+<!-- ``` -->
 
 
 
