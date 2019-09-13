@@ -411,7 +411,7 @@ From the above examples, we can see that the choices of the circular granulariti
 ```{r moy-dom,echo=FALSE, out.width = "70%", fig.align = 'center',fig.cap ="Letter-value plot of electricity consumption in Victoria across days of the month\n faceted by months January, February, April and December. "}
 
 # change all of these to gravitas function
-VIC <- read.csv("VIC2015/Data/demand_VIC.csv")
+VIC <- read.csv("data/VIC2015/Data/demand_VIC.csv")
 VIC$Date <- as.Date(VIC$Date, origin = "1899-12-30")
 
 first_day_of_month_wday <- function(dx) {
@@ -653,9 +653,10 @@ Th application is not only restricted to temporal data. We provide an example of
 
 The dataset contains the information on match_id, inning, batting team, bowling team, over of the innings, balls of the over, total runs and many more. A hierarchy table like [] can be construed for this game format:
 
-```{r hierarchy, echo=TRUE}
-hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), convert_fct = c(1, 6, 20, 2, 1))
-hierarchy_model
+```{r hierarchy, echo=FALSE}
+hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), 
+                                  convert_fct = c(1, 6, 20, 2, 1))
+knitr::kable(hierarchy_model, caption = "T20 hierarchy table")
 ```
 
 
@@ -669,41 +670,70 @@ b) How the scores vary per each over each periodic granularities like ball of th
  
 We will look at the ball by ball data for all batting teams.Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true.
 
-```{r read_data, echo=TRUE}
+```{r read_data, echo=FALSE}
 
 cricket_tsibble <- cricketdata %>%
   mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
 
-cricket_tsibble %>% dynamic_create_gran(
-  "ball_over",
-  hierarchy_model
-)
+# cricket_tsibble %>% dynamic_create_gran(
+#   "ball_over",
+#   hierarchy_model
+# )
 
-cricket_tsibble %>% granplot("ball_over", "inning_match",
+#over_inning    ball_over 
+cricket_tsibble %>% granplot("over_inning", "ball_over",
   hierarchy_model,
   response = "total_runs",
-  plot_type = "boxplot"
+  plot_type = "violin"
+  
+)
+
+#inning_match   ball_over 
+
+cricket_tsibble %>% granplot("inning_match", "ball_over",
+  hierarchy_model,
+  response = "total_runs"
+)
+
+# inning_match   ball_inning 
+
+cricket_tsibble %>% granplot("inning_match", "ball_inning",
+  hierarchy_model,
+  response = "total_runs"
 )
 
 
-cricket_tsibble %>% granplot("over_inning",
-  "inning_match",
+# ball_over      over_inning  
+
+cricket_tsibble %>% granplot("ball_over", "over_inning",
   hierarchy_model,
-  response = "total_runs",
-  plot_type = "quantile"
+  response = "total_runs"
+)
+
+# inning_match   over_inning  
+
+cricket_tsibble %>% granplot("inning_match", "over_inning",
+  hierarchy_model,
+  response = "total_runs"
+)
+
+# ball_over      over_match  
+
+cricket_tsibble %>% granplot("ball_over", "over_match",
+  hierarchy_model,
+  response = "total_runs"
+)
+
+# ball_over      inning_match  
+
+cricket_tsibble %>% granplot("ball_over", "over_match",
+  hierarchy_model,
+  response = "total_runs"
 )
 
 
 cricket_tsibble %>%
-  dynamic_create_gran(
-    "over_inning",
-    hierarchy_model
-  ) %>%
-  dynamic_create_gran(
-    "inning_match",
-    hierarchy_model
-  ) %>%
   granplot(
     gran1 = "inning_match",
     gran2 = "over_inning",
@@ -713,25 +743,6 @@ cricket_tsibble %>%
   )
 
 
-cricket_tsibble %>%
-  dynamic_create_gran(
-    "ball_over",
-    hierarchy_model
-  ) %>%
-  dynamic_create_gran(
-    "over_match",
-    hierarchy_model
-  ) %>%
-  # as_tibble() %>%
-  # group_by(match_id, inning, batting_team, over_inning,inning_match) %>%
-  # summarise(total_over = sum(total_runs)) %>%
-  granplot(
-    gran1 = "ball_over",
-    gran2 = "over_match",
-    hierarchy_model,
-    response = "total_runs",
-    plot_type = "quantile"
-  )
 ```
 
 
