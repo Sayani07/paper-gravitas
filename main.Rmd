@@ -218,18 +218,15 @@ Identifying repeating (periodic/aperiodic) patterns are necessary in revealing p
 
 
 <!-- some discussions on primary units of calendar -->
-So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar, the hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define single-order-up and multiple-order-up granularities. 
+So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar, the hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define them.
 
 Consider a **hierarchy table** to be consisting of two columns:  
  - The first column represents the (temporal) units in ascending order of hierarchy.  
- - The second column represents the constant which relates subsequent temporal(units).  
+ - The second column represents the constant which relates subsequent (temporal) units.  
    
-and, **Order**, is defined as the position of the linear granularities in the hierarchical table. 
+and, **order**, is defined as the position of the linear granularities in the hierarchical table. 
 
-We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities.
-
-<!-- What is multiple and single order up granularities -->
- We take the help of Mayan calendar to illustrate this. In "Mayan" calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities. We take the help of Mayan calendar to illustrate this. In "Mayan" calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -237,7 +234,7 @@ We refer to granularities which are nested within multiple levels as **multiple-
  - 1 katun = 20 tun
  - 1 baktun = 20 katun
 
-Thus, the hierarchy table for the "Mayan" calendar would look like the following:
+Thus, the hierarchy table for the Mayan calendar would look like the following:
 
 | Units	      | Conversion factor
 |------------	|-------------------	|
@@ -247,12 +244,11 @@ Thus, the hierarchy table for the "Mayan" calendar would look like the following
 |  katun    	| 20            	    |
 |  baktun   	| 1          	        |
 
-Examples of **multiple-order-up**  granularities can be kin of the tun or kin of the baktun whereas examples of single-order-up granularities, which are nested within single levels may include kin of the uinal, uinal of the tun etc. 
+Examples of multiple-order-up  granularities can be kin of the tun or kin of the baktun whereas examples of single-order-up granularities may include kin of the uinal, uinal of the tun etc. 
 
 In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
 
 ## Computation of single-order-up granularities
-
 
 Suppose, z is the index set of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f_{(x, y)}$ denotes the accessor function for computing the single-order-up granularity x-of-y and $c(x, y)$ is a constant which relates x and y.
 
