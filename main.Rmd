@@ -224,9 +224,9 @@ Consider a **hierarchy table** to be consisting of two columns:
  - The first column represents the (temporal) units in ascending order of hierarchy.  
  - The second column represents the constant which relates subsequent (temporal) units.  
    
-and, **order**, is defined as the position of the linear granularities in the hierarchical table. 
+and, **order**, is defined as the position of the units in the hierarchical table. 
 
-We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities. We take the help of Mayan calendar to illustrate this. In "Mayan" calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities. "Mayan" calendar is used to illustrate this. In Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -250,11 +250,11 @@ In the next section, we discuss the computation of any single-order-up and multi
 
 ## Computation of single-order-up granularities
 
-Suppose, z is the index set of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f_{(x, y)}$ denotes the accessor function for computing the single-order-up granularity x-of-y and $c(x, y)$ is a constant which relates x and y.
+Suppose, z denotes the index of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f(x, y)$ denotes the accessor function for computing the single-order-up granularity x-of-y and $c(x, y)$ is a constant which relates x and y.
 
 <!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
 
-Then $f_{(x, y)}$ can be  computed using modular arithmetic as follows:
+Then $f(x, y)$ can be  computed using modular arithmetic as follows:
 
 $$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$ where $y = x+1$
 
@@ -264,26 +264,34 @@ See table[] for an illustration of computing single order up granularities for M
 \begin{center}
 \begin{tabular}{lr@{~}lr@{~}r}
 \toprule
+\textbf{Single-order-up granularities}
 
-$kin-uinal:   = z \mod 20$  \\
-$uinal-tun:   = \lfloor z/20\rfloor \mod 18 $\\
-$tun-katun:    = \lfloor z/20*18\rfloor \mod 20 $\\
-$katun-baktun:   = \lfloor z/20*18*20\rfloor \mod 20 $\\
+
+$kin\_uinal:   = z \mod 20$  \\
+$uinal\_tun:   = \lfloor z/20\rfloor \mod 18 $\\
+$tun\_katun:    = \lfloor z/20*18\rfloor \mod 20 $\\
+$katun\_baktun:   = \lfloor z/20*18*20\rfloor \mod 20 $\\
 
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Illustrative aperiodic circular granularities with time index in hours}
-\label{definitions}
+\caption{Illustrative single-order-up granularities for Mayan calendar with kin as the index}
+\label{single_order}
 \end{table}
+
+### Aperiodic single-order-up granularities
+
+Aperiodic single-order-up granularities refers to the granularities which are formed with units that does not repeat its values in regular intervals or periods. In Gregorian calendar, examples may include days of the month where each month may consists of 28, 29, 30 or 31 days. So there is no single number that can be used for converting days to months. We cannot compute the aperiodic single-order-up granularities using the index of the tsibble and modular arithmetic like in the periodic case.  
 
 
 ## Computation of multiple order-up granularities 
 
-### Periodic single-order-up granularities 
+Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerining all periodic single-order-up granularities and the second with mixed single-order-up granularities.
+
+### All single-order-up granularities are periodic
 
 
-Suppose, z is the index set of the tsibble, x,y are two linear granularities with  $order(x) <  order(y)$. Also, $f_{(x, y)}$ denotes the accessor function for computing circular granularity "x_y" and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+z is the index set of the tsibble, x,y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity x_y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
 
 Then, the accessor function f can be used recursively to obtain any multiple-order-up granularities as follows:
 
@@ -299,44 +307,36 @@ f(x,y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\
 \end{split}
 \end{equation}
 
-
-For illustration, let us consider the following hierarchy table.
-
-```{r table_accessor1}
-kable(tibble::tibble(
-  `linear granularities` = c("second", "minute", "hhour", "hour", "day", "week"),
-  `Conversion factor` = c(60, 30, 2, 24, 7, 1),
-  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_week", 1)
-), format = "markdown")
-```
+Let us use the equation to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
 
 From Equation(1), we have
 \begin{equation} \label{eq1}
 \begin{split}
-f_{(hhour, week)}(z) & = f_{(hhour, hour)}(z) + c(hhour, hour)f_{(hour,day)}(z) + c(hhour, day)f_{(day, week)}(z) \\
-              & = {hhour\_hour}(z) + 2{hour\_day}(z) + 2*24{day\_week}(z) \\
+f(uinal, baktun) & = f(uinal, tun) + c(uinal, tun)f(tun,katun) + c(uinal, katun)f(katun, baktun) \\
+              & = \lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20 \\
 \end{split}
 \end{equation}
-             
+             (using equations \ref{single_order})
 
 ### Mixed single-order-up granularities - circular or aperiodic
       
-<!-- This is valid in a scenario when the relationship between x and (x+1) is periodic (Define periodic in Definition section). However, when x and x+1 is not periodic, then some modification is required in Equation(1). -->
+Let us turn to Gregorian calendar for addressing this case.
 
-Suppose we extend the hierarchy table to include the linear granularities month and quarter. Since months consists of unequal number of days, any linear granularity which is higher in order than months will also have unequal number of days. Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months.
+Suppose we have a hierarchy table for  Gregorian calendar as \ref{table_accessor2}. Since months consists of unequal number of days, any temporal unit which is higher in order than months will also have unequal number of days. This is an example of a hierarchy table which has both periodic and aperiodic single-order-up granularities. The single-order-up granularity day_month is aperiodic. Any single-order-up granularities which are formed by units below days are periodic. Similarly, all single-order-up granularities which are formed using units whose orders are higher than months are also periodic.
+
+
+<!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. -->
 
 ```{r table_accessor2}
 kable(tibble::tibble(
-  `linear granularities` = c("second", "minute", "hhour", "hour", "day", "month", "quarter"),
-  `Conversion factor` = c(60, 30, 2, 24, "aperiodic", 3, 1),
-  `Single-order-up accessors` = c("second_minute", "minute_hhour", "hhour_hour", "hour_day", "day_month", "month_quarter", 1)
-), format = "markdown")
+  `linear granularities` = c("minute", "hour", "day", "month", "quarter", "year"),
+  `Conversion factor` = c(60,24, "aperiodic", 3, 4, 1), format = "markdown")
 ```
 
 There can be three scenarios for obtaining calendar categorization here:
-- calendar categorization consisting of two linear granularities whose orders are less than day  
-- calendar categorization consisting of two linear granularities whose orders are more than month  
-- calendar categorization consisting of one linear granularity with order at most day and another with order at least month  
+- granularities consisting of two units whose orders are less than day  
+- granularities consisting of two units whose orders are more than month  
+- granularities consisting of one unit with order at most day and another with order at least month  
 
 The calendar categorization resulting from the first two cases are periodic and has been handled in the earlier section.
 
