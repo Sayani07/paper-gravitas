@@ -216,8 +216,20 @@ Identifying repeating (periodic/aperiodic) patterns are necessary in revealing p
 
 # Single-order-up and multiple-order-up granularities
 
+
+<!-- some discussions on primary units of calendar -->
+So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar, the hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define single-order-up and multiple-order-up granularities. 
+
+Consider a **hierarchy table** to be consisting of two columns:  
+ - The first column represents the (temporal) units in ascending order of hierarchy.  
+ - The second column represents the constant which relates subsequent temporal(units).  
+   
+and, **Order**, is defined as the position of the linear granularities in the hierarchical table. 
+
+We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities.
+
 <!-- What is multiple and single order up granularities -->
-The hierarchical structure of time creates a natural nested ordering. Hence, given a hierarchy we can define **single-order-up** and **multiple-order-up** granularities. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. We take the help of Mayan calendar to illustrate this. In "Mayan" calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+ We take the help of Mayan calendar to illustrate this. In "Mayan" calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -239,66 +251,41 @@ Examples of **multiple-order-up**  granularities can be kin of the tun or kin of
 
 In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
 
-## Single-order-up granularities
-
-<!-- some discussions on primary units of calendar -->
-The day is the basic unit of time underlying all calendars.  The most common  way of defining days are from sunrise to sunrise (Hindu calendar, for example) or from sunset to sunset (Islamic and Hebrew calendars). Further, various calendars use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where Greeks and Romans separate the "day" and "night" into 12 hours each. In London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". 
+## Computation of single-order-up granularities
 
 
-Let us define the arrangement of these coarser temporal units from finer temporal units in an hierarchy table. For example, in "Mayan" calendar, one day is referred to as 1 kin and they believed that the universe is destroyed at the start of every cycle (2,880,000 days). The Mayan calendar was structured as follows: 
+Suppose, z is the index set of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f_{(x, y)}$ denotes the accessor function for computing the single-order-up granularity x-of-y and $c(x, y)$ is a constant which relates x and y.
 
- - 1 kin = 1 day
- - 1 uinal = 20 kin
- - 1 tun  = 18 uinal
- - 1 katun = 20 tun
- - 1 baktun = 20 katun
+<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
 
-Thus, the hierarchy table for the "Mayan" calendar would look like the following:
+Then $f_{(x, y)}$ can be  computed using modular arithmetic as follows:
 
+$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$ where $y = x+1$
 
-| Units	      | Conversion factor
-|------------	|-------------------	|
-|  index      | 1                   |
-|  kin      	| 20             	    |
-|  uinal    	| 18            	    |
-|  tun      	| 20           	      |
-|  katun    	| 20            	    |
-|  baktun   	| 1          	        |
+See table[] for an illustration of computing single order up granularities for Mayan calendar.
 
-Single-order-up granularities like kin_uinal(kin of the uinal), uinal_tun(uinal of the tun) can be computed using modular arithmatic in this periodic set up.
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lr@{~}lr@{~}r}
+\toprule
 
-Suppose, the index of the tsibble is 
+$kin-uinal:   = z \mod 20$  \\
+$uinal-tun:   = \lfloor z/20\rfloor \mod 18 $\\
+$tun-katun:    = \lfloor z/20*18\rfloor \mod 20 $\\
+$katun-baktun:   = \lfloor z/20*18*20\rfloor \mod 20 $\\
 
-
-
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Illustrative aperiodic circular granularities with time index in hours}
+\label{definitions}
+\end{table}
 
 
 ## Computation of multiple order-up granularities 
 
-<!-- The index of a tsibble can be any date-time object which comes in different formats. [@Grolemund2011-qf] goes a long way in facilitating analysis of date-time data and extracting each date-time element with its own accessor function. However, table shows the accessor functions mostly allows for the creation of single-order-up granularities.  -->
-
-<!-- ```{r table_accessor} -->
-<!-- kable(tibble::tibble( -->
-<!--   `Categorization` = c("Second-of-minute", "Minute-of-hour", "Hour-of-day", "Day-of-week", "Day-of-month", "Week-of-year", "Day-of-year","Month-of-year"), -->
-<!--  Type = c("Periodic", "Periodic", "Periodic", "Periodic", "Aperiodic", "Aperiodic", "Aperiodic", "Periodic"), -->
-<!-- Accessor = c("second()", "minute()", "hour()","wday()", "mday()","week()", "yday()", "month()")), format = "markdown") -->
-<!-- ``` -->
-
-
-The hierarchical nature of time helps to create a framework where the single-order-up granularities can be used recursively to create multiple-order-up granularities.The idea is to incorporate and access all possible calendar categorizations to account for different periodicities in the data. The computation of multiple-order-up granularities from single-order-up granularities can differ basis the single-order-up granularities are circular or aperiodic.
-
 ### Periodic single-order-up granularities 
 
-**Definition**: A **hierarchy table** has three columns:  
- - The first column represents the linear granularities in ascending order of temporal hierarchy.  
- - The second column represents the constant which relates subsequent linear granularities.  
-   
- 
-**Definition**: **Order** is defined as the position of the linear granularities in the hierarchical table. 
-<!-- For example, if two linear granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.  -->
-
-
-<!-- , "month", "quarter","semester", "year"), -->
 
 Suppose, z is the index set of the tsibble, x,y are two linear granularities with  $order(x) <  order(y)$. Also, $f_{(x, y)}$ denotes the accessor function for computing circular granularity "x_y" and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
 
@@ -306,13 +293,13 @@ Then, the accessor function f can be used recursively to obtain any multiple-ord
 
 \begin{equation} \label{eq1}
 \begin{split}
-f_{(x,y)}(z) & = f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, y)}(z)-1) \\  
-  & =  f_{(x, x+1)}(z) + c(x, x+1)[f_{(x+1, x+2)}(z) + c(x+1, x+2)(f_{(x+2, y)}(z) - 1) - 1]\\
-  & =  f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, x+2)}(z) - 1) + c(x, x+1)c(x+1, x+2)(f_{(x+2, y)}(z) - 1)\\
-  & =  f_{(x, x+1)}(z) + c(x, x+1)(f_{(x+1, x+2)}(z) - 1) + c(x, x+2)(f_{(x+2, y)}(z) - 1)\\
+f(x,y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\  
+  & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) + c(x+1, x+2)(f(x+2, y) - 1) - 1]\\
+  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
+  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
   &\vdots\\
-  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f_{(x
-  +i, x+i+1)}(z) - 1)\\
+  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
+  +i, x+i+1) - 1)\\
 \end{split}
 \end{equation}
 
