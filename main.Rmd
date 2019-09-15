@@ -73,7 +73,7 @@ It is important to be able to navigate through all of these temporal granulariti
 
 
 <!--motivation --> 
-
+   
 The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in household across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically, and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. 
 
 It is common to see aggregates of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
@@ -217,7 +217,27 @@ Identifying repeating (periodic/aperiodic) patterns are necessary in revealing p
 # Single-order-up and multiple-order-up granularities
 
 <!-- What is multiple and single order up granularities -->
-The hierarchical structure of time creates a natural nested ordering, where hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are **single-order-up**. 
+The hierarchical structure of time creates a natural nested ordering. Hence, given a hierarchy we can define **single-order-up** and **multiple-order-up** granularities. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities. We take the help of Mayan calendar to illustrate this. In "Mayan" calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+
+ - 1 kin = 1 day
+ - 1 uinal = 20 kin
+ - 1 tun  = 18 uinal
+ - 1 katun = 20 tun
+ - 1 baktun = 20 katun
+
+Thus, the hierarchy table for the "Mayan" calendar would look like the following:
+
+| Units	      | Conversion factor
+|------------	|-------------------	|
+|  kin      	| 20             	    |
+|  uinal    	| 18            	    |
+|  tun      	| 20           	      |
+|  katun    	| 20            	    |
+|  baktun   	| 1          	        |
+
+Examples of **multiple-order-up**  granularities can be kin of the tun or kin of the baktun whereas examples of single-order-up granularities, which are nested within single levels may include kin of the uinal, uinal of the tun etc. 
+
+In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
 
 ## Single-order-up granularities
 
@@ -236,15 +256,21 @@ Let us define the arrangement of these coarser temporal units from finer tempora
 Thus, the hierarchy table for the "Mayan" calendar would look like the following:
 
 
-| Temporal units	| Conversion factor 	| conversion in days 	| single-order-up accessors 	|
-|------------	|-------------------	|--------------------	|---------------------------	|
-| 1 kin      	| 1 day             	|                    	| kin_uinal                 	|
-| 1 uinal    	| 20 kin            	| 20 days            	| uinal_tun                 	|
-| 1 tun      	| 18 uinal          	| 360 days           	| tun_katun                 	|
-| 1 katun    	| 20 tun            	| 7200 days          	| katun_baktun              	|
-| 1 baktun   	| 20 katun          	| 144,000 days       	| 1                         	|
+| Units	      | Conversion factor
+|------------	|-------------------	|
+|  index      | 1                   |
+|  kin      	| 20             	    |
+|  uinal    	| 18            	    |
+|  tun      	| 20           	      |
+|  katun    	| 20            	    |
+|  baktun   	| 1          	        |
 
 Single-order-up granularities like kin_uinal(kin of the uinal), uinal_tun(uinal of the tun) can be computed using modular arithmatic in this periodic set up.
+
+Suppose, the index of the tsibble is 
+
+
+
 
 
 ## Computation of multiple order-up granularities 
@@ -266,7 +292,7 @@ The hierarchical nature of time helps to create a framework where the single-ord
 **Definition**: A **hierarchy table** has three columns:  
  - The first column represents the linear granularities in ascending order of temporal hierarchy.  
  - The second column represents the constant which relates subsequent linear granularities.  
- - The third column provides the accessor function for single-order up circular granularities.    
+   
  
 **Definition**: **Order** is defined as the position of the linear granularities in the hierarchical table. 
 <!-- For example, if two linear granularties have three intermediate granularities in the hierarchical table, then their order difference is 3.  -->
@@ -632,7 +658,7 @@ sm_cust50 %>%
 # Across week of the month and weekends
 
 sm_cust50 %>%
-  create_gran("day_week") %>%
+  dynamic_create_gran("day_week") %>%
   filter(day_week %in% c("Sat", "Sun")) %>%
   granplot("day_week", "week_month",
            response = "general_supply_kwh",
@@ -640,6 +666,13 @@ sm_cust50 %>%
   ggtitle("") +
   ggtitle("Letter value plot across day-of-week by week-of-month") +
   scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+
+
+sm_cust50 %>%
+  granplot("fortnight_month", "hour_day",
+           response = "general_supply_kwh",
+           plot_type = "lv") + 
+  ggtitle("")
 ```
 
 
@@ -718,7 +751,7 @@ cricket_tsibble %>% granplot("ball_over", "over_inning",
   response = "total_runs",
   plot_type = "quantile",
   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
-)
+
 
 # inning_match   over_inning  
 
@@ -736,7 +769,7 @@ cricket_tsibble %>% granplot("ball_over", "over_match",
 
 # ball_over      inning_match  
 
-cricket_tsibble %>% granplot("ball_over", "over_match",
+cricket_tsibble %>% granplot("ball_over", "inning_match",
   hierarchy_model,
   response = "total_runs"
 ) + scale_color_brewer(type = "div", palette = "Dark2")
@@ -755,112 +788,50 @@ cricket_tsibble %>%
 ```
 
 
+To see more variation in the response variable, we can also see the distribution of runs per over.
 
-The scores/ball increases from 1st to 120th ball in the 90th percentile. In the last 2 overs, players are more vulnerable to get more scores, which is evident from the fact that in 90 percent of cases, their scores vary between 4 and 6. Till around 50th ball, players play safe and may get no runs per ball in 25% of the times, after which they more likely to get one score per ball.
+```{r runs_per-over}
+cricket_per_over <- cricketdata %>% 
+  group_by(match_id, batting_team, bowling_team,  inning, over) %>%
+  summarise(runs_per_over = sum(total_runs)) 
 
-<!-- # ```{r over, echo=TRUE} -->
-<!-- # data_MI %>% ggplot(aes(x = as.factor(over), y= total_runs)) + ggtitle("Letter value plot of runs per ball across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match") -->
+cricket_tsibble <- cricket_per_over %>% 
+  ungroup() %>% 
+  mutate(data_index = row_number()) %>% 
+  as_tsibble(index = data_index)
 
-<!-- # data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over") -->
-<!-- ``` -->
+  
+  cricket_tsibble %>% granplot("inning_match", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+                               
+                               
+  )
 
-<!-- In the first two overs, players play really safe and make no runs 50% of the times. The median is constant at 1 for all overs after the 2nd over. It is interesting to see the distribution of tails in this plot. M, F, E, D and C represents 50%, 25%, 12.5%, 6.25% and 3.13% of the tail area respectively. Till the first four overs, scoring a 4 or a 6 is extreme. The region which covers the tail 3.13% falls between 4 and 6 till up to 13th over. It is interesting to see how the letter values of scores (D, E and F) moves up, as we move towards the end of the game.  -->
-
-
-<!-- ```{r quarter, echo=TRUE} -->
-<!-- data_MI %>% ggplot(aes(x = as.factor(quarter_match), y= total_runs)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per ball across each quarter of a match") -->
-
-<!-- # data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball") -->
-<!-- ``` -->
-
-<!-- 4th quarter of the match witnesses low density(mass) at scores 0, 1 and more at 4/6. The density at score 6 increases with the quarters of the match. -->
-
-
-<!-- ```{r semester, echo=TRUE} -->
-<!-- # data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match") -->
-
-<!-- data_MI %>% ggplot(aes(x = total_runs, y= as.factor(semester_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per ball across each semesters of a match") -->
-
-<!-- # data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges( -->
-<!-- #     geom = "density_ridges_gradient", calc_ecdf = TRUE, -->
-<!-- #     quantiles = 4, quantile_lines = TRUE -->
-<!-- #   )  + ylab("semester") + xlab(" Total runs per ball") + -->
-<!-- #   scale_fill_viridis(discrete = TRUE, name = "Quartiles") -->
-<!-- ``` -->
-
+  
+  cricket_tsibble %>%
+    filter(batting_team == "Chennai Super Kings") %>% 
+    granplot("inning_match", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  )
 
 
-<!-- In the second semester of the game, there is more probability to score more than zero as can be seen from the drop in peaks of the distribution at 0 and increased peak at 1, 2, 4 and 6. -->
-
-<!-- Now, it will be interesting to see the distribution of runs per ball across two categorisation together: -->
-
-
-<!-- ```{r bivariate1, echo=TRUE} -->
-<!-- # data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match") -->
-
-<!-- data_MI %>% ggplot(aes(x = as.factor(over_quarter), y = total_runs))+  geom_violin()+ -->
-<!--                      facet_wrap(~quarter_semester) + xlab("overs per quarter")+ ylab(" Total runs per ball") + ggtitle("Boxplot of runs per ball across each over_quarter and quarter_semester")  -->
-<!-- ``` -->
-
-<!-- # runs per over - as variation would be more -->
-
-<!-- ```{r checking} -->
-<!-- data_MI_over <- data_MI %>% group_by(match_id, over) %>% summarise(runs_over = sum(total_runs)) %>%  -->
-<!--     mutate(quarter_match = case_when( -->
-
-<!--     between(over,1,5) ~ 1, -->
-<!--     between(over,6,10) ~ 2, -->
-<!--     between(over,11,15) ~ 3, -->
-<!--     between(over,16,20) ~ 4 -->
-<!--   )) %>%  -->
-<!--    mutate(semester_match = case_when( -->
-
-<!--     between(quarter_match,1,2) ~ 1, -->
-<!--     between(quarter_match,3,4) ~ 2 -->
-<!--   ))  %>%  -->
-<!--    mutate(over_quarter =  -->
-<!--   if_else(over%%5==0,5, over%%5) -->
-<!--    ) %>%  mutate(quarter_semester =  -->
-<!--   if_else(quarter_match%%2==0,2, quarter_match%%2) -->
-<!--    ) %>%  -->
-<!--   rename(over_match = over) -->
+    cricket_tsibble %>%
+    filter(batting_team == "Kolkata Knight Riders") %>% 
+    granplot("inning_match", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  )
 
 
-<!-- ``` -->
-
-
-
-<!-- ```{r over_match, echo=TRUE} -->
-<!-- data_MI_over %>% ggplot(aes(x = as.factor(over_match), y= runs_over)) + ggtitle("Letter value plot of runs per over across each over of a match") + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5) + xlab("overs per match") -->
-
-<!-- # data_MI %>% ggplot(aes(y =as.factor(over), x= total_runs)) + geom_density_ridges2() + ylab("Balls per  over") -->
-<!-- ``` -->
-
-
-
-<!-- ```{r over_quarter, echo=TRUE} -->
-<!-- data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match") -->
-
-
-<!-- data_MI_over %>% ggplot(aes(x = as.factor(over_quarter), y= runs_over)) +  geom_violin()+ xlab("quarters per match")+ ylab(" Total runs per ball") + ggtitle("Violin plot of runs per over across each quarter of a match") + facet_grid(~quarter_match) -->
-
-<!-- # data_MI %>% ggplot(aes(y =as.factor(quarter), x= total_runs)) + geom_density_ridges2() + ylab("quarters per match") + xlab(" Total runs per ball") -->
-<!-- ``` -->
-
-
-<!-- ```{r quarter_match, echo=TRUE} -->
-<!-- # data_MI %>% ggplot(aes(x = as.factor(semester_match), y= total_runs)) +  geom_violin()+ xlab("semester per match")+ ylab(" Total runs per ball") +ggtitle("Violin plot of runs per ball across each semesters of a match") -->
-
-<!-- data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(quarter_match))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match") -->
-
-<!-- data_MI_over %>% ggplot(aes(x = runs_over, y= as.factor(over_quarter))) +  geom_density_ridges2()+ ylab("semesters per match")+ xlab(" Total runs per ball")+ ggtitle("Ridge plot of runs per overs across each semesters of a match") + facet_wrap(~quarter_match) -->
-
-<!-- # data_MI %>% ggplot(aes(y =as.factor(semester), x= total_runs, fill=factor(..quantile..))) +   stat_density_ridges( -->
-<!-- #     geom = "density_ridges_gradient", calc_ecdf = TRUE, -->
-<!-- #     quantiles = 4, quantile_lines = TRUE -->
-<!-- #   )  + ylab("semester") + xlab(" Total runs per ball") + -->
-<!-- #   scale_fill_viridis(discrete = TRUE, name = "Quartiles") -->
-<!-- ``` -->
+```
 
 
 
