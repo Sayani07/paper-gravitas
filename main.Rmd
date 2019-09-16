@@ -664,8 +664,9 @@ sm_cust50 %>%
 
 # Case study: Analysis on cricket {#cricket}
 
-Th application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL 2008 from https://www.kaggle.com/littleraj30/indian-premier-league-2019-ball-by-ball. There are many interesting questions that can possibly be answered with such a dataset, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+Th application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL season 2008 to 2016 from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). 
 
+There are many interesting questions that can possibly be answered with such a dataset, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
 The dataset contains the information on match_id, inning, batting team, bowling team, over of the innings, balls of the over, total runs and many more. A hierarchy table like [] can be construed for this game format:
 
@@ -675,19 +676,18 @@ hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "
 knitr::kable(hierarchy_model, caption = "T20 hierarchy table")
 ```
 
-
 Each team is given a two-and-a-half-minute "strategic timeout" during each innings; one must be taken by the bowling team between the ends of the 6th and 9th overs, and one by the batting team between the ends of the 13th and 16th overs.
 
 Suppose, we are interested to see how the distribution of scores vary from the start to the end of the game. Let us brainstorm some of the questions that might help us comprehend that.
 
-a) What is the most common pattern for batting and bowling teams across balls, overs, innings and matches? Which are the teams which are typical and which are exceptions?
+<!-- a) What is the most common pattern for batting and bowling teams across balls, overs, innings and matches? Which are the teams which are typical and which are exceptions? -->
 
-b) How the scores vary per each over each periodic granularities like ball of the over, ball of the innings, over of the inning, over of the match, inning of the match and others.
+How the scores per over vary across granularities/categorisations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn;t qualify for the playoffs?
  
-We will look at the ball by ball data for all batting teams.Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true.
+We will look at the ball by ball data for all batting teams. Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true.
 
 
-Only for 2008
+
 ```{r read_data, echo=FALSE}
 
 cricket_tsibble <- cricketdata %>%
@@ -904,7 +904,6 @@ cricket_tsibble <- cricket_per_over %>%
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
   )
 
-
 ```
 
 
@@ -954,7 +953,7 @@ cricket_tsibble_all <- cricket_per_over_all %>%
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
                                
                                
-  )  
+  )  + 
   
   cricket_tsibble %>%
     filter(batting_team == "Chennai Super Kings") %>% 
