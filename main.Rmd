@@ -291,7 +291,7 @@ Computation of multiple-order-up granularities will differ if the units in the h
 ### All single-order-up granularities are periodic
 
 
-z is the index set of the tsibble, x,y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity x_y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+z is the index set of the tsibble and x, y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity x_y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
 
 Then, the accessor function f can be used recursively to obtain any multiple-order-up granularities as follows:
 
@@ -330,7 +330,7 @@ Suppose we have a hierarchy table for  Gregorian calendar as \ref{table_accessor
 ```{r table_accessor2}
 kable(tibble::tibble(
   `linear granularities` = c("minute", "hour", "day", "month", "quarter", "year"),
-  `Conversion factor` = c(60,24, "aperiodic", 3, 4, 1), format = "markdown")
+  `Conversion factor` = c(60,24, "aperiodic", 3, 4, 1), format = "markdown"))
 ```
 
 There can be three scenarios for obtaining calendar categorization here:
@@ -686,6 +686,8 @@ b) How the scores vary per each over each periodic granularities like ball of th
  
 We will look at the ball by ball data for all batting teams.Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true.
 
+
+Only for 2008
 ```{r read_data, echo=FALSE}
 
 cricket_tsibble <- cricketdata %>%
@@ -771,6 +773,95 @@ cricket_tsibble %>%
 ```
 
 
+
+```{r read_data_all_seas, echo=FALSE}
+
+load("/Users/sgup0008/Documents/paper-gravitas/data/cricket_all_seas.rda")
+
+cricket_tsibble_all <- cricket_all_seas %>%
+  filter(season %in% c(2012:2015)) %>% 
+  mutate(data_index = row_number()) %>%
+  as_tsibble(index = data_index)
+
+# cricket_tsibble %>% dynamic_create_gran(
+#   "ball_over",
+#   hierarchy_model
+# )
+
+#over_inning    ball_over 
+cricket_tsibble_all %>% granplot("over_inning", "ball_over",
+  hierarchy_model,
+  response = "total_runs",
+  plot_type = "quantile",
+  quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  
+  
+)
+
+#inning_match   ball_over 
+
+cricket_tsibble_all %>% granplot("inning_match", "ball_over",
+  hierarchy_model,
+  response = "total_runs",
+   plot_type = "quantile",
+  quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+)
+
+# inning_match   ball_inning 
+#interesting plot
+cricket_tsibble_all %>% granplot("inning_match", "ball_inning",
+  hierarchy_model,
+  response = "total_runs",
+   plot_type = "quantile",
+  quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))+
+  scale_x_discrete(breaks = seq(1,120,5))
+
+
+
+# ball_over      over_inning  
+
+cricket_tsibble_all %>% granplot("ball_over", "over_inning",
+  hierarchy_model,
+  response = "total_runs",
+  plot_type = "quantile",
+  quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+
+# inning_match   over_inning  
+
+cricket_tsibble_all %>% granplot("inning_match", "over_inning",
+  hierarchy_model,
+  response = "total_runs"
+)
+
+# ball_over      over_match  
+
+cricket_tsibble_all %>% granplot("ball_over", "over_match",
+  hierarchy_model,
+  response = "total_runs"
+)
+
+# ball_over      inning_match  
+
+cricket_tsibble_all %>% granplot("ball_over", "inning_match",
+  hierarchy_model,
+  response = "total_runs"
+) + scale_color_brewer(type = "div", palette = "Dark2")
+
+
+cricket_tsibble_all %>%
+  granplot(
+    gran1 = "inning_match",
+    gran2 = "over_inning",
+    hierarchy_model,
+    response = "total_runs",
+    plot_type = "quantile"
+  )
+```
+
+
+
+
 To see more variation in the response variable, we can also see the distribution of runs per over.
 
 ```{r runs_per-over}
@@ -816,6 +907,76 @@ cricket_tsibble <- cricket_per_over %>%
 
 ```
 
+
+
+```{r runs_per-over}
+
+# all season per over runs
+cricket_per_over_all <- cricket_all_seas %>% 
+  group_by(season, match_id, batting_team,inning, over) %>%
+  summarise(runs_per_over = sum(total_runs)) 
+
+# all season per over runs tsibble
+cricket_tsibble_all <- cricket_per_over_all %>% 
+  ungroup() %>% 
+  mutate(data_index = row_number()) %>% 
+  as_tsibble(index = data_index)
+
+  
+  cricket_tsibble_all %>% granplot("inning_match", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+                               
+                               
+  )
+
+  
+
+  
+  cricket_tsibble_all %>% granplot("inning_match", "season",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+                               
+                               
+  )  
+  
+  
+  
+  
+  cricket_tsibble_all %>% granplot("season", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+                               
+                               
+  )  
+  
+  cricket_tsibble %>%
+    filter(batting_team == "Chennai Super Kings") %>% 
+    granplot("inning_match", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  )
+
+
+    cricket_tsibble %>%
+    filter(batting_team == "Kolkata Knight Riders") %>% 
+    granplot("inning_match", "over_inning",
+                               hierarchy_model,
+                               response = "runs_per_over",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  )
+
+
+```
 
 
 
