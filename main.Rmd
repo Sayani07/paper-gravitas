@@ -681,20 +681,28 @@ There are many interesting questions that can possibly be answered with such a d
 
 <!-- Each team is given a two-and-a-half-minute "strategic timeout" during each innings; one must be taken by the bowling team between the ends of the 6th and 9th overs, and one by the batting team between the ends of the 13th and 16th overs. -->
 
-Suppose, we are interested to see how the distribution of scores vary from the start to the end of the game. Let us brainstorm some of the questions that might help us comprehend that.
+<!-- Suppose, we are interested to see how the distribution of scores vary from the start to the end of the game. Let us brainstorm some of the questions that might help us comprehend that. -->
 
 <!-- a) What is the most common pattern for batting and bowling teams across balls, overs, innings and matches? Which are the teams which are typical and which are exceptions? -->
 
-How the scores per over vary across granularities/categorisations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn't qualify for the playoffs?
+<!-- How the scores per over vary across granularities/categorisations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn't qualify for the playoffs? -->
 
-Is the outcome of the game dependent on who bats first? Do some teams have more chance to win if they are batting in the first innings?
+<!-- Is the outcome of the game dependent on who bats first? Do some teams have more chance to win if they are batting in the first innings? -->
 
-We will look at the ball by ball data for all batting teams. Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true. Also, we look at runs per over as that would have more variability compared to runs per ball and it be easier to observe the strategies of the winning team through that. 
+<!-- We will look at the ball by ball data for all batting teams. Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true. Also, we look at runs per over as that would have more variability compared to runs per ball and it be easier to observe the strategies of the winning team through that.  -->
+
+First, we look at the distribution of runs per over across over of the innings and seasons in \ref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons and try to see how the strategies of the winning teams differ across seasons or how in a particular season the strategy was different for the winning team and the ones who did not qualify for the playoffs. 
+
+
+Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final 4 from 2010 to 2015. It would be interesting to see the difference in their strategies throughout all matches in the two seasons. The following two questions might help us partially understand their strategies. 
+
+- Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first?
+
+- Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings?
+
 
 
 ```{r runs_per-over}
-
-
 cricket <-  read_csv("data-raw/deliveries_all.csv")
 matches <- read_csv("data-raw/matches_all.csv")
 
@@ -710,7 +718,6 @@ cricket_tsibble_all <- cricket_per_over %>%
   as_tsibble(index = data_index)
 ```
 
-First, we look at the distribution of runs per over across over of the innings and seasons in \ref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons and try to see how the strategies of the winning teams differ across seasons or how in a particular season the strategy was different for the winning team and the ones who did not qualify for the playoffs. 
 
 
 ```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons."}
@@ -730,12 +737,6 @@ First, we look at the distribution of runs per over across over of the innings a
      ) + scale_x_discrete(breaks = seq(2008, 2016, 3))
 ```
 
-
-Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best teams in IPL with multiple winning titles. MI won against CSK both in 2013 and 2015 finals. It would be interesting to see the difference in their strategies throughout all matches in the two seasons. We can understand difference in strategy by answering these two questions. 
-
-- Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first?
-
-- Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings?
 
 
 
@@ -810,7 +811,11 @@ cricket_winner %>% as_tibble() %>%
 Figure \ref{fig:violin} shows that for CSK, irrepective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. However, we can delve deeper and try to see which overs are the most volatile for CSK and if it is different to that of MI?
 
 
-In Figure \ref{fig:lv}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. There is an upward shift of the distribution in the second part of the first innings (after 10th over) and more variability (longer and distinct letter values) in the second part of 2nd innings. CSK has been more uniform in their approach maintaining consistent scores per over, whereas MI's scores increase as they proceed with the game notwithstanding if they bat first or second. CSK's run rate distibution is extremely right tailed in the 2nd innings, but not in the first. Since CSK's last over in the 2nd innings really get volatile, after a consistent performance in the other overs - this behavior is exhibited as an outlier in Figure \ref{fig:violin}.  
+In Figure \ref{fig:lv}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. There is an upward shift of the distribution in the second part of the innings (after 10th over) and more variability (longer and distinct letter values) as well.
+CSK has been more uniform in their approach maintaining consistent scores per over. Since CSK's last over in the 2nd innings really get volatile, after a consistent performance in the other overs - this behavior is exhibited as an outlier in Figure \ref{fig:violin}.
+
+
+<!-- whereas MI's scores increase as they proceed with the game notwithstanding if they bat first or second. CSK's run rate distibution is extremely right tailed in the 2nd innings, but not in the first. .   --> -->
 
 
 <!-- ```{r 2013_15_MI} -->
@@ -863,11 +868,11 @@ CSK <- cricket_tsibble_all %>%
  
  MI %>% 
    gran_obs("inning", "over", hierarchy_model) %>%
-   knitr::kable(format = "markdown")
+   knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
  
  CSK %>% 
    gran_obs("inning", "over", hierarchy_model) %>%
-   knitr::kable(format = "markdown")
+   knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
 
 MI %>% 
   granplot("inning", "over",
@@ -887,14 +892,20 @@ CSK %>%
 ```
 
 
-### Overs in which fielding is good, run rate in that over is set ti reduce
 
-```{r}
+
+Q3: Is run rate set to reduce in overs where fielding is good?
+
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include catches and run out as a measure of fielding. Difference in run rates should be negative if fielding is good. Let us see if this fact is true.Thus, Figure \ref{fig:field} shows the difference between run rate between two subsequent overs are negative when good fielding leads to one or two dismissals in an over.
+
+```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and dismissals by catch and catch and bowled."}
 cricket_fielding <- cricket_season %>% 
   mutate(fielding_proxy = if_else(dismissal_kind %in% c("caught", "caught and bowled"),1,0)) %>% 
   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-  summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs),
-            fielding_wckts = sum(fielding_proxy)) 
+  summarise(runs_per_over = sum(total_runs),
+            run_rate = sum(total_runs)/length(total_runs),
+            fielding_wckts = sum(fielding_proxy)) %>%
+            mutate(lagged_run_rate = c(0,diff(run_rate)))
 
 cricket_tsibble_fld <- cricket_fielding %>% 
   ungroup() %>% 
@@ -906,16 +917,46 @@ cricket_tsibble_fld %>% gran_obs("over", "fielding_wckts")
 
 cricket_tsibble_fld %>% 
   filter(fielding_wckts %in% c(0,1,2)) %>% 
-  granplot( "over","fielding_wckts",
+  granplot( "fielding_wckts","over",
+                               hierarchy_model,
+                               response = "lagged_run_rate",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+           overlay = TRUE)  + ggtitle("")
+
+```
+
+
+Q4: Is run rate set to reduce in overs where number of dot balls are more/number of wickets are more?
+
+A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase or the batsman can likely to go for big shots and get dismissed. Figure \ref{fig:dot} shows that for any over, increase in dot balls lead to decrease in run rate. 
+
+
+```{r dot, fig.cap="Distribution of run rate across overs of the innings and number of dot balls in an over."}
+cricket_dot <- cricket_season %>% 
+  mutate(wicket = if_else(is.na(dismissal_kind),0,1),
+         dot_balls = if_else(total_runs==0,1, 0)
+         ) %>% 
+  group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
+  summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs),
+            wicket = sum(wicket),
+            dot_balls = sum(dot_balls)) 
+
+cricket_tsibble_dot <- cricket_dot %>% 
+  ungroup() %>% 
+  mutate(data_index = row_number()) %>% 
+  as_tsibble(index = data_index)
+
+#cricket_tsibble_dot %>% gran_obs("over", "fielding_wckts")
+
+cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>% 
+  granplot("over","dot_balls",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "quantile",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
            overlay = FALSE)  + ggtitle("")
-
-
 ```
-
 
 
 <!--   cricket_tsibble %>% granplot("inning_match", "over_inning", -->
