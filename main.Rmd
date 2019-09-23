@@ -751,13 +751,13 @@ cricket_winner <- cricket_tsibble_all %>%
 
 MI_winner <- cricket_winner %>% 
              filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians",
-                    season %in% c(2010:2015)) %>% 
+                    season %in% c(2013, 2015)) %>% 
              mutate(win = if_else(winner == "Mumbai Indians", 1, 0))
 
 
 CSK_winner <- cricket_winner %>% 
              filter(batting_team ==  "Chennai Super Kings"| bowling_team == "Chennai Super Kings",
-                    season %in% c(2010:2015)) %>% 
+                    season %in% c(2013, 2015)) %>% 
              mutate(win = if_else(winner == "Chennai Super Kings", 1, 0))
 
 
@@ -786,7 +786,8 @@ CSK_winner <- cricket_winner %>%
 cricket_winner %>% as_tibble() %>% 
              filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians",
                     winner!= "Mumbai Indians",
-                    win_by_runs!=0) %>% select(win_by_runs) %>% summary()
+                    win_by_runs!=0,
+                    season %in% c(2013, 2015)) %>% select(win_by_runs) %>% summary()
 
 
 
@@ -794,7 +795,8 @@ cricket_winner %>% as_tibble() %>%
              filter(batting_team ==  "Chennai Super Kings",
                     winner!= "Chennai Super Kings",
                     win_by_runs!=0,
-                    inning ==2) %>% select(win_by_runs) %>% summary()
+                    inning ==2, 
+                    season %in% c(2013, 2015)) %>% select(win_by_runs) %>% summary()
 ```
 
 
@@ -843,7 +845,7 @@ In Figure \ref{fig:lv}, we can observe the letter value plot describing the dist
 ```{r lv, fig.cap = "Letter value plot of run rate across overs of an inning and innings of the match for (top) Mumbai Indians and (bottom) Chennai Super Kings."}
 
  cricket_tsibble_all %>% 
-  filter(season %in% c(2010:2015), batting_team=="Mumbai Indians") %>% 
+  filter(season %in% c(2013, 2015), batting_team=="Mumbai Indians") %>% 
            granplot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
@@ -851,8 +853,7 @@ In Figure \ref{fig:lv}, we can observe the letter value plot describing the dist
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))  + ggtitle("")
 
  cricket_tsibble_all %>% 
-  filter(season %in% c(2010:2015), batting_team=="Chennai Super Kings",
-         inning %in% c(1,2)) %>% 
+  filter(season %in% c(2013, 2015), batting_team=="Chennai Super Kings") %>% 
            granplot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
