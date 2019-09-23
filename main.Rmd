@@ -754,12 +754,17 @@ MI_winner <- cricket_winner %>%
                     season %in% c(2013, 2015)) %>% 
              mutate(win = if_else(winner == "Mumbai Indians", 1, 0))
 
+MI_winner %>% 
+  gran_obs("win", "inning", hierarchy_model)
+
 
 CSK_winner <- cricket_winner %>% 
              filter(batting_team ==  "Chennai Super Kings"| bowling_team == "Chennai Super Kings",
                     season %in% c(2013, 2015)) %>% 
              mutate(win = if_else(winner == "Chennai Super Kings", 1, 0))
 
+CSK_winner %>% 
+  gran_obs("win", "inning", hierarchy_model)
 
 
  MI_winner %>% 
@@ -844,23 +849,73 @@ In Figure \ref{fig:lv}, we can observe the letter value plot describing the dist
 
 ```{r lv, fig.cap = "Letter value plot of run rate across overs of an inning and innings of the match for (top) Mumbai Indians and (bottom) Chennai Super Kings."}
 
- cricket_tsibble_all %>% 
-  filter(season %in% c(2013, 2015), batting_team=="Mumbai Indians") %>% 
-           granplot("inning", "over",
+
+
+MI <- cricket_tsibble_all %>% 
+  filter(season %in% c(2010:2015), batting_team=="Mumbai Indians") 
+
+
+CSK <- cricket_tsibble_all %>% 
+  filter(season %in% c(2010:2015),
+         batting_team=="Chennai Super Kings",
+         inning %in% c(1,2)) 
+ 
+ 
+ MI %>% 
+   gran_obs("inning", "over", hierarchy_model) %>%
+   knitr::kable(format = "markdown")
+ 
+ CSK %>% 
+   gran_obs("inning", "over", hierarchy_model) %>%
+   knitr::kable(format = "markdown")
+
+MI %>% 
+  granplot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "lv",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))  + ggtitle("")
 
- cricket_tsibble_all %>% 
-  filter(season %in% c(2013, 2015), batting_team=="Chennai Super Kings") %>% 
-           granplot("inning", "over",
+
+CSK %>% 
+  granplot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "lv",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("")
  
 ```
+
+
+### Overs in which fielding is good, run rate in that over is set ti reduce
+
+```{r}
+cricket_fielding <- cricket_season %>% 
+  mutate(fielding_proxy = if_else(dismissal_kind %in% c("caught", "caught and bowled"),1,0)) %>% 
+  group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
+  summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs),
+            fielding_wckts = sum(fielding_proxy)) 
+
+cricket_tsibble_fld <- cricket_fielding %>% 
+  ungroup() %>% 
+  mutate(data_index = row_number()) %>% 
+  as_tsibble(index = data_index)
+
+cricket_tsibble_fld %>% gran_obs("over", "fielding_wckts")
+
+
+cricket_tsibble_fld %>% 
+  filter(fielding_wckts %in% c(0,1,2)) %>% 
+  granplot( "over","fielding_wckts",
+                               hierarchy_model,
+                               response = "run_rate",
+                               plot_type = "quantile",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+           overlay = FALSE)  + ggtitle("")
+
+
+```
+
 
 
 <!--   cricket_tsibble %>% granplot("inning_match", "over_inning", -->
