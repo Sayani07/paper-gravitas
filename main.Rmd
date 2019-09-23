@@ -581,7 +581,9 @@ Levels are categorized as very high/high/medium/low each for the facet variable 
  X-axis variable is treated as a categorical variable and hence any plots which 
 
 
-# Case study: Analysis on smart meter data {#smartmeter}
+# Case studies
+
+## Smart meter data of Australia {#smartmeter}
 
 Smart meters provide large quantities of measurements on energy usage for households across Australia, and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. 
 
@@ -662,31 +664,32 @@ sm_cust50 %>%
 
 
 
-# Case study: Analysis on cricket {#cricket}
+## T20 cricket data of Indian Premiere League {#cricket}
 
-Th application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL season 2008 to 2016 from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). 
+Th application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL season 2008 to 2016 from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The dataset contains the information on batting team, bowling team,  balls of the over,  over of the innings, innings of the match and total runs per ball for 577 matches spanning over 9 seasons (2008 to 2016). It also has information on which team won, winning margin and several other useful information.
 
-There are many interesting questions that can possibly be answered with such a dataset, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
-
-The dataset contains the information on match_id, inning, batting team, bowling team, over of the innings, balls of the over, total runs and many more. A hierarchy table like [] can be construed for this game format:
+A hierarchy like table \ref{tab:hierarchy} can be construed for this game format, where index here would refer to ball as the data set contains ball-by-ball data.
 
 ```{r hierarchy, echo=FALSE}
 hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), 
                                   convert_fct = c(1, 6, 20, 2, 1))
-knitr::kable(hierarchy_model, caption = "T20 hierarchy table")
+knitr::kable(hierarchy_model, caption = " A hierarchy table for T20 cricket")
 ```
 
-Each team is given a two-and-a-half-minute "strategic timeout" during each innings; one must be taken by the bowling team between the ends of the 6th and 9th overs, and one by the batting team between the ends of the 13th and 16th overs.
+There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+
+
+<!-- Each team is given a two-and-a-half-minute "strategic timeout" during each innings; one must be taken by the bowling team between the ends of the 6th and 9th overs, and one by the batting team between the ends of the 13th and 16th overs. -->
 
 Suppose, we are interested to see how the distribution of scores vary from the start to the end of the game. Let us brainstorm some of the questions that might help us comprehend that.
 
 <!-- a) What is the most common pattern for batting and bowling teams across balls, overs, innings and matches? Which are the teams which are typical and which are exceptions? -->
 
-How the scores per over vary across granularities/categorisations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn;t qualify for the playoffs?
+How the scores per over vary across granularities/categorisations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn't qualify for the playoffs?
 
 Is the outcome of the game dependent on who bats first? Do some teams have more chance to win if they are batting in the first innings?
 
-We will look at the ball by ball data for all batting teams. Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true. Also, we look at runs per over as that would have more variability compared to runs per ball and it be easier to observe the strategies of the winning team through that.
+We will look at the ball by ball data for all batting teams. Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true. Also, we look at runs per over as that would have more variability compared to runs per ball and it be easier to observe the strategies of the winning team through that. 
 
 
 ```{r runs_per-over}
@@ -707,31 +710,100 @@ cricket_tsibble_all <- cricket_per_over %>%
   as_tsibble(index = data_index)
 ```
 
-First, we look at the distribution of runs per over across over of the innings and seasons in \autoref{fig:seas_over_inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear trend that we can observe for any over of the innings for any seasons. So we can work with any subsets of seasons and try to see how the strategies of the winning teams differ across seasons or how in a particular season the strategy was different for the winning team and the ones who did not qualify for the playoffs. 
+First, we look at the distribution of runs per over across over of the innings and seasons in \ref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons and try to see how the strategies of the winning teams differ across seasons or how in a particular season the strategy was different for the winning team and the ones who did not qualify for the playoffs. 
 
 
+```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons."}
+  cricket_tsibble_all %>% 
+  granplot("over", "season",
+                                hierarchy_model,
+                                response = "runs_per_over",
+                                plot_type = "quantile",
+                                quantile_prob = c(0.25, 0.5, 0.75), overlay = FALSE
 
-```{r seas_over_inning}
- cricket_tsibble_all %>% granplot("over", "season",
-                               hierarchy_model,
-                               response = "runs_per_over",
-                               plot_type = "quantile",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
-                               
-                               
-  )  + 
-    theme( # remove the vertical grid lines
-           panel.grid.major.x = element_blank() ,
-           # explicitly set the horizontal lines (or they will disappear too)
-           panel.grid.major.y = element_blank() 
-    ) + scale_x_discrete(breaks = seq(2008, 2016, 3))
 
+   )  +
+     theme( # remove the vertical grid lines
+            panel.grid.major.x = element_blank() ,
+            # explicitly set the horizontal lines (or they will disappear too)
+            panel.grid.major.y = element_blank()
+     ) + scale_x_discrete(breaks = seq(2008, 2016, 3))
 ```
 
 
-Mumbai Indians(MI) won against Chennai Super kings(CSK) in 2013 and 2015. So it would be interesting to see the difference in the strategies between these two teams tgroughout all matches in the two seasons. In \autoref{fig:2013_15_MI}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. CSK has been more uniform in their approach maintaining consistent scores per over, whereas MI's scores increase as they proceed with the game nothwithstanding if they bat first or second. CSK's run rate increase as it reached the last over when it bats in the 2nd innings, but doesn't increase much when it bats first.
+Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best teams in IPL with multiple winning titles. MI won against CSK both in 2013 and 2015 finals. It would be interesting to see the difference in their strategies throughout all matches in the two seasons. We can understand difference in strategy by answering these two questions. 
+
+- Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first?
+
+- Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings?
 
 
+
+
+```{r violin, fig.cap= "Violin and box plots of run rate across innings of the match and matches won or lost for Mumbai Indians(top) and Chennai Super Kings(bottom).The violins for CSK has long right tails in 2nd innings for cases when they lost or won. MI has long right tail only when they won the match."}
+
+matches_select <- matches %>% select(id, toss_winner, winner, win_by_runs)
+
+
+cricket_winner <- cricket_tsibble_all %>% 
+  left_join(matches_select, by = c("match_id" = "id"))
+
+
+MI_winner <- cricket_winner %>% 
+             filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians",
+                    season %in% c(2010:2015)) %>% 
+             mutate(win = if_else(winner == "Mumbai Indians", 1, 0))
+
+
+CSK_winner <- cricket_winner %>% 
+             filter(batting_team ==  "Chennai Super Kings"| bowling_team == "Chennai Super Kings",
+                    season %in% c(2010:2015)) %>% 
+             mutate(win = if_else(winner == "Chennai Super Kings", 1, 0))
+
+
+
+ MI_winner %>% 
+            granplot( "win","inning",
+                                hierarchy_model,
+                                response = "run_rate",
+                                plot_type = "violin",
+                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+                     overlay = FALSE) + ggtitle("") + 
+    geom_boxplot(width = 0.1, color = "blue")
+
+ CSK_winner %>% filter(inning %in% c(1,2)) %>% 
+           granplot( "win","inning",
+                               hierarchy_model,
+                               response = "run_rate",
+                               plot_type = "violin",
+                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+                    overlay = FALSE) + ggtitle("") + 
+   geom_boxplot(width = 0.1, color = "blue")
+```
+
+
+```{r}
+cricket_winner %>% as_tibble() %>% 
+             filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians",
+                    winner!= "Mumbai Indians",
+                    win_by_runs!=0) %>% select(win_by_runs) %>% summary()
+
+
+
+cricket_winner %>% as_tibble() %>% 
+             filter(batting_team ==  "Chennai Super Kings",
+                    winner!= "Chennai Super Kings",
+                    win_by_runs!=0,
+                    inning ==2) %>% select(win_by_runs) %>% summary()
+```
+
+
+<!-- For MI, cases when they lost, distribution of run rates not very different depending on if they bat first or second. However, cases when they won, distribution of run rate is very skewed when they bat in the 2nd innings implying winning by short margins.  -->
+
+Figure \ref{fig:violin} shows that for CSK, irrepective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. However, we can delve deeper and try to see which overs are the most volatile for CSK and if it is different to that of MI?
+
+
+In Figure \ref{fig:lv}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. There is an upward shift of the distribution in the second part of the first innings (after 10th over) and more variability (longer and distinct letter values) in the second part of 2nd innings. CSK has been more uniform in their approach maintaining consistent scores per over, whereas MI's scores increase as they proceed with the game notwithstanding if they bat first or second. CSK's run rate distibution is extremely right tailed in the 2nd innings, but not in the first. Since CSK's last over in the 2nd innings really get volatile, after a consistent performance in the other overs - this behavior is exhibited as an outlier in Figure \ref{fig:violin}.  
 
 
 <!-- ```{r 2013_15_MI} -->
@@ -768,12 +840,10 @@ Mumbai Indians(MI) won against Chennai Super kings(CSK) in 2013 and 2015. So it 
 
 <!-- ``` -->
 
-
-```{r lv_MI_CSK}
-# fig.cap = "Letter value plot of run rate across overs of an inning and innings of the match for (a) Mumbai Indians and (b) Chennai Super Kings.", fig.height=5.5, out.width="50%", fig.pos = "p", fig.align= 'left',echo=FALSE, eval=TRUE, fig.cap="Letter value plot of run rate across overs of an inning and innings of the match for (a) Mumbai Indians and (b) Chennai Super Kings.", fig.show = 'hold'
+```{r lv, fig.cap = "Letter value plot of run rate across overs of an inning and innings of the match for (top) Mumbai Indians and (bottom) Chennai Super Kings."}
 
  cricket_tsibble_all %>% 
-  filter(season %in% c(2013, 2015), batting_team=="Mumbai Indians") %>% 
+  filter(season %in% c(2010:2015), batting_team=="Mumbai Indians") %>% 
            granplot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
@@ -781,63 +851,16 @@ Mumbai Indians(MI) won against Chennai Super kings(CSK) in 2013 and 2015. So it 
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))  + ggtitle("")
 
  cricket_tsibble_all %>% 
-  filter(season %in% c(2013, 2015), batting_team=="Chennai Super Kings") %>% 
+  filter(season %in% c(2010:2015), batting_team=="Chennai Super Kings",
+         inning %in% c(1,2)) %>% 
            granplot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "lv",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("")
  
- 
- 
-
-                               
 ```
 
-
-
-```{r MI_CSK_violin}
-
-matches_select <- matches %>% select(id, toss_winner, winner)
-
-
-cricket_winner <- cricket_tsibble_all %>% 
-  left_join(matches_select, by = c("match_id" = "id"))
-
-
-MI_winner <- cricket_winner %>% 
-             filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians") %>% 
-             mutate(win = if_else(winner == "Mumbai Indians", 1, 0))
-
-
-CSK_winner <- cricket_winner %>% 
-             filter(batting_team ==  "Chennai Super Kings"| bowling_team == "Chennai Super Kings") %>% 
-             mutate(win = if_else(winner == "Chennai Super Kings", 1, 0))
-
-
-
- MI_winner %>% 
-            granplot( "win","inning",
-                                hierarchy_model,
-                                response = "run_rate",
-                                plot_type = "violin",
-                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-                     overlay = FALSE) + ggtitle("") + geom_boxplot(width = 0.1)
- 
-
- CSK_winner %>% filter(inning %in% c(1,2)) %>% 
-           granplot( "win","inning",
-                               hierarchy_model,
-                               response = "run_rate",
-                               plot_type = "violin",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-                    overlay = FALSE) + ggtitle("") + geom_boxplot(width = 0.1)
- 
-```
-
-<!-- For MI, cases when they lost, distribution of run rates not very different depending on if they bat first or second. However, cases when they won, distribution of run rate is very skewed when they bat in the 2nd innings implying winning by short margins.  -->
-
-For CSK, irrepective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. 
 
 <!--   cricket_tsibble %>% granplot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
