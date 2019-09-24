@@ -591,12 +591,15 @@ Smart meters provide large quantities of measurements on energy usage for househ
 It is common to see aggregates of usage across households, total kwh used each half-hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. 
 
 
-One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on half-hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the time across different granularities together can help identify different behavioral patterns.
+One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on half-hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the time across different granularities together can help identify different behavioral patterns. We look at the behavior of typical and extreme behaviors of 50 households from that trial. 
 
-Let us see the behavior of typical and extreme behaviors of 50 households of this trial. We want to  look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities.
+<!-- We want to  look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities. -->
 
 
-```{r search_gran}
+Figure \ref{fig:my-hd} shows the overlay quantile plot of energy consumption of 50 households. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. Each facet represents a month and energy consumption across each hours of the day is shown inside each facet. It can be observed that the median is very close (and hence not distinctly visible) to the lower boundaries of all the other bands implying energy consumption for these households are extremely left skewed.75% of the households has distinct higher evening peaks compared to morning peaks, especially in the winter months. The top 5% households behave very differently than even the top 10% households in terms of total energy consumption across hours of the day. 
+
+
+```{r my-hd, echo=TRUE}
 
 library(gravitas)
 library(tsibble)
@@ -608,13 +611,16 @@ sm_cust50 %>%
   granplot("month_year", "hour_day",
     response = "general_supply_kwh",
     plot_type = "quantile",
-    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+    quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)
   ) +
-  ggtitle("Quantile plot across hour-of-day by month-ofyear") + ggtitle("") +
-  scale_x_discrete(breaks = seq(0, 23, 2)) + scale_color_brewer(type = "div",
-                                                                palette = "Dark2", direction = -1)
+  ggtitle("") 
+```
 
-#observation: the two peaks of the day are more ditinct in winter months compared to summaer months, where the energy profile is quite flat.
+
+Figure \ref{fig:dw-hd} shows that on morning peaks for Saturday and Sunday are higher and occurs in a later hour of the day compared to weekdays. Thsi is true for both top 50% and 75% of the customers. Hence, this is indicative of the fact that at least 50% of the households in this subset has traditional work days (Mon-Fri) and weekends(Sat-Sun). All the percentiles peaks up in the morning hours and then drops in the afternoon, before again peaking up in the evening. 
+
+
+```{r dw-hd}
 
 # Hourly usage across days of the week
 sm_cust50 %>%
@@ -624,39 +630,46 @@ sm_cust50 %>%
            plot_type = "quantile", 
           quantile_prob = c(0.25, 0.5, 0.75),
            response = "general_supply_kwh", overlay = FALSE) +
-  ggtitle("") +
-  ggtitle("Quantile plot across hour-of-day and day-of-week") +
-  scale_x_discrete(breaks = seq(0, 23, 3)) +
-  scale_color_brewer(type = "div",
-                     palette = "Dark2", direction = -1)
-#observation: on saturday and sunday morning peaks are higher and little late (in absolte time) than other weekdays
+  ggtitle("")
+
+```
+
+Figure \ref{fig:hhd-dm} shows distribution of energy consumption across hour hour of the day across different days of the month. We can't see much variation across days of week implying that the energy behavior doesn't change depending on which day of the month it is.
 
 
+```{r hhd-dm}
 # Across days of the week by months
-sm_cust50 %>%
-  granplot("month_year",
-    "day_week",
-    response = "general_supply_kwh", plot_type = "quantile", 
-          quantile_prob = c(0.25, 0.5, 0.75), overlay = FALSE) + ggtitle("") +
-  ggtitle("Quantile plot across day-of-week by month-of-year") 
+# sm_cust50 %>%
+#   granplot("month_year",
+#     "day_week",
+#     response = "general_supply_kwh", plot_type = "quantile", 
+#           quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)) + ggtitle("") +
+#   ggtitle("Quantile plot across day-of-week by month-of-year") 
+
 
 # Across week of the month and weekends
 
-sm_cust50 %>%
-  dynamic_create_gran("day_week") %>%
-  filter(day_week %in% c("Sat", "Sun")) %>%
-  granplot("day_week", "week_month",
-           response = "general_supply_kwh",
-           plot_type = "lv") + 
-  ggtitle("") +
-  ggtitle("Letter value plot across day-of-week by week-of-month") +
-  scale_y_continuous(breaks = seq(0, 1.5, 0.25))
+# sm_cust50 %>%
+#   dynamic_create_gran("day_week") %>%
+#   filter(day_week %in% c("Sat", "Sun")) %>%
+#   granplot("day_week", "week_month",
+#            response = "general_supply_kwh",
+#            plot_type = "lv") + 
+#   ggtitle("")
+
+# 
+# sm_cust50 %>%
+#   granplot( "hhour_hour","hour_day",
+#            response = "general_supply_kwh",
+#            plot_type = "quantile", overlay = TRUE) + 
+#   ggtitle("")
 
 
+
 sm_cust50 %>%
-  granplot("fortnight_month", "hour_day",
+  granplot( "hhour_day","day_month",
            response = "general_supply_kwh",
-           plot_type = "lv") + 
+           plot_type = "quantile", overlay = TRUE) + 
   ggtitle("")
 ```
 
