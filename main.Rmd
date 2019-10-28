@@ -65,7 +65,7 @@ knitr::opts_knit$set(root.dir = here::here())
 # Introduction
 
 <!--temporal granularities and why should we care --> 
-Temporal data can be available at various resolution depending on the context. Social and economic data are often collected and reported at coarser temporal scales like monthly, quarterly or annually. But with recent advancement in technology, more and more data are recorded and stored at much finer temporal scales than that was previously possible. It might be sufficient to observe energy consumption every half an hour, but energy supply needs to be monitored every minute and number of web searches requires optimization every second.  As the frequency of data increases, the number of questions about the observed variable that need to be addressed also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways. 
+Temporal data can be available at various resolution depending on the context. Social and economic data are often collected and reported at coarser temporal scales like monthly, quarterly or annually. But with recent advancement in technology, more and more data are recorded and stored at much finer temporal scales. Energy consumption is collected every half an hour, while energy supply is collected every minute and web search data might be collected at every second. As the frequency of data increases, the number of questions about the observed variable that need to be addressed also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways. 
 
 A temporal granularity which results from such a deconstruction may be intuitively described as a sequence of time granules, each one consisting of a set of time instants. There are several classes of time deconstructions including linear time granularities, circular time granularities and aperiodic calendar categorizations. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. Circular time granularities accommodate periodicities in time such as hour of the day, and day of the week. Aperiodic calendar categorizations are neither linear nor circular, such as day of the month or public holidays.
 
@@ -101,7 +101,7 @@ In particular, this work provides the following tools.
 
 <!-- The remainder of the paper is organized as follows. Section \@ref(sec:algorithm) details the construction of the calendar layout in depth. It describes the algorithms of data transformation (Section \@ref(sec:transformation)), the available options (Section \@ref(sec:opt)), and variations of its usage (Section \@ref(sec:variations)). Section \@ref(sec:facet-calendar) explains the full faceting extension, that is equipped with formal labels and axes. An analysis of half-hourly household energy consumption, using the calendar display, is illustrated in a case study in Section \@ref(sec:case). Section \@ref(sec:discussion) discusses the limitations of calendar displays and possible new directions. -->
 
-# Formal conceptualization of calendar categorizations{#cirgran-def}
+# Definitions of time granularities{#cirgran-def}
 
 <!-- general calendar categorization -->
 Often we partition time into months, weeks, days and so on in a hierarchical manner to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data. Let us call all of these different abstractions of time as "calendar categorizations".
@@ -119,7 +119,7 @@ These calendar categorizations can be linear, circular or aperiodic. The calenda
 
 Providing a formalism to these abstractions is important to model a time series across differently grained temporal domains.
 
-## Linear time granularities{#linear-gran-def}
+## Linear {#linear-gran-def}
 
 There has been several attempts to provide the framework for formally characterizing time-granularities and identifying their structural properties, relationships and symbolic representations. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
 
@@ -135,7 +135,7 @@ than all elements of $G(j)$, and
 
 **Definition:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity.
 
-The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor s/(24*7)\rfloor$ weeks and so on.
+The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
 
 
 ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="\\label{fig:linear-time} The time domain distributed as linear granularities"}
@@ -144,46 +144,54 @@ knitr::include_graphics("Figs/linear-time.png")
 
 The definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality. Hence, there is a need to define circular time granularities in a different approach. 
 
-## Circular time granularities{#circular-gran-def}
+## Circular {#circular-gran-def}
 
-A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index in a tsibble[@Wang2019-aw] for a given key. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity.
+Periodicity is very common in all kinds of data and circular granularities can be construed to reflect such periodicities. Circular granularities can be constructed by putting to use two linear granularities. However, mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, circular granularities can also be "periodic" or "aperiodic" depending on 
 
-\begin{table}[ht]
-\begin{center}
-\begin{tabular}{lr@{~}lr@{~}r}
-\toprule
-MOH: & $C_1(s)$ & $= s \mod 60$ & $n_1 =$&$60$ \\
-MOD: & $C_2(s)$ & $= s \mod `r 60*24`$ & $n_2=$&$`r 60*24`$\\
 
-HOD: & $C_4(s)$ & $= \lfloor s/60\rfloor\mod 24$  & $n_4 =$&$24$ \\
-HOW: & $C_6(s)$ & $= \lfloor s/60\rfloor\mod 24*7$  & $n_5=$&$`r 24*7`$\\
+A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to subsets of the bottom granularity. For example, if the bottom granularity is days, then a linear granularity might be weeks, months or years. Here, the domain is the index set and range is subsets of bottom granularity. Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of bottom granularity. They also accomodate periodicity and hence the smaller subsets of bottom granularity are nested within the larger subsets of bottom granularity. We use modular arithmetic to define circular granularity and use the following definitions:
 
-DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_6=$&$7$\\
-\bottomrule
-\end{tabular}
-\end{center}
-\caption{Illustrative circular granularities with time index in minutes}
-\label{definitions}
-\end{table}
+
+
+<!-- What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. -->
+
+<!-- \begin{table}[ht] -->
+<!-- \begin{center} -->
+<!-- \begin{tabular}{lr@{~}lr@{~}r} -->
+<!-- \toprule -->
+<!-- MOH: & $C_1(s)$ & $= s \mod 60$ & $n_1 =$&$60$ \\ -->
+<!-- MOD: & $C_2(s)$ & $= s \mod `r 60*24`$ & $n_2=$&$`r 60*24`$\\ -->
+
+<!-- HOD: & $C_4(s)$ & $= \lfloor s/60\rfloor\mod 24$  & $n_4 =$&$24$ \\ -->
+<!-- HOW: & $C_6(s)$ & $= \lfloor s/60\rfloor\mod 24*7$  & $n_5=$&$`r 24*7`$\\ -->
+
+<!-- DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_6=$&$7$\\ -->
+<!-- \bottomrule -->
+<!-- \end{tabular} -->
+<!-- \end{center} -->
+<!-- \caption{Illustrative circular granularities with time index in minutes} -->
+<!-- \label{definitions} -->
+<!-- \end{table} -->
 
 <!-- It is easy to note here that due to unequal length of some linear granularities like months or years, these formulae can not be used for computing week-of-month or day-of-year. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities.  -->
 
-We want to use modular arithmetic to define circular granularity. Hence, we start with the definition of equivalence classes and then move on to define a circular granularity. 
+
 
 <!-- Formal definition of circular granularity -->
+
 **Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}.
 
 The set of all equivalence classes of the integers for a modulus $m$ is called the ring of integers modulo $m$, denoted by $Z_m$. Thus $Z_m = \{[0], [1], ..., [m-1]\}$. However, we often write $Z_m = \{0, 1, ..., (m-1)\}$, which is the set of integers modulo $m$.
 
 **Definition:** A **circular granularity** $C$ with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that $C(s) = (s\mod m)$ for $s \in Z$.
 
-For example, suppose $C$ is a circular granularity denoting Hour-of-Day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$.
+For example, suppose $C$ is a circular granularity denoting hour-of-day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$.
 
 **Definition:** A **cycle** is defined as the progression of each circular granularity with modular period m through {$1,2,\dots,(m-1),0$} once.
 
 **Definition:** A **circular granule** represents an equivalence class inside each cycle.
 
-## Aperiodic time granularities{#aperiodic-gran-def}
+## Aperiodic {#aperiodic-gran-def}
 <!-- Formal definition of aperiodic circular granularity -->
 
 **Definition:** An **Aperiodic circular granularity** can not be defined using modular arithmetic in a similar fashion. The modulus for these type of calendar categorizations are not constant due to unequal length of some linear granularities. For example, please refer to the table below:
@@ -214,19 +222,24 @@ MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=
 
 Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. To consider the exhaustive set of temporal regularities that might exist in the data, we can categorize the set of temporal granularities to single or multiple order up granularities.
 
-# Single-order-up and multiple-order-up granularities
+# Computation of time granularities
 
+## Definitions of time granularities based on order
 
-<!-- some discussions on primary units of calendar -->
-So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar, the hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define them.
+The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define them.
 
 Consider a **hierarchy table** to be consisting of two columns:  
- - The first column represents the (temporal) units in ascending order of hierarchy.  
- - The second column represents the constant which relates subsequent (temporal) units.  
+
+ -  The first column represents the (temporal) units in ascending order of hierarchy. Any two units can join together to form a granularity. 
+ 
+ - The second column represents the relationship between subsequent (temporal) units. For periodic granularities, this could be represented by a constant, whereas, for a aperiodic one, there is no single constant which can be used to represent their relationship.
    
 and, **order**, is defined as the position of the units in the hierarchical table. 
 
-We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities. "Mayan" calendar is used to illustrate this. In Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities. Let us look at few calendars to see examples of single and multiple order-up granularities. 
+
+<!-- some discussions on primary units of calendar -->
+So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -248,9 +261,10 @@ Examples of multiple-order-up  granularities can be kin of the tun or kin of the
 
 In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
 
-## Computation of single-order-up granularities
 
-Suppose, z denotes the index of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f(x, y)$ denotes the accessor function for computing the single-order-up granularity x-of-y and $c(x, y)$ is a constant which relates x and y.
+### Single-order-up granularities
+
+Suppose, z denotes the index of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f(x, y)$ denotes the accessor function for computing the single-order-up granularity relating x and y and $c(x, y)$ is a constant which relates x and y.
 
 <!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
 
@@ -279,19 +293,19 @@ $katun\_baktun:   = \lfloor z/20*18*20\rfloor \mod 20 $\\
 \label{single_order}
 \end{table}
 
-### Aperiodic single-order-up granularities
+#### Aperiodic single-order-up granularities
 
-Aperiodic single-order-up granularities refers to the granularities which are formed with units that does not repeat its values in regular intervals or periods. In Gregorian calendar, examples may include days of the month where each month may consists of 28, 29, 30 or 31 days. So there is no single number that can be used for converting days to months. We cannot compute the aperiodic single-order-up granularities using the index of the tsibble and modular arithmetic like in the periodic case.  
+Aperiodic single-order-up granularities refers to the granularities which are formed with units that does not repeat its values in regular intervals or periods. In Gregorian calendar, examples may include days of the month where each month may consists of 28, 29, 30 or 31 days. So there is no single number that can be used for converting days to months. We cannot compute the aperiodic single-order-up granularities using the index of the tsibble and modular arithmetic like in the periodic case using just the hierarchy table and relationships of units.
 
 
-## Computation of multiple order-up granularities 
+### Computation of multiple order-up granularities 
 
 Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerining all periodic single-order-up granularities and the second with mixed single-order-up granularities.
 
-### All single-order-up granularities are periodic
+#### All single-order-up granularities are periodic
 
 
-z is the index set of the tsibble and x, y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity x_y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+z is the index set of the tsibble and x, y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity which relates x and y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
 
 Then, the accessor function f can be used recursively to obtain any multiple-order-up granularities as follows:
 
@@ -318,7 +332,7 @@ f(uinal, baktun) & = f(uinal, tun) + c(uinal, tun)f(tun,katun) + c(uinal, katun)
 \end{equation}
              (using equations \ref{single_order})
 
-### Mixed single-order-up granularities - circular or aperiodic
+#### Mixed single-order-up granularities - circular or aperiodic
       
 Let us turn to Gregorian calendar for addressing this case.
 
@@ -352,46 +366,7 @@ f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
 Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the year and if the year is a leap year to obtain day of the month.
              
 
-  
-# Visualization
-
-<!-- Why visualize -->
-Analysts often want to fit their data to statistical models, either to test hypotheses or predict future values. However, improper choice of models can lead to wrong predictions. One important use of visualization is exploratory data analysis, which is gaining insight into how data is distributed to inform data transformation and modeling decisions.
-
-<!-- When the data for entire population is available at our disposal, then there is no inference that is to be made for the unobserved population. We can just examine what is in front of us. -->
-
-
-<!-- Why distribution plot -->
-<!-- Huge data difficult to summaries using one statistic-->
-But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a data set. Soon enough following questions become more interesting:  
-
- - Are values clustered around mean/median or mostly around tails? In other words, what is the combined weight of tails relative to the rest of the distribution? 
- 
- - Does values rise very quickly between 25th percentile and median but not as quickly between median and 75th percentile? More generally, how the variation is the data set changes across different percentiles/deciles?
- 
-  - Is the tail on the left hand side longer than that on the right side? Or are they equally balanced around mean/median?
- 
-This is when displaying a probability distribution becomes a potentially useful approach.
-
-
-<!-- What all can you see from a distribution plot-->
-
-The entire distribution can be visualized or some contextual summary statistics can be visualized to emphasize certain properties of the distribution. These properties can throw light on central tendency, skewness, kurtosis, variation of the distribution and can also be useful in detecting extreme behavior or anomalies in the data set.
-
-
-<!-- Lit review on statistical distribution plot-->
-## Statistical distribution plots
-
-Most commonly used techniques to display distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg, 1978] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.
-
-The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density. Violin plots [@Hintze1998-zi, 1998] display the density for all data points and not only the box. The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot (both color and width are mapped to estimated density), and an overlay of a reference distribution. The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality. The letter-value box plot [@Hofmann2017-sg, 2006] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. Because this display just adds extra letter values, it suffers from the same problems as the original box plot, and multimodality is almost impossible to spot[@Wickham_undated-vr].
-
-Moreover, much like the quartiles divide the data set equally into four equal parts, extensions might include dividing the data set even further. The deciles plots consist of 9 values that split the data set into ten parts and the percentile plot consists of 99 values that split the data set into hundred parts. A large data set is required before the extreme percentiles can be estimated with any accuracy. 
-
-Finally, a density plot which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution. Also, a Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.
-
-
-
+# Interaction   
 
 ## Harmony and Clashes
 
@@ -564,6 +539,49 @@ Thus, the common link that differentiates harmonies from clashes are:
   a) There should not be any levels of the faceted variable which is empty for one or more levels of the factor plotted across x-axis.
   
   b) There should not be any level of the factor plotted across x-axis which doesn't have values for all levels of factors plotted across facets.
+
+
+  
+# Visualization
+
+<!-- Why visualize -->
+Analysts often want to fit their data to statistical models, either to test hypotheses or predict future values. However, improper choice of models can lead to wrong predictions. One important use of visualization is exploratory data analysis, which is gaining insight into how data is distributed to inform data transformation and modeling decisions.
+
+<!-- When the data for entire population is available at our disposal, then there is no inference that is to be made for the unobserved population. We can just examine what is in front of us. -->
+
+
+<!-- Why distribution plot -->
+<!-- Huge data difficult to summaries using one statistic-->
+But with huge amount of data being available, sometimes mean, median or any one summary statistic is not enough to understand a data set. Soon enough following questions become more interesting:  
+
+ - Are values clustered around mean/median or mostly around tails? In other words, what is the combined weight of tails relative to the rest of the distribution? 
+ 
+ - Does values rise very quickly between 25th percentile and median but not as quickly between median and 75th percentile? More generally, how the variation is the data set changes across different percentiles/deciles?
+ 
+  - Is the tail on the left hand side longer than that on the right side? Or are they equally balanced around mean/median?
+ 
+This is when displaying a probability distribution becomes a potentially useful approach.
+
+
+<!-- What all can you see from a distribution plot-->
+
+The entire distribution can be visualized or some contextual summary statistics can be visualized to emphasize certain properties of the distribution. These properties can throw light on central tendency, skewness, kurtosis, variation of the distribution and can also be useful in detecting extreme behavior or anomalies in the data set.
+
+
+<!-- Lit review on statistical distribution plot-->
+## Statistical distribution plots
+
+Most commonly used techniques to display distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg, 1978] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.
+
+The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density. Violin plots [@Hintze1998-zi, 1998] display the density for all data points and not only the box. The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot (both color and width are mapped to estimated density), and an overlay of a reference distribution. The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality. The letter-value box plot [@Hofmann2017-sg, 2006] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. Because this display just adds extra letter values, it suffers from the same problems as the original box plot, and multimodality is almost impossible to spot[@Wickham_undated-vr].
+
+Moreover, much like the quartiles divide the data set equally into four equal parts, extensions might include dividing the data set even further. The deciles plots consist of 9 values that split the data set into ten parts and the percentile plot consists of 99 values that split the data set into hundred parts. A large data set is required before the extreme percentiles can be estimated with any accuracy. 
+
+Finally, a density plot which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution. Also, a Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.
+
+
+
+
 <!-- ## Distributions conditional on bivariate granularities -->
 
 The time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting one temporal granularity along the x-axis and the other one across facets. 
@@ -608,7 +626,7 @@ load("data/sm_cust50.RData")
 
 library(ggplot2)
 sm_cust50 %>%
-  granplot("month_year", "hour_day",
+  prob_plot("month_year", "hour_day",
     response = "general_supply_kwh",
     plot_type = "quantile",
     quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)
@@ -624,7 +642,7 @@ Figure \ref{fig:dw-hd} shows that on morning peaks for Saturday and Sunday are h
 
 # Hourly usage across days of the week
 sm_cust50 %>%
-  granplot("day_week", 
+  prob_plot("day_week", 
            "hour_day",
            "general_supply_kwh", 
            plot_type = "quantile", 
@@ -640,7 +658,7 @@ Figure \ref{fig:hhd-dm} shows distribution of energy consumption across hour hou
 ```{r hhd-dm}
 # Across days of the week by months
 # sm_cust50 %>%
-#   granplot("month_year",
+#   prob_plot("month_year",
 #     "day_week",
 #     response = "general_supply_kwh", plot_type = "quantile", 
 #           quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)) + ggtitle("") +
@@ -652,14 +670,14 @@ Figure \ref{fig:hhd-dm} shows distribution of energy consumption across hour hou
 # sm_cust50 %>%
 #   dynamic_create_gran("day_week") %>%
 #   filter(day_week %in% c("Sat", "Sun")) %>%
-#   granplot("day_week", "week_month",
+#   prob_plot("day_week", "week_month",
 #            response = "general_supply_kwh",
 #            plot_type = "lv") + 
 #   ggtitle("")
 
 # 
 # sm_cust50 %>%
-#   granplot( "hhour_hour","hour_day",
+#   prob_plot( "hhour_hour","hour_day",
 #            response = "general_supply_kwh",
 #            plot_type = "quantile", overlay = TRUE) + 
 #   ggtitle("")
@@ -667,7 +685,7 @@ Figure \ref{fig:hhd-dm} shows distribution of energy consumption across hour hou
 
 
 sm_cust50 %>%
-  granplot( "hhour_day","day_month",
+  prob_plot( "hhour_day","day_month",
            response = "general_supply_kwh",
            plot_type = "quantile", overlay = TRUE) + 
   ggtitle("")
@@ -735,7 +753,7 @@ cricket_tsibble_all <- cricket_per_over %>%
 
 ```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons."}
   cricket_tsibble_all %>% 
-  granplot("over", "season",
+  prob_plot("over", "season",
                                 hierarchy_model,
                                 response = "runs_per_over",
                                 plot_type = "quantile",
@@ -782,7 +800,7 @@ CSK_winner %>%
 
 
  MI_winner %>% 
-            granplot( "win","inning",
+            prob_plot( "win","inning",
                                 hierarchy_model,
                                 response = "run_rate",
                                 plot_type = "violin",
@@ -791,7 +809,7 @@ CSK_winner %>%
     geom_boxplot(width = 0.1, color = "blue")
 
  CSK_winner %>% filter(inning %in% c(1,2)) %>% 
-           granplot( "win","inning",
+           prob_plot( "win","inning",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "violin",
@@ -834,7 +852,7 @@ CSK has been more uniform in their approach maintaining consistent scores per ov
 <!-- ```{r 2013_15_MI} -->
 <!--  cricket_tsibble_all %>%  -->
 <!--   filter(season %in% c(2013, 2015), batting_team=="Mumbai Indians") %>%  -->
-<!--            granplot("inning", "over", -->
+<!--            prob_plot("inning", "over", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "run_rate", -->
 <!--                                plot_type = "quantile", -->
@@ -849,7 +867,7 @@ CSK has been more uniform in their approach maintaining consistent scores per ov
 <!--     ) -->
 <!--  cricket_tsibble_all %>%  -->
 <!--   filter(season %in% c(2013, 2015), batting_team=="Chennai Super Kings") %>%  -->
-<!--            granplot("inning", "over", -->
+<!--            prob_plot("inning", "over", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "run_rate", -->
 <!--                                plot_type = "quantile", -->
@@ -875,7 +893,7 @@ MI <- cricket_tsibble_all %>%
 
 CSK <- cricket_tsibble_all %>% 
   filter(season %in% c(2010:2015),
-         batting_team=="Chennai Super Kings",
+         batting_team=="Kolkata Knight Riders",
          inning %in% c(1,2)) 
  
  
@@ -888,7 +906,7 @@ CSK <- cricket_tsibble_all %>%
    knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
 
 MI %>% 
-  granplot("inning", "over",
+  prob_plot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "lv",
@@ -896,11 +914,13 @@ MI %>%
 
 
 CSK %>% 
-  granplot("inning", "over",
+  prob_plot("inning", "over",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "lv",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("")
+
+cricket_tsibble_all %>% distinct(batting_team)
  
 ```
 
@@ -930,7 +950,7 @@ cricket_tsibble_fld %>% gran_obs("over", "fielding_wckts")
 
 cricket_tsibble_fld %>% 
   filter(fielding_wckts %in% c(0,1,2)) %>% 
-  granplot( "fielding_wckts","over",
+  prob_plot( "fielding_wckts","over",
                                hierarchy_model,
                                response = "lagged_run_rate",
                                plot_type = "quantile",
@@ -946,6 +966,7 @@ A dot ball is a delivery bowled without any runs scored off it. The number of do
 
 
 ```{r dot, fig.cap="Distribution of run rate across overs of the innings and number of dot balls in an over."}
+
 cricket_dot <- cricket_season %>% 
   mutate(wicket = if_else(is.na(dismissal_kind),0,1),
          dot_balls = if_else(total_runs==0,1, 0)
@@ -955,6 +976,8 @@ cricket_dot <- cricket_season %>%
             wicket = sum(wicket),
             dot_balls = sum(dot_balls)) 
 
+
+
 cricket_tsibble_dot <- cricket_dot %>% 
   ungroup() %>% 
   mutate(data_index = row_number()) %>% 
@@ -963,7 +986,7 @@ cricket_tsibble_dot <- cricket_dot %>%
 #cricket_tsibble_dot %>% gran_obs("over", "fielding_wckts")
 
 cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>% 
-  granplot("over","dot_balls",
+  prob_plot("over","dot_balls",
                                hierarchy_model,
                                response = "run_rate",
                                plot_type = "quantile",
@@ -972,7 +995,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 ```
 
 
-<!--   cricket_tsibble %>% granplot("inning_match", "over_inning", -->
+<!--   cricket_tsibble %>% prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -987,7 +1010,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 
 <!--   cricket_tsibble %>% -->
 <!--     filter(batting_team == "Chennai Super Kings") %>%  -->
-<!--     granplot("inning_match", "over_inning", -->
+<!--     prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -997,7 +1020,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 
 <!--     cricket_tsibble %>% -->
 <!--     filter(batting_team == "Kolkata Knight Riders") %>%  -->
-<!--     granplot("inning_match", "over_inning", -->
+<!--     prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -1022,7 +1045,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 <!--   as_tsibble(index = data_index) -->
 
 
-<!--   cricket_tsibble_all %>% granplot("inning_match", "over_inning", -->
+<!--   cricket_tsibble_all %>% prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -1034,7 +1057,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 
 
 
-<!--   cricket_tsibble_all %>% granplot("inning_match", "season", -->
+<!--   cricket_tsibble_all %>% prob_plot("inning_match", "season", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -1046,7 +1069,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 
 
 
-<!--   cricket_tsibble_all %>% granplot("season", "over_inning", -->
+<!--   cricket_tsibble_all %>% prob_plot("season", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -1057,7 +1080,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 
 <!--   cricket_tsibble %>% -->
 <!--     filter(batting_team == "Chennai Super Kings") %>%  -->
-<!--     granplot("inning_match", "over_inning", -->
+<!--     prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->
@@ -1067,7 +1090,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 
 <!--     cricket_tsibble %>% -->
 <!--     filter(batting_team == "Kolkata Knight Riders") %>%  -->
-<!--     granplot("inning_match", "over_inning", -->
+<!--     prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
 <!--                                response = "runs_per_over", -->
 <!--                                plot_type = "quantile", -->

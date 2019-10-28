@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.7.4)  24 SEP 2019 10:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.7.4)  28 OCT 2019 21:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -727,165 +727,165 @@ Package pdftex.def Info: Figs/linear-time.png  used on input line 203.
 (pdftex.def)             Requested size: 469.74539pt x 114.09465pt.
 [3] [4 <./Figs/linear-time.png>] [5] [6]
 
-LaTeX Warning: Reference `table_accessor2' on page 7 undefined on input line 39
-6.
+LaTeX Warning: Reference `table_accessor2' on page 7 undefined on input line 40
+8.
 
 [7] [8]
-<figure/allFig-1.pdf, id=181, 566.115pt x 388.45125pt>
+<figure/allFig-1.pdf, id=185, 566.115pt x 388.45125pt>
 File: figure/allFig-1.pdf Graphic file (type pdf)
 <use figure/allFig-1.pdf>
-Package pdftex.def Info: figure/allFig-1.pdf  used on input line 483.
+Package pdftex.def Info: figure/allFig-1.pdf  used on input line 467.
 (pdftex.def)             Requested size: 234.87288pt x 161.16277pt.
-<figure/allFig-2.pdf, id=182, 555.07375pt x 388.45125pt>
+<figure/allFig-2.pdf, id=186, 555.07375pt x 388.45125pt>
 File: figure/allFig-2.pdf Graphic file (type pdf)
 <use figure/allFig-2.pdf>
-Package pdftex.def Info: figure/allFig-2.pdf  used on input line 483.
+Package pdftex.def Info: figure/allFig-2.pdf  used on input line 467.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
-<figure/allFig-3.pdf, id=183, 572.1375pt x 388.45125pt>
+<figure/allFig-3.pdf, id=187, 572.1375pt x 388.45125pt>
 File: figure/allFig-3.pdf Graphic file (type pdf)
 <use figure/allFig-3.pdf>
-Package pdftex.def Info: figure/allFig-3.pdf  used on input line 483.
+Package pdftex.def Info: figure/allFig-3.pdf  used on input line 467.
 (pdftex.def)             Requested size: 234.87471pt x 159.46756pt.
-<figure/allFig-4.pdf, id=184, 555.07375pt x 388.45125pt>
+<figure/allFig-4.pdf, id=188, 555.07375pt x 388.45125pt>
 File: figure/allFig-4.pdf Graphic file (type pdf)
 <use figure/allFig-4.pdf>
-Package pdftex.def Info: figure/allFig-4.pdf  used on input line 483.
+Package pdftex.def Info: figure/allFig-4.pdf  used on input line 467.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
-<figure/allFig-5.pdf, id=185, 572.1375pt x 388.45125pt>
+<figure/allFig-5.pdf, id=189, 572.1375pt x 388.45125pt>
 File: figure/allFig-5.pdf Graphic file (type pdf)
 <use figure/allFig-5.pdf>
-Package pdftex.def Info: figure/allFig-5.pdf  used on input line 483.
+Package pdftex.def Info: figure/allFig-5.pdf  used on input line 467.
 (pdftex.def)             Requested size: 234.87471pt x 159.46756pt.
-<figure/allFig-6.pdf, id=186, 555.07375pt x 388.45125pt>
+<figure/allFig-6.pdf, id=190, 555.07375pt x 388.45125pt>
 File: figure/allFig-6.pdf Graphic file (type pdf)
 <use figure/allFig-6.pdf>
-Package pdftex.def Info: figure/allFig-6.pdf  used on input line 483.
+Package pdftex.def Info: figure/allFig-6.pdf  used on input line 467.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
 
-Overfull \hbox (2.2142pt too wide) in paragraph at lines 483--484
+Overfull \hbox (2.2142pt too wide) in paragraph at lines 467--468
 [][] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 483--484
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 467--468
 [] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 483--484
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 467--468
 [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 483--484
+Underfull \hbox (badness 10000) in paragraph at lines 467--468
 
  []
 
 [9] [10 <./figure/allFig-1.pdf> <./figure/allFig-2.pdf> <./figure/allFig-3.pdf>
  <./figure/allFig-4.pdf> <./figure/allFig-5.pdf> <./figure/allFig-6.pdf>] [11]
 
-LaTeX Warning: Reference `fig:my-hd' on page 12 undefined on input line 535.
+LaTeX Warning: Reference `fig:my-hd' on page 12 undefined on input line 550.
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 538.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 553.
 
 (/Users/sgup0008/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 539.
-<figure/my-hd-1.pdf, id=252, 568.1225pt x 333.245pt>
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 554.
+[12]
+<figure/my-hd-1.pdf, id=263, 568.1225pt x 333.245pt>
 File: figure/my-hd-1.pdf Graphic file (type pdf)
 <use figure/my-hd-1.pdf>
-Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 555.
+Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 570.
 (pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
-[12]
 
-LaTeX Warning: Reference `fig:dw-hd' on page 13 undefined on input line 557.
+LaTeX Warning: Reference `fig:dw-hd' on page 13 undefined on input line 572.
 
-<figure/dw-hd-1.pdf, id=260, 568.1225pt x 328.22626pt>
+<figure/dw-hd-1.pdf, id=264, 568.1225pt x 333.245pt>
 File: figure/dw-hd-1.pdf Graphic file (type pdf)
 <use figure/dw-hd-1.pdf>
-Package pdftex.def Info: figure/dw-hd-1.pdf  used on input line 559.
-(pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
+Package pdftex.def Info: figure/dw-hd-1.pdf  used on input line 574.
+(pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
+[13 <./figure/my-hd-1.pdf>]
 
-LaTeX Warning: Reference `fig:hhd-dm' on page 13 undefined on input line 561.
+LaTeX Warning: Reference `fig:hhd-dm' on page 14 undefined on input line 576.
 
-[13 <./figure/my-hd-1.pdf> <./figure/dw-hd-1.pdf>]
-<figure/hhd-dm-1.pdf, id=283, 569.12625pt x 333.245pt>
+<figure/hhd-dm-1.pdf, id=280, 569.12625pt x 333.245pt>
 File: figure/hhd-dm-1.pdf Graphic file (type pdf)
 <use figure/hhd-dm-1.pdf>
-Package pdftex.def Info: figure/hhd-dm-1.pdf  used on input line 563.
+Package pdftex.def Info: figure/hhd-dm-1.pdf  used on input line 578.
 (pdftex.def)             Requested size: 469.7781pt x 275.07288pt.
-[14 <./figure/hhd-dm-1.pdf>]
-<figure/seas-over-inning-1.pdf, id=304, 566.115pt x 346.29375pt>
+[14 <./figure/dw-hd-1.pdf> <./figure/hhd-dm-1.pdf>]
+<figure/seas-over-inning-1.pdf, id=310, 566.115pt x 349.305pt>
 File: figure/seas-over-inning-1.pdf Graphic file (type pdf)
 <use figure/seas-over-inning-1.pdf>
-Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 608.
+Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 623.
 
-(pdftex.def)             Requested size: 469.76303pt x 287.35504pt.
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 621
+(pdftex.def)             Requested size: 469.76303pt x 289.85378pt.
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 636
 .
 (/Users/sgup0008/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-<figure/violin-1.pdf, id=305, 568.1225pt x 333.245pt>
+<figure/violin-1.pdf, id=311, 568.1225pt x 333.245pt>
 File: figure/violin-1.pdf Graphic file (type pdf)
 <use figure/violin-1.pdf>
-Package pdftex.def Info: figure/violin-1.pdf  used on input line 633.
+Package pdftex.def Info: figure/violin-1.pdf  used on input line 648.
 (pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
-<figure/violin-2.pdf, id=306, 568.1225pt x 333.245pt>
+<figure/violin-2.pdf, id=312, 568.1225pt x 333.245pt>
 File: figure/violin-2.pdf Graphic file (type pdf)
 <use figure/violin-2.pdf>
-Package pdftex.def Info: figure/violin-2.pdf  used on input line 633.
+Package pdftex.def Info: figure/violin-2.pdf  used on input line 648.
 (pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
-[15 <./figure/seas-over-inning-1.pdf>] [16 <./figure/violin-1.pdf> <./figure/vi
-olin-2.pdf>] [17]
-<figure/lv-1.pdf, id=348, 568.1225pt x 328.22626pt>
+[15] [16 <./figure/seas-over-inning-1.pdf>] [17 <./figure/violin-1.pdf> <./figu
+re/violin-2.pdf>] [18]
+<figure/lv-1.pdf, id=363, 568.1225pt x 328.22626pt>
 File: figure/lv-1.pdf Graphic file (type pdf)
 <use figure/lv-1.pdf>
-Package pdftex.def Info: figure/lv-1.pdf  used on input line 725.
+Package pdftex.def Info: figure/lv-1.pdf  used on input line 759.
 (pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
-<figure/lv-2.pdf, id=349, 568.1225pt x 328.22626pt>
+<figure/lv-2.pdf, id=364, 568.1225pt x 328.22626pt>
 File: figure/lv-2.pdf Graphic file (type pdf)
 <use figure/lv-2.pdf>
-Package pdftex.def Info: figure/lv-2.pdf  used on input line 725.
+Package pdftex.def Info: figure/lv-2.pdf  used on input line 759.
 (pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
-<figure/field-1.pdf, id=351, 568.1225pt x 333.245pt>
+<figure/field-1.pdf, id=366, 568.1225pt x 331.2375pt>
 File: figure/field-1.pdf Graphic file (type pdf)
 <use figure/field-1.pdf>
-Package pdftex.def Info: figure/field-1.pdf  used on input line 751.
-(pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
-<figure/dot-1.pdf, id=353, 568.1225pt x 328.22626pt>
+Package pdftex.def Info: figure/field-1.pdf  used on input line 785.
+(pdftex.def)             Requested size: 469.7731pt x 273.89597pt.
+<figure/dot-1.pdf, id=368, 568.1225pt x 333.245pt>
 File: figure/dot-1.pdf Graphic file (type pdf)
 <use figure/dot-1.pdf>
-Package pdftex.def Info: figure/dot-1.pdf  used on input line 764.
-(pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
-[18] [19 <./figure/lv-1.pdf> <./figure/lv-2.pdf>] [20 <./figure/field-1.pdf> <.
+Package pdftex.def Info: figure/dot-1.pdf  used on input line 798.
+(pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
+[19] [20 <./figure/lv-1.pdf> <./figure/lv-2.pdf>] [21 <./figure/field-1.pdf> <.
 /figure/dot-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 824.
-[21]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 824.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 858.
+[22]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 858.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 824.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 824.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 858.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 858.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 97DF485BCADED9CEC4BA8EC5ADCBE5B1;3727.
+(rerunfilecheck)             Checksum: DF78FB0E8C0A72A03C786D8DEA766864;3064.
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 824.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 858.
  ) 
 Here is how much of TeX's memory you used:
- 13038 strings out of 494562
- 193340 string characters out of 6176541
- 301715 words of memory out of 5000000
- 16287 multiletter control sequences out of 15000+600000
+ 13045 strings out of 494562
+ 193423 string characters out of 6176541
+ 300736 words of memory out of 5000000
+ 16289 multiletter control sequences out of 15000+600000
  60811 words of font info for 111 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 32i,16n,38p,1330b,463s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,16n,38p,1330b,459s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/U
 sers/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/s
 gup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/sgu
@@ -907,10 +907,10 @@ ype1/public/lm/lmsy10.pfb></Users/sgup0008/Library/TinyTeX/texmf-dist/fonts/typ
 e1/public/lm/lmsy7.pfb></Users/sgup0008/Library/TinyTeX/texmf-dist/fonts/type1/
 public/lm/lmtk10.pfb></Users/sgup0008/Library/TinyTeX/texmf-dist/fonts/type1/pu
 blic/lm/lmtt10.pfb>
-Output written on main.pdf (21 pages, 903366 bytes).
+Output written on main.pdf (22 pages, 915999 bytes).
 PDF statistics:
- 507 PDF objects out of 1000 (max. 8388607)
- 414 compressed objects within 5 object streams
- 98 named destinations out of 1000 (max. 500000)
+ 525 PDF objects out of 1000 (max. 8388607)
+ 431 compressed objects within 5 object streams
+ 103 named destinations out of 1000 (max. 500000)
  10470 words of extra memory for PDF output out of 12000 (max. 10000000)
 
