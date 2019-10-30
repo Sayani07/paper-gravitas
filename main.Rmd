@@ -149,7 +149,15 @@ The definitions and rules for linear granularities are inadequate to reflect per
 Periodicity is very common in all kinds of data and circular granularities can be construed to reflect such periodicities. Circular granularities can be constructed by putting to use two linear granularities. However, mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, circular granularities can also be "periodic" or "aperiodic" depending on 
 
 
-A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to subsets of the bottom granularity. Here, the domain is the index set and range is subsets of bottom granularity. Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of bottom granularity. They also accomodate periodicity and hence the smaller subsets of bottom granularity are repeating themselves within the larger subsets of bottom granularity. We use modular arithmetic to define circular granularity and use the following definitions:
+Suppose we have a tsibble with a time index in one column and keys and variables in other columns.
+
+A time domain, as defined by Bettini, is essentially a mapping of row numbers (the index set) to the time index.
+
+A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.  Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. We use modular arithmetic to define circular granularity and use the following definitions:
+
+<!-- A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to subsets of linear bottom granularity. Here, the domain is the index set and range contains subsets of linear bottom granularity. Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of linear bottom granularity. We use modular arithmetic to define circular granularity and use the following definitions: -->
+
+<!-- They also accomodate periodicity and hence the smaller subsets of bottom granularity are repeating themselves within the larger subsets of bottom granularity.  -->
 
 
 
@@ -183,7 +191,9 @@ A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping 
 
 The set of all equivalence classes of the integers for a modulus $m$ is called the ring of integers modulo $m$, denoted by $Z_m$. Thus $Z_m = \{[0], [1], ..., [m-1]\}$. However, we often write $Z_m = \{0, 1, ..., (m-1)\}$, which is the set of integers modulo $m$.
 
-**Definition:** A **circular granularity** $C$ with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that $C(s) = (s\mod m)$ for $s \in Z$.
+**Definition:** A **circular granularity** $C$, joining two linear granularity with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that
+
+$C(s) = (s\mod m)$ for $s \in Z$.
 
 For example, suppose $C$ is a circular granularity denoting hour-of-day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$.
 
