@@ -624,8 +624,52 @@ This is when displaying a probability distribution becomes a potentially useful 
 The entire distribution can be visualized or some contextual summary statistics can be visualized to emphasize certain properties of the distribution. These properties can throw light on central tendency, skewness, kurtosis, variation of the distribution and can also be useful in detecting extreme behavior or anomalies in the data set.
 
 
+
+<!-- ## Distributions conditional on bivariate granularities -->
+
+The time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting one temporal granularity along the x-axis and the other one across facets. 
+
+Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot.
+
+
+
+## Choice of Plots
+
+Recommendations for distribution plots depend on the levels(very high/high/medium/low) of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.
+
+Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. Let us consider case by case and see which plots are better suitable in which scenarios.
+
+<!-- Graphical output devices are flat. If there are only two variables, a cartesian graph of one variable against the other can show the configuration of points. As soon as the data move to three variables, we must be content in attempting to infer multi-dimensional structure by a two-dimensional medium.  -->
+
+Facetting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer.
+
+
+## Effect of interaction
+
+
+We should avoid plotting clashes as they hinder the exploratory process by having missing combinations of time granularities in each panel.
+
+
+## Effect of number of observation
+
+### Rarely occuring events
+
+Even with harmonies, problems might occur due to rarely occuring categories. 
+
+Suppose we have $T$ hourly observations, and $C_1$ is HOD and $C_2$ is DOW. Each element of $C_1$ occurs approximately $T/n_1$ times while each element of $C_2$ occurs approximately $T/n_2$ times. There are no structurally empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(n_1n_2)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge n_1n_2k$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For scatterplots, even $k=3$ may be acceptable, but for density estimates, we probably need $k \ge 30$.
+
+The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations.
+
+Problems will also occur when we have rarely occurring categories such as the 366th day of the year, or the 31st day of the month.
+
+
+### Homogeneity within and across facets
+
+
+We should be cautious to plot two granularities which vary largely across or within facets. Even if for each combinations, the number is good enough for plotting distribution, large differences between number of observations between and across facets, might have an impact on the emperical dfistribution. We use Gini's measure to compute if differences in number of observations across or within facets are significantly different.
+
 <!-- Lit review on statistical distribution plot-->
-## Statistical distribution plots
+ Statistical distribution plots
 
 Most commonly used techniques to display distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg, 1978] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.
 
@@ -636,35 +680,9 @@ Moreover, much like the quartiles divide the data set equally into four equal pa
 Finally, a density plot which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution. Also, a Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.
 
 
-<!-- ## Distributions conditional on bivariate granularities -->
 
-The time series variable can be plotted against many time granularities to get more understanding of the underlying periodicty, however, we will restrict ourselves to see the distribution of the time series across bivariate temporal granularities. That neccessiates plotting one temporal granularity along the x-axis and the other one across facets. 
+Recommendation system that aid exploration
 
-Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot.
-
-## Plotting harmonies and clashes
-
-## Homogeneity across and within facets
-
-Recommendations for distribution plots depend on the levels(very high/high/medium/low) of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.
-
-Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. Let us consider case by case and see which plots are better suitable in which scenarios.
-
- -  very high facet and x-axis levels
- 
- X-axis variable is treated as a categorical variable and hence any plots which 
-
-
-Even with harmonies, problems might occur due to rarely occuring categories. 
-
-
-suppose we have $T$ hourly observations, and $C_1$ is HOD and $C_2$ is DOW. Each element of $C_1$ occurs approximately $T/n_1$ times while each element of $C_2$ occurs approximately $T/n_2$ times. There are no structurally empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(n_1n_2)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge n_1n_2k$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For scatterplots, even $k=3$ may be acceptable, but for density estimates, we probably need $k \ge 30$.
-
-The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations.
-
-Problems will also occur when we have rarely occurring categories such as the 366th day of the year, or the 31st day of the month.
-
-## Number of levels of the facet variable
 
 # Case studies
 
@@ -1062,7 +1080,7 @@ cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>%
 ```
 
 
-```{r}
+
 
 <!--   cricket_tsibble %>% prob_plot("inning_match", "over_inning", -->
 <!--                                hierarchy_model, -->
