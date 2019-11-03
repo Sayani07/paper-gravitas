@@ -65,10 +65,18 @@ knitr::opts_knit$set(root.dir = here::here())
 # Introduction
 
 <!--temporal granularities and why should we care --> 
-Temporal data can be available at various resolution depending on the context. Social and economic data are often collected and reported at coarser temporal scales like monthly, quarterly or annually. But with recent advancement in technology, more and more data are recorded and stored at much finer temporal scales. Energy consumption is collected every half an hour, while energy supply is collected every minute and web search data might be collected at every second. As the frequency of data increases, the number of questions about the observed variable that need to be addressed also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways. 
 
-A temporal granularity which results from such a deconstruction may be intuitively described as a sequence of time granules, each one consisting of a set of time instants. There are several classes of time deconstructions including linear time granularities, circular time granularities and aperiodic calendar categorizations. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. Circular time granularities accommodate periodicities in time such as hour of the day, and day of the week. Aperiodic calendar categorizations are neither linear nor circular, such as day of the month or public holidays.
+<!-- problem of analyzing data with such finer scales and classical ways to deal with it -->
+Temporal data are available at various resolution depending on the context. Social and economic data like GDP are often collected and reported at coarser temporal scales like monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded and stored at much finer temporal scales. Energy consumption is collected every half an hour, while energy supply is collected every minute and web search data might be collected at every second. As the frequency of data increases, the number of questions about periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways. Calendar-based graphics[] can unpack the temporal variable, at different resolutions, to digest multiple seasonalities, and special events. They mainly pick out patterns in the weekly and monthly structure well and are capable of checking the weekends or special days.  Any sub-daily resolution temporal data can also be displayed using this type of faceting [reference trellis plot] with days of the week, month of the year and another sub-daily deconstruction of time. 
 
+
+<!-- # challenges of classical ways of displaying -->
+But calendar effects are not restricted to conventional day-of-week, month-of-year ways of deconstructing time. A temporal granularity which results from such a deconstruction may be intuitively described as a sequence of time granules, each one consisting of a set of time instants[]. There can be several classes of time deconstructions including linear time granularities, circular time granularities and aperiodic calendar categorizations. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. Circular time granularities accommodate periodicities in time such as hour of the day, and day of the week. Aperiodic calendar categorizations are neither linear nor circular, such as day of the month or public holidays. Also, <!--details abt time gran --> 
+the hierarchical structure of time creates a natural nested ordering. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, we can construct single-order-up granularities like second of the minute or multiple-order-up granularities like second of the hour.
+
+<!-- We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and are single-order-up.  -->
+
+<!-- TODO -->
 It is important to be able to navigate through all of these temporal granularities to have multiple perspectives on the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. 
 
 
@@ -80,8 +88,7 @@ It is common to see aggregates of usage across households, total kWh used each h
 
 We propose that the analysis of probability distributions of smart meter data at finer or coarser scales can be benefited from the approach of Exploratory Data Analysis (EDA). EDA calls for utilizing visualization and transformation to explore data systematically. It is a process of generating hypothesis, testing them and consequently refining them through investigations.
 
-<!--details abt time gran --> 
-The hierarchical structure of many granularities creates a natural nested ordering. For example, hours are nested within days, days within weeks, weeks within months, and so on. We refer to granularities which are nested within multiple levels as "multiple-order-up" granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up. 
+
 
 <!--existing closely related work and how ours relate --> 
  This paper utilizes the nestedness of time granularities to obtain multiple-order-up granularities from single-order-up ones.
@@ -378,33 +385,6 @@ Here, the first part of the equation is a single-order-up granularity which can 
 
 # Interaction
 
-When we plot some observations with two circular or aperiodic granularities used as aesthetics or facets, problems might arise when we have empty combinations. It is important to check how these two granularities interact with each other, before we expect to gain insights by plotting them together. 
-
-For example, suppose we have two circular or aperiodic granularities $C_1$ and $C_2$, such that $C_1$ maps row numbers to a set $\{A,B,C,D$\}, and $C_2$ maps row numbers to a set $\{X,Y,Z\}$.  That is, let $S_{ij}$ be the set of row numbers such that for all $s \in S_{ij}$, $C_1(s) = i$ and $C_2(s) = j$. In this example, we have 12 such sets $S_{ij}$ because $i$ can take 4 values and $j$ can take 3 values. The graphs that don't work are those where many of these 12 sets are empty. Now, many situations can lead to any of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty.
-
-Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
-These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations.
-
-Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be DOW and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can take 7 values while $C_2$ can take 2 values. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of DOW and WD/NWD. While potentially all of these can be non-empty (it is possible to have a public holiday on any DOW), in practice many of these combinations will probably have very few observations. For example, there are few if any public holidays on Wednesdays or Thursdays in any given year in Melbourne. 
-
-<!-- However, this is different from the first example because these are not structurally empty. Also, the graphic may still be useful if we want to look at whether the interaction of $C_1$ and $C_2$ affects the distribution we are plotting. -->
-
-Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ maps row numbers to "Business days", which are days from Monday to Friday except holidays and $C_2$ is Day-of-Month. Then the weekends in Days-of-Month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from the structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
-
-
-An example when there will be no empty combinations could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful.
-
-The combinations of circular/aperiodic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**.
-And the ones that ones that do not lead to any missing combinations are called **harmonies** as they promote the exploratory analysis through visualization.
-
-
-Even with harmonies, problems might occur due to rarely occuring categories. suppose we have $T$ hourly observations, and $C_1$ is HOD and $C_2$ is DOW. Each element of $C_1$ occurs approximately $T/n_1$ times while each element of $C_2$ occurs approximately $T/n_2$ times. There are no structurally empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(n_1n_2)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge n_1n_2k$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For scatterplots, even $k=3$ may be acceptable, but for density estimates, we probably need $k \ge 30$.
-
-The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations.
-
-Problems will also occur when we have rarely occurring categories such as the 366th day of the year, or the 31st day of the month.
-
-## Harmony and Clashes
 
 <!-- Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations. -->
 
@@ -425,115 +405,136 @@ In \autoref{fig:allFig} (e), variations across week of the year conditional on w
 
 From the above examples, we can see that the choices of the circular granularities are harmonies while some are clashes. Also since some choices work and others don't, it must be the attributes of the circular granularities or their relationships which are in play in deciding if the resulting plot would be a good candidate for exploratory analysis.
 
-
-```{r moy-dom,echo=FALSE, out.width = "70%", fig.align = 'center',fig.cap ="Letter-value plot of electricity consumption in Victoria across days of the month\n faceted by months January, February, April and December. "}
+```{r allFig, fig.height=5.5, out.width="50%", fig.pos = "p", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Various probability distribution plots of electricity consumption data of Victoria from 2012 to 2014. (a) Letter value plot by DoM and MoY, (b) Decile plot by HoD and DoW (c) Box plot by DoY and DoM, (d) Violin plot of DoM and WoM, (e) Ridge plot by WoM and WoY, (f) Decile plot by DoY and MoY. Only plots (a) and (b) show harmonised time variables.", fig.show = 'hold'}
 
 # change all of these to gravitas function
-VIC <- read.csv("data/VIC2015/Data/demand_VIC.csv")
-VIC$Date <- as.Date(VIC$Date, origin = "1899-12-30")
-
-first_day_of_month_wday <- function(dx) {
-  day(dx) <- 1
-  wday(dx)
-}
-
-VIC <- VIC %>% mutate(
-  Indx_Year = year(Date),
-  Indx_Month = month(Date, label = FALSE, abbr = TRUE),
-  Indx_Wk_Yr = week(Date),
-  Indx_Wk_Month = ceiling((day(Date) + first_day_of_month_wday(Date) - 1) / 7),
-  Indx_Day_Week = wday(Date,
-    label = FALSE, abbr = TRUE,
-    week_start = 1
-  ),
-
-  Indx_Day_Month = day(Date),
-
-  Indx_Day_Year = yday(Date),
-
-  Indx_Weekend = if_else(Indx_Day_Week %in% c(6, 7), 1, 0),
-
-  Indx_HlHr_day = Period,
-  month = month(Date, label = FALSE, abbr = TRUE),
-  year = year(Date),
-  yday = yday(Date),
-  wday = wday(Date,
-    label = FALSE, abbr = TRUE,
-    week_start = 1
-  ),
-  bow = (wday - 1) * 48 + Period,
-  dom = day(Date),
-  bom = (dom - 1) * 48 + Period,
-  Weekend = if_else(wday %in% c(6, 7), 1, 0),
-  Indx_hour = ceiling(Period / 2),
-  Indx_Hour_Yr = Indx_hour + 24 * (yday - 1),
-  Indx_Hour_Month = Indx_hour + 24 * (Indx_Day_Month - 1),
-  Indx_Hour_Wk = Indx_hour + 24 * (wday - 1)
-)
-
-
-
-
-VIC <- as_tibble(VIC)
-```
-
-
-```{r allFig, fig.height=5.5, out.width="50%", fig.pos = "p", fig.align= 'left',echo=FALSE, eval=TRUE, fig.cap="Various probability distribution plots of electricity consumption data of Victoria from 2012 to 2014. (a) Letter value plot by DoM and MoY, (b) Decile plot by HoD and DoW (c) Box plot by DoY and DoM, (d) Violin plot of DoM and WoM, (e) Ridge plot by WoM and WoY, (f) Decile plot by DoY and MoY. Only plots (a) and (b) show harmonised time variables.", fig.show = 'hold'}
+library(gravitas)
+library(tsibbledata)
+library(dplyr)
+library(ggplot2)
 
 par(mfrow = c(3, 2))
 
-VIC %>% filter(year %in% c(2012, 2013, 2014), Indx_Month %in% c(1, 2, 4, 12)) %>% ggplot(aes(Indx_Day_Month, OperationalLessIndustrial, group = Indx_Day_Month)) + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1) + scale_fill_brewer() + facet_wrap(~Indx_Month) + ylab("Electricity Demand [KWh]") + xlab("Days of the Month") + scale_x_continuous(breaks = seq(0, 31, 5)) + ggtitle("(a) Letter value plot")
+VIC <- vic_elec
+
+VIC %>% 
+  create_gran("month_year") %>% 
+  filter(month_year %in% c("Jan", "Mar", "July", "Dec")) %>% 
+  prob_plot("month_year","day_month",
+            response = "Demand",
+            plot_type = "lv") + 
+  ylab("Electricity Demand [KWh]") +
+  ggtitle("(a) Letter value plot")
 
 
-
-VIC_hod_dow <- VIC %>%
-  filter(year %in% c(2012, 2013, 2014)) %>%
-  group_by(wday, Indx_hour) %>%
-  do({
-    x <- .$OperationalLessIndustrial
-    map_dfr(
-      .x = seq(0.1, 0.9, 0.1),
-      .f = ~ tibble(
-        Quantile = .x,
-        Value = quantile(x, probs = .x, na.rm = TRUE)
-      )
-    )
-  }) %>%
-  filter(wday %in% c(1, 2, 6, 7))
-
-VIC_hod_dow %>% ggplot(aes(x = Indx_hour, y = Value, col = as.factor(Quantile))) + geom_line() + facet_wrap(~wday) + scale_x_continuous(breaks = seq(1, 24, 5)) + ylab("") + xlab("Day of the Week") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(b) Decile plot")
+VIC %>% 
+  create_gran("day_week") %>% 
+  filter(day_week %in% c("Mon", "Tue", "Sat", "Sun")) %>% 
+  prob_plot("day_week","hour_day",
+            response = "Demand",
+            plot_type = "quantile",
+            symmetric = FALSE) + 
+  ylab("Electricity Demand [KWh]") +
+  ggtitle("(b) Decile plot")
 
 
 VIC %>%
-  filter(year %in% c(2012, 2013, 2014), Indx_Day_Month %in% c(1, 15, 29, 31)) %>%
-  ggplot(aes(as.factor(yday), OperationalLessIndustrial, group = yday)) + geom_boxplot() + facet_wrap(~Indx_Day_Month) + ylab("Electricity Demand [KWh]") +
-  xlab("Days of the Year") + scale_x_discrete(breaks = seq(0, 366, 60)) + theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(c) Box plot")
+  create_gran("day_month") %>% 
+  filter(day_month %in% c(1, 15, 29, 31)) %>%
+  prob_plot("day_month",
+                "day_year",
+                response = "Demand",
+                plot_type = "boxplot")+
+  ylab("Electricity Demand [KWh]") +
+  scale_x_discrete(breaks = seq(0, 366, 60)) + 
+  theme(legend.position = "bottom", 
+        strip.text = element_text(size = 7, margin = margin())) +
+  ggtitle("(c) Box plot")
 
 
 
-VIC %>% filter(year %in% c(2012, 2013, 2014), Indx_Wk_Month %in% c(1, 2, 4)) %>% ggplot(aes(as.factor(Indx_Day_Month), OperationalLessIndustrial)) + geom_violin(alpha = 0.03) + facet_wrap(~Indx_Wk_Month, nrow = 3) + ylab("") + xlab("Days of the Month") + theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks = seq(0, 31, 5)) + scale_y_continuous(breaks = seq(2000, 9000, 2000)) + ggtitle("(d) Violin plot")
+VIC %>%
+    create_gran("week_month") %>% 
+  filter(week_month %in% c(1, 2, 4)) %>%
+   prob_plot("week_month",
+                "day_month",
+                response = "Demand",
+                plot_type = "violin", alpha = 0.3) + ylab("") + 
+  xlab("Days of the Month") + 
+  theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks = seq(0, 31, 5)) + 
+  scale_y_continuous(breaks = seq(2000, 9000, 2000)) +
+  ggtitle("(d) Violin plot")
 
 
-VIC %>% dplyr:::filter(year %in% c(2012, 2013, 2014), Indx_Wk_Month %in% c(1, 2, 5), Indx_Wk_Yr < 20) %>% ggplot(aes(x = OperationalLessIndustrial, y = as.factor(Indx_Wk_Yr), group = Indx_Wk_Yr)) + geom_density_ridges2() + facet_wrap(~Indx_Wk_Month) + xlab("Electricity Demand [KWh]") + ylab("Weeks of the Year") + scale_x_continuous(breaks = seq(2000, 10000, 3000)) + theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(e) Ridge plot")
+VIC %>%  create_gran("week_month") %>%
+  create_gran("week_year") %>%
+  filter(week_month%in% c(1, 2, 5), week_year %in% c(1:20)) %>% 
+  prob_plot("week_year", 
+            "week_month",
+            response = "Demand",
+            plot_type = "ridge")  + 
+  xlab("Electricity Demand [KWh]") +
+  ylab("Weeks of the Year") +
+  scale_x_continuous(breaks = seq(2000, 10000, 3000)) + 
+  theme(legend.position = "bottom", 
+        strip.text = element_text(size = 7, margin = margin())) +
+  ggtitle("(e) Ridge plot")
 
 
-VIC_moy_doy <- VIC %>%
-  filter(year %in% c(2012, 2013, 2014)) %>%
-  group_by(Indx_Month, yday) %>%
-  do({
-    x <- .$OperationalLessIndustrial
-    map_dfr(
-      .x = seq(0.1, 0.9, 0.1),
-      .f = ~ tibble(
-        Quantile = .x,
-        Value = quantile(x, probs = .x, na.rm = TRUE)
-      )
-    )
-  }) %>%
-  filter(Indx_Month %in% c(1, 7, 11))
+VIC %>%
+  create_gran("month_year") %>% 
+  filter(month_year %in% c("Jan", "Jul", "Nov")) %>% 
+   prob_plot("month_year", 
+            "day_year",
+            response = "Demand",
+            plot_type = "quantile",
+            quantile_prob = seq(0.1, 0.9, 0.1),
+            symmetric = FALSE) +
+   #scale_x_discrete(breaks = seq(1, 336, 60)) + 
+   ylab("") + 
+   xlab("Day of the Year") + theme(legend.position = "none", 
+                                   strip.text = element_text(size = 7, 
+                                                             margin = margin())) +
+  ggtitle("(f) Decile plot")
+  
+  
+  
 
-VIC_moy_doy %>% ggplot(aes(x = yday, y = Value, col = as.factor(Quantile), group = yday)) + geom_line() + facet_wrap(~Indx_Month) + scale_x_continuous(breaks = seq(1, 336, 60)) + ylab("") + xlab("Day of the Year") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
+# VIC_moy_doy %>% ggplot(aes(x = yday, y = Value, col = as.factor(Quantile), group = yday)) + geom_line() + facet_wrap(~Indx_Month) + scale_x_continuous(breaks = seq(1, 336, 60)) + ylab("") + xlab("Day of the Year") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
+```
 
+When we plot some observations with two circular or aperiodic granularities used as aesthetics or facets, problems might arise when we have empty combinations. It is important to check how these two granularities interact with each other, before we expect to gain insights by plotting them together. 
+
+For example, suppose we have two circular or aperiodic granularities $C_1$ and $C_2$, such that $C_1$ maps row numbers to a set $\{A,B,C,D$\}, and $C_2$ maps row numbers to a set $\{X,Y,Z\}$.  That is, let $S_{ij}$ be the set of row numbers such that for all $s \in S_{ij}$, $C_1(s) = i$ and $C_2(s) = j$. In this example, we have 12 such sets $S_{ij}$ because $i$ can take 4 values and $j$ can take 3 values. The graphs that don't work are those where many of these 12 sets are empty. Now, many situations can lead to any of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty.
+
+Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
+These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations.
+
+Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be DOW and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can take 7 values while $C_2$ can take 2 values. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of DOW and WD/NWD. While potentially all of these can be non-empty (it is possible to have a public holiday on any DOW), in practice many of these combinations will probably have very few observations. For example, there are few if any public holidays on Wednesdays or Thursdays in any given year in Melbourne. 
+
+<!-- However, this is different from the first example because these are not structurally empty. Also, the graphic may still be useful if we want to look at whether the interaction of $C_1$ and $C_2$ affects the distribution we are plotting. -->
+
+Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ maps row numbers to "Business days", which are days from Monday to Friday except holidays and $C_2$ is Day-of-Month. Then the weekends in Days-of-Month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from the structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
+
+
+An example when there will be no empty combinations could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful.
+
+The combinations of circular/aperiodic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**.
+And the ones that ones that do not lead to any missing combinations are called **harmonies** as they promote the exploratory analysis through visualization.
+
+
+Even with harmonies, problems might occur due to rarely occuring categories. 
+
+
+suppose we have $T$ hourly observations, and $C_1$ is HOD and $C_2$ is DOW. Each element of $C_1$ occurs approximately $T/n_1$ times while each element of $C_2$ occurs approximately $T/n_2$ times. There are no structurally empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(n_1n_2)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge n_1n_2k$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For scatterplots, even $k=3$ may be acceptable, but for density estimates, we probably need $k \ge 30$.
+
+The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations.
+
+Problems will also occur when we have rarely occurring categories such as the 366th day of the year, or the 31st day of the month.
+
+## Harmony and Clashes
+
+```{r}
 # grid.arrange(p1,p2,p3,p4,nrow = 2)
 
 #
@@ -612,8 +613,6 @@ The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of
 Moreover, much like the quartiles divide the data set equally into four equal parts, extensions might include dividing the data set even further. The deciles plots consist of 9 values that split the data set into ten parts and the percentile plot consists of 99 values that split the data set into hundred parts. A large data set is required before the extreme percentiles can be estimated with any accuracy. 
 
 Finally, a density plot which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution. Also, a Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap.
-
-
 
 
 <!-- ## Distributions conditional on bivariate granularities -->
