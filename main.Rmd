@@ -126,7 +126,7 @@ The arrangement of the time domain can result in deconstructing time in linear, 
 <!-- What is circular granularity and some examples -->
 <!-- We specify the circular categorizations using modular arithmetic and call these **circular granularities**. The number of categories is essentially the periodicity of a circular time granularity. For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed. -->
 
-Providing a formalism to these abstractions is important to model a time series across differently grained temporal domains.
+Providing a formalism to some of these abstractions is important to model a time series across differently grained temporal domains.
 
 ### Linear {#linear-gran-def}
 
@@ -155,14 +155,54 @@ The definitions and rules for linear granularities are inadequate to reflect per
 
 ### Circular {#circular-gran-def}
 
-Periodicity is very common in all kinds of data. Circular granularities, which are constructed by using two linear granularities, can be utilized to explain such periodicities. However, mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, circular granularities can also be "periodic" or "aperiodic" depending on if the mapping is regular or irregular.
+Relationship between two linear granularities can be expressed in numerous ways. 
+**Definition: Groups Into** : A linear granularity G groups into a linear granularity H, denoted
+$$G \trianglelefteq H,$$
+if for each index j there exists a (possibly infinite) subset S of the integers such
+that
+\begin{equation}
+H(j) = \bigcup_{i \in S}G(i)
+\end{equation}
+
+According to this definition, $$G \trianglelefteq H,$$ if each granule H (i) is the union of some
+granules of G. For example, $$Days \trianglelefteq Months,$$ since a week is composed of 7 days. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $$Days \trianglelefteq Months,$$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
+
+**Definition: Periodical** A granularity H is periodical with respect to a granularity G if
+(1) $$G \trianglelefteq H,$$, and
+(2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
+that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
+$H (i + R) = \bigcup_{j \in S} G(j + P)$.
+
+A granularity H which is periodical with respect to G is specified by: (i) the
+R sets of indexes of G S0,...,SR-1 describing the granules of H within one period; (ii) the value of P; (iii) the indexes of first and last granules in H, if their value is not infinite. Then, if S0,...,SR-1 are the sets of indexes of G describing
+H (0), . . . , H (R - 1), respectively, then the description of an arbitrary granule H (j ) is given by: $\bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$. 
+
+This formula can be explained observing that H (j ) is either one of H (0), . . . , H (R - 1) or, for the periodicity of H, is one of these granules “shifted” ahead or behind on the time line of a finite number of periods. If $H (j ) \epsilon {H (0), . . . , H (R - 1)}$, then the formula ‘j mod R’ defines the index (among those in {0,...,R - 1}) of the granule that must be shifted to obtain H (j).The number of periods each granule of G composing H (j mod R) should be shifted is given by $\lfloor j/R \rfloor$.
+
+Many common granularities are in this kind of relationship, for example, Years is
+periodical with respect to both Days and Months.
+
+As mentioned in the introduction, we are also interested in granularities which
+are periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way.
 
 
-Suppose we have a tsibble with a time index in one column and keys and variables in other columns.
+**Definition: Quasi Periodical** A granularity H is quasi-periodical with respect to a granularity G if
+(1) $$G \trianglelefteq H,$$, and
+(2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
+integers R,P, where R is less than the minimum of the number of granules of H
+between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
 
-A time domain, as defined by Bettini, is essentially a mapping of row numbers (the index set) to the time index.
+ 
+Intuitively, the definition requires that all granules of H within the span of time
+between two exceptions have the same periodical behavior, characterized by R and P.
 
-A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.  Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. We use modular arithmetic to define circular granularity and use the following definitions:
+Most practical problems seem to require only a granularity system containing a
+set of time granularities which are all periodical (or quasi-periodical) with respect to
+a basic granularity.The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
+
+The formalism of circular granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. 
+
+A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.  Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. We use modular arithmetic to define circular granularity and use the following definitions:
 
 <!-- A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to subsets of linear bottom granularity. Here, the domain is the index set and range contains subsets of linear bottom granularity. Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of linear bottom granularity. We use modular arithmetic to define circular granularity and use the following definitions: -->
 
@@ -206,9 +246,9 @@ $C(s) = (s\mod m)$ for $s \in Z$.
 
 For example, suppose $C$ is a circular granularity denoting hour-of-day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$.
 
-**Definition:** A **cycle** is defined as the progression of each circular granularity with modular period m through {$1,2,\dots,(m-1),0$} once.
+<!-- **Definition:** A **cycle** is defined as the progression of each circular granularity with modular period m through {$1,2,\dots,(m-1),0$} once. -->
 
-**Definition:** A **circular granule** represents an equivalence class inside each cycle.
+<!-- **Definition:** A **circular granule** represents an equivalence class inside each cycle. -->
 
 ### Aperiodic {#aperiodic-gran-def}
 <!-- Formal definition of aperiodic circular granularity -->
@@ -282,8 +322,32 @@ In the next section, we discuss the computation of any single-order-up and multi
 
 # Computation of time granularities
 
-Computation of time granularities would differ in a periodic and non-periodic set up.
+An algebraic representation for time granularities, which
+we call the calendar algebra. It is assumed that there exists a “bottom”
+granularity known to the system. Calendar algebra operations are designed to generate
+new granularities from the bottom one or recursively, from those already generated.
+Thus, the relationship between the operand(s) and the resulting granularities are encoded
+in the operations.
 
+The calendar algebra consists of two kinds of operations: grouping-oriented and
+granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity, while the
+granule-oriented operations do not change the granules of a granularity, but rather make
+choices of which granules should remain in the new granularity.
+
+- **grouping-oriented** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping
+operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G
+into m-granule groups and making each group a granule of the resulting granularity.
+More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for
+each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity week is defined by $week = Group_7(day)$. Note that, we assume that the day labeled 1 starts a
+week.
+
+-**granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days.
+
+
+
+<!-- Computation of time granularities would differ in a periodic and non-periodic set up. -->
+
+Now, let us dicuss the computation of circular granularities.
 
 ## Single-order-up granularities
 
@@ -959,9 +1023,8 @@ smart_meter10 %>%
 library(gravitas)
 library(tsibble)
 
-
 library(ggplot2)
-sm_cust50 %>%
+smart_meter10 %>%
   prob_plot("month_year", "hour_day",
     response = "general_supply_kwh",
     plot_type = "quantile",
