@@ -115,7 +115,7 @@ Often we partition time into months, weeks or days to relate it to data. Such di
 
 ## Arrangement: Linear vs. Circular vs. aperiodic
 
-The arrangement of the time domain can result in deconstructing time in linear, circular or nearly circular ways. Time granularities are **linear** if they respect the linear progression of time. Examples include hours, days, weeks and months. **Circular** time granularities accommodate periodicities in time such as hour of the day, and day of the week. **Aperiodic** time granularities are neither linear nor circular, such as day of the month or public holidays.
+The arrangement of the time domain can result in deconstructing time in linear, circular or nearly circular ways. Time granularities are **linear** if they respect the linear progression of time. Examples include hours, days, weeks and months. However, periodicity is very common in all kinds of data. Time granularities, which are constructed by using two linear granularities, can be utilized to explain such periodicities. The mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, time granularities can also be **circular** or **aperiodic** depending on if the mapping of the linear granularities is regular or irregular. Examples of circular time granularities include hour of the day, and day of the week, whereas examples for aperiodic time granularities can be day of the month or public holidays.
 
 <!-- <!-- Representation with tsibble -->
 <!-- Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. -->
@@ -919,8 +919,6 @@ cust1
 cust2
 ```
 
-
-
 Now, we would like to see how these customers' behavior relate to the rest of the 
 50 households across these two measures - 
 
@@ -936,9 +934,22 @@ smart_meter10 %>%
                             "hour_day",
                             response = "general_supply_kwh",
                             plot_type = "quantile",
-            symmetric = TRUE, 
+            symmetric = FALSE, 
             quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) +
   scale_y_sqrt()
+```
+
+
+
+```{r wknd_wday50_df}
+smart_meter10 %>% 
+  prob_plot("month_year",
+                            "day_fortnight",
+                            response = "general_supply_kwh",
+                            plot_type = "quantile",
+            symmetric = TRUE, 
+            quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) +
+  scale_y_sqrt(breaks = c(0.1, 0.25, 0.5, 1:3))
 ```
 
 
@@ -947,7 +958,6 @@ smart_meter10 %>%
 
 library(gravitas)
 library(tsibble)
-load("data/sm_cust50.RData")
 
 
 library(ggplot2)
@@ -955,71 +965,27 @@ sm_cust50 %>%
   prob_plot("month_year", "hour_day",
     response = "general_supply_kwh",
     plot_type = "quantile",
-    quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)
-  ) +
+    quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99),
+    symmetric = TRUE) +
   ggtitle("") 
 ```
 
-
-Figure \ref{fig:dw-hd} shows that on morning peaks for Saturday and Sunday are higher and occurs in a later hour of the day compared to weekdays. Thsi is true for both top 50% and 75% of the customers. Hence, this is indicative of the fact that at least 50% of the households in this subset has traditional work days (Mon-Fri) and weekends(Sat-Sun). All the percentiles peaks up in the morning hours and then drops in the afternoon, before again peaking up in the evening. 
-
-
-```{r dw-hd}
-
-# Hourly usage across days of the week
-sm_cust50 %>%
-  prob_plot("day_week", 
-           "hour_day",
-           "general_supply_kwh", 
-           plot_type = "quantile", 
-          quantile_prob = c(0.25, 0.5, 0.75),
-           response = "general_supply_kwh", overlay = FALSE) +
-  ggtitle("")
-
-```
-
-Figure \ref{fig:hhd-dm} shows distribution of energy consumption across hour hour of the day across different days of the month. We can't see much variation across days of week implying that the energy behavior doesn't change depending on which day of the month it is.
+<!-- Figure \ref{fig:dw-hd} shows that on morning peaks for Saturday and Sunday are higher and occurs in a later hour of the day compared to weekdays. This is true for both top 50% and 75% of the customers. Hence, this is indicative of the fact that at least 50% of the households in this subset has traditional work days (Mon-Fri) and weekends(Sat-Sun). All the percentiles peaks up in the morning hours and then drops in the afternoon, before again peaking up in the evening.  -->
 
 
-```{r hhd-dm}
-# Across days of the week by months
-# sm_cust50 %>%
-#   prob_plot("month_year",
-#     "day_week",
-#     response = "general_supply_kwh", plot_type = "quantile", 
-#           quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)) + ggtitle("") +
-#   ggtitle("Quantile plot across day-of-week by month-of-year") 
+<!-- ```{r dw-hd} -->
 
+<!-- # Hourly usage across days of the week -->
+<!-- sm_cust50 %>% -->
+<!--   prob_plot("day_week",  -->
+<!--            "hour_day", -->
+<!--            "general_supply_kwh",  -->
+<!--            plot_type = "quantile",  -->
+<!--           quantile_prob = c(0.25, 0.5, 0.75), -->
+<!--            response = "general_supply_kwh", overlay = FALSE) + -->
+<!--   ggtitle("") -->
 
-# Across week of the month and weekends
-
-# sm_cust50 %>%
-#   dynamic_create_gran("day_week") %>%
-#   filter(day_week %in% c("Sat", "Sun")) %>%
-#   prob_plot("day_week", "week_month",
-#            response = "general_supply_kwh",
-#            plot_type = "lv") + 
-#   ggtitle("")
-
-# 
-# sm_cust50 %>%
-#   prob_plot( "hhour_hour","hour_day",
-#            response = "general_supply_kwh",
-#            plot_type = "quantile", overlay = TRUE) + 
-#   ggtitle("")
-
-
-
-sm_cust50 %>%
-  prob_plot( "hhour_day","day_month",
-           response = "general_supply_kwh",
-           plot_type = "quantile", overlay = TRUE) + 
-  ggtitle("")
-```
-
-
-
-
+<!-- ``` -->
 
 ## T20 cricket data of Indian Premiere League {#cricket}
 
