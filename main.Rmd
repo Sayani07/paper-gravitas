@@ -45,6 +45,7 @@ library(ggridges)
 library(viridis)
 library(tsibble)
 library(gravitas)
+library(tsibble)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -153,9 +154,12 @@ knitr::include_graphics("Figs/linear-time.png")
 
 The definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality. Hence, there is a need to define circular time granularities in a different approach. 
 
-### Circular {#circular-gran-def}
 
-Relationship between two linear granularities can be expressed in numerous ways. 
+
+#### Relationships between two linear granularities and association to Periodicity
+
+[@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
+
 **Definition: Groups Into** : A linear granularity G groups into a linear granularity H, denoted
 $$G \trianglelefteq H,$$
 if for each index j there exists a (possibly infinite) subset S of the integers such
@@ -165,26 +169,25 @@ H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 
 According to this definition, $$G \trianglelefteq H,$$ if each granule H (i) is the union of some
-granules of G. For example, $$Days \trianglelefteq Months,$$ since a week is composed of 7 days. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $$Days \trianglelefteq Months,$$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
+granules of G. For example, $$Days \trianglelefteq Months,$$. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $$Days \trianglelefteq Months,$$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
 
-**Definition: Periodical** A granularity H is periodical with respect to a granularity G if
+**Definition: Groups periodically into** A granularity H is periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
 $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 
-A granularity H which is periodical with respect to G is specified by: (i) the
-R sets of indexes of G S0,...,SR-1 describing the granules of H within one period; (ii) the value of P; (iii) the indexes of first and last granules in H, if their value is not infinite. Then, if S0,...,SR-1 are the sets of indexes of G describing
-H (0), . . . , H (R - 1), respectively, then the description of an arbitrary granule H (j ) is given by: $\bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$. 
+A granularity H which is periodical with respect to G is specified by:
+(i) the R sets of indexes of G, ${S_0,...,S_(R-1)}$ describing the granules of H within one period;
+(ii) the value of P; 
+(iii) the indexes of first and last granules in H, if their value is not infinite. 
+Then, if ${S_0,...,S_(R-1)}$ are the sets of indexes of G describing
+$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H (j) is given by: $\bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$. 
 
 This formula can be explained observing that H (j ) is either one of H (0), . . . , H (R - 1) or, for the periodicity of H, is one of these granules “shifted” ahead or behind on the time line of a finite number of periods. If $H (j ) \epsilon {H (0), . . . , H (R - 1)}$, then the formula ‘j mod R’ defines the index (among those in {0,...,R - 1}) of the granule that must be shifted to obtain H (j).The number of periods each granule of G composing H (j mod R) should be shifted is given by $\lfloor j/R \rfloor$.
 
-Many common granularities are in this kind of relationship, for example, Years is
-periodical with respect to both Days and Months.
 
-As mentioned in the introduction, we are also interested in granularities which
-are periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way.
-
+Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
 **Definition: Quasi Periodical** A granularity H is quasi-periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
@@ -198,9 +201,30 @@ between two exceptions have the same periodical behavior, characterized by R and
 
 Most practical problems seem to require only a granularity system containing a
 set of time granularities which are all periodical (or quasi-periodical) with respect to
-a basic granularity.The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
+a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
 
-The formalism of circular granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. 
+### Circular {#circular-gran-def}
+
+For mapping it in graphical elements, we need to consider all the periodic granules as similar. The formalism  is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. 
+
+
+A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.  Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. We use modular arithmetic for manipulating the index of the periodic granularities so that they are treated as similar across the coarser granularity.
+
+Since the assumption in [@Bettini2000-vy] is that all granularities can be generated from the bottom granularity by calendar algebraic operations - we extend this notion to relate index of the two granularities in a way, which represents the circular arrangement of time.
+
+
+Suppose,
+z denotes the index of the tsibble,
+x,y are two units in the hierarchy table with  $order(x) <  order(y)$. 
+Let $f(x, y)$ denotes the accessor function for representing the finer unit x in terms of a coarser unit y and $c(x, y)$ is a constant which relates x and y.
+
+<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
+
+Then $f(x, y)$ can be  computed using modular arithmetic as follows:
+
+$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$
+
+<!-- The formalism of circular granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index.  -->
 
 A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.  Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. We use modular arithmetic to define circular granularity and use the following definitions:
 
@@ -341,7 +365,7 @@ More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such th
 each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity week is defined by $week = Group_7(day)$. Note that, we assume that the day labeled 1 starts a
 week.
 
--**granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days.
+- **granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days.
 
 
 
@@ -405,7 +429,7 @@ f(x,y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\
   &\vdots\\
   & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
   +i, x+i+1) - 1)\\
-\end{split}
+\end{split}x
 \end{equation}
 
 Let us use the equation to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
@@ -453,7 +477,7 @@ f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
 Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the year and if the year is a leap year to obtain day of the month.
              
 
-# Interaction of time granularities
+# Synergy of time granularities
 
 
 <!-- Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations. -->
@@ -670,14 +694,14 @@ Space and cognitive power both are constrained if the number of levels of facet 
 <!-- Facetting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
 
 
-## Effect of interaction
+## Effect of synergy
 
 
 For illustration, distribution of half-hourly electricity consumption of Victoria is plotted across different time granularities in each of the panel in
 \autoref{fig:allFig}. \autoref{fig:allFig} (a) shows the letter value plot across days of the month faceted by months like January, March and December. \autoref{fig:allFig} (c) shows box plot  across days of the year by the 1st, 15th, 29th and 31st days of the month. \autoref{fig:allFig} (d) showing violin plot across days of the month faceted by week of the month. \autoref{fig:allFig} (e), variations across week of the year conditional on week of the month can be observed through a ridge plot and \autoref{fig:allFig} (f) shows decile plots across  day of the year and month of the year.
 
 
-Clearly, in \autoref{fig:allFig}, we observe that some choices of time granularities work and others do not. In \autoref{fig:allFig} (c), there will be no observations for some combinations "Day-of-Month" and "Day-of-Year". In particular, the 1st day of the month can never correspond to 2nd, 3rd or 4th day of the year. On the contrary, for \autoref{fig:allFig} (a), we will not have any combinations with zero combinations because every "Day-of-Week" can occur in any "Month-of-Year". Thus the graphs that don't work are those where many of the combination sets are empty. In other words, if there are levels of time granularities plotted across x-axis which are not spanned by levels of the time granularities plotted across facets or vice versa, we will have empty sets leading to potential ineffective graphs. We hypothesize that the interaction of these  granularities are in play while deciding if the resulting plot would be a good candidate for exploratory analysis.
+Clearly, in \autoref{fig:allFig}, we observe that some choices of time granularities work and others do not. In \autoref{fig:allFig} (c), there will be no observations for some combinations "Day-of-Month" and "Day-of-Year". In particular, the 1st day of the month can never correspond to 2nd, 3rd or 4th day of the year. On the contrary, for \autoref{fig:allFig} (a), we will not have any combinations with zero combinations because every "Day-of-Week" can occur in any "Month-of-Year". Thus the graphs that don't work are those where many of the combination sets are empty. In other words, if there are levels of time granularities plotted across x-axis which are not spanned by levels of the time granularities plotted across facets or vice versa, we will have empty sets leading to potential ineffective graphs. We hypothesize that the synergy of these  granularities are in play while deciding if the resulting plot would be a good candidate for exploratory analysis.
 
 We should avoid plotting clashes as they hinder the exploratory process by having missing combinations of time granularities in each panel.
 
@@ -1052,15 +1076,35 @@ smart_meter10 %>%
 
 ## T20 cricket data of Indian Premiere League {#cricket}
 
-Th application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL season 2008 to 2016 from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The dataset contains the information on batting team, bowling team,  balls of the over,  over of the innings, innings of the match and total runs per ball for 577 matches spanning over 9 seasons (2008 to 2016). It also has information on which team won, winning margin and several other useful information.
+The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. A hierarchy like table \ref{tab:hierarchy} can be construed for this game format.
 
-A hierarchy like table \ref{tab:hierarchy} can be construed for this game format, where index here would refer to ball as the data set contains ball-by-ball data.
+The ball by ball data for IPL season 2008 to 2016 from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data).  The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).
 
 ```{r hierarchy, echo=FALSE}
-hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), 
-                                  convert_fct = c(1, 6, 20, 2, 1))
+hierarchy_model <- tibble::tibble(units = c("ball", "over", "inning", "match"), 
+                                  convert_fct = c(6, 20, 2, 1))
 knitr::kable(hierarchy_model, caption = " A hierarchy table for T20 cricket")
 ```
+
+```{r readdata}
+library(gravitas)
+library(tibble)
+glimpse(cricket)
+```
+
+Although there is no conventional time granularity in cricket, we can still represent the data set `cricket` through a `tsibble`, where each over, which represents an ordering from past to future, can form the index of the tsibble. The hierarchy table would look like the following: 
+
+
+```{r hierarchy2}
+
+hierarchy_model <- tibble::tibble(
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1))
+
+knitr::kable(hierarchy_model, format = "markdown")
+
+```
+
 
 There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
@@ -1080,19 +1124,23 @@ There are many interesting questions that can possibly be answered with such a d
 First, we look at the distribution of runs per over across over of the innings and seasons in \ref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons and try to see how the strategies of the winning teams differ across seasons or how in a particular season the strategy was different for the winning team and the ones who did not qualify for the playoffs. 
 
 
-Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final 4 from 2010 to 2015. It would be interesting to see the difference in their strategies throughout all matches in the two seasons. The following two questions might help us partially understand their strategies. 
+Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final 4 from 2010 to 2015. It would be interesting to observe their strategies throughout all matches in the two seasons. The following two questions might help us partially understand their strategies. 
 
-- Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first?
+<!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
 
-- Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings?
+<!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
 
+Q1: How run rates vary depending on if a team bats first or second?
+Q2: How number of wickets and dot balls in the previous over affect the runs in the subsequent over across different overs of the innings?
 
 
 ```{r runs_per-over}
-cricket <-  read_csv("data-raw/deliveries_all.csv")
-matches <- read_csv("data-raw/matches_all.csv")
+library(tsibble)
 
-cricket_season <- cricket %>% left_join(matches, by = c("match_id" ="id"))
+cricket_all <-  read_csv("data-raw/deliveries_all.csv")
+matches_all <- read_csv("data-raw/matches_all.csv")
+
+cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id"))
                                         
 cricket_per_over <- cricket_season %>% 
   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
@@ -1105,100 +1153,114 @@ cricket_tsibble_all <- cricket_per_over %>%
 ```
 
 
-
 ```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons."}
   cricket_tsibble_all %>% 
-  prob_plot("over", "season",
-                                hierarchy_model,
-                                response = "runs_per_over",
-                                plot_type = "quantile",
-                                quantile_prob = c(0.25, 0.5, 0.75), overlay = FALSE
-
-
-   )  +
+  prob_plot("over", 
+            "season",
+            hierarchy_model,
+            response = "runs_per_over",
+            plot_type = "quantile",
+            quantile_prob = c(0.25, 0.5, 0.75), 
+            symmetric = FALSE)  +
      theme( # remove the vertical grid lines
             panel.grid.major.x = element_blank() ,
             # explicitly set the horizontal lines (or they will disappear too)
-            panel.grid.major.y = element_blank()
-     ) + scale_x_discrete(breaks = seq(2008, 2016, 3))
+            panel.grid.major.y = element_blank()) + scale_x_discrete(breaks = seq(2008, 2016, 3))
 ```
 
 
+From figure \autoref{cricex}, it can be observed that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability of runs also increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
+  
+```{r cricex, fig.cap= "Letter value plot of runs per over across overs of the inning faceted by innings of the match. No upward shift in runs in the second innings like that in the first implying teams are more vulnerable to score more in the first innings as they approach the end of the inning."}
 
+library(tsibble)
+cricket_tsibble <- cricket %>%
+  mutate(data_index = row_number()) %>%
+  as_tsibble(index = data_index)
 
-
-```{r violin, fig.cap= "Violin and box plots of run rate across innings of the match and matches won or lost for Mumbai Indians(top) and Chennai Super Kings(bottom).The violins for CSK has long right tails in 2nd innings for cases when they lost or won. MI has long right tail only when they won the match."}
-
-matches_select <- matches %>% select(id, toss_winner, winner, win_by_runs)
-
-
-cricket_winner <- cricket_tsibble_all %>% 
-  left_join(matches_select, by = c("match_id" = "id"))
-
-
-MI_winner <- cricket_winner %>% 
-             filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians",
-                    season %in% c(2013, 2015)) %>% 
-             mutate(win = if_else(winner == "Mumbai Indians", 1, 0))
-
-MI_winner %>% 
-  gran_obs("win", "inning", hierarchy_model)
-
-
-CSK_winner <- cricket_winner %>% 
-             filter(batting_team ==  "Chennai Super Kings"| bowling_team == "Chennai Super Kings",
-                    season %in% c(2013, 2015)) %>% 
-             mutate(win = if_else(winner == "Chennai Super Kings", 1, 0))
-
-CSK_winner %>% 
-  gran_obs("win", "inning", hierarchy_model)
-
-
- MI_winner %>% 
-            prob_plot( "win","inning",
-                                hierarchy_model,
-                                response = "run_rate",
-                                plot_type = "violin",
-                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-                     overlay = FALSE) + ggtitle("") + 
-    geom_boxplot(width = 0.1, color = "blue")
-
- CSK_winner %>% filter(inning %in% c(1,2)) %>% 
-           prob_plot( "win","inning",
-                               hierarchy_model,
-                               response = "run_rate",
-                               plot_type = "violin",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-                    overlay = FALSE) + ggtitle("") + 
-   geom_boxplot(width = 0.1, color = "blue")
+cricket_tsibble %>%
+  filter(batting_team %in% c("Mumbai Indians",
+                             "Chennai Super Kings"))%>%
+  prob_plot("inning", 
+            "over",
+  response = "runs_per_over",
+  hierarchy_model,
+  plot_type = "lv")
 ```
 
 
-```{r}
-cricket_winner %>% as_tibble() %>% 
-             filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians",
-                    winner!= "Mumbai Indians",
-                    win_by_runs!=0,
-                    season %in% c(2013, 2015)) %>% select(win_by_runs) %>% summary()
+<!-- ```{r violin, fig.cap= "Violin and box plots of run rate across innings of the match and matches won or lost for Mumbai Indians(top) and Chennai Super Kings(bottom).The violins for CSK has long right tails in 2nd innings for cases when they lost or won. MI has long right tail only when they won the match."} -->
+
+<!-- matches_select <- matches %>% select(id, toss_winner, winner, win_by_runs) -->
+
+
+<!-- cricket_winner <- cricket_tsibble_all %>% -->
+<!--   left_join(matches_select, by = c("match_id" = "id")) -->
+
+
+<!-- MI_winner <- cricket_winner %>% -->
+<!--              filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians", -->
+<!--                     season %in% c(2013, 2015)) %>% -->
+<!--              mutate(win = if_else(winner == "Mumbai Indians", 1, 0)) -->
+
+<!-- MI_winner %>% -->
+<!--   gran_obs("win", "inning", hierarchy_model) -->
+
+
+<!-- CSK_winner <- cricket_winner %>% -->
+<!--              filter(batting_team ==  "Chennai Super Kings"| bowling_team == "Chennai Super Kings", -->
+<!--                     season %in% c(2013, 2015)) %>% -->
+<!--              mutate(win = if_else(winner == "Chennai Super Kings", 1, 0)) -->
+
+<!-- CSK_winner %>% -->
+<!--   gran_obs("win", "inning", hierarchy_model) -->
+
+
+<!--  MI_winner %>% -->
+<!--             prob_plot( "win","inning", -->
+<!--                                 hierarchy_model, -->
+<!--                                 response = "run_rate", -->
+<!--                                 plot_type = "violin", -->
+<!--                                 quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), -->
+<!--                      overlay = FALSE) + ggtitle("") + -->
+<!--     geom_boxplot(width = 0.1, color = "blue") -->
+
+<!--  CSK_winner %>% filter(inning %in% c(1,2)) %>% -->
+<!--            prob_plot( "win","inning", -->
+<!--                                hierarchy_model, -->
+<!--                                response = "run_rate", -->
+<!--                                plot_type = "violin", -->
+<!--                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), -->
+<!--                     overlay = FALSE) + ggtitle("") + -->
+<!--    geom_boxplot(width = 0.1, color = "blue") -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- cricket_winner %>% as_tibble() %>% -->
+<!--              filter(batting_team ==  "Mumbai Indians" | bowling_team == "Mumbai Indians", -->
+<!--                     winner!= "Mumbai Indians", -->
+<!--                     win_by_runs!=0, -->
+<!--                     season %in% c(2013, 2015)) %>% select(win_by_runs) %>% summary() -->
 
 
 
-cricket_winner %>% as_tibble() %>% 
-             filter(batting_team ==  "Chennai Super Kings",
-                    winner!= "Chennai Super Kings",
-                    win_by_runs!=0,
-                    inning ==2, 
-                    season %in% c(2013, 2015)) %>% select(win_by_runs) %>% summary()
-```
+<!-- cricket_winner %>% as_tibble() %>% -->
+<!--              filter(batting_team ==  "Chennai Super Kings", -->
+<!--                     winner!= "Chennai Super Kings", -->
+<!--                     win_by_runs!=0, -->
+<!--                     inning ==2, -->
+<!--                     season %in% c(2013, 2015)) %>% select(win_by_runs) %>% summary() -->
+<!-- ``` -->
 
 
 <!-- For MI, cases when they lost, distribution of run rates not very different depending on if they bat first or second. However, cases when they won, distribution of run rate is very skewed when they bat in the 2nd innings implying winning by short margins.  -->
 
-Figure \ref{fig:violin} shows that for CSK, irrepective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. However, we can delve deeper and try to see which overs are the most volatile for CSK and if it is different to that of MI?
+<!-- Figure \ref{fig:violin} shows that for CSK, irrepective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. However, we can delve deeper and try to see which overs are the most volatile for CSK and if it is different to that of MI? -->
 
 
-In Figure \ref{fig:lv}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. There is an upward shift of the distribution in the second part of the innings (after 10th over) and more variability (longer and distinct letter values) as well.
-CSK has been more uniform in their approach maintaining consistent scores per over. Since CSK's last over in the 2nd innings really get volatile, after a consistent performance in the other overs - this behavior is exhibited as an outlier in Figure \ref{fig:violin}.
+<!-- In Figure \ref{fig:lv}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. There is an upward shift of the distribution in the second part of the innings (after 10th over) and more variability (longer and distinct letter values) as well. -->
+<!-- CSK has been more uniform in their approach maintaining consistent scores per over. Since CSK's last over in the 2nd innings really get volatile, after a consistent performance in the other overs - this behavior is exhibited as an outlier in Figure \ref{fig:violin}. -->
 
 
 <!-- whereas MI's scores increase as they proceed with the game notwithstanding if they bat first or second. CSK's run rate distibution is extremely right tailed in the 2nd innings, but not in the first. .   --> -->
@@ -1239,52 +1301,50 @@ CSK has been more uniform in their approach maintaining consistent scores per ov
 <!-- ``` -->
 
 ```{r lv, fig.cap = "Letter value plot of run rate across overs of an inning and innings of the match for (top) Mumbai Indians and (bottom) Chennai Super Kings."}
+# 
+# 
+# 
+# MI <- cricket_tsibble_all %>%
+#   filter(season %in% c(2010:2015), batting_team=="Mumbai Indians")
+# 
+# 
+# CSK <- cricket_tsibble_all %>%
+#   filter(season %in% c(2010:2015),
+#          batting_team=="Kolkata Knight Riders",
+#          inning %in% c(1,2))
+# 
+# 
+#  MI %>%
+#    gran_obs("inning", "over", hierarchy_model) %>%
+#    knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
+# 
+#  CSK %>%
+#    gran_obs("inning", "over", hierarchy_model) %>%
+#    knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
+# 
+# MI %>%
+#   prob_plot("inning", "over",
+#                                hierarchy_model,
+#                                response = "run_rate",
+#                                plot_type = "lv",
+#                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))  + ggtitle("")
+# 
+# 
+# CSK %>%
+#   prob_plot("inning", "over",
+#                                hierarchy_model,
+#                                response = "run_rate",
+#                                plot_type = "lv",
+#                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("")
+# 
+# cricket_tsibble_all %>% distinct(batting_team)
 
-
-
-MI <- cricket_tsibble_all %>% 
-  filter(season %in% c(2010:2015), batting_team=="Mumbai Indians") 
-
-
-CSK <- cricket_tsibble_all %>% 
-  filter(season %in% c(2010:2015),
-         batting_team=="Kolkata Knight Riders",
-         inning %in% c(1,2)) 
- 
- 
- MI %>% 
-   gran_obs("inning", "over", hierarchy_model) %>%
-   knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
- 
- CSK %>% 
-   gran_obs("inning", "over", hierarchy_model) %>%
-   knitr::kable(format = "markdown", caption = "Cross tabulation of Innings and Overs for Mumbai Indians: 2010-2015")
-
-MI %>% 
-  prob_plot("inning", "over",
-                               hierarchy_model,
-                               response = "run_rate",
-                               plot_type = "lv",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))  + ggtitle("")
-
-
-CSK %>% 
-  prob_plot("inning", "over",
-                               hierarchy_model,
-                               response = "run_rate",
-                               plot_type = "lv",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + ggtitle("")
-
-cricket_tsibble_all %>% distinct(batting_team)
- 
 ```
 
 
+Q3: Is run rate set to reduce in subsequent over if fielding/bowling is good in the previous over? Between fielding and bowling which penalises runs in the subsequent over more?
 
-
-Q3: Is run rate set to reduce in overs where fielding is good?
-
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include catches and run out as a measure of fielding. Difference in run rates should be negative if fielding is good. Let us see if this fact is true.Thus, Figure \ref{fig:field} shows the difference between run rate between two subsequent overs are negative when good fielding leads to one or two dismissals in an over.
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include catches and run out as a measure of fielding. Difference in run rates should be negative if fielding is good. Let us see if this fact is true.Figure \ref{fig:field} shows the difference between run rate between two subsequent overs are negative when good fielding leads to one or two dismissals in an over.
 
 ```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and dismissals by catch and catch and bowled."}
 cricket_fielding <- cricket_season %>% 
@@ -1304,7 +1364,7 @@ cricket_tsibble_fld %>% gran_obs("over", "fielding_wckts")
 
 
 cricket_tsibble_fld %>% 
-  filter(fielding_wckts %in% c(0,1,2)) %>% 
+  filter(fielding_wckts %in% c(0,1)) %>% 
   prob_plot( "fielding_wckts","over",
                                hierarchy_model,
                                response = "lagged_run_rate",
@@ -1319,37 +1379,92 @@ Q4: Is run rate set to reduce in overs where number of dot balls are more/number
 
 A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase or the batsman can likely to go for big shots and get dismissed. Figure \ref{fig:dot} shows that for any over, increase in dot balls lead to decrease in run rate. 
 
+```{r crickread}
+cricket_tsibble <- gravitas::cricket %>%
+  mutate(data_index = row_number()) %>%
+  as_tsibble(index = data_index)
+```
 
-```{r dot, fig.cap="Distribution of run rate across overs of the innings and number of dot balls in an over."}
+```{r exdotplot, echo=FALSE}
+library(gravitas)
+library(tsibble)
 
-cricket_dot <- cricket_season %>% 
-  mutate(wicket = if_else(is.na(dismissal_kind),0,1),
-         dot_balls = if_else(total_runs==0,1, 0)
-         ) %>% 
+
+cricket_bowling <- cricket_season %>% 
+  mutate(dot_ball_proxy = if_else(total_runs==0,1,0)) %>% 
   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-  summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs),
-            wicket = sum(wicket),
-            dot_balls = sum(dot_balls)) 
+  summarise(runs_per_over = sum(total_runs),
+            run_rate = sum(total_runs)/length(total_runs),
+            dot_balls = sum(dot_ball_proxy)) %>%
+            mutate(lagged_run_rate = c(0,diff(run_rate)))
 
 
-
-cricket_tsibble_dot <- cricket_dot %>% 
+cricket_tsibble_bow <- cricket_bowling %>% 
   ungroup() %>% 
   mutate(data_index = row_number()) %>% 
   as_tsibble(index = data_index)
 
-#cricket_tsibble_dot %>% gran_obs("over", "fielding_wckts")
+cricket_tsibble_bow %>% gran_obs("over", "dot_balls")
 
-cricket_tsibble_dot  %>% filter(dot_balls %in% c(1,2,3,4)) %>% 
-  prob_plot("over","dot_balls",
-                               hierarchy_model,
-                               response = "run_rate",
-                               plot_type = "quantile",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-           overlay = FALSE)  + ggtitle("")
+cricket_tsibble_bow %>% 
+  filter(dot_balls %in% c(0, 1, 2))%>% 
+  prob_plot("dot_balls",
+            "over",
+            hierarchy_model,
+            response = "lagged_run_rate",
+            plot_type = "quantile",
+            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+
+```
+
+```{r exwicketplot}
+cricket_tsibble %>% 
+  filter(wicket %in% c(0, 1)) %>%
+  mutate(lag_wicket = lag(wicket)) %>% 
+  filter(lag_wicket %in% c(0, 1)) %>%
+  prob_plot("lag_wicket",
+            "over",
+            hierarchy_model,
+            response = "runs_per_over",
+            plot_type = "quantile",
+            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
 ```
 
 
+<!-- # ```{r dot, fig.cap="Distribution of run rate across overs of the innings and number of dot balls in an over."} -->
+<!-- #  -->
+<!-- # cricket_dot <- cricket_season %>%  -->
+<!-- #   mutate(wicket = if_else(is.na(dismissal_kind),0,1), -->
+<!-- #          dot_balls = if_else(total_runs==0,1, 0) -->
+<!-- #          ) %>%  -->
+<!-- #   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>% -->
+<!-- #   summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs), -->
+<!-- #             wicket = sum(wicket), -->
+<!-- #             dot_balls = sum(dot_balls))  -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  -->
+<!-- # cricket_tsibble_dot <- cricket_dot %>%  -->
+<!-- #   ungroup() %>%  -->
+<!-- #   mutate(data_index = row_number()) %>%  -->
+<!-- #   as_tsibble(index = data_index) -->
+<!-- #  -->
+<!-- # #cricket_tsibble_dot %>% gran_obs("over", "fielding_wckts") -->
+<!-- #  -->
+<!-- # cricket_tsibble_dot  %>%  -->
+<!-- #   filter(dot_balls %in% c(1,2,3,4)) %>%  -->
+<!-- #   mutate(lag_dot_ball = lag(dot_balls)) -->
+<!-- #   prob_plot("over","dot_balls", -->
+<!-- #                                hierarchy_model, -->
+<!-- #                                response = "run_rate", -->
+<!-- #                                plot_type = "quantile", -->
+<!-- #                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), -->
+<!-- #            overlay = FALSE)  + ggtitle("") -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- #  -->
 
 
 <!--   cricket_tsibble %>% prob_plot("inning_match", "over_inning", -->
