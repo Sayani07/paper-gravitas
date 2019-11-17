@@ -203,6 +203,79 @@ set of time granularities which are all periodical (or quasi-periodical) with re
 a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
 
 
+### Cyclic {#circular-gran-def}
+
+In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intutively, we need to manipulate the indices of periodic linear granularities so that it leads to repetitive patterns. The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. 
+
+<!-- Since time is arranged in a cyclic way typically to accomodate periodicity, we will try to formalize how periodic linear granularities can be represented in a cyclic way. -->
+
+The assumption in [@Bettini2000-vy] is that all linear granularities can be generated from the bottom granularity by calendar algebraic operations. Hence we assume that a bottom granularity exists and is represented by the index of the tsibble.
+
+Suppose,
+z denotes the index of the tsibble. Also represents the bottom granularity.
+Let G be a periodic linear granularity, not equal to the bottom granularity, with each granule of G made up of $const(z, G)$ many granules of the bottom granularity.
+C be the cyclic representation of the linear time granularity in terms of the bottom granularity.
+
+Then, $$C(z, G) = z \mod c(z,G)$$
+
+Now, suppose we want a cyclic representation of two periodic granularities.
+
+$$C(G, H) = \lfloor z/const(z,G) \rfloor\mod const(G,H)$$
+
+
+
+
+
+
+C1 and C2 are two cyclic granularities in the hierarchy table with  $order(C1) <  order(C2)$. 
+Let $f(C_1, C_2)$ denotes the accessor function for representing the finer unit C1 in terms of a coarser unit C2 and $const(C1, C2)$ is a constant which relates C1 and C2.
+
+<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
+
+
+
+
+Then $f(x, y)$ can be  computed using modular arithmetic as follows:
+
+$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$
+
+The constant c(x,y) is for granularities for groups into periodically, for granualrities which group into each other in a quasi-periodic way, no such constants exist and no such close form solution can be obtained.
+
+Some examples of circular representation of finer granularities within coarse granularities in a  periodic and quasi-periodic set up are as follows:
+
+
+we extend this notion to relate index of the two granularities in a way, which represents the circular arrangement of time using modular arithmetic.
+
+
+Extending from the idea of linear granulariites, where 
+$H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$ 
+can be re-written as,
+$H (j) = \bigcup_{i \in S_j \mod R}G((P/R) *(j - j \mod R) + i)$
+
+
+The index in the right hand side looks like an equivalence class with modulus P/R.  
+The value of $j\mod R$ is j for j< R and 1, 2, ...  for j>R.  
+
+
+
+Here, i runs from 1 to no. of granules of G and j runs from 1 to number of granules of H.
+Hence, $j*\lfloor P/R \rfloor + i$.
+
+For j = 1, we have ($\lfloor P/R \rfloor + i$)
+For j = 2,  we have ($2*\lfloor P/R \rfloor + i$)
+
+$H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$ 
+
+
+
+
+<!-- Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. . -->
+
+
+
+
+
+
 ### Computation of time granularities
 
 Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra[@Ning2002-tf]. It is assumed that there exists a “bottom”
@@ -224,31 +297,7 @@ each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity we
 
 - **granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days.
 
-
-### Circular {#circular-gran-def}
-
-In a cyclic organization of time, the domain is composed of a set of recurring time values. The formalism of time granularities in cyclic arrangement is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. 
-
-A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Since time is arranged in a cyclic way typically to accomodate periodicity, we will try to formalize how periodic linear granularities can be represented in a cyclic way. Since the assumption in [@Bettini2000-vy] is that all granularities can be generated from the bottom granularity by calendar algebraic operations - we extend this notion to relate index of the two granularities in a way, which represents the circular arrangement of time using modular arithmetic.
-
-<!-- Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. . -->
-
-
-
-Suppose,
-z denotes the index of the tsibble,
-x,y are two units in the hierarchy table with  $order(x) <  order(y)$. 
-Let $f(x, y)$ denotes the accessor function for representing the finer unit x in terms of a coarser unit y and $c(x, y)$ is a constant which relates x and y.
-
-<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
-
-Then $f(x, y)$ can be  computed using modular arithmetic as follows:
-
-$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$
-
-The constant c(x,y) is for granularities for groups into periodically, for granualrities which group into each other in a quasi-periodic way, no such constants exist and no such close form solution can be obtained.
-
-Some examples of circular representation of finer granularities within coarse granularities in a  periodic and quasi-periodic set up are as follows: 
+ 
 
 
 
@@ -370,7 +419,6 @@ Thus, the hierarchy table for the Mayan calendar would look like the following:
 Examples of multiple-order-up  granularities can be kin of the tun or kin of the baktun whereas examples of single-order-up granularities may include kin of the uinal, uinal of the tun etc. 
 
 In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
-
 
 
 <!-- Computation of time granularities would differ in a periodic and non-periodic set up. -->
