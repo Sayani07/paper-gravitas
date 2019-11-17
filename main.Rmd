@@ -218,7 +218,7 @@ C be the cyclic representation of the linear time granularity in terms of the bo
 
 Then, $$C(z, G) = z \mod c(z,G)$$
 
-Now, suppose we want a cyclic representation of two periodic granularities.
+Now, suppose we want a cyclic representation of two periodic granularities G and H, where H is periodic with respect to G.
 
 $$C(G, H) = \lfloor z/const(z,G) \rfloor\mod const(G,H)$$
 
@@ -267,13 +267,7 @@ For j = 2,  we have ($2*\lfloor P/R \rfloor + i$)
 $H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$ 
 
 
-
-
 <!-- Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. . -->
-
-
-
-
 
 
 ### Computation of time granularities
@@ -529,7 +523,7 @@ f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
 Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the year and if the year is a leap year to obtain day of the month.
              
 
-# Synergy of time granularities
+# Synergy of cyclic time granularities
 
 
 <!-- Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations. -->
@@ -563,16 +557,20 @@ Here, the first part of the equation is a single-order-up granularity which can 
 
 
 Before exploring the behavior of a "dependent variable" across time granularities,
-it is important to know how these granularities interact with each other. If two time granulaties of interest interact, the relationship between each of the interacting variables and the dependent variable will depend on the value of the other interacting variable. To define a general framework, we define harmony and clashes. Harmonies are the pair of granularities that aid the process of exploratory analysis and clashes are pair that interact in a non-compatible ways and hinder the process of exploration of the dependent variable if plotted together.
+it is important to know how these granularities interact with each other. If two time granulaties of interest interact, the relationship between each of the interacting variables and the dependent variable will depend on the value of the other interacting variable. To define a general framework, we define harmony and clashes.
+
+<!-- Harmonies are the pair of granularities that aid the process of exploratory analysis and clashes are pair that interact in non-compatible ways and hinder the process of exploration of the dependent variable. -->
 
 ## Harmony and Clashes
 
 <!-- When we plot some observations with two circular or aperiodic granularities used as aesthetics or facets, problems arise when we have empty combinations. It is important to check how these two granularities interact with each other, before we expect to gain insights by plotting them together.  -->
 
-Suppose we have two circular or aperiodic granularities $C_1$ and $C_2$, such that $C_1$ maps row numbers to a set $\{A_1,A_2,A_3,\dots, A_n$\}, and $C_2$ maps row numbers to a set $\{B_1,B_2,B_3,\dots, B_m$\}.  That is, let $S_{ij}$ be the set of row numbers such that for all $s \in S_{ij}$, $C_1(s) = i$ and $C_2(s) = j$. Since, $C_1$ has n levels and $C_2$ has m levels there will be $nm$ such sets $S_{ij}$. The graphs that don't work are those where many of these 12 sets are empty. Now, many situations can lead to any of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty.
+Suppose we have two circular or aperiodic granularities $C_1$ and $C_2$, such that $C_1$ maps row numbers to a set $\{A_1,A_2,A_3,\dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1,B_2,B_3,\dots, B_m$\}.  That is, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = i$ and $C_2(s) = j$. Since, $C_1$ has n levels and $C_2$ has m levels there will be $nm$ such sets $S_{ij}$.Now, many situations can lead to any of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty.
 
 Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
-These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations.
+These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
+
+<!--  In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. -->
 
 Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be DOW and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can take 7 values while $C_2$ can take 2 values. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of DOW and WD/NWD. While potentially all of these can be non-empty (it is possible to have a public holiday on any DOW), in practice many of these combinations will probably have very few observations. For example, there are few if any public holidays on Wednesdays or Thursdays in any given year in Melbourne. 
 
@@ -581,10 +579,12 @@ Secondly, empty combinations can turn up due to differences in event location or
 Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ maps row numbers to "Business days", which are days from Monday to Friday except holidays and $C_2$ is Day-of-Month. Then the weekends in Days-of-Month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from the structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
 
 
-An example when there will be no empty combinations could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month. So graphics involving $C_1$ and $C_2$ are potentially useful.
+An example when there will be no empty combinations could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month.
 
-Therefore, combinations of circular/aperiodic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**.
-And the ones that do not lead to any missing combinations are called **harmonies** as they promote the exploratory analysis through visualization.
+Therefore, pair of circular/aperiodic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**.
+And the ones that do not lead to any missing combinations are called **harmonies**. 
+
+<!-- as they promote the exploratory analysis through visualization. -->
 
 
 
