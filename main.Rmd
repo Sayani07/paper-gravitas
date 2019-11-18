@@ -676,7 +676,9 @@ And the ones that do not lead to any missing combinations are called **harmonies
 
 The grammar of graphics introduced a framework to incorporate underlying features for statistical graphics to construct them by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, allows us to produce graphics using the same structured thinking that is used to design analysis. Briefly, any graphics are made up of **Layers**, **Facet**,**Scale** and a  **coordinate system**.**Layers** are made up of **data**, **mapping**, **statistical transformation**, **geometric objects** and **position adjustments**.
 
-Creating a visualisation requires a number of nuanced judgements. However, we exploit some features of layers and faceting to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate temporal granularities. The general framework of visualizing the distribution invloves a faceting approach with one temporal granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customised species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color.
+Creating a visualisation requires a number of nuanced judgements. However, we exploit some features of layers and faceting to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate temporal granularities. The general framework of visualizing the distribution invloves a faceting approach with one temporal granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization.
+
+While we accomplish that, we need to bear in mind that any customised species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
 
 
 <!-- Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot. -->
@@ -726,21 +728,24 @@ It is good to be conversant with the benefits and challenges while choosing any 
 
 ### Levels of temporal granularities
 
-Choice of plots depend on the levels(very high/high/medium/low) of the two granularities plotted. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us.Space and resolution become a problem if the number of levels of facet variables is too high. Hence, plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
+The levels (very high/high/medium/low) of the two granularities plotted might have an impact on the choice of plots. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Space and resolution become a problem if the number of levels of facet variables is too high. Hence, plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
 
 Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are chosen based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. Any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively.
 
 
-Space and cognitive power both are constrained if the number of levels of facet variables is very high. So as a general rule, we should avoid plotting a temporal granularity with very high levels across facets.
 
- - If levels of both the granularities are low, then any distribution plots might be chosen depending on which feature of the distribution who is interested to look at. 
+
+ <!-- - If levels of both the granularities are low, then any statistical distribution plot might be chosen depending on which feature of the distribution one is interested to look at.  -->
+ 
+  - If level of the granularity plotted across x-axis is low or medium, then any distribution plots might be chosen depending on which feature of the distribution needs focus, irrespective of the number of the levels of the facet variable.
  
  - If level of the granularity plotted across x-axis is more than medium, ridge plots should be avoided to escape overlap of categories.
  
- - If level of the granularity plotted across x-axis is low, then any distribution plots might be chosen depending on which feature of the distribution who is interested to look at, irrespective of the number of the levels of the facet variable.
- 
- - If level of the granularity plotted across x-axis is more than or equal to high, quantile plots are preferred. 
- 
+  - If level of the granularity plotted across x-axis is more than or equal to high, quantile plots are preferred. 
+  
+  - - If levels of granularities plotted are medium, empirical based methods of statistical distribution are preferred as they use less space by design than most density based methods.
+
+
 
 <!-- Let us consider case by case and see which plots are better suitable in which scenarios. -->
 
