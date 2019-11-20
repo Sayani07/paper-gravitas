@@ -227,9 +227,18 @@ $$C_{day, week}(z) = D(z\mod 7)$$.
 
 Since, the period length of days with respect to weeks is 7.
 
+
 All circular granularities can be expressed in terms of the bottom linear granularity with equation.
 
+Relationship between circular granularities:
 
+In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as
+
+$$C_{(G, H)}(z) = G(\lfloor z/k(BG,G) \rfloor\mod k(G,H))$$
+
+where, linear granularity H is periodic with respect to  linear granularity G and k(G, H) represents the period length of G within H.
+
+If linear granularities are not provided or bottom granularity is not known, any circular granularities of order m, provided the circular granularities till order (m-1) are provided.
 
 Now, suppose we want a cyclic representation of two periodic granularities G and H, where H is periodic with respect to G.
 
