@@ -214,11 +214,20 @@ The formalism of cyclic time granularities is attempted through the tsibble [@Wa
 The assumption in [@Bettini2000-vy] is that all linear granularities can be generated from the bottom granularity by calendar algebraic operations. Hence we assume that a bottom granularity exists and is represented by the index of the tsibble.
 
 Suppose,
-z denotes the index of the tsibble. Also represents the bottom granularity.
-Let G be a periodic linear granularity, not equal to the bottom granularity, with k(BG,G) as the period length of the bottom granularity with respect to linear granularity G.
+z denotes the index set.
+BG denotes the index of the tsibble. Also represents the bottom granularity.
+Let G be a linear granularity, periodic with respect to BG.
+k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.
 C(BG, G) is the circular granularitiy relating linear granularity G to the bottom granularity. Then,  C(BG, G) is given as follows: 
-Then, $$C_{BG, G}(z) = G(z\mod k(BG,G))$$
+Then, $$C_{BG, G}(z) = G(z\mod k(BG,G))$$.
 
+For example, suppose the bottom granularity day and circular granularity day-of-week are represented by D and $$C_{day, week}$$ respectively, then we will have: 
+
+$$C_{day, week}(z) = D(z\mod 7)$$.
+
+Since, the period length of days with respect to weeks is 7.
+
+All circular granularities can be expressed in terms of the bottom linear granularity with equation.
 
 
 
