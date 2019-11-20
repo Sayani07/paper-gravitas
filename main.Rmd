@@ -419,7 +419,7 @@ In the next section, we discuss the computation of any single-order-up and multi
 
 Now, let us dicuss the computation of circular granularities.
 
-## Single-order-up granularities
+### Single-order-up granularities
 
 Suppose, z denotes the index of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f(x, y)$ denotes the accessor function for computing the single-order-up granularity relating x and y and $c(x, y)$ is a constant which relates x and y.
 
@@ -455,7 +455,7 @@ $katun\_baktun:   = \lfloor z/20*18*20\rfloor \mod 20 $\\
 Aperiodic single-order-up granularities refers to the granularities which are formed with units that does not repeat its values in regular intervals or periods. In Gregorian calendar, examples may include days of the month where each month may consists of 28, 29, 30 or 31 days. So there is no single number that can be used for converting days to months. We cannot compute the aperiodic single-order-up granularities using the index of the tsibble and modular arithmetic like in the periodic case using just the hierarchy table and relationships of units.
 
 
-## Multiple order-up granularities 
+### Multiple order-up granularities 
 
 Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerining all periodic single-order-up granularities and the second with mixed single-order-up granularities.
 
@@ -892,7 +892,7 @@ Suppose we have $T$ observations, and two cyclic granularities -  $C_1$ with $n$
 Even when there are no rarely occuring events, number of observations might vary hugely across within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. We use Gini's measure to compute if differences in number of observations across or within facets are significantly different.
 
 
-# Case studies
+# Applications
 
 ## Smart meter data of Australia {#smartmeter}
 
@@ -1158,7 +1158,8 @@ smart_meter %>%
 
 The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. A hierarchy like table \ref{tab:hierarchy} can be construed for this game format.
 
-The ball by ball data for IPL season 2008 to 2016 from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data).  The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).
+The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data).  The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).
+
 
 ```{r hierarchy, echo=FALSE}
 hierarchy_model <- tibble::tibble(units = c("ball", "over", "inning", "match"), 
@@ -1185,7 +1186,6 @@ knitr::kable(hierarchy_model, format = "markdown")
 
 ```
 
-
 There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
 
@@ -1211,6 +1211,7 @@ Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best t
 <!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
 
 Q1: How run rates vary depending on if a team bats first or second?
+
 Q2: How number of wickets and dot balls in the previous over affect the runs in the subsequent over across different overs of the innings?
 
 
@@ -1457,7 +1458,9 @@ cricket_tsibble_fld %>%
 
 Q4: Is run rate set to reduce in overs where number of dot balls are more/number of wickets are more?
 
-A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase or the batsman can likely to go for big shots and get dismissed. Figure \ref{fig:dot} shows that for any over, increase in dot balls lead to decrease in run rate. 
+A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls in previous over on run rate in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high?
+
+Figure \ref{fig:dot} shows that for any over, increase in dot balls lead to decrease in run rate. 
 
 ```{r crickread}
 cricket_tsibble <- gravitas::cricket %>%
@@ -1465,7 +1468,7 @@ cricket_tsibble <- gravitas::cricket %>%
   as_tsibble(index = data_index)
 ```
 
-```{r exdotplot, echo=FALSE}
+```{r exdotplot, echo=FALSE, eval = FALSE}
 library(gravitas)
 library(tsibble)
 
@@ -1476,7 +1479,7 @@ cricket_bowling <- cricket_season %>%
   summarise(runs_per_over = sum(total_runs),
             run_rate = sum(total_runs)/length(total_runs),
             dot_balls = sum(dot_ball_proxy)) %>%
-            mutate(lagged_run_rate = c(0,diff(run_rate)))
+            mutate(diff_run_rate = c(0,diff(run_rate)))
 
 
 cricket_tsibble_bow <- cricket_bowling %>% 
@@ -1491,7 +1494,7 @@ cricket_tsibble_bow %>%
   prob_plot("dot_balls",
             "over",
             hierarchy_model,
-            response = "lagged_run_rate",
+            response = "diff_run_rate",
             plot_type = "quantile",
             quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
 
@@ -1499,6 +1502,19 @@ cricket_tsibble_bow %>%
 ```
 
 ```{r exwicketplot}
+
+cricket_tsibble %>% 
+  filter(dot_balls %in% c(0, 1, 2)) %>%
+  mutate(lag_dot = lag(dot_balls)) %>% 
+  filter(lag_dot %in% c(0, 1, 2)) %>%
+  prob_plot("lag_dot",
+            "over",
+            hierarchy_model,
+            response = "runs_per_over",
+            plot_type = "quantile",
+            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+
 cricket_tsibble %>% 
   filter(wicket %in% c(0, 1)) %>%
   mutate(lag_wicket = lag(wicket)) %>% 
@@ -1652,7 +1668,7 @@ cricket_tsibble %>%
 
 
 
-{r read_data, echo=FALSE}
+<!-- {r read_data, echo=FALSE} -->
 
 <!-- cricket_tsibble <- cricketdata %>% -->
 <!--   mutate(data_index = row_number()) %>% -->
