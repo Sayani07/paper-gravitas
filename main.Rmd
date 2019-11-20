@@ -205,7 +205,9 @@ a basic granularity. The assumption is there should be one bottom granularity an
 
 ### Cyclic {#circular-gran-def}
 
-In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intutively, we need to manipulate the indices of periodic linear granularities so that it leads to repetitive patterns. The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. 
+In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intutively, the indices of periodic linear granularities needs to be manipulated so that it leads to repetitive patterns. 
+
+The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. 
 
 <!-- Since time is arranged in a cyclic way typically to accomodate periodicity, we will try to formalize how periodic linear granularities can be represented in a cyclic way. -->
 
@@ -213,10 +215,12 @@ The assumption in [@Bettini2000-vy] is that all linear granularities can be gene
 
 Suppose,
 z denotes the index of the tsibble. Also represents the bottom granularity.
-Let G be a periodic linear granularity, not equal to the bottom granularity, with each granule of G made up of $const(z, G)$ many granules of the bottom granularity.
-C be the cyclic representation of the linear time granularity in terms of the bottom granularity.
+Let G be a periodic linear granularity, not equal to the bottom granularity, with k(BG,G) as the period length of the bottom granularity with respect to linear granularity G.
+C(BG, G) is the circular granularitiy relating linear granularity G to the bottom granularity. Then,  C(BG, G) is given as follows: 
+Then, $$C_{BG, G}(z) = G(z\mod k(BG,G))$$
 
-Then, $$C(z, G) = z \mod c(z,G)$$
+
+
 
 Now, suppose we want a cyclic representation of two periodic granularities G and H, where H is periodic with respect to G.
 
