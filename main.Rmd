@@ -159,6 +159,9 @@ The definitions and rules for linear granularities are inadequate to reflect per
 
 [@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
 
+**Definition: Finer Than** : A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
+for each index i, there exists an index j such that $G(i) \subset H(j)$.
+
 **Definition: Groups Into** : A linear granularity G groups into a linear granularity H, denoted
 $$G \trianglelefteq H,$$
 if for each index j there exists a (possibly infinite) subset S of the integers such
@@ -195,58 +198,64 @@ integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
 
  
-Intuitively, the definition requires that all granules of H within the span of time
-between two exceptions have the same periodical behavior, characterized by R and P.
+Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
 
-Most practical problems seem to require only a granularity system containing a
-set of time granularities which are all periodical (or quasi-periodical) with respect to
-a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
+Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
 
 
 ### Cyclic {#circular-gran-def}
 
-In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intutively, the indices of periodic linear granularities needs to be manipulated so that it leads to repetitive patterns. 
+In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intutively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorisation of time.
 
-The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. 
+The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
 
-<!-- Since time is arranged in a cyclic way typically to accomodate periodicity, we will try to formalize how periodic linear granularities can be represented in a cyclic way. -->
+Suppose,  
+z denotes the index set.  
+BG denotes the index of the tsibble (bottom granularity).
+G be a linear granularity, periodic with respect to BG.  
+k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.  
 
-The assumption in [@Bettini2000-vy] is that all linear granularities can be generated from the bottom granularity by calendar algebraic operations. Hence we assume that a bottom granularity exists and is represented by the index of the tsibble.
+**Definition: Circular granularity** A circular granularity C(BG, G) relates a linear granularity G to the bottom granularity, if
 
-Suppose,
-z denotes the index set.
-BG denotes the index of the tsibble. Also represents the bottom granularity.
-Let G be a linear granularity, periodic with respect to BG.
-k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.
-C(BG, G) is the circular granularitiy relating linear granularity G to the bottom granularity. Then,  C(BG, G) is given as follows: 
-Then, $$C_{BG, G}(z) = G(z\mod k(BG,G))$$.
+\begin{equation} \label{eq2}
+$$C_{BG, G}(z) = BG(z\mod k(BG,G)) \forall z \in \mathbb{Z}^+$$
+\end{equation}, such that 
+$BG(z) \neq \phi$.
 
-For example, suppose the bottom granularity day and circular granularity day-of-week are represented by D and $$C_{day, week}$$ respectively, then we will have: 
-
-$$C_{day, week}(z) = D(z\mod 7)$$.
-
-Since, the period length of days with respect to weeks is 7.
+**Discussion**: Example showing circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram given below. Each granule is represented by a box. The diagram also illustrate that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. G and H are two linear granularities denoting days and weeks respectively. The period length of days with respect to weeks is 7, hence,
+$$C_{G, BG}(z)$$ represented by C(BG, G) is given by $$BG(z\mod 7)$$. The circular granularity C(BG, G) consists of repetitive pattern {BG(0), BG(1), BG(2), BG(3), BG(4), BG(5), BG(6)} which repeats itself after each period length. Similarly, C(BG, H) is given by $$BG(z\mod 14)$$ since the period length of days with respect to fortnight is 14. C(BG, H) also repeats the pattern ${BG(0), BG(1), \dots, BG(13)}$ in every period. Hence, circular granularities are represented as repetitive categorisation of time in the diagram.
 
 
-All circular granularities can be expressed in terms of the bottom linear granularity with equation.
+All circular granularities can be expressed in terms of the bottom linear granularity with equation \ref{eq2} 
 
-Relationship between circular granularities:
 
 In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as
 
-$$C_{(G, H)}(z) = G(\lfloor z/k(BG,G) \rfloor\mod k(G,H))$$
-
+$$C_{(G, H)}(z) = BG(\lfloor z/k(BG,G) \rfloor\mod k(G,H))$$,
 where, linear granularity H is periodic with respect to  linear granularity G and k(G, H) represents the period length of G within H.
 
-If linear granularities are not provided or bottom granularity is not known, any circular granularities of order m, provided the circular granularities till order (m-1) are provided.
+### Computation of circular granularities
 
-Now, suppose we want a cyclic representation of two periodic granularities G and H, where H is periodic with respect to G.
+The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define them.
 
-$$C(G, H) = \lfloor z/const(z,G) \rfloor\mod const(G,H)$$
+Definition:  **order** of a linear granularity in a hierarchy table H:$(G, l, m)$ is defined as the level of deconstruction of a linear granularity. In a hierarchy table, linear granularities are arranged from highest to lowest order of graininess. Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities provided in the hierarchy table. 
+
+Let H: $(G, l, m)$ be a hierarchy model containing m linear granularities. $$G_{i}$$ represents the linear granularity of order i and $$l_{i}$$å represents the period length of $$G_{i}$$ with respect to $$G_{i+1}$$.
+
+If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided.
 
 
-
-
+\begin{equation} \label{eq1}
+\begin{split}
+C_{(x,y)}(z) & = C_{(x,x+1)}(z) + k(x, x+1)(C_{(x+1,y)}(z)-1) \\  
+  & =   C_{(x,x+1)}(z) + k(x, x+1)[ C_{(x+1,x+2)}(z) + c(x+1, x+2)( C_{(x+2, y)}(z) - 1) - 1]\\
+  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
+  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
+  &\vdots\\
+  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
+  +i, x+i+1) - 1)\\
+\end{split}
+\end{equation}
 
 
 C1 and C2 are two cyclic granularities in the hierarchy table with  $order(C1) <  order(C2)$. 
@@ -269,24 +278,24 @@ Some examples of circular representation of finer granularities within coarse gr
 we extend this notion to relate index of the two granularities in a way, which represents the circular arrangement of time using modular arithmetic.
 
 
-Extending from the idea of linear granulariites, where 
-$H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$ 
-can be re-written as,
-$H (j) = \bigcup_{i \in S_j \mod R}G((P/R) *(j - j \mod R) + i)$
+<!-- Extending from the idea of linear granulariites, where  -->
+<!-- $H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$  -->
+<!-- can be re-written as, -->
+<!-- $H (j) = \bigcup_{i \in S_j \mod R}G((P/R) *(j - j \mod R) + i)$ -->
 
 
-The index in the right hand side looks like an equivalence class with modulus P/R.  
-The value of $j\mod R$ is j for j< R and 1, 2, ...  for j>R.  
+<!-- The index in the right hand side looks like an equivalence class with modulus P/R.   -->
+<!-- The value of $j\mod R$ is j for j< R and 1, 2, ...  for j>R.   -->
 
 
 
-Here, i runs from 1 to no. of granules of G and j runs from 1 to number of granules of H.
-Hence, $j*\lfloor P/R \rfloor + i$.
+<!-- Here, i runs from 1 to no. of granules of G and j runs from 1 to number of granules of H. -->
+<!-- Hence, $j*\lfloor P/R \rfloor + i$. -->
 
-For j = 1, we have ($\lfloor P/R \rfloor + i$)
-For j = 2,  we have ($2*\lfloor P/R \rfloor + i$)
+<!-- For j = 1, we have ($\lfloor P/R \rfloor + i$) -->
+<!-- For j = 2,  we have ($2*\lfloor P/R \rfloor + i$) -->
 
-$H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$ 
+<!-- $H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$  -->
 
 
 <!-- Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. . -->
