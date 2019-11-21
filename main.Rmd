@@ -260,129 +260,6 @@ Day-of-Week: & $C_7(z)$ & $= \lfloor z/24*60\rfloor \mod 7$ & $k_5=$&$7$\\
 
 ### Aperiodic {#aperiodic-gran-def}
 
-
-
-
-C1 and C2 are two cyclic granularities in the hierarchy table with  $order(C1) <  order(C2)$. 
-Let $f(C_1, C_2)$ denotes the accessor function for representing the finer unit C1 in terms of a coarser unit C2 and $const(C1, C2)$ is a constant which relates C1 and C2.
-
-<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
-
-
-
-
-Then $f(x, y)$ can be  computed using modular arithmetic as follows:
-
-$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$
-
-The constant c(x,y) is for granularities for groups into periodically, for granualrities which group into each other in a quasi-periodic way, no such constants exist and no such close form solution can be obtained.
-
-Some examples of circular representation of finer granularities within coarse granularities in a  periodic and quasi-periodic set up are as follows:
-
-
-we extend this notion to relate index of the two granularities in a way, which represents the circular arrangement of time using modular arithmetic.
-
-
-<!-- Extending from the idea of linear granulariites, where  -->
-<!-- $H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$  -->
-<!-- can be re-written as, -->
-<!-- $H (j) = \bigcup_{i \in S_j \mod R}G((P/R) *(j - j \mod R) + i)$ -->
-
-
-<!-- The index in the right hand side looks like an equivalence class with modulus P/R.   -->
-<!-- The value of $j\mod R$ is j for j< R and 1, 2, ...  for j>R.   -->
-
-
-
-<!-- Here, i runs from 1 to no. of granules of G and j runs from 1 to number of granules of H. -->
-<!-- Hence, $j*\lfloor P/R \rfloor + i$. -->
-
-<!-- For j = 1, we have ($\lfloor P/R \rfloor + i$) -->
-<!-- For j = 2,  we have ($2*\lfloor P/R \rfloor + i$) -->
-
-<!-- $H (j) = \bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$  -->
-
-
-<!-- Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. . -->
-
-
-### Computation of time granularities
-
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra[@Ning2002-tf]. It is assumed that there exists a “bottom”
-granularity and Calendar algebra operations are designed to generate
-new granularities from the bottom one or recursively, from those already generated.
-Thus, the relationship between the operand(s) and the resulting granularities are encoded
-in the operations.
-
-The calendar algebra consists of two kinds of operations: grouping-oriented and
-granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity, while the
-granule-oriented operations do not change the granules of a granularity, but rather make
-choices of which granules should remain in the new granularity.
-
-- **grouping-oriented** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping
-operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G
-into m-granule groups and making each group a granule of the resulting granularity.
-More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for
-each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity week is defined by $week = Group_7(day)$. Note that, we assume that the day labeled 1 starts a week.
-
-- **granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days.
-
- 
-
-
-
-<!-- The formalism of circular granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. Suppose we have a tsibble with a time index in one column and keys and variables in other columns, a time domain, as defined by Bettini, is essentially a mapping of the index set to the time index.  -->
-
-<!-- A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years.  Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of time domain. We use modular arithmetic to define circular granularity and use the following definitions: -->
-
-<!-- A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to subsets of linear bottom granularity. Here, the domain is the index set and range contains subsets of linear bottom granularity. Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of linear bottom granularity. We use modular arithmetic to define circular granularity and use the following definitions: -->
-
-<!-- They also accommodate periodicity and hence the smaller subsets of bottom granularity are repeating themselves within the larger subsets of bottom granularity.  -->
-
-
-
-<!-- What we need to add to this are additional categorizations of time that are not linear granularities and are useful to represent periodicity. -->
-
-<!-- \begin{table}[ht] -->
-<!-- \begin{center} -->
-<!-- \begin{tabular}{lr@{~}lr@{~}r} -->
-<!-- \toprule -->
-<!-- MOH: & $C_1(s)$ & $= s \mod 60$ & $n_1 =$&$60$ \\ -->
-<!-- MOD: & $C_2(s)$ & $= s \mod `r 60*24`$ & $n_2=$&$`r 60*24`$\\ -->
-
-<!-- HOD: & $C_4(s)$ & $= \lfloor s/60\rfloor\mod 24$  & $n_4 =$&$24$ \\ -->
-<!-- HOW: & $C_6(s)$ & $= \lfloor s/60\rfloor\mod 24*7$  & $n_5=$&$`r 24*7`$\\ -->
-
-<!-- DOW: & $C_7(s)$ & $= \lfloor s/24*60\rfloor \mod 7$ & $n_6=$&$7$\\ -->
-<!-- \bottomrule -->
-<!-- \end{tabular} -->
-<!-- \end{center} -->
-<!-- \caption{Illustrative circular granularities with time index in minutes} -->
-<!-- \label{definitions} -->
-<!-- \end{table} -->
-
-<!-- It is easy to note here that due to unequal length of some linear granularities like months or years, these formulae can not be used for computing week-of-month or day-of-year. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities.  -->
-
-
-<!-- Formal definition of circular granularity -->
-
-**Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}.
-
-The set of all equivalence classes of the integers for a modulus $m$ is called the ring of integers modulo $m$, denoted by $Z_m$. Thus $Z_m = \{[0], [1], ..., [m-1]\}$. However, we often write $Z_m = \{0, 1, ..., (m-1)\}$, which is the set of integers modulo $m$.
-
-**Definition:** A **circular granularity** $C$, joining two linear granularity with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that
-
-$C(s) = (s\mod m)$ for $s \in Z$.
-
-For example, suppose $C$ is a circular granularity denoting hour-of-day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$.
-
-<!-- **Definition:** A **cycle** is defined as the progression of each circular granularity with modular period m through {$1,2,\dots,(m-1),0$} once. -->
-
-<!-- **Definition:** A **circular granule** represents an equivalence class inside each cycle. -->
-
-### Aperiodic {#aperiodic-gran-def}
-<!-- Formal definition of aperiodic circular granularity -->
-
 **Definition:** An **Aperiodic circular granularity** can not be defined using modular arithmetic in a similar fashion. The modulus for these type of calendar categorizations are not constant due to unequal length of some linear granularities. For example, please refer to the table below:
 
 
@@ -404,6 +281,46 @@ MOY: & $C_{10}(s)$ & $= \lfloor s/720\rfloor \mod 12$ (approximately) & $n_{10}=
 \caption{Illustrative aperiodic circular granularities with time index in hours}
 \label{definitions}
 \end{table}
+
+
+C1 and C2 are two cyclic granularities in the hierarchy table with  $order(C1) <  order(C2)$. 
+Let $f(C_1, C_2)$ denotes the accessor function for representing the finer unit C1 in terms of a coarser unit C2 and $const(C1, C2)$ is a constant which relates C1 and C2.
+
+<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
+
+
+
+
+Then $f(x, y)$ can be  computed using modular arithmetic as follows:
+
+$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$
+
+The constant c(x,y) is for granularities for groups into periodically, for granualrities which group into each other in a quasi-periodic way, no such constants exist and no such close form solution can be obtained.
+
+
+<!-- It is easy to note here that due to unequal length of some linear granularities like months or years, these formulae can not be used for computing week-of-month or day-of-year. Thus, we start with the definition of circular granularity and then move on to computing aperiodic granularities.  -->
+
+
+<!-- Formal definition of circular granularity -->
+
+<!-- **Definition: Equivalence class** Let $m \in N \backslash{0}$. For any $a \in Z$ (set of integers), $[a]$ is defined as the equivalence class to which a belongs if $[a]$ = {$b \in Z | a \equiv (b \mod m)$}. -->
+
+<!-- The set of all equivalence classes of the integers for a modulus $m$ is called the ring of integers modulo $m$, denoted by $Z_m$. Thus $Z_m = \{[0], [1], ..., [m-1]\}$. However, we often write $Z_m = \{0, 1, ..., (m-1)\}$, which is the set of integers modulo $m$. -->
+
+<!-- **Definition:** A **circular granularity** $C$, joining two linear granularity with a modular period m is defined to be a mapping from the integers $Z$ (Index Set) to $Z_m$, such that -->
+
+<!-- $C(s) = (s\mod m)$ for $s \in Z$. -->
+
+<!-- For example, suppose $C$ is a circular granularity denoting hour-of-day and we have hourly data for 100 hours. The modular period $m = 24$, since each day consists of 24 hours and $C$ is a mapping from ${1,2,\dots, 100}$ to ${0,1,2, \dots, 23}$ such that  $C(s)= s \mod 24$ for $s \in {1,2,\dots, 100}$. -->
+
+<!-- **Definition:** A **cycle** is defined as the progression of each circular granularity with modular period m through {$1,2,\dots,(m-1),0$} once. -->
+
+<!-- **Definition:** A **circular granule** represents an equivalence class inside each cycle. -->
+
+<!-- ### Aperiodic {#aperiodic-gran-def} -->
+<!-- Formal definition of aperiodic circular granularity -->
+
+
 
  <!-- Why we need single order up and multiple order up granularities -->
 <!-- A time series which is characterized by being composed of repeating cycles. -->
@@ -492,119 +409,107 @@ C(tun, katun) =  \lfloor C(uinal, baktun)(z)/18\rfloor \mod 20 \\
 \end{split}
 \end{equation}
 
+<!-- In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up. -->
 
 
+<!-- ### Computation of time granularities -->
 
-In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
+<!-- Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra[@Ning2002-tf]. It is assumed that there exists a “bottom” -->
+<!-- granularity and Calendar algebra operations are designed to generate -->
+<!-- new granularities from the bottom one or recursively, from those already generated. -->
+<!-- Thus, the relationship between the operand(s) and the resulting granularities are encoded -->
+<!-- in the operations. -->
+
+<!-- The calendar algebra consists of two kinds of operations: grouping-oriented and -->
+<!-- granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity, while the -->
+<!-- granule-oriented operations do not change the granules of a granularity, but rather make -->
+<!-- choices of which granules should remain in the new granularity. -->
+
+<!-- - **grouping-oriented** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping -->
+<!-- operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G -->
+<!-- into m-granule groups and making each group a granule of the resulting granularity. -->
+<!-- More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for -->
+<!-- each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity week is defined by $week = Group_7(day)$. Note that, we assume that the day labeled 1 starts a week. -->
+
+<!-- - **granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days. -->
 
 
 <!-- Computation of time granularities would differ in a periodic and non-periodic set up. -->
 
-Now, let us discuss the computation of circular granularities.
+<!-- Now, let us discuss the computation of circular granularities. -->
 
-### Single-order-up granularities
+<!-- #### Aperiodic single-order-up granularities -->
 
-Suppose, z denotes the index of the tsibble, x,y are two units in the hierarchy table  with  $order(x) <  order(y)$. Let $f(x, y)$ denotes the accessor function for computing the single-order-up granularity relating x and y and $c(x, y)$ is a constant which relates x and y.
-
-<!-- We consider a tsibble with an index (I), key(optional) and measured variables. Index is the variable with inherent ordering from past to future. -->
-
-Then $f(x, y)$ can be  computed using modular arithmetic as follows:
-
-$$f(x, y) = \lfloor z/c(z,x) \rfloor\mod c(x,y)$$ where $y = x+1$
-
-See table[] for an illustration of computing single order up granularities for Mayan calendar.
-
-\begin{table}[ht]
-\begin{center}
-\begin{tabular}{lr@{~}lr@{~}r}
-\toprule
-\textbf{Single-order-up granularities}
+<!-- Aperiodic single-order-up granularities refers to the granularities which are formed with units that does not repeat its values in regular intervals or periods. In Gregorian calendar, examples may include days of the month where each month may consists of 28, 29, 30 or 31 days. So there is no single number that can be used for converting days to months. We cannot compute the aperiodic single-order-up granularities using the index of the tsibble and modular arithmetic like in the periodic case using just the hierarchy table and relationships of units. -->
 
 
-$kin\_uinal:   = z \mod 20$  \\
-$uinal\_tun:   = \lfloor z/20\rfloor \mod 18 $\\
-$tun\_katun:    = \lfloor z/20*18\rfloor \mod 20 $\\
-$katun\_baktun:   = \lfloor z/20*18*20\rfloor \mod 20 $\\
+<!-- ### Multiple order-up granularities  -->
 
-\bottomrule
-\end{tabular}
-\end{center}
-\caption{Illustrative single-order-up granularities for Mayan calendar with kin as the index}
-\label{single_order}
-\end{table}
+<!-- Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerning all periodic single-order-up granularities and the second with mixed single-order-up granularities. -->
 
-#### Aperiodic single-order-up granularities
-
-Aperiodic single-order-up granularities refers to the granularities which are formed with units that does not repeat its values in regular intervals or periods. In Gregorian calendar, examples may include days of the month where each month may consists of 28, 29, 30 or 31 days. So there is no single number that can be used for converting days to months. We cannot compute the aperiodic single-order-up granularities using the index of the tsibble and modular arithmetic like in the periodic case using just the hierarchy table and relationships of units.
+<!-- ### All single-order-up granularities are periodic -->
 
 
-### Multiple order-up granularities 
+<!-- z is the index set of the tsibble and x, y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity which relates x and y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities. -->
 
-Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerning all periodic single-order-up granularities and the second with mixed single-order-up granularities.
+<!-- Then, the accessor function f can be used recursively to obtain any multiple-order-up granularities as follows: -->
 
-### All single-order-up granularities are periodic
+<!-- \begin{equation} \label{eq1} -->
+<!-- \begin{split} -->
+<!-- f(x,y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\   -->
+<!--   & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) + c(x+1, x+2)(f(x+2, y) - 1) - 1]\\ -->
+<!--   & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\ -->
+<!--   & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\ -->
+<!--   &\vdots\\ -->
+<!--   & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x -->
+<!--   +i, x+i+1) - 1)\\ -->
+<!-- \end{split}x -->
+<!-- \end{equation} -->
 
+<!-- Let us use the equation to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic. -->
 
-z is the index set of the tsibble and x, y are two linear granularities with  $order(x) <  order(y)$. Also, $f(x, y)$ denotes the accessor function for computing circular granularity which relates x and y and $c(x, y)$ is a constant which relates x and y. It is easy to see that for $order(x+1) =  order(y)$, the function is same as the single-order-up granularities.
+<!-- From Equation(1), we have -->
+<!-- \begin{equation} \label{eq1} -->
+<!-- \begin{split} -->
+<!-- f(uinal, baktun) & = f(uinal, tun) + c(uinal, tun)f(tun,katun) + c(uinal, katun)f(katun, baktun) \\ -->
+<!--               & = \lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20 \\ -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+<!--              (using equations \ref{single_order}) -->
 
-Then, the accessor function f can be used recursively to obtain any multiple-order-up granularities as follows:
+<!-- ### Mixed single-order-up granularities - circular or aperiodic -->
 
-\begin{equation} \label{eq1}
-\begin{split}
-f(x,y) & = f(x, x+1) + c(x, x+1)(f(x+1, y)-1) \\  
-  & =  f(x, x+1) + c(x, x+1)[f(x+1, x+2) + c(x+1, x+2)(f(x+2, y) - 1) - 1]\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
-  &\vdots\\
-  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
-  +i, x+i+1) - 1)\\
-\end{split}x
-\end{equation}
+<!-- Let us turn to Gregorian calendar for addressing this case. -->
 
-Let us use the equation to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
-
-From Equation(1), we have
-\begin{equation} \label{eq1}
-\begin{split}
-f(uinal, baktun) & = f(uinal, tun) + c(uinal, tun)f(tun,katun) + c(uinal, katun)f(katun, baktun) \\
-              & = \lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20 \\
-\end{split}
-\end{equation}
-             (using equations \ref{single_order})
-
-### Mixed single-order-up granularities - circular or aperiodic
-      
-Let us turn to Gregorian calendar for addressing this case.
-
-Suppose we have a hierarchy table for  Gregorian calendar as \ref{table_accessor2}. Since months consists of unequal number of days, any temporal unit which is higher in order than months will also have unequal number of days. This is an example of a hierarchy table which has both periodic and aperiodic single-order-up granularities. The single-order-up granularity day_month is aperiodic. Any single-order-up granularities which are formed by units below days are periodic. Similarly, all single-order-up granularities which are formed using units whose orders are higher than months are also periodic.
+<!-- Suppose we have a hierarchy table for  Gregorian calendar as \ref{table_accessor2}. Since months consists of unequal number of days, any temporal unit which is higher in order than months will also have unequal number of days. This is an example of a hierarchy table which has both periodic and aperiodic single-order-up granularities. The single-order-up granularity day_month is aperiodic. Any single-order-up granularities which are formed by units below days are periodic. Similarly, all single-order-up granularities which are formed using units whose orders are higher than months are also periodic. -->
 
 
-<!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. -->
+<!-- <!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. --> -->
 
-```{r table_accessor2}
-kable(tibble::tibble(
-  `linear granularities` = c("minute", "hour", "day", "month", "quarter", "year"),
-  `Conversion factor` = c(60,24, "aperiodic", 3, 4, 1), format = "markdown"))
-```
+<!-- ```{r table_accessor2} -->
+<!-- kable(tibble::tibble( -->
+<!--   `linear granularities` = c("minute", "hour", "day", "month", "quarter", "year"), -->
+<!--   `Conversion factor` = c(60,24, "aperiodic", 3, 4, 1), format = "markdown")) -->
+<!-- ``` -->
 
-There can be three scenarios for obtaining calendar categorization here:
-- granularities consisting of two units whose orders are less than day  
-- granularities consisting of two units whose orders are more than month  
-- granularities consisting of one unit with order at most day and another with order at least month  
+<!-- There can be three scenarios for obtaining calendar categorization here: -->
+<!-- - granularities consisting of two units whose orders are less than day   -->
+<!-- - granularities consisting of two units whose orders are more than month   -->
+<!-- - granularities consisting of one unit with order at most day and another with order at least month   -->
 
-The calendar categorization resulting from the first two cases are periodic and has been handled in the earlier section.
+<!-- The calendar categorization resulting from the first two cases are periodic and has been handled in the earlier section. -->
 
-The calendar categorization resulting from the last case are aperiodic. Examples might include day of the quarter or hour of the month. In this section, we will see how to obtain aperiodic circular granularities of these types.
+<!-- The calendar categorization resulting from the last case are aperiodic. Examples might include day of the quarter or hour of the month. In this section, we will see how to obtain aperiodic circular granularities of these types. -->
 
 
-\begin{equation} \label{eq1}
-\begin{split}
-f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\
-\end{split}
-\end{equation}
+<!-- \begin{equation} \label{eq1} -->
+<!-- \begin{split} -->
+<!-- f_{(hour, month)}(z) = f_{(hour, day)}(z) + c(hour, day)f_{(day, month)}(z)\\ -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
 
-Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the year and if the year is a leap year to obtain day of the month.
-             
+<!-- Here, the first part of the equation is a single-order-up granularity which can be obtained using last section. The second part is not single-order-up and can not be broken down further since each month consists of different number of days. In this case, it is important for us to know which month of the year and if the year is a leap year to obtain day of the month. -->
+
 
 # Synergy of cyclic time granularities
 
