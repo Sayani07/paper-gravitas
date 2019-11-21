@@ -163,15 +163,15 @@ The definitions and rules for linear granularities are inadequate to reflect per
 for each index i, there exists an index j such that $G(i) \subset H(j)$.
 
 **Definition: Groups Into** : A linear granularity G groups into a linear granularity H, denoted
-$$G \trianglelefteq H,$$
+$G \trianglelefteq H,$
 if for each index j there exists a (possibly infinite) subset S of the integers such
 that
 \begin{equation}
 H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 
-According to this definition, $$G \trianglelefteq H,$$ if each granule H (i) is the union of some
-granules of G. For example, $$Days \trianglelefteq Months,$$. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $$Days \trianglelefteq Months,$$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
+According to this definition, $G \trianglelefteq H,$ if each granule H (i) is the union of some
+granules of G. For example, $Days \trianglelefteq Months,$. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
 
 **Definition: Groups periodically into** A granularity H is periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
@@ -202,16 +202,56 @@ Intuitively, the definition requires that all granules of H within the span of t
 
 **Definition: Bottom granularity** Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
 
-**Example:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $$\trianglelefteq $$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $$\trianglelefteq$$. 
+**Example:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
 
-Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
+<!-- Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations. -->
+
+#### Computation of linear time granularities
+
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra[@Ning2002-tf]. It is assumed that there exists a “bottom”
+granularity and Calendar algebra operations are designed to generate
+new granularities from the bottom one or recursively, from those already generated.
+Thus, the relationship between the operand(s) and the resulting granularities are encoded
+in the operations.
+
+The calendar algebra consists of two kinds of operations: grouping-oriented and
+granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. Example can be to consider a calendar with only two linear granularities minute and hour and hour is generated by grouping every 60 minutes. The
+granule-oriented operations do not change the granules of a granularity, but rather make
+choices of which granules should remain in the new granularity. For example, one can choose to look at the granularity "Monday" and hence select only Mondays while looking at the linear granularity "day".
+
+Some relevant grouping oriented operations are discussed, which will be used in Section \ref{sec:cyclic-gran-def} to define circular and aperiodic granularities.
+
+- **The grouping operation** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G
+into m-granule groups and making each group a granule of the resulting granularity.
+More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for
+each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. 
+
+**Example** : 
+
+  - $minute = Group_{60}(second)$
+  - $hour = Group_{60}(minute)$,
+  - $day = Group_{24}(hour)$,
+  - $week = Group_{7}(day)$,
+  
+where, second(1) would start a minute and likewise.
+
+- **The altering-tick operation** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2.
+**Example**
+
+  - pseudomonth = Alter^{12}_{(11,-1)}(day, Alter^{12}_{(9,-1)}(day, Alter^{12}_{(6,-1)}(day,
+                  Alter_^{12}_{(4,-1)}(day, Alter^{12}_{(2,-3)}(day, Group_31(day)))))),
+                  where the granularity pseudomonth is generated by grouping 31 days, 
+                  and then shrink April (4), June (6), September (9) and November (11)
+                  by 1 day, and shrink February (2) by 3 days. [@Ning2002-tf]
 
 
-### Circular {#circular-gran-def}
+### Cyclic {#cyclic-gran-def}
 
 In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intuitively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
 
-The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
+We propose a formalism of cyclic time granularities through the tsibble [@Wang2019-aw] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
+
+The mapping of two linear granularities forming a cyclic granularity can be regular or irregular. It will be regular if, for example, they are formed by grouping operation. Grouping operation would ensure that each granule of the resulting granularity consists of same number of granules of bottom granularity. However, if they are formed by the altering-tick operation, granules of the resulting granularity is composed of different number of granules of bottom granularity. However, the relationship can still be periodic and hence they are also useful in addressing periodicities.  The formalisms would however differ for circular and aperiodic granularities.
 
 
 #### Circular {#circular-gran-def}
@@ -412,26 +452,6 @@ C(tun, katun) =  \lfloor C(uinal, baktun)(z)/18\rfloor \mod 20 \\
 <!-- In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up. -->
 
 
-<!-- ### Computation of time granularities -->
-
-<!-- Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra[@Ning2002-tf]. It is assumed that there exists a “bottom” -->
-<!-- granularity and Calendar algebra operations are designed to generate -->
-<!-- new granularities from the bottom one or recursively, from those already generated. -->
-<!-- Thus, the relationship between the operand(s) and the resulting granularities are encoded -->
-<!-- in the operations. -->
-
-<!-- The calendar algebra consists of two kinds of operations: grouping-oriented and -->
-<!-- granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity, while the -->
-<!-- granule-oriented operations do not change the granules of a granularity, but rather make -->
-<!-- choices of which granules should remain in the new granularity. -->
-
-<!-- - **grouping-oriented** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping -->
-<!-- operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G -->
-<!-- into m-granule groups and making each group a granule of the resulting granularity. -->
-<!-- More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for -->
-<!-- each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity week is defined by $week = Group_7(day)$. Note that, we assume that the day labeled 1 starts a week. -->
-
-<!-- - **granule-oriented** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. Since G2 partitions G1, each granule of G1 consists of some contiguous granules of G2. The granules of G1 can be partitioned into m-granule groups such that G1(1) to G1(m) are in one group, G1(m + 1) to G1(2m) are in the following group, and so on. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2. For example, if G1 represents 30-day groups (i.e., G1 = Group_30(day)) and we want to add a day (i.e., k = 1) to the 5th one in each group of 12 months (i.e., l = 5 and m = 12), we may have $Alter^{12}_{5,1}(day, G1)$. Intuitively, this will make May have 31 days. -->
 
 
 <!-- Computation of time granularities would differ in a periodic and non-periodic set up. -->
