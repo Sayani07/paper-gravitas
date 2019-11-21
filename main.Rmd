@@ -155,7 +155,7 @@ knitr::include_graphics("Figs/linear-time.png")
 The definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality. Hence, there is a need to define circular time granularities in a different approach. 
 
 
-### Relationships between two linear granularities and association to Periodicity
+#### Relationships between two linear granularities and association to Periodicity
 
 [@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
 
@@ -200,62 +200,67 @@ between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{
  
 Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
 
+**Definition: Bottom granularity** Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
+
+**Example:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $$\trianglelefteq $$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $$\trianglelefteq$$. 
+
 Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations.
 
 
-### Cyclic {#circular-gran-def}
+### Circular {#circular-gran-def}
 
-In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intutively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorisation of time.
+In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be preceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also suceeds Wednesday). Intuitively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
 
 The formalism of cyclic time granularities is attempted through the tsibble [@Wang2019-aw] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
 
-Suppose,  
-z denotes the index set.  
-BG denotes the index of the tsibble (bottom granularity).
-G be a linear granularity, periodic with respect to BG.  
-k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.  
+
+#### Circular {#circular-gran-def}
 
 **Definition: Circular granularity** A circular granularity C(BG, G) relates a linear granularity G to the bottom granularity, if
 
 \begin{equation} \label{eq2}
-$$C_{BG, G}(z) = BG(z\mod k(BG,G)) \forall z \in \mathbb{Z}^+$$
-\end{equation}, such that 
-$BG(z) \neq \phi$.
-
-**Discussion**: Example showing circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram given below. Each granule is represented by a box. The diagram also illustrate that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. G and H are two linear granularities denoting days and weeks respectively. The period length of days with respect to weeks is 7, hence,
-$$C_{G, BG}(z)$$ represented by C(BG, G) is given by $$BG(z\mod 7)$$. The circular granularity C(BG, G) consists of repetitive pattern {BG(0), BG(1), BG(2), BG(3), BG(4), BG(5), BG(6)} which repeats itself after each period length. Similarly, C(BG, H) is given by $$BG(z\mod 14)$$ since the period length of days with respect to fortnight is 14. C(BG, H) also repeats the pattern ${BG(0), BG(1), \dots, BG(13)}$ in every period. Hence, circular granularities are represented as repetitive categorisation of time in the diagram.
-
-
-All circular granularities can be expressed in terms of the bottom linear granularity with equation \ref{eq2} 
-
-
-In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as
-
-$$C_{(G, H)}(z) = BG(\lfloor z/k(BG,G) \rfloor\mod k(G,H))$$,
-where, linear granularity H is periodic with respect to  linear granularity G and k(G, H) represents the period length of G within H.
-
-### Computation of circular granularities
-
-The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define them.
-
-Definition:  **order** of a linear granularity in a hierarchy table H:$(G, l, m)$ is defined as the level of deconstruction of a linear granularity. In a hierarchy table, linear granularities are arranged from highest to lowest order of graininess. Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities provided in the hierarchy table. 
-
-Let H: $(G, l, m)$ be a hierarchy model containing m linear granularities. $$G_{i}$$ represents the linear granularity of order i and $$l_{i}$$å represents the period length of $$G_{i}$$ with respect to $$G_{i+1}$$.
-
-If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided.
-
-
-\begin{equation} \label{eq1}
-\begin{split}
-C_{(x,y)}(z) & = C_{(x,x+1)}(z) + k(x, x+1)(C_{(x+1,y)}(z)-1) \\  
-  & =   C_{(x,x+1)}(z) + k(x, x+1)[ C_{(x+1,x+2)}(z) + c(x+1, x+2)( C_{(x+2, y)}(z) - 1) - 1]\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
-  &\vdots\\
-  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
-  +i, x+i+1) - 1)\\
-\end{split}
+C_{BG, G}(z) = BG(z\mod k(BG,G)) \forall z \in \mathbb{Z}^+,
+BG(z) \neq \phi
 \end{equation}
+where,  
+z denotes the index set.  
+BG denotes the index of the tsibble (bottom granularity).  
+G be a linear granularity, periodic with respect to BG.    
+k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.  
+
+
+**Discussion**: Example showing circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram \autoref{fig:circular-gran}. Each granule is represented by a box. The diagram also illustrate that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. G and H are two linear granularities denoting days and weeks respectively. The period length of days with respect to weeks is 7, hence, $C_{G, BG}(z)$ represented by C(BG, G) is given by $BG(z\mod 7)$. The circular granularity C(BG, G) consists of repetitive pattern {BG(0), BG(1), BG(2), BG(3), BG(4), BG(5), BG(6)} which repeats itself after each period length. Similarly, C(BG, H) is given by $BG(z\mod 14)$ since the period length of days with respect to fortnight is 14. C(BG, H) also repeats the pattern ${BG(0), BG(1), \dots, BG(13)}$ in every period. Hence, circular granularities are represented as repetitive categorization of time in the diagram.
+
+```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="\\label{fig:circular-gran} Relating circular granularities and bottom linear granularity "}
+knitr::include_graphics("Figs/circular-gran-diagram.png")
+```
+
+All circular granularities can be expressed in terms of the bottom linear granularity with equation \ref{eq2}.
+
+In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as $C_{(G, H)}(z) = BG(\lfloor z/k(BG,G) \rfloor\mod k(G,H))$, where linear granularity H is periodic with respect to linear granularity G and k(G, H) represents the period length of G within H.
+
+Table \ref{tab:definitions} shows representation of circular granularities relating two linear granularities. It is possible that none of these two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the bottom granularity. For example, suppose the bottom granularity is minutes, and let $k_i$ is the period length of $C_i$.
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lr@{~}lr@{~}r}
+\toprule
+Minute-of-Hour: & $C_1(z)$ & $= z \mod 60$ & $k_1 =$&$60$ \\
+Minute-of-Day: & $C_2(z)$ & $= z \mod 60*24$ & $k_2=$&$`r 60*24`$\\
+Hour-of-Day: & $C_4(z)$ & $= \lfloor z/60\rfloor\mod 24$  & $k_3 =$&$24$ \\
+Hour-of-Week: & $C_6(z)$ & $= \lfloor z/60\rfloor\mod 24*7$  & $k_4=$&$`r 24*7`$\\
+Day-of-Week: & $C_7(z)$ & $= \lfloor z/24*60\rfloor \mod 7$ & $k_5=$&$7$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Illustrative circular granularities with time index in minutes}
+\label{definitions}
+\end{table}
+
+
+### Aperiodic {#aperiodic-gran-def}
+
+
 
 
 C1 and C2 are two cyclic granularities in the hierarchy table with  $order(C1) <  order(C2)$. 
@@ -332,7 +337,7 @@ each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$. Granularity we
 
 <!-- A linear granularity, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to subsets of linear bottom granularity. Here, the domain is the index set and range contains subsets of linear bottom granularity. Circular granularity, joining two linear granularities, therefore is a mapping between these two subsets of linear bottom granularity. We use modular arithmetic to define circular granularity and use the following definitions: -->
 
-<!-- They also accomodate periodicity and hence the smaller subsets of bottom granularity are repeating themselves within the larger subsets of bottom granularity.  -->
+<!-- They also accommodate periodicity and hence the smaller subsets of bottom granularity are repeating themselves within the larger subsets of bottom granularity.  -->
 
 
 
@@ -410,17 +415,40 @@ To consider the exhaustive set of temporal regularities that might exist in the 
 
 ## Order: Single vs. Multiple
 
-The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table to define them.
+The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
-Consider a **hierarchy table** to be consisting of two columns:  
+**Definition:  Order** of a linear granularity can be comprehended as the level graininess asscociated with a linear granularity. If we consider two linear granularities G and H, such that $G \preceq H$, then H is of higher order than G.
 
- -  The first column represents the (temporal) units in ascending order of hierarchy. Any two units, which are essentially the linear granularities, can join together to form a circular/aperiodic granularity. 
- 
- - The second column represents the relationship between subsequent (temporal) units. For periodic granularities, this could be represented by a constant, whereas, for a aperiodic one, there is no single constant which can be used to represent their relationship.
-   
-and, **order**, is defined as the position of the units in the hierarchical table. 
+**Notation:  Hierarchy table** Let H: $(G, C, k, n)$ be a hierarchy model containing m linear granularities. $G_{i}$ represents the linear granularity of order i and $k_{i}$å represents the period length of $$G_{i}$$ with respect to $$G_{i+1}$$ and $C_{l,m}$ represents the circular granularity that relates linear granularity of order l and m, with $\forall l,m \in n, l<m$. 
 
-We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concering a single level as **single-order-up** granularities. Let us look at few calendars to see examples of single and multiple order-up granularities. 
+In a hierarchy table, linear granularities are arranged from highest to lowest order of linear granularities. 
+
+<!-- Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities and the other granularities are subsequently more "coarse" than the earlier one. -->
+
+We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concerning a single level as **single-order-up** granularities. Let us look at few calendars to see examples of single and multiple order-up granularities. 
+
+<!-- If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided. -->
+
+### Computation of multiple-order from single-order
+
+\begin{equation} \label{eq1}
+\begin{split}
+C_{(x,y)}(z) & = C_{(x,x+1)}(z) + k(x, x+1)(C_{(x+1,y)}(z)-1) \\  
+  & =   C_{(x,x+1)}(z) + k(x, x+1)[ C_{(x+1,x+2)}(z) + c(x+1, x+2)( C_{(x+2, y)}(z) - 1) - 1]\\
+  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
+  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
+  &\vdots\\
+  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
+  +i, x+i+1) - 1)\\
+\end{split}
+\end{equation}
+
+
+
+
+
+
+
 
 <!-- some discussions on primary units of calendar -->
 So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
@@ -448,7 +476,7 @@ In the next section, we discuss the computation of any single-order-up and multi
 
 <!-- Computation of time granularities would differ in a periodic and non-periodic set up. -->
 
-Now, let us dicuss the computation of circular granularities.
+Now, let us discuss the computation of circular granularities.
 
 ### Single-order-up granularities
 
@@ -488,7 +516,7 @@ Aperiodic single-order-up granularities refers to the granularities which are fo
 
 ### Multiple order-up granularities 
 
-Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerining all periodic single-order-up granularities and the second with mixed single-order-up granularities.
+Computation of multiple-order-up granularities will differ if the units in the hierarchy table are periodic or aperiodic. We split the method of computation into two cases - one concerning all periodic single-order-up granularities and the second with mixed single-order-up granularities.
 
 ### All single-order-up granularities are periodic
 
@@ -671,7 +699,7 @@ And the ones that do not lead to any missing combinations are called **harmonies
 
 
 
-<!-- Include why distribution plot, why 2D, why facetting in introduction -->
+<!-- Include why distribution plot, why 2D, why faceting in introduction -->
 <!-- Why distribution plot -->
 <!-- Huge data difficult to summaries using one statistic-->
 
@@ -709,7 +737,7 @@ The grammar of graphics introduced a framework to incorporate underlying feature
 
 Creating a visualisation requires a number of nuanced judgements. However, we exploit some features of layers and faceting to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate temporal granularities. The general framework of visualizing the distribution invloves a faceting approach with one temporal granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization.
 
-While we accomplish that, we need to bear in mind that any customised species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
+While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
 
 
 <!-- Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot. -->
@@ -720,7 +748,7 @@ While we accomplish that, we need to bear in mind that any customised species of
 
 <!-- Common benefits and challenges of empirical and density based visualization -->
 
-There are several ways to plot statistical distributions. The displayed probabilities in these plots are either computed using kernel density estimation methods or empirical statistical methods. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter, where some specific probabilities representing typical and extreme behavior are on focus. The probabilities displayed are based on actual data, which is aligned to principles that governed Tukey’s original boxplot. Density plots which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution, unlike discretizing the distribution and showing only parts of it. They can be useful in spotting multimodality, however, they might become obscuring with too many categories and information on the entire distribution can add to cognitive load. Also, the probabilties in density plot are estimated through kernel density estimation and thus makes assumptions when selecting kernel or bandwidth. As a result, the plot shows smooth summaries based on the assumptions and not only on actual observations. The density based visualizations are subject to the same sample size restrictions and challenges that apply to any density estimation. In practice, the densities are estimated reasonably with at least 30 observations. Even with sample sizes of several hundred, however, choosing too large a value for bandwidth can cause the estimate to oversmooth the data.
+There are several ways to plot statistical distributions. The displayed probabilities in these plots are either computed using kernel density estimation methods or empirical statistical methods. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter, where some specific probabilities representing typical and extreme behavior are on focus. The probabilities displayed are based on actual data, which is aligned to principles that governed Tukey’s original boxplot. Density plots which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution, unlike discretizing the distribution and showing only parts of it. They can be useful in spotting multimodality, however, they might become obscuring with too many categories and information on the entire distribution can add to cognitive load. Also, the probabilities in density plot are estimated through kernel density estimation and thus makes assumptions when selecting kernel or bandwidth. As a result, the plot shows smooth summaries based on the assumptions and not only on actual observations. The density based visualizations are subject to the same sample size restrictions and challenges that apply to any density estimation. In practice, the densities are estimated reasonably with at least 30 observations. Even with sample sizes of several hundred, however, choosing too large a value for bandwidth can cause the estimate to oversmooth the data.
 
 We will discuss few conventional and recent ways to plot distributions using both of these methods.
 
@@ -754,7 +782,7 @@ The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs 
 <!-- Description and lit review of HDR plots -->
 The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality.
 
-Given a context, it is good to be conversant with the benefits and challenges while choosing a distribution plot. As a general rule, if we have too many categories, the quantile plots are useful for camparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
+Given a context, it is good to be conversant with the benefits and challenges while choosing a distribution plot. As a general rule, if we have too many categories, the quantile plots are useful for comparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
 
 
 ### Effect of levels of temporal granularities
@@ -788,7 +816,7 @@ The following principles are useful while choosing distribution plots given two 
 <!-- Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. Let us consider case by case and see which plots are better suitable in which scenarios. -->
 
 
-<!-- Facetting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
+<!-- Faceting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
 
 
 ## Effect of synergy of time granularities
@@ -940,9 +968,9 @@ Smart meters provide large quantities of measurements on energy usage for househ
 <!-- We want to  look at the distribution of energy across coarser temporal granularities and then deep dive into finer temporal granularities. -->
 
 
-<!-- In Figure \ref{fig:day-fortnight} and \ref{fig:day-fortnight-agg} , the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy beahvior of these two customers. -->
+<!-- In Figure \ref{fig:day-fortnight} and \ref{fig:day-fortnight-agg} , the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. -->
 
-In Figure \ref{fig:day_fortnight}, the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy beahvior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information which we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. 
+In Figure \ref{fig:day_fortnight}, the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information which we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. 
 
 
 ```{r day-fortnight_agg, echo = FALSE}
@@ -1122,7 +1150,7 @@ Now, we would like to see how these customers' behavior relate to the rest of th
 
 Figure \autoref{fig:wknd-day50} shows the quantile plot of energy consumption of 50 households. Similar quantiles for weekend and weekdays indicate that behaviors of most of these customers do not alter between weekdays and weekends.
 
-Figure \autoref{fig:my-hd} shows the area quantile plots of energy consumption across hours of the day faceted by months of the year. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile.  It can be observed that the median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. Moreover, only the pink band changes significantly in winter months (May - August). The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much. Most of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that offcourse the level of quantiles increased too in winter months, the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
+Figure \autoref{fig:my-hd} shows the area quantile plots of energy consumption across hours of the day faceted by months of the year. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile.  It can be observed that the median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. Moreover, only the pink band changes significantly in winter months (May - August). The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much. Most of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that off course the level of quantiles increased too in winter months, the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
 
 ```{r wknd-wday50}
 smart_meter <- 
@@ -1187,7 +1215,7 @@ smart_meter %>%
 
 ## T20 cricket data of Indian Premiere League {#cricket}
 
-The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. A hierarchy like table \ref{tab:hierarchy} can be construed for this game format.
+The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. A hierarchy like table \ref{tab:hierarchy} can be construed for this game format.
 
 The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data).  The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).
 
@@ -1226,7 +1254,7 @@ There are many interesting questions that can possibly be answered with such a d
 
 <!-- a) What is the most common pattern for batting and bowling teams across balls, overs, innings and matches? Which are the teams which are typical and which are exceptions? -->
 
-<!-- How the scores per over vary across granularities/categorisations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn't qualify for the playoffs? -->
+<!-- How the scores per over vary across granularities/categorizations like innings of a match or matches of a season? Are these different for the winning teams in that season and the teams that couldn't qualify for the playoffs? -->
 
 <!-- Is the outcome of the game dependent on who bats first? Do some teams have more chance to win if they are batting in the first innings? -->
 
@@ -1368,14 +1396,14 @@ cricket_tsibble %>%
 
 <!-- For MI, cases when they lost, distribution of run rates not very different depending on if they bat first or second. However, cases when they won, distribution of run rate is very skewed when they bat in the 2nd innings implying winning by short margins.  -->
 
-<!-- Figure \ref{fig:violin} shows that for CSK, irrepective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. However, we can delve deeper and try to see which overs are the most volatile for CSK and if it is different to that of MI? -->
+<!-- Figure \ref{fig:violin} shows that for CSK, irrespective of the fact they won or lost, distribution of run rate in case they are batting in the 2nd innings is always skewed on the right side, implying that they always manage to give a good fight to win even if they are losing. Run rate can go up to 6 runs per over depending on the situation. For MI, this is not true. When they won, their run rates in the 2nd innings went up to 6 and led to their win, but stayed within 4 whenever they lost. This implies CSK is more of a fighter than MI when it comes to defending in the 2nd innings. However, we can delve deeper and try to see which overs are the most volatile for CSK and if it is different to that of MI? -->
 
 
 <!-- In Figure \ref{fig:lv}, we can observe the letter value plot describing the distribution of run rate per over across over of the innings and innings of the match. It can be observed that for both innings, the run rate for Mumbai Indians rise faster across overs of the innings. There is an upward shift of the distribution in the second part of the innings (after 10th over) and more variability (longer and distinct letter values) as well. -->
 <!-- CSK has been more uniform in their approach maintaining consistent scores per over. Since CSK's last over in the 2nd innings really get volatile, after a consistent performance in the other overs - this behavior is exhibited as an outlier in Figure \ref{fig:violin}. -->
 
 
-<!-- whereas MI's scores increase as they proceed with the game notwithstanding if they bat first or second. CSK's run rate distibution is extremely right tailed in the 2nd innings, but not in the first. .   --> -->
+<!-- whereas MI's scores increase as they proceed with the game notwithstanding if they bat first or second. CSK's run rate distribution is extremely right tailed in the 2nd innings, but not in the first. .   --> -->
 
 
 <!-- ```{r 2013_15_MI} -->
@@ -1454,7 +1482,7 @@ cricket_tsibble %>%
 ```
 
 
-Q3: Is run rate set to reduce in subsequent over if fielding/bowling is good in the previous over? Between fielding and bowling which penalises runs in the subsequent over more?
+Q3: Is run rate set to reduce in subsequent over if fielding/bowling is good in the previous over? Between fielding and bowling which penalizes runs in the subsequent over more?
 
 For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include catches and run out as a measure of fielding. Difference in run rates should be negative if fielding is good. Let us see if this fact is true.Figure \ref{fig:field} shows the difference between run rate between two subsequent overs are negative when good fielding leads to one or two dismissals in an over.
 
