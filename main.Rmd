@@ -419,7 +419,7 @@ The hierarchical structure of time creates a natural nested ordering which can p
 
 **Definition:  Order** of a linear granularity can be comprehended as the level graininess asscociated with a linear granularity. If we consider two linear granularities G and H, such that $G \preceq H$, then H is of higher order than G.
 
-**Notation:  Hierarchy table** Let H: $(G, C, k, n)$ be a hierarchy model containing m linear granularities. $G_{i}$ represents the linear granularity of order i and $k_{i}$å represents the period length of $$G_{i}$$ with respect to $$G_{i+1}$$ and $C_{l,m}$ represents the circular granularity that relates linear granularity of order l and m, with $\forall l,m \in n, l<m$. 
+**Notation:  Hierarchy table** Let $H_n: (G, C, k)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $k_{l,m}$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the circular granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$. 
 
 In a hierarchy table, linear granularities are arranged from highest to lowest order of linear granularities. 
 
@@ -431,27 +431,20 @@ We refer to granularities which are nested within multiple levels as **multiple-
 
 ### Computation of multiple-order from single-order
 
-\begin{equation} \label{eq1}
+\begin{equation} \label{eq3}
 \begin{split}
-C_{(x,y)}(z) & = C_{(x,x+1)}(z) + k(x, x+1)(C_{(x+1,y)}(z)-1) \\  
-  & =   C_{(x,x+1)}(z) + k(x, x+1)[ C_{(x+1,x+2)}(z) + c(x+1, x+2)( C_{(x+2, y)}(z) - 1) - 1]\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+1)c(x+1, x+2)(f(x+2, y) - 1)\\
-  & =  f(x, x+1) + c(x, x+1)(f(x+1, x+2) - 1) + c(x, x+2)(f(x+2, y) - 1)\\
+C_{(G_l,G_m)}(z) & = C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1) \\  
+  & =   C_{(G_l,G_(l+1)}(z) + k(l, l+1)[ C_{G_(l+1),G_(l+2)}(z) + k(l+1, l+2)( C_{G_(l+2), G_m)}(z) - 1) - 1]\\
+  & =  C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{G_(l+1),G_(l+2)}(z) - 1) + k(l, l+1)k(l+1, l+2)(C(l+2, m) - 1)\\
+  & =  C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{G_(l+1),G_(l+2)}(z) - 1) + k(l, l+2)(C_{G_(l+2),G_(l+m)}(z) - 1)\\
   &\vdots\\
-  & = \sum_{i=0}^{order(y) - order(x) - 1} c(x, x+i)(f(x
-  +i, x+i+1) - 1)\\
+  & = \sum_{i=0}^{order(m) - order(l) - 1} k(l, l+i)(C_{G_(l+i),G_(l+i+1)}(z) - 1)\\
 \end{split}
 \end{equation}
 
 
-
-
-
-
-
-
 <!-- some discussions on primary units of calendar -->
-So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. Any civil day is divided into 24 hours and each hour into 60 minutes and each minute into 60 seconds. There are exceptions where in London, for example, length of each "hour" varies from about 39 minutes in December to 83 minutes in June. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+**Example:** So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -461,15 +454,46 @@ So far we have used the Gregorian calendar as it is the most widely used calenda
 
 Thus, the hierarchy table for the Mayan calendar would look like the following:
 
-| Units	      | Conversion factor
-|------------	|-------------------	|
-|  kin      	| 20             	    |
-|  uinal    	| 18            	    |
-|  tun      	| 20           	      |
-|  katun    	| 20            	    |
-|  baktun   	| 1          	        |
+|  G	        |C                 |k
+|------------	|------------------|------------|
+|  kin      	|kin-of-uinal      |  20        |
+|  uinal    	|uinal-of-tun      |  18  	    |
+|  tun      	|tun-of-katun      |  20	      |
+|  katun    	|katun-of-baktun   |  20        |
+|  baktun   	| 1                |	1         |
 
-Examples of multiple-order-up  granularities can be kin of the tun or kin of the baktun whereas examples of single-order-up granularities may include kin of the uinal, uinal of the tun etc. 
+Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun whereas examples of single-order-up granularities may include kin-of-uinal, uinal-of-tun etc. 
+
+
+Let us use the equation \ref{eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
+
+\begin{equation} \label{eq4}
+\begin{split}
+C(uinal, baktun) & = C(uinal, tun) + kuinal, tun)C(tun,katun) + C(uinal, katun)C(katun, baktun) \\
+              & = \lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20 \\
+\end{split}
+\end{equation}
+
+
+### Computation of single-order from multiple-order
+
+For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
+
+\begin{equation} \label{eq5}
+C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod k(m_1, m_2))
+\end{equation}
+
+
+**Example:** Considering the same example of Mayan Calendar,  it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq5}
+
+\begin{equation} \label{eq6}
+\begin{split}
+C(tun, katun) =  \lfloor C(uinal, baktun)(z)/18\rfloor \mod 20 \\
+\end{split}
+\end{equation}
+
+
+
 
 In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up.
 
