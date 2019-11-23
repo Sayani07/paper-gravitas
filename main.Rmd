@@ -174,8 +174,9 @@ H(j) = \bigcup_{i \in S}G(i)
 According to this definition, $G \trianglelefteq H,$ if each granule H (i) is the union of some
 granules of G. For example, $Days \trianglelefteq Months,$. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
 
+
 **Definition: Groups periodically into** A granularity H is periodical with respect to a granularity G if
-(1) $$G \trianglelefteq H,$$, and
+(1) $G \trianglelefteq H,$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
 $H (i + R) = \bigcup_{j \in S} G(j + P)$.
@@ -185,7 +186,7 @@ A granularity H which is periodical with respect to G is specified by:
 (ii) the value of P; 
 (iii) the indexes of first and last granules in H, if their value is not infinite. 
 Then, if ${S_0,...,S_(R-1)}$ are the sets of indexes of G describing
-$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H (j) is given by: $\bigcup_{i \in S_j}G(P*\lfloor j/R \rfloor + i)$. 
+$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H (j) is given by: $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. 
 
 This formula can be explained observing that H (j ) is either one of H (0), . . . , H (R - 1) or, for the periodicity of H, is one of these granules “shifted” ahead or behind on the time line of a finite number of periods. If $H (j ) \epsilon {H (0), . . . , H (R - 1)}$, then the formula ‘j mod R’ defines the index (among those in {0,...,R - 1}) of the granule that must be shifted to obtain H (j).The number of periods each granule of G composing H (j mod R) should be shifted is given by $\lfloor j/R \rfloor$.
 
@@ -253,7 +254,7 @@ In a cyclic organization of time, the domain is composed of a set of recurring t
 
 We propose a formalism of cyclic time granularities through the tsibble [@Wang2019-aw] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
 
-The mapping of two linear granularities forming a cyclic granularity can be regular or irregular. It will be regular if, for example, they are formed by grouping operation. Grouping operation would ensure that each granule of the resulting granularity consists of same number of granules of bottom granularity. However, if they are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of bottom granularity. However, the relationship can still be periodic, depending on the choice of periods and hence these are also useful in addressing periodicities.  The formalisms would however differ for circular (regular mapping) and aperiodic (irregular mapping) granularities.
+The mappings of two linear granularities forming a cyclic granularity can be regular or irregular. It will be regular if, for example, they are formed by grouping operation. Grouping operation would ensure that each granule of the resulting granularity consists of same number of granules of bottom granularity. However, if they are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of bottom granularity. The relationship can still be periodic, depending on the choice of periods and hence these are also useful in exploring periodicities. However, the formalisms would differ for circular (regular mapping) and aperiodic (irregular mapping) granularities.
 
 
 #### Circular {#sec:circular-gran-def}
@@ -302,7 +303,7 @@ Day-of-Week: & $C_7(z)$ & $= \lfloor z/24*60\rfloor \mod 7$ & $k_5=$&$7$\\
 
 ### Aperiodic {#sec:aperiodic-gran-def}
 
-An **Aperiodic granularity** can not be defined using modular arithmetic in a similar fashion. The modulus for these type of calendar categorizations are not constant due to irregular mapping with bottom granularities. For example, table \ref{tab:} shows some example of aperiodic granularities ($A_i$) and plausible choices of period lengths($k_i$). The coarse granularity is assumed as the period within which the finer granularity will repeat its behavior aperiodically.
+An **Aperiodic granularity** can not be defined using modular arithmetic. The modulus for these type of calendar categorizations are not constant due to irregular mapping with bottom granularities. For example, table \ref{tab:aperiodic} shows some example of aperiodic granularities ($A_i$) and plausible choices of period lengths($k_i$). The coarse granularity is assumed as the period within which the finer granularity will repeat its behavior aperiodically.
 
 \begin{table}[ht]
 \begin{center}
@@ -317,26 +318,34 @@ Week-of-Month: & $A_4(z)$ & $k_4=5, 4$\\
 \end{tabular}
 \end{center}
 \caption{Illustrative aperiodic circular granularities with potential period lengths}
-\label{definitions}
+\label{aperiodic}
 \end{table}
 
 
-**Definition: Aperiodic granularity** A aperiodic granularity A(BG, G) relates a linear granularity G to the bottom granularity, if
+**Definition: Aperiodic granularity** An aperiodic granularity A(G, BG) that relates linear granularities G and bottom granularity BG, where G is periodical with respect to BG, if
 
-$A_{BG,G}(z) = {0, 1, \dots ak_i}$, where ak_i denotes the number of granules of the bottom granularity present in the i^{th} granule of G.
+$A_{BG, G}(z) = BG(z - \sum_{j=0}^{k-1}\vert S_{j \mod R} \vert)$ for $z \in S_k$,
 
-\begin{equation} \label{eq2}
-A_{BG, G}(z) = BG(z\mod k(BG,G)) \forall z \in \mathbb{Z}^+,
-BG(z) \neq \phi
-\end{equation}
-where,  
-z denotes the index set.  
-BG denotes the index of the tsibble (bottom granularity).  
-G be a linear granularity, periodic with respect to BG.    
-k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.  
+where,
+z denotes the index set,  
+P and R denotes the period of the granularity BG and number of granules of G in each period of BG,  
+$S_j$ are the sets of indices of BG describing $G_j$ such that $G(j) = \bigcup_{i \in S_j}BG(i)$,  
+$\vert S_j \vert$ is the cardinality of set $S_j$,  
 
 
+Since G is periodical with respect to BG, from definition of "Groups periodically into" the following holds true:
 
+- $BG \trianglelefteq G,$
+- $G(j) = \bigcup_{i \in S_j \mod R}BG(P*\lfloor j/R \rfloor + i)$,  
+
+
+**Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to Figure \ref:{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
+Two linear granularities G1 and G2 are considered, where $G1 = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $G2 = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that G1 is made up of shrinking every 1st granule of Group_3(BG) by 1 and G2 is made up of shrinking every 1st granule of Group_3(BG) by 2. Number of granules of G1 and G2 in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(G, G1) and A(G, G2) are repetitive categorisation of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of G.
+
+
+```{r aperiodic-gran, echo=FALSE,out.width = "100%",fig.cap="\\label{fig:circular-gran} Relating circular granularities and bottom linear granularity "}
+knitr::include_graphics("Figs/aperiodic-gran.png")
+```
 
 
 <!-- Then $f(x, y)$ can be  computed using modular arithmetic as follows: -->
