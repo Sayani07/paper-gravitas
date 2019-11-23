@@ -322,13 +322,13 @@ Week-of-Month: & $A_4(z)$ & $k_4=5, 4$\\
 \end{table}
 
 
-**Definition: Aperiodic granularity** An aperiodic granularity A(G, BG) that relates linear granularities G and bottom granularity BG, where G is periodical with respect to BG, if
+**Definition: Aperiodic granularity** An aperiodic granularity A(G, BG) that relates linear granularities G and bottom granularity BG, with G being periodical with respect to BG, is given by
 
 $A_{BG, G}(z) = BG(z - \sum_{j=0}^{k-1}\vert S_{j \mod R} \vert)$ for $z \in S_k$,
 
 where,
 z denotes the index set,  
-P and R denotes the period of the granularity BG and number of granules of G in each period of BG,  
+R denotes the number of granules of G in each period of BG,  
 $S_j$ are the sets of indices of BG describing $G_j$ such that $G(j) = \bigcup_{i \in S_j}BG(i)$,  
 $\vert S_j \vert$ is the cardinality of set $S_j$,  
 
@@ -336,10 +336,9 @@ $\vert S_j \vert$ is the cardinality of set $S_j$,
 Since G is periodical with respect to BG, from definition of "Groups periodically into" the following holds true:
 
 - $BG \trianglelefteq G,$
-- $G(j) = \bigcup_{i \in S_j \mod R}BG(P*\lfloor j/R \rfloor + i)$,  
+- $G(j) = \bigcup_{i \in S_j \mod R}BG(P*\lfloor j/R \rfloor + i)$,  where P denotes the period of the granularity BG.
 
-
-**Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to Figure \ref:{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
+**Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to Figure \autoref{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
 Two linear granularities G1 and G2 are considered, where $G1 = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $G2 = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that G1 is made up of shrinking every 1st granule of Group_3(BG) by 1 and G2 is made up of shrinking every 1st granule of Group_3(BG) by 2. Number of granules of G1 and G2 in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(G, G1) and A(G, G2) are repetitive categorisation of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of G.
 
 
@@ -405,6 +404,8 @@ We refer to granularities which are nested within multiple levels as **multiple-
 
 ### Computation of multiple-order from single-order
 
+#### All single order granularities are circular
+
 \begin{equation} \label{eq3}
 \begin{split}
 C_{(G_l,G_m)}(z) & = C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1) \\  
@@ -449,7 +450,12 @@ C(uinal, baktun) & = C(uinal, tun) + kuinal, tun)C(tun,katun) + C(uinal, katun)C
 \end{equation}
 
 
+#### Single order granularities are circular or aperiodic
+
+#### All single order granularities are circular
+
 ### Computation of single-order from multiple-order
+
 
 For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
 
@@ -467,6 +473,8 @@ C(tun, katun) =  \lfloor C(uinal, baktun)(z)/18\rfloor \mod 20 \\
 \end{equation}
 
 <!-- In the next section, we discuss the computation of any single-order-up and multiple-order-up granularities in a periodic and aperiodic set up. -->
+
+#### Single order granularities are circular or aperiodic
 
 
 
