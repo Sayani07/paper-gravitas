@@ -324,13 +324,14 @@ Week-of-Month: & $A_4(z)$ & $k_4=5, 4$\\
 
 **Definition: Aperiodic granularity** An aperiodic granularity A(AG, BG) that relates linear granularities AG and bottom granularity BG, with AG being periodical with respect to BG, is given by
 
-$A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert)$ for $z \in T_k$,
-
+\begin{equation}\label{eq6}
+A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert) for \z \in T_k
+\end{equation}
 where,  
 z denotes the index set (index of BG),
 R' denotes the number of granules of AG in each period of BG,  
-$T_w$ are the sets of indices of BG describing $AG_w$ such that $AG(w) = \bigcup_{z \in T_w}BG(z)$,  
-$\vert T_w \vert$ is the cardinality of set $T_w$,  
+$T_w$ are the sets of indices of BG describing $AG_w$ such that $AG(w) = \bigcup_{z \in T_w}BG(z)$, and $T_w = 0$ for $w \epsilon Z_{<0}$  
+$\vert T_w \vert$ is the cardinality of set $T_w$.
 
 
 Since AG is periodical with respect to BG, from definition of "Groups periodically into" the following holds true:
@@ -343,7 +344,7 @@ Two linear granularities AG and AH are considered, where $AG = Alter^{5}_{(1,-1)
 
 \begin{equation} \label{eq4}
 \begin{split}
-A(BG,AG)(8) & = BG(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , since 8 \in T_{3} \\
+A(BG,AG)(8) & = BG(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , since \8 \in T_{3} \\
   & = BG(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = BG(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = BG(8 - \vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert - \vert T_{2 \mod 2}\vert) \\
@@ -355,7 +356,7 @@ A(BG,AG)(8) & = BG(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , since 8 \in T_
 
 \begin{equation} \label{eq5}
 \begin{split}
-A(BG,AH)(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) \\ , 10 \in T_{1}
+A(BG,AH)(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) , since \10 \in T_{1}  \\
   & = BG(10 - \sum_{w=0}^{0}\vert T_{w\mod 2}\vert) \\
   & = BG(10 - \vert T_{0 \mod 2}\vert) \\
   & = BG(10 - \vert T_{0}\vert) \\
@@ -372,6 +373,7 @@ A(BG,AH)(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) \\ , 10 \in T_
 knitr::include_graphics("Figs/aperiodic-granv1.png")
 ```
 
+If we ignore leap years and all its exception, the periodicity of the grouping (days, months), P' = 365, R' = 12, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, period is 400 years and hence $P' = (3*365 + 366)$, $R' = 12*400$.  \autoref{eq:eq6} can be useful to find the aperiodic granularity day-of-month in both of these cases, since the grouping is periodic is both cases. 
 
 <!-- Then $f(x, y)$ can be  computed using modular arithmetic as follows: -->
 
@@ -411,7 +413,19 @@ knitr::include_graphics("Figs/aperiodic-granv1.png")
 <!-- Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. -->
 
 
-The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG.
+The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG. It can be noted here that if a linear granularity AG is quasi-periodic with respect to BG, then \ref{eq:eq6} can be modified as follows to account for exceptions $E = [e_begin, e_end]$ (\ref:{def:something})
+
+\begin{equation}\label{eq7}
+A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w} \vert - \sum_{u=0}^{e_k}\vert E_{u} \vert)
+\end{equation}
+
+for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}^{k} T(w)$ and $E_{u} = [e_{begin}(u), e_{end}(u)]$.
+
+
+but the grouping is always periodic.
+
+
+
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
