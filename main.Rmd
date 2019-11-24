@@ -322,24 +322,39 @@ Week-of-Month: & $A_4(z)$ & $k_4=5, 4$\\
 \end{table}
 
 
-**Definition: Aperiodic granularity** An aperiodic granularity A(G, BG) that relates linear granularities G and bottom granularity BG, with G being periodical with respect to BG, is given by
+**Definition: Aperiodic granularity** An aperiodic granularity A(AG, BG) that relates linear granularities AG and bottom granularity BG, with AG being periodical with respect to BG, is given by
 
-$A_{BG, G}(z) = BG(z - \sum_{j=0}^{k-1}\vert S_{j \mod R} \vert)$ for $z \in S_k$,
+$A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert)$ for $z \in T_k$,
 
-where,
-z denotes the index set,  
-R denotes the number of granules of G in each period of BG,  
-$S_j$ are the sets of indices of BG describing $G_j$ such that $G(j) = \bigcup_{i \in S_j}BG(i)$,  
-$\vert S_j \vert$ is the cardinality of set $S_j$,  
+where,  
+z denotes the index set (index of BG),
+R' denotes the number of granules of AG in each period of BG,  
+$T_w$ are the sets of indices of BG describing $AG_w$ such that $AG(w) = \bigcup_{z \in T_w}BG(z)$,  
+$\vert T_w \vert$ is the cardinality of set $T_w$,  
 
 
-Since G is periodical with respect to BG, from definition of "Groups periodically into" the following holds true:
+Since AG is periodical with respect to BG, from definition of "Groups periodically into" the following holds true:
 
-- $BG \trianglelefteq G,$
-- $G(j) = \bigcup_{i \in S_j \mod R}BG(P*\lfloor j/R \rfloor + i)$,  where P denotes the period of the granularity BG.
+- $BG \trianglelefteq AG,$
+- $AG(w) = \bigcup_{z \in T_w \mod R}BG(P'*\lfloor w/R' \rfloor + z)$,  where P' denotes the period of the granularity BG.
 
-**Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the diagram \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to Figure \autoref{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
-Two linear granularities G1 and G2 are considered, where $G1 = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $G2 = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that G1 is made up of shrinking every 1st granule of Group_3(BG) by 1 and G2 is made up of shrinking every 1st granule of Group_3(BG) by 2. Number of granules of G1 and G2 in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(G, G1) and A(G, G2) are repetitive categorisation of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of G.
+**Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to \autoref{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
+Two linear granularities AG and AH are considered, where $AG = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $AH = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that AG is made up of shrinking every 1st granule of Group_3(BG) by 1 and AH is made up of shrinking every 1st granule of Group_3(BG) by 2. Number of granules of AG and AH in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(BG, AG) and A(BG, AH) are repetitive categorisation of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of AG or AH. For AG, R' = 2, P'= 5, $T_0$ = {0,1} and $T_1$ = {2, 3, 4}, suppose we want to compute A(BG,AG)(8), then since $8 \in T_{3}$
+
+\begin{equation} \label{eq4}
+\begin{split}
+A(BG,AG)(8) & = BG(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) \\
+  & = BG(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
+  & = BG(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
+  & = BG(8 - \vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert - \vert T_{2 \mod 2}\vert) \\
+  & = BG(8 - 2*\vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert) \\
+  & = BG(8 - 2.2 - 3) \\
+  & = BG(1) \\
+\end{split}
+\end{equation}
+
+            
+
 
 
 ```{r aperiodic-gran, echo=FALSE,out.width = "100%",fig.cap="\\label{fig:circular-gran} Relating circular granularities and bottom linear granularity "}
@@ -384,7 +399,10 @@ knitr::include_graphics("Figs/aperiodic-gran.png")
 
 <!-- Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. -->
 
-To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar.
+
+The linear granularities G, H, G1 and G2 considered in the definitions of both circular and aperiodic granularities are periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG.
+
+<!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
 ## Order: Single vs. Multiple
 
@@ -933,7 +951,7 @@ Smart meters provide large quantities of measurements on energy usage for househ
 
 <!-- typical and extreme behaviors of 50 households from that trial.  -->
 
-<!-- , and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks.  -->
+<!-- , and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some famailies use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks.  -->
 
 <!-- <!-- Existing approaches, why we need to drill down, or why we want to -- probability distributions --> 
 <!-- It is common to see aggregates of usage across households, total kwh used each half-hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency.  -->
