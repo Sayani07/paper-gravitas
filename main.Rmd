@@ -934,7 +934,7 @@ Smart meters provide large quantities of measurements on energy usage for househ
 
 <!-- In Figure \ref{fig:day-fortnight} and \ref{fig:day-fortnight-agg} , the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. -->
 
-In Figure \ref{fig:day-fortnight}, the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information which we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. 
+In \autoref{fig:day-fortnight}, the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information which we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. 
 
 
 ```{r day-fortnight_agg, echo = FALSE}
@@ -1019,7 +1019,7 @@ smart_meter10 %>% search_gran()
 ```
 
 
-The interval of this tsibble is 30 minutes, and hence the default in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarse temporal unit can be set to be a “month”.
+The interval of this tsibble is 30 minutes, and hence the temporal granularities range from half-hour to year. If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
 
 
 ```{r}
@@ -1028,7 +1028,7 @@ smart_meter10 %>%
 ```
 
 
-This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to remove them from the list of granularities.
+Also, some intermediate temporal units that might not be pertinent to the analysis and we might want to remove them from the list of granularities.
 
 ```{r search_gran_limit2}
 
@@ -1038,11 +1038,9 @@ smart_meter10 %>% search_gran(highest_unit = "month",
 ```
 
 
-Now that we have the list of granularities to look at, we can visualize the distribution. From the search list, we found that we can look at six granularities, that amounts to analyzing six graphics. However, what happens if we want to see the distribution of energy across two granularities at a time? This is equivalent to looking at the distribution of energy consumption across one granularity conditional on another one. One way can be to plot one of the granularities on the x-axis and another on the facet. Different perspectives of the data can be derived depending on where the granularities are placed.
+Now that we have the list of granularities to look at, we can visualize the distribution. From the search list, we found that we can look at six granularities, that amounts to analyzing six graphics. However, the distribution of energy needs to be visualized across two granularities at a time. This is equivalent to looking at the distribution of energy consumption across one granularity conditional on another one. One way can be to plot one of the granularities on the x-axis and another on the facet. Different perspectives of the data can be derived depending on where the granularities are placed.
 
-So, what is the number of pairs of granularities we can look at? It is equivalent to taking 2 granularities from 6, which essentially means we need to examine 30 plots. The good news is, not all time granularities can be plotted together and we do not have to analyze so many plots!
-
-Harmony/clash can be identified to considerably reduce the number of visualizations that can aid exploratory analysis.
+What is the number of pairs of granularities we can look at? It is equivalent to taking 2 granularities from 6, which essentially means we need to examine 30 plots. The good news is, not all time granularities can be plotted together and we do not have to analyze so many plots! Harmony/clash can be identified to considerably reduce the number of visualizations that can aid exploratory analysis.
 
 
 ```{r is_harmony, echo= TRUE}
@@ -1074,12 +1072,12 @@ smart_meter10 %>% gran_advice("wknd_wday", "hour_day")
 
 ```
 
-In \ref{fig:bothcust} We visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across wknd_wday (facet) and hour-day (x-axis) for the same two households. For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.
+In \autoref{fig:bothcust} We visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across wknd_wday (facet) and hour-day (x-axis) for the same two households. For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.
 
  For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.
 
 
-```{r}
+```{r bothcust}
 cust1 <- smart_meter10 %>% 
   filter(customer_id %in% c(10006704)) %>% 
   prob_plot("wknd_wday",
