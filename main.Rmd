@@ -80,7 +80,7 @@ Calendar-based graphics[@wang2018calendar] are useful in visualizing patterns in
 
 <!--motivation --> 
    
-The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates of usage across households (for example, [@2012-la]), total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. However, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
+The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates [@2012-la],  of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. However, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
 
 <!-- at finer or coarser scales can be benefited from the approach of Exploratory Data Analysis (EDA). EDA calls for utilizing visualization and transformation to explore data systematically. It is a process of generating hypothesis, testing them and consequently refining them through investigations. --> 
 
@@ -180,7 +180,7 @@ H(j) = \bigcup_{i \in S}G(i)
 
 According to this definition, $G \trianglelefteq H,$ if each granule H (j) is the union of some
 granules of G. For example, $Days \trianglelefteq Months$. However, this  relationship is not fully described until we associate it with periodicity. For example, $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years. 
-\begin{timedom}\label{def:linear}
+\begin{timedom}\label{def:periodical}
 A granularity H is periodical with respect to a granularity G if
 (1) $G \trianglelefteq H,$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
@@ -236,10 +236,10 @@ each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$.
 
 **Example** : 
 
-  - $minute = Group_{60}(second)$
-  - $hour = Group_{60}(minute)$,
-  - $day = Group_{24}(hour)$,
-  - $week = Group_{7}(day)$,
+    - $minute = Group_{60}(second)$
+    - $hour = Group_{60}(minute)$,
+    - $day = Group_{24}(hour)$,
+    - $week = Group_{7}(day)$,
   
 where, second(1) would start a minute and likewise.
 
@@ -247,8 +247,8 @@ where, second(1) would start a minute and likewise.
 
 **Example** :
 
-  - pseudomonth = Alter^{12}_{(11,-1)}(day, Alter^{12}_{(9,-1)}(day, Alter^{12}_{(6,-1)}(day,
-                  Alter_^{12}_{(4,-1)}(day, Alter^{12}_{(2,-3)}(day, Group_31(day)))))),
+  - pseudomonth = 
+  $Alter^{12}_{11,-1}(day, Alter^{12}_{9,-1}(day, Alter^{12}_{6,-1}(day,   Alter^{12}_{4,-1)}(day, Alter^{12}_{(2,-3)}(day, Group_{31}(day))))))$,
                   where the granularity pseudomonth is generated by grouping 31 days, 
                   and then shrink April (4), June (6), September (9) and November (11)
                   by 1 day, and shrink February (2) by 3 days. [@Ning2002-tf]
@@ -347,7 +347,7 @@ Since AG is periodical with respect to BG, from definition of "Groups periodical
 - $AG(w) = \bigcup_{z \in T_w \mod R}BG(P'*\lfloor w/R' \rfloor + z)$,  where P' denotes the period of the granularity BG.
 
 **Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to \autoref{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
-Two linear granularities AG and AH are considered, where $AG = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $AH = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that AG is made up by shrinking every 1st granule of Group_3(BG) by 1 granule and AH is made up of shrinking every 1st granule of Group_3(BG) by 2 granules. Number of granules of AG and AH in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(BG, AG) and A(BG, AH) are repetitive categorization of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of AG or AH. For AG, R' = 2, P'= 5, $T_0$ = {0,1} and $T_1$ = {2, 3, 4}. For AH, R' = 2, P'= 12, $T_0$ = {0, 1, 2, 3, 4, 5, 6} and $T_1$ = {7, 8, 9, 10, 11}, then we will have \autoref{eq:eq4} and  \autoref{eq:eq5}.
+Two linear granularities AG and AH are considered, where $AG = Alter^{2}_{(1,-1)}(BG, Group_3(BG))$ and $AH = Alter^{2}_{(1,-2)}(BG, Group_7(BG))$. This implies that AG is made up by shrinking every 1st granule of Group_3(BG) by 1 granule and AH is made up of shrinking every 1st granule of Group_3(BG) by 2 granules. Number of granules of AG and AH in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(BG, AG) and A(BG, AH) are repetitive categorization of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of AG or AH. For AG, R' = 2, P'= 5, $T_0$ = {0,1} and $T_1$ = {2, 3, 4}. For AH, R' = 2, P'= 12, $T_0$ = {0, 1, 2, 3, 4, 5, 6} and $T_1$ = {7, 8, 9, 10, 11}, then we will have \autoref{eq:eq4} and  \autoref{eq:eq5}.
 
 \begin{equation} \label{eq:eq4}
 \begin{split}
@@ -465,7 +465,7 @@ C_{(G_l,G_m)}(z) & = C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1) \\
 
 
 <!-- some discussions on primary units of calendar -->
-**Example:** So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows (: 
+**Example:** So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows [@Reingold2001-kf]: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
