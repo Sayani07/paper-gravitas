@@ -437,11 +437,11 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
-**Definition:  Order** of a linear granularity can be comprehended as the level graininess associated with a linear granularity. If we consider two linear granularities G and H, such that $G \preceq H$, then H is of higher order than G.
+**Definition:  Order** of a linear granularity can be comprehended as the level of graininess associated with a linear granularity. If we consider two linear granularities G and H, such that G is finer than or groups into H (by Definitions \ref{def:finerthan}, \ref{def:groupsinto}), then H is of higher order than G.
 
-**Notation:  Hierarchy table** Let $H_n: (G, C, k)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $k_{l,m}$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the circular granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$. 
+**Notation:  Hierarchy table** Let $H_n: (G, C, k)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $k(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the circular granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$. 
 
-In a hierarchy table, linear granularities are arranged from highest to lowest order of linear granularities. 
+In a hierarchy table, linear granularities are arranged from lowest to highest order of linear granularities. 
 
 <!-- Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities and the other granularities are subsequently more "coarse" than the earlier one. -->
 
@@ -454,18 +454,18 @@ We refer to granularities which are nested within multiple levels as **multiple-
 
 \begin{equation} \label{eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1) \\  
-  & =   C_{(G_l,G_(l+1)}(z) + k(l, l+1)[ C_{G_(l+1),G_(l+2)}(z) + k(l+1, l+2)( C_{G_(l+2), G_m)}(z) - 1) - 1]\\
-  & =  C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{G_(l+1),G_(l+2)}(z) - 1) + k(l, l+1)k(l+1, l+2)(C(l+2, m) - 1)\\
-  & =  C_{(G_l,G_(l+1)}(z) + k(l, l+1)(C_{G_(l+1),G_(l+2)}(z) - 1) + k(l, l+2)(C_{G_(l+2),G_(l+m)}(z) - 1)\\
+C_{(G_l,G_m)}(z) & = C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1) \\  
+  & =   C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z) - 1) - 1] \\
+  & =  C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}} - 1)\\
+  & =  C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z) - 1)\\
   &\vdots\\
-  & = \sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_(l+i),G_(l+i+1)}(z) - 1)\\
+  & = \sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z) - 1)\\
 \end{split}
 \end{equation}
 
 
 <!-- some discussions on primary units of calendar -->
-**Example:** So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows: 
+**Example:** So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows (: 
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -485,8 +485,7 @@ Thus, the hierarchy table for the Mayan calendar would look like the following:
 
 Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun whereas examples of single-order-up granularities may include kin-of-uinal, uinal-of-tun etc. 
 
-
-Let us use the equation \ref{eq:eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
+Let us use the equation \ref{eq:eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic and regular.
 
 \begin{equation} \label{eq8}
 \begin{split}
