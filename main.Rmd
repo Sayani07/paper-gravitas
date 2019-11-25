@@ -149,14 +149,14 @@ than all elements of $G(j)$, and
   (C2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.  
 \end{timedom}
 
-**Dicussion:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity. The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
+**Dicussion:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity. The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
+\autoref{fig:linear-time} shows the implication of this condition. If we consider the chronon [@aigner2011visualization] as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
 
 
 ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear granularities"}
 knitr::include_graphics("Figs/linear-time.png")
 ```
 
-The definitions and rules for linear granularities are inadequate to reflect periodicities in time, like weekly, monthly or yearly seasonality. Hence, there is a need to define circular time granularities in a different approach. 
 
 
 #### Relationships between two linear granularities and association to Periodicity
@@ -178,11 +178,10 @@ H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 \end{timedom}
 
-According to this definition, $G \trianglelefteq H,$ if each granule H (i) is the union of some
-granules of G. For example, $Days \trianglelefteq Months,$. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
-
+According to this definition, $G \trianglelefteq H,$ if each granule H (j) is the union of some
+granules of G. For example, $Days \trianglelefteq Months,$. However, this  relationship is not fully described until we associate it with periodicity. For example, $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years. 
 \begin{timedom}\label{def:linear}
-**Definition: Groups periodically into** A granularity H is periodical with respect to a granularity G if
+A granularity H is periodical with respect to a granularity G if
 (1) $G \trianglelefteq H,$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
@@ -202,7 +201,7 @@ This formula can be explained observing that H (j ) is either one of H (0), . . 
 Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
 \begin{timedom}\label{def:quasi}
-**Definition: Quasi Periodical** A granularity H is quasi-periodical with respect to a granularity G if
+A granularity H is quasi-periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
 (2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
 integers R,P, where R is less than the minimum of the number of granules of H
