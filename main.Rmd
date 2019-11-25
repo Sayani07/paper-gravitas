@@ -74,7 +74,7 @@ It is important to be able to navigate through all of these temporal granulariti
 
 <!-- # existing ways and challenges -->
 
-Calendar-based graphics[@wang2019tsibble] are useful in visualizing patterns in the weekly and monthly structure well and are capable of checking the weekends or special days.  Any sub-daily resolution temporal data can also be displayed using this type of faceting [@Wickham2009-pk] with days of the week, month of the year and another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week, month-of-year ways of deconstructing time. There can be several classes of time deconstructions, viz. based on arrangement (linear vs. cyclic) or hierarchical order of calendar. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. One of the first attempts of characterizing these granularities occur in [@Bettini1998-ed]. The definitions and rules defined are inadequate to reflect periodicities in time. Hence, there is a need to define cyclic time granularities in a different approach, which can be useful in visualizing periodic behavior. Cyclic time granularities can be circular or aperiodic depending on if mappings between granularities are regular or irregular. Examples of circular can be hour of the day, day of the week and that of aperiodic granularities can be day of the month or public holidays. Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities like second of the minute or multiple-order-up granularities like second of the hour. lubridate [@G_Grolemund2011-vm] creates easy access and manipulation of common date-time objects. But most accessor functions are limited to single-order-up granularities.
+Calendar-based graphics[@wang2018calendar] are useful in visualizing patterns in the weekly and monthly structure well and are capable of checking the weekends or special days.  Any sub-daily resolution temporal data can also be displayed using this type of faceting [@Wickham2009-pk] with days of the week, month of the year and another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week, month-of-year ways of deconstructing time. There can be several classes of time deconstructions, viz. based on arrangement (linear vs. cyclic) or hierarchical order of calendar. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. One of the first attempts of characterizing these granularities occur in [@Bettini1998-ed]. The definitions and rules defined are inadequate to reflect periodicities in time. Hence, there is a need to define cyclic time granularities in a different approach, which can be useful in visualizing periodic behavior. Cyclic time granularities can be circular or aperiodic depending on if mappings between granularities are regular or irregular. Examples of circular can be hour of the day, day of the week and that of aperiodic granularities can be day of the month or public holidays. Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities like second of the minute or multiple-order-up granularities like second of the hour. lubridate [@G_Grolemund2011-vm] creates easy access and manipulation of common date-time objects. But most accessor functions are limited to single-order-up granularities.
 
 
 
@@ -192,12 +192,14 @@ This formula can be explained observing that H (j ) is either one of H (0), . . 
 
 Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
+\newtheorem{mydef}{Definition}
+\begin{mydef}\label{def:quasi}
 **Definition: Quasi Periodical** A granularity H is quasi-periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
 (2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
 integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
-
+\end{mydef}
  
 Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
 
@@ -251,7 +253,7 @@ where, second(1) would start a minute and likewise.
 
 In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be proceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also succeeds Wednesday). Intuitively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
 
-We propose a formalism of cyclic time granularities through the tsibble [@Wang2019-aw] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
+We propose a formalism of cyclic time granularities through the tsibble [@wang2019tsibble] framework of organizing temporal data. A time domain, as defined by Bettini, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble.
 
 The mappings of two linear granularities forming a cyclic granularity can be regular or irregular. It will be regular if, for example, they are formed by grouping operation. Grouping operation would ensure that each granule of the resulting granularity consists of same number of granules of bottom granularity. However, if they are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of bottom granularity. The relationship can still be periodic, depending on the choice of periods and hence these are also useful in exploring periodicities. However, the formalism would differ for circular (regular mapping) and aperiodic (irregular mapping) granularities.
 
@@ -296,7 +298,7 @@ Day-of-Week: & $C_7(z)$ & $= \lfloor z/24*60\rfloor \mod 7$ & $k_5=$&$7$\\
 \end{tabular}
 \end{center}
 \caption{Illustrative circular granularities with time index in minutes}
-\label{definitions}
+\label{tab:definitions}
 \end{table}
 
 
@@ -317,13 +319,13 @@ Week-of-Month: & $A_4(z)$ & $k_4=5, 4$\\
 \end{tabular}
 \end{center}
 \caption{Illustrative aperiodic circular granularities with potential period lengths}
-\label{aperiodic}
+\label{tab:aperiodic}
 \end{table}
 
 
 **Definition: Aperiodic granularity** An aperiodic granularity A(AG, BG) that relates linear granularities AG and bottom granularity BG, with AG being periodical with respect to BG, is given by
 
-\begin{equation}\label{eq3}
+\begin{equation}\label{eq:eq3}
 A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert) for z \in T_k
 \end{equation}
 where,  
@@ -339,23 +341,23 @@ Since AG is periodical with respect to BG, from definition of "Groups periodical
 - $AG(w) = \bigcup_{z \in T_w \mod R}BG(P'*\lfloor w/R' \rfloor + z)$,  where P' denotes the period of the granularity BG.
 
 **Discussion**: Example showing aperiodic granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:aperiodic-gran}. Each granule is represented by a box. Similar to \autoref{fig:circular-gran}, the granules that overlap share elements from the underlying time domain and the first slot shows the index set and the bottom granularity. 
-Two linear granularities AG and AH are considered, where $AG = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $AH = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that AG is made up of shrinking every 1st granule of Group_3(BG) by 1 and AH is made up of shrinking every 1st granule of Group_3(BG) by 2. Number of granules of AG and AH in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(BG, AG) and A(BG, AH) are repetitive categorisation of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of AG or AH. For AG, R' = 2, P'= 5, $T_0$ = {0,1} and $T_1$ = {2, 3, 4}. For AH, R' = 2, P'= 12, $T_0$ = {0, 1, 2, 3, 4, 5, 6} and $T_1$ = {7, 8, 9, 10, 11}, then we will have \ref{eq:eq4} and  \ref{eq:eq5}.
+Two linear granularities AG and AH are considered, where $AG = Alter^{5}_{(1,-1)}(BG, Group_3(BG))$ and $AH = Alter^{12}_{(1,-2)}(BG, Group_7(BG))$. This implies that AG is made up of shrinking every 1st granule of Group_3(BG) by 1 and AH is made up of shrinking every 1st granule of Group_3(BG) by 2. Number of granules of AG and AH in each period of BG is 2, but the number of granules of BG in each of those granules are different. A(BG, AG) and A(BG, AH) are repetitive categorization of time, similar to circular granularities, except that the number of granules of BG is not necessarily the same across different granules of AG or AH. For AG, R' = 2, P'= 5, $T_0$ = {0,1} and $T_1$ = {2, 3, 4}. For AH, R' = 2, P'= 12, $T_0$ = {0, 1, 2, 3, 4, 5, 6} and $T_1$ = {7, 8, 9, 10, 11}, then we will have \ref{eq:eq4} and  \ref{eq:eq5}.
 
-\begin{equation} \label{eq4}
+\begin{equation} \label{eq:eq4}
 \begin{split}
-A(BG,AG)(8) & = BG(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , since 8 \in T_{3} \\
+A(BG,AG)(8) & = BG(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , 8 \in T_{3} \\
   & = BG(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = BG(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = BG(8 - \vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert - \vert T_{2 \mod 2}\vert) \\
   & = BG(8 - 2*\vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert) \\
-  & = BG(8 - 2.2 - 3) \\
+  & = BG(8 - 2*2 - 3) \\
   & = BG(1) \\
 \end{split}
 \end{equation}
 
-\begin{equation} \label{eq5}
+\begin{equation} \label{eq:eq5}
 \begin{split}
-A(BG,AH)(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) , since 10 \in T_{1}  \\
+A(BG,AH)(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,  10 \in T_{1}  \\
   & = BG(10 - \sum_{w=0}^{0}\vert T_{w\mod 2}\vert) \\
   & = BG(10 - \vert T_{0 \mod 2}\vert) \\
   & = BG(10 - \vert T_{0}\vert) \\
@@ -372,7 +374,7 @@ A(BG,AH)(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) , since 10 \in
 knitr::include_graphics("Figs/aperiodic-granv1.png")
 ```
 
-If we ignore leap years and all its exception, the periodicity of the grouping (days, months), P' = 365, R' = 12, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, period is 400 years and hence $P' = (3*365 + 366)$, $R' = 12*400$.  \autoref{eq:eq6} can be useful to find the aperiodic granularity day-of-month in both of these cases, since the grouping is periodic is both cases. 
+If we ignore leap years and all its exception, the periodicity of the grouping (days, months), P' = 365, R' = 12, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, period is 400 years and hence $P' = (3*365 + 366)$, $R' = 12*400$.  \autoref{eq:eq3} can be useful to find the aperiodic granularity day-of-month in both of these cases, since the grouping is periodic is both cases. 
 
 <!-- Then $f(x, y)$ can be  computed using modular arithmetic as follows: -->
 
@@ -412,7 +414,7 @@ If we ignore leap years and all its exception, the periodicity of the grouping (
 <!-- Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. -->
 
 
-The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG. It can be noted here that if a linear granularity AG is quasi-periodic with respect to BG, then \ref{eq:eq6} can be modified as follows to account for exceptions $E = [e_begin, e_end]$ (\ref:{def:something})
+The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG. It can be noted here that if a linear granularity AG is quasi-periodic with respect to BG, then \ref{eq:eq3} can be modified as follows to account for exceptions $E = [e_{begin}, e_{end}]$ (\autoref{def:quasi})
 
 \begin{equation}\label{eq6}
 A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w} \vert - \sum_{u=0}^{e_k}\vert E_{u} \vert)
@@ -432,7 +434,7 @@ but the grouping is always periodic.
 
 The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
-**Definition:  Order** of a linear granularity can be comprehended as the level graininess asscociated with a linear granularity. If we consider two linear granularities G and H, such that $G \preceq H$, then H is of higher order than G.
+**Definition:  Order** of a linear granularity can be comprehended as the level graininess associated with a linear granularity. If we consider two linear granularities G and H, such that $G \preceq H$, then H is of higher order than G.
 
 **Notation:  Hierarchy table** Let $H_n: (G, C, k)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $k_{l,m}$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the circular granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$. 
 
@@ -481,7 +483,7 @@ Thus, the hierarchy table for the Mayan calendar would look like the following:
 Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun whereas examples of single-order-up granularities may include kin-of-uinal, uinal-of-tun etc. 
 
 
-Let us use the equation \ref{eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
+Let us use the equation \ref{eq:eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic.
 
 \begin{equation} \label{eq8}
 \begin{split}
@@ -502,7 +504,7 @@ C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod k(m_
 \end{equation}
 
 
-**Example:** Considering the same example of Mayan Calendar,  it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq5}
+**Example:** Considering the same example of Mayan Calendar,  it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq:eq5}
 
 \begin{equation} \label{eq10}
 \begin{split}
@@ -512,7 +514,7 @@ C(tun, katun) =  \lfloor C(uinal, baktun)(z)/18\rfloor \mod 20 \\
 
 In \ref{sec:singlefrommultiple} and \ref{sec:multiplefromsingle}, we assume that all single order granularities are circular.What happens when we have a mix of circular and aperiodic granularities.
 
-Let us turn to Gregorian calendar for addressing this case. Suppose we have a hierarchy table for  Gregorian calendar as \ref{table_accessor2}. Since months consists of unequal number of days, any temporal unit which is higher in order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and aperiodic single-order-up granularities. The single-order-up granularity day_month is aperiodic. Any single-order-up granularities which are formed by units below days are periodic. Similarly, all single-order-up granularities which are formed using units whose orders are higher than months are also periodic.
+Let us turn to Gregorian calendar for addressing this case. Suppose we have a hierarchy table using some linear granularties from Gregorian calendar. Since months consists of unequal number of days, any temporal unit which is higher in order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and aperiodic single-order-up granularities. The single-order-up granularity day_month is aperiodic. Any single-order-up granularities which are formed by units below days are periodic. Similarly, all single-order-up granularities which are formed using units whose orders are higher than months are also periodic.
 
 
 <!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. -->
@@ -923,7 +925,7 @@ Smart meters provide large quantities of measurements on energy usage for househ
 
 <!-- typical and extreme behaviors of 50 households from that trial.  -->
 
-<!-- , and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some famailies use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks.  -->
+<!-- , and indeed many parts of the world. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks.  -->
 
 <!-- <!-- Existing approaches, why we need to drill down, or why we want to -- probability distributions --> 
 <!-- It is common to see aggregates of usage across households, total kwh used each half-hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency.  -->
@@ -1105,7 +1107,7 @@ Now, we would like to see how these customers' behavior relate to the rest of th
 
 Figure \ref{fig:wknd-wday50} shows the quantile plot of energy consumption of 50 households. Similar quantiles for weekend and weekdays indicate that behaviors of most of these customers do not alter between weekdays and weekends.
 
-Figure \ref{fig:my-hd} shows that the median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. Moreover, only the pink band changes significantly in winter months (May - August). The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much. Most of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that the the level of quantiles increased too in winter months (obvious because of weather considtions), the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
+Figure \ref{fig:my-hd} shows that the median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. Moreover, only the pink band changes significantly in winter months (May - August). The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much. Most of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that the the level of quantiles increased too in winter months (obvious because of weather conditions), the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
 
 ```{r wknd-wday50, fig.cap = "Quantile plot of energy consumption of 50 households across different hours of the day faceted by weekday and weekend. The quantiles are not different for weekdays and weekends implying either the behavior balances out among these customers or most of them do not behave differently for weekdays and weekends."}
 
