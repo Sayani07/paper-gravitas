@@ -112,11 +112,11 @@ The remainder of the paper is organized as follows. Section \ref{sec:timegrandef
 # Time granularities{#sec:timegrandef}
 
 <!-- general calendar categorization -->
-Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data.
+Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data. Classes of time abstractions may be based on arrangement or hierarchical order of time, discussed in further details in \autoref{sec:arrangement} and \autoref{sec:order}.
 
-## Arrangement: Linear vs. Circular vs. aperiodic
+## Arrangement: Linear vs. Circular vs. aperiodic {#sec:arrangement}
 
-The arrangement of the time domain can result in deconstructing time in linear, circular or nearly circular ways. Time granularities are **linear** if they respect the linear progression of time. Examples include hours, days, weeks and months. However, periodicity is very common in all kinds of data. Time granularities, which are constructed by using two linear granularities, can be utilized to explain such periodicities. The mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, time granularities can also be **circular** or **aperiodic** depending on if the mapping of the linear granularities is regular or irregular. Examples of circular time granularities include hour of the day, and day of the week, whereas examples for aperiodic time granularities can be day of the month or public holidays.
+The arrangement of the time domain can result in deconstructing time in linear, circular or aperiodic (nearly circular) ways. Time granularities are **linear** if they respect the linear progression of time. Examples include hours, days, weeks and months. However, periodicity is very common in all kinds of data. Time granularities which can accomodate periodicities can be constructed by relating two linear granularities. The mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, time granularities can also be **circular** or **aperiodic** depending on if the mapping of the linear granularities is regular or irregular. Examples of circular time granularities include hour of the day, and day of the week, whereas examples for aperiodic time granularities can be day of the month or public holidays.
 
 <!-- <!-- Representation with tsibble -->
 <!-- Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. -->
@@ -131,21 +131,25 @@ In the following sections, we provide a formalism to all of these abstractions a
 
 ### Linear {#sec:linear-gran-def}
 
-There has been several attempts to provide the framework for formally characterizing time-granularities and identifying their structural properties, relationships and symbolic representations. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
+There has been several attempts to provide the framework for formally characterizing time-granularities. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
 
-**Definition:** A **time domain** is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
+\newtheorem{timedom}{Definition}
+\begin{timedom}\label{def:timedom}
+A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
+\end{timedom}
 
 A time domain can be **discrete** (if there is unique predecessor and successor for every element except for the first and last one in the time domain), or it can be **dense** (if it is an infinite set). A time domain is assumed to be discrete for the purpose of our discussion.
 
-**Definition:** A linear **granularity** is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
+
+\begin{timedom}\label{def:linear}
+A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
 
   (C1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
 than all elements of $G(j)$, and  
   (C2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.  
+\end{timedom}
 
-**Definition:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity.
-
-The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
+**Dicussion:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity. The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} shows the implication of this condition. If we consider the bottom linear granularity [@aigner2011visualization] as hourly and the entire horizon has T hours then it will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
 
 
 ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear granularities"}
@@ -159,26 +163,31 @@ The definitions and rules for linear granularities are inadequate to reflect per
 
 [@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
 
-**Definition: Finer Than** : A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
+\begin{timedom}\label{def:finerthan}
+A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
 for each index i, there exists an index j such that $G(i) \subset H(j)$.
+\end{timedom}
 
-**Definition: Groups Into** : A linear granularity G groups into a linear granularity H, denoted
+\begin{timedom}\label{def:groupsinto}
+A linear granularity G groups into a linear granularity H, denoted
 $G \trianglelefteq H,$
 if for each index j there exists a (possibly infinite) subset S of the integers such
 that
 \begin{equation}
 H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
+\end{timedom}
 
 According to this definition, $G \trianglelefteq H,$ if each granule H (i) is the union of some
 granules of G. For example, $Days \trianglelefteq Months,$. This relationship, however, is not sufficient to fully describe a granularity in terms of another one. For example, it is clear that $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years, but the grouping is always periodic. In order to define a granularity in terms of another granularity including the notion of periodicity, a particular case of the groups into relationship is considered.
 
-
+\begin{timedom}\label{def:linear}
 **Definition: Groups periodically into** A granularity H is periodical with respect to a granularity G if
 (1) $G \trianglelefteq H,$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
 $H (i + R) = \bigcup_{j \in S} G(j + P)$.
+\end{timedom}
 
 A granularity H which is periodical with respect to G is specified by:
 (i) the R sets of indexes of G, ${S_0,...,S_(R-1)}$ describing the granules of H within one period;
@@ -192,18 +201,19 @@ This formula can be explained observing that H (j ) is either one of H (0), . . 
 
 Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
-\newtheorem{mydef}{Definition}
-\begin{mydef}\label{def:quasi}
+\begin{timedom}\label{def:quasi}
 **Definition: Quasi Periodical** A granularity H is quasi-periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
 (2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
 integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
-\end{mydef}
+\end{timedom}
  
 Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
 
+\begin{timedom}\label{def:BG}
 **Definition: Bottom granularity** Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
+\end{timedom}
 
 **Example:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
 
@@ -427,7 +437,7 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
-## Order: Single vs. Multiple
+## Order: Single vs. Multiple {#sec:order}
 
 The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
