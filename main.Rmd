@@ -149,13 +149,17 @@ A time domain can be **discrete** (if there is unique predecessor and successor 
 \begin{timedom}\label{def:linear}
 A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
 
-  (C1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
+  (1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
 than all elements of $G(j)$, and  
-  (C2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.  
+  (2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.  
 \end{timedom}
 
-**Dicussion:** Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity. The first condition implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
-\autoref{fig:linear-time} shows the implication of this condition. If we consider the chronon [@aigner2011visualization] as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
+\begin{timedom}\label{def:granule}
+Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity.
+\end{granule}
+
+**Dicussion:** The first condition in \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
+\autoref{fig:linear-time} shows the implication of this condition. It shows the linear granularities hours, days, weeks, months and years, each of which are unidirectional in nature and arranged from past to future. If we consider the chronon [@aigner2011visualization] as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on. Each granule of the linear granularities shown are represented through a box.
 
 
 ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear granularities"}
@@ -170,7 +174,6 @@ A linear granularity G is finer than a  linear granularity H, denoted $G \preceq
 for each index i, there exists an index j such that $G(i) \subset H(j)$.
 \end{timedom}.
 
-**Dicussion:**
 
 \begin{timedom}\label{def:groupsinto}
 A linear granularity G groups into a linear granularity H, denoted
@@ -182,8 +185,10 @@ H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 \end{timedom}
 
-**Dicussion:** According to this definition, $G \trianglelefteq H,$ if each granule H (j) is the union of some
-granules of G. For example, $Days \trianglelefteq Months$. However, this  relationship is not fully described until we associate it with periodicity. For example, $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years. 
+**Dicussion:** According to this definition, $G \trianglelefteq H,$ if each granule H(j) is the union of some granules of G.
+
+
+For example, $Days \trianglelefteq Months$. However, this  relationship is not fully described until we associate it with periodicity. For example, $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years. 
 
 \begin{timedom}\label{def:periodical}
 A granularity H is periodical with respect to a granularity G if
