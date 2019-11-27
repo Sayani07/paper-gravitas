@@ -155,15 +155,15 @@ than all elements of $G(j)$, and
 \end{timedom}
 
 \begin{timedom}\label{def:granule}
-Each non-empty subset $G(i)$ is called a **granule**, where $i$ is one of the indexes and $G$ is a linear granularity.
-\end{granule}
+Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
+\end{timedom}
 
 **Dicussion:** The first condition in \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
 \autoref{fig:linear-time} shows the implication of this condition. It shows the linear granularities hours, days, weeks, months and years, each of which are unidirectional in nature and arranged from past to future. If we consider the chronon [@aigner2011visualization] as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on. Each granule of the linear granularities shown are represented through a box.
 
 
 ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear granularities"}
-knitr::include_graphics("Figs/linear-time.png")
+knitr::include_graphics("Figs/linear-arr.png")
 ```
 
 
@@ -185,10 +185,12 @@ H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 \end{timedom}
 
-**Dicussion:** According to this definition, $G \trianglelefteq H,$ if each granule H(j) is the union of some granules of G.
+**Dicussion:** $G \trianglelefteq H$ if each granule H(j) is the union of some granules of G.  $G \preceq H$ if every granule in G is a subset of some granule in H. In \autoref{fig:groups-finer}, both $Days \trianglelefteq Weeks$ and $Days \preceq Weeks$ hold true. However, Weekends groups into Holidays but Weekends are not finer than Holidays. On the other hand, Weekends are finer than weeks but do not group into weeks. Consider another example where $Days \trianglelefteq Months$. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions, . 
 
+```{r groups-finer,echo=FALSE,out.width = "100%",fig.cap="Illustrations of groups into and finer than relationships. Weekends groups into Holidays but Weekends are not finer than Holidays. On the other hand, Weekends are finer than weeks but do not group into weeks. Day groups into and are finer than weeks"}
+knitr::include_graphics("Figs/groupsandfiner.png")
+```
 
-For example, $Days \trianglelefteq Months$. However, this  relationship is not fully described until we associate it with periodicity. For example, $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years. 
 
 \begin{timedom}\label{def:periodical}
 A granularity H is periodical with respect to a granularity G if
@@ -203,9 +205,9 @@ A granularity H which is periodical with respect to G is specified by:
 (ii) the value of P; 
 (iii) the indexes of first and last granules in H, if their value is not infinite. 
 Then, if ${S_0,...,S_{R-1}}$ are the sets of indexes of G describing
-$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H (j) is given by: $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. 
+$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H(j) is given by: $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. 
 
-**Dicussion:** This formula can be explained observing that H (j ) is either one of H (0), . . . , H (R - 1) or, for the periodicity of H, is one of these granules “shifted” ahead or behind on the time line of a finite number of periods. If $H (j ) \epsilon {H (0), . . . , H (R - 1)}$, then the formula ‘j mod R’ defines the index (among those in {0,...,R - 1}) of the granule that must be shifted to obtain H (j).The number of periods each granule of G composing H (j mod R) should be shifted is given by $\lfloor j/R \rfloor$.
+**Dicussion:** 
 
 
 Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
@@ -444,6 +446,11 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 # Acyclic time granularities {#sec:circular-gran-def}
 
+Re-occurances in time can also happen due to completely irregular mapping between linear granularities. Some public and school holidays repeat every year, but the time period on which they appear might vary from year to year. For example, U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. 
+
+
+
+A classic example can be that of Easter. 
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
