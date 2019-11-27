@@ -109,14 +109,21 @@ This work provides tools for systematically exploring bivariate granularities wi
 
 The remainder of the paper is organized as follows. Section \ref{sec:timegrandef} details the background of linear granularities in depth and introduces the characterization of circular and aperiodic time granularities. Section \ref{sec:synergy} discusses the effect in data structure due to how pairs of cyclic time granularities are related. Section \ref{sec:visualization} discusses the role of plot choices, synergy of time granularities and number of observations to construct an informative and trustworthy visualization. Section \ref{sec:application} discusses how systematic exploration can be carried out for a temporal and non-temporal case. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
-# Time granularities{#sec:timegrandef}
+# Linear Time granularities {#sec:lineartime}
 
 <!-- general calendar categorization -->
-Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data. Classes of time abstractions may be based on arrangement or hierarchical order of time, discussed in further details in \autoref{sec:arrangement} and \autoref{sec:order}.
+<!-- Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data. Classes of time abstractions may be based on arrangement or hierarchical order of time, discussed in further details in \autoref{sec:arrangement} and \autoref{sec:order}. -->
 
-## Arrangement: Linear vs. Circular vs. aperiodic {#sec:arrangement}
+Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Time granularities are **linear** if they respect the linear progression of time. Examples include hours, days, weeks and months.
 
-The arrangement of the time domain can result in deconstructing time in linear, circular or aperiodic (nearly circular) ways. Time granularities are **linear** if they respect the linear progression of time. Examples include hours, days, weeks and months. However, periodicity is very common in all kinds of data. Time granularities which can accomodate periodicities can be constructed by relating two linear granularities. The mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, time granularities can also be **circular** or **aperiodic** depending on if the mapping of the linear granularities is regular or irregular. Examples of circular time granularities include hour of the day, and day of the week, whereas examples for aperiodic time granularities can be day of the month or public holidays.
+## Definitions and Relationships
+
+<!-- Arrangement: Linear vs. Circular vs. aperiodic {#sec:arrangement} -->
+
+<!-- The arrangement of the time domain can result in deconstructing time in linear, circular or aperiodic (nearly circular) ways.  -->
+
+ There has been several attempts to provide the framework for formally characterizing time-granularities. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
+
 
 <!-- <!-- Representation with tsibble -->
 <!-- Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. -->
@@ -127,11 +134,9 @@ The arrangement of the time domain can result in deconstructing time in linear, 
 <!-- What is circular granularity and some examples -->
 <!-- We specify the circular categorizations using modular arithmetic and call these **circular granularities**. The number of categories is essentially the periodicity of a circular time granularity. For example, suppose the time index is in minutes, and let $n_i$ be the number of categories created by the circular granularity $C_i$. Then the following categorizations can be computed. -->
 
-In the following sections, we provide a formalism to all of these abstractions and identify their relationships and symbolic representations. 
+<!-- In the following sections, we provide a formalism to all of these abstractions and identify their relationships and symbolic representations.  -->
 
-### Linear {#sec:linear-gran-def}
-
-There has been several attempts to provide the framework for formally characterizing time-granularities. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
+<!-- ### Linear {#sec:linear-gran-def} -->
 
 \newtheorem{timedom}{Definition}
 \begin{timedom}\label{def:timedom}
@@ -158,15 +163,14 @@ knitr::include_graphics("Figs/linear-time.png")
 ```
 
 
-
-#### Relationships between two linear granularities and association to Periodicity
-
 [@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
 
 \begin{timedom}\label{def:finerthan}
 A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
 for each index i, there exists an index j such that $G(i) \subset H(j)$.
-\end{timedom}
+\end{timedom}.
+
+**Dicussion:**
 
 \begin{timedom}\label{def:groupsinto}
 A linear granularity G groups into a linear granularity H, denoted
@@ -178,8 +182,9 @@ H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 \end{timedom}
 
-According to this definition, $G \trianglelefteq H,$ if each granule H (j) is the union of some
+**Dicussion:** According to this definition, $G \trianglelefteq H,$ if each granule H (j) is the union of some
 granules of G. For example, $Days \trianglelefteq Months$. However, this  relationship is not fully described until we associate it with periodicity. For example, $Days \trianglelefteq Months,$, since each month is a grouping of a number of days, however it is also a periodical grouping. If leap year is ignored, the periodicity of the grouping is 1 year, since each month would be defined as the grouping of the same number of days (31, 28, or 30, depending on the month) every year. Considering leap years and all their exceptions, the period becomes 400 years. 
+
 \begin{timedom}\label{def:periodical}
 A granularity H is periodical with respect to a granularity G if
 (1) $G \trianglelefteq H,$, and
@@ -195,7 +200,7 @@ A granularity H which is periodical with respect to G is specified by:
 Then, if ${S_0,...,S_{R-1}}$ are the sets of indexes of G describing
 $H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H (j) is given by: $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. 
 
-This formula can be explained observing that H (j ) is either one of H (0), . . . , H (R - 1) or, for the periodicity of H, is one of these granules “shifted” ahead or behind on the time line of a finite number of periods. If $H (j ) \epsilon {H (0), . . . , H (R - 1)}$, then the formula ‘j mod R’ defines the index (among those in {0,...,R - 1}) of the granule that must be shifted to obtain H (j).The number of periods each granule of G composing H (j mod R) should be shifted is given by $\lfloor j/R \rfloor$.
+**Dicussion:** This formula can be explained observing that H (j ) is either one of H (0), . . . , H (R - 1) or, for the periodicity of H, is one of these granules “shifted” ahead or behind on the time line of a finite number of periods. If $H (j ) \epsilon {H (0), . . . , H (R - 1)}$, then the formula ‘j mod R’ defines the index (among those in {0,...,R - 1}) of the granule that must be shifted to obtain H (j).The number of periods each granule of G composing H (j mod R) should be shifted is given by $\lfloor j/R \rfloor$.
 
 
 Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
@@ -207,18 +212,20 @@ A granularity H is quasi-periodical with respect to a granularity G if
 integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
 \end{timedom}
+
+**Dicussion:**
  
 Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
 
 \begin{timedom}\label{def:BG}
-**Definition: Bottom granularity** Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
+Bottom granularity - Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
 \end{timedom}
 
-**Example:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
+**Dicussion:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
 
 <!-- Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations. -->
 
-#### Computation of linear time granularities
+## Computation through Calendar Algebra
 
 Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra[@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and Calendar algebra operations are designed to generate
 new granularities from the bottom one or recursively, from those already generated.
@@ -232,7 +239,7 @@ Some relevant grouping oriented operations are discussed, which will be used in 
 
 - **The grouping operation** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G into m-granule groups and making each group a granule of the resulting granularity.
 More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for
-each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$.  
+each integer $i$, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$.  
 
 **Example** : 
 
@@ -243,7 +250,7 @@ each integer i, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$.
   
 where, second(1) would start a minute and likewise.
 
-- **The altering-tick operation** : Let G1, G2 be full-integer labeled granularities, and l, k, m integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. The altering-tick operation modifies the granules of G1 so that the lth granule of each group has |k| additional (or fewer when k < 0) granules of G2.  
+- **The altering-tick operation** : Let G1, G2 be full-integer labeled granularities, and $l$, $k$, $m$ integers, where G2 partitions G1, and $1 \leq l \leq m$. The altering-tick operation $Alter^{m}_{l,k} (G2, G1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. The altering-tick operation modifies the granules of G1 so that the $l$th granule of each group has $|k|$ additional (or fewer when k < 0) granules of G2.  
 
 **Example** :
 
@@ -254,7 +261,9 @@ where, second(1) would start a minute and likewise.
                   by 1 day, and shrink February (2) by 3 days. [@Ning2002-tf]
 
 
-### Cyclic {#sec:cyclic-gran-def}
+# Cyclic Time granularities {#sec:circular-gran-def}
+
+Periodicity is very common in all kinds of data. Time granularities which can accomodate periodicities can be constructed by relating two linear granularities. The mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. Hence, time granularities can also be **circular** or **aperiodic** depending on if the mapping of the linear granularities is regular or irregular. Examples of circular time granularities include hour of the day, and day of the week, whereas examples for aperiodic time granularities can be day of the month or public holidays.
 
 In a cyclic organization of time, the domain is composed of a set of recurring time values. Hence, any time value can be proceeded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also succeeds Wednesday). Intuitively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
 
@@ -263,19 +272,19 @@ We propose a formalism of cyclic time granularities through the tsibble [@wang20
 The mappings of two linear granularities forming a cyclic granularity can be regular or irregular. It will be regular if, for example, they are formed by grouping operation. Grouping operation would ensure that each granule of the resulting granularity consists of same number of granules of bottom granularity. However, if they are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of bottom granularity. The relationship can still be periodic, depending on the choice of periods and hence these are also useful in exploring periodicities. However, the formalism would differ for circular (regular mapping) and aperiodic (irregular mapping) granularities.
 
 
-#### Circular {#sec:circular-gran-def}
+## Circular {#sec:circular-gran-def}
 
 \begin{timedom}\label{def:circular}
 A circular granularity C(BG, G) relates a linear granularity G to the bottom granularity, if
 
 \begin{equation} \label{eq:eq2}
 C_{BG, G}(z) = BG(z\mod k(BG,G)) \forall z \in \mathbb{Z}^+,
-BG(z) \neq \phi
+BG(z) \neq \phi,
 \end{equation}
 where,  
-z denotes the index set.  
-BG denotes the index of the tsibble (bottom granularity).  
-G be a linear granularity, periodic with respect to BG.    
+z denotes the index set, 
+BG denotes the index of the tsibble (bottom granularity), 
+G be a linear granularity, periodic with respect to BG,     
 k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.  
 \end{timedom}
 
@@ -308,7 +317,7 @@ Day-of-Week: & $C_7(z)$ & $= \lfloor z/24*60\rfloor \mod 7$ & $k_5=$&$7$\\
 \end{table}
 
 
-### Aperiodic {#sec:aperiodic-gran-def}
+## Quasi-circular {#sec:circular-gran-def}
 
 An **Aperiodic granularity** can not be defined using modular arithmetic. The modulus for these type of calendar categorizations are not constant due to irregular mapping with bottom granularities. For example,\autoref{tab:aperiodic} shows some example of aperiodic granularities ($A_i$) and plausible choices of period lengths($k_i$). The coarse granularity is assumed as the period within which the finer granularity will repeat its behavior aperiodically.
 
@@ -336,7 +345,7 @@ A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert), z \in T_k
 \end{equation}
 where,  
 z denotes the index set (index of BG),
-R' denotes the number of granules of AG in each period of BG,  
+$R'$ denotes the number of granules of AG in each period of BG,  
 $T_w$ are the sets of indices of BG describing $AG(w)$ such that $AG(w) = \bigcup_{z \in T_w}BG(z)$, and $T_w = 0$ for $w \epsilon Z_{<0}$  
 $\vert T_w \vert$ is the cardinality of set $T_w$.
 
@@ -428,12 +437,12 @@ A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w} \vert - \sum_{u=0}^{e_k}\vert
 
 for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}^{k} T_w$ and $E_{u} = [e_{begin}(u), e_{end}(u)]$.
 
-
+# Acyclic time granularities {#sec:circular-gran-def}
 
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
-## Order: Single vs. Multiple {#sec:order}
+# Computing cyclic time granularities {#sec:order}
 
 The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
@@ -588,7 +597,6 @@ it is important to know how these granularities interact with each other. If two
 
 <!-- Harmonies are the pair of granularities that aid the process of exploratory analysis and clashes are pair that interact in non-compatible ways and hinder the process of exploration of the dependent variable. -->
 
-## Harmony and Clashes
 
 <!-- When we plot some observations with two circular or aperiodic granularities used as aesthetics or facets, problems arise when we have empty combinations. It is important to check how these two granularities interact with each other, before we expect to gain insights by plotting them together.  -->
 
@@ -656,6 +664,7 @@ And the ones that do not lead to any missing combinations are called **harmonies
 
 <!--   b) There should not be any level of the factor plotted across x-axis which doesn't have values for all levels of factors plotted across facets. -->
 
+# Data structure
 
   
 # Visualization {#sec:visualization}
@@ -723,10 +732,10 @@ We will discuss few conventional and recent ways to plot distributions using bot
 
 ### Empirical methods
 
-Most commonly used techniques to display a distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg, 1978] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of these variations are helpful to get an idea of the distribution at a glance. Moreover, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
+Most commonly used techniques to display a distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of these variations are helpful to get an idea of the distribution at a glance. Moreover, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
 
 <!-- Description and lit review of letter-value plots -->
-The letter-value box plot [@Hofmann2017-sg, 2006] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown and leading to overload of information in one plot.
+The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown and leading to overload of information in one plot.
 
 
 <!-- Description and lit review of quantile plots -->
@@ -739,7 +748,7 @@ Quantile plots visually portray the quantiles of the distribution of sample data
 
 ### Kernel density estimation methods
 
-Traditional ways to visualize densities include violin plots [@Hintze1998-zi, 1998]. The shape of the violin represents the density estimate of the variable. The more data points in a specific range, the larger the violin is for that range. Adding two density plots gives a symmetric plot which makes it easier to see the magnitude of the density and compare across categories, enabling easier detection of clusters or bumps within a distribution.
+Traditional ways to visualize densities include violin plots [@Hintze1998-zi]. The shape of the violin represents the density estimate of the variable. The more data points in a specific range, the larger the violin is for that range. Adding two density plots gives a symmetric plot which makes it easier to see the magnitude of the density and compare across categories, enabling easier detection of clusters or bumps within a distribution.
 
 
 The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot (both color and width are mapped to estimated density), and an overlay of a reference distribution. This suffers from the same problem as boxplots or violin plot, as it is combination of those two.
@@ -916,8 +925,7 @@ Suppose we have $T$ observations, and two cyclic granularities -  $C_1$ with $n$
 
 ### Unevenly distributed events
 
-Even when there are no rarely occuring events, number of observations might vary hugely across within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the visualizations that use kernel density estimates should be used with caution as sample size would directly affect both the variance of the estimator and the confidence intervals. Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels.
-
+Even when there are no rarely occuring events, number of observations might vary hugely within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the visualizations that use kernel density estimates should be used with caution as sample size would directly affect both the variance of the estimator and the confidence intervals. Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels.
 
 # Applications {#sec:application}
 
