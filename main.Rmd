@@ -687,7 +687,15 @@ And the ones that do not lead to any missing combinations are called **harmonies
 
 # Data structure
 
-Creating 
+<!-- How volumes of continuously collected data can be visualized to ease further decision making?  -->
+
+Creating good visualization requires good data structures. Commonly, simple sequences of time value pairs $<t_0, v_0> \dots, <t_n, v_n>$ are the basis of analysis and visualization. It is recognized that the initial approaches of just considering time as an ordinal dimension in a 2D or 3D visualisation are inadequate to capture characteristics of time-dependent information. For example, there is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis. Moreover, one can use different calendars that define meaningful system of granularities for different application domain. Data can then be integrated at different levels of granularity enabling value aggregation or distribution along granularities. Since, we are essentially concerned with detection of previously unknown periodic behavior of data, it makes sense to support the detection of patterns by anabling aggregation or distribution across cyclic time granularities.
+
+
+
+
+ Instead, the big problem can be broken down into smaller pieces by focusing on specific tasks per visual representation in a 2D space.
+
 
   
 # Visualization {#sec:visualization}
