@@ -347,7 +347,7 @@ Week-of-Month: & $QC_4(z)$ & $k_4=5, 4$\\
 \label{tab:aperiodic}
 \end{table}
 
-\begin{timedom}\label{def:circular}
+\begin{timedom}\label{def:quasi-circular}
 A quasi-circular granularity QC_(BG, G) that relates linear granularities G and bottom granularity BG, with AG being periodical with respect to BG, is given by
 
 \begin{equation}\label{eq:eq3}
@@ -448,11 +448,18 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 # Acyclic time granularities {#sec:circular-gran-def}
 
-Re-occurances in time can also happen due to completely irregular mapping between linear granularities. Some public and school holidays repeat every year, but the time period on which they appear might vary from year to year. For example, U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. 
+Re-occurances in time can also happen due to completely irregular mapping between linear granularities. Some public and school holidays repeat every year, but there is no period within which their behavior remains constant. For example, U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. A classic example can be that of Easter or street cleaning my old house occurs on the first and third Monday of the month between April and October, except for state holidays.As such all of these are still recurring events, but recurring with non-periodic patterns.
 
+\begin{timedom}\label{def:acyclic}
+An acyclic granularity AC_(BG, G) that relates linear granularities G and bottom granularity BG, with AG being periodical with respect to BG, is given by
 
-
-A classic example can be that of Easter. 
+\begin{equation}\label{eq:eq3}
+QC_{BG, G}(z) = BG(z), z \in T_k
+\end{equation}
+where,  
+z denotes the index set (index of BG),
+$T_w$ are the sets of indices of BG describing $G(w)$ such that $G(w) = \bigcup_{z \in T_w}BG(z)$,$T_w = 0$ for $w \epsilon Z_{<0}$. Here, linear granularities BG and G has irregular mapping.
+\end{timedom}
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
@@ -679,6 +686,8 @@ And the ones that do not lead to any missing combinations are called **harmonies
 <!--   b) There should not be any level of the factor plotted across x-axis which doesn't have values for all levels of factors plotted across facets. -->
 
 # Data structure
+
+Creating 
 
   
 # Visualization {#sec:visualization}
