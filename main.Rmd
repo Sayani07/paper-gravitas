@@ -269,7 +269,7 @@ where, second(1) would start a minute and likewise.
 
 For more variations of grouping operations and granule oriented operations, the readers are remcommended to see [@Ning2002-tf].s
 
-# Cyclic Time granularities {#sec:circular-gran-def}
+# Cyclic Time granularities {#sec:cyclic-gran-def}
 
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
@@ -330,7 +330,7 @@ Day-of-Week: & $C_7(z)$ & $= \lfloor z/24*60\rfloor \mod 7$ & $k_5=$&$7$\\
 \end{table}
 
 
-## Quasi-circular {#sec:circular-gran-def}
+## Quasi-circular {#sec:quasi-circular-gran-def}
 
 A **quasi-circular** granularity can not be defined using modular arithmetic due to its irregular mapping with the bottom granularity. For example, \autoref{tab:quasi} shows some example of quasi-circular granularities ($QC_i$) and plausible choices of number of granules ($k_i$) of the finer granularity inside each granule of the coarser one in the cyclic granularity ($QC_i$).
 
@@ -454,7 +454,7 @@ A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert - \sum_{u=0}^{e
 
 for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}^{k} T_w$ and $E_{u} = [e_{begin}(u), e_{end}(u)]$.
 
-## Aperiodic {#sec:circular-gran-def}
+## Aperiodic {#sec:aperiodic-gran-def}
 
 Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $k_i$ from \autoref{tab:quasi} can be infinite for aperiodic granularities. 
 
@@ -659,7 +659,7 @@ A recent tidy data structure to support exploration and modeling of temporal dat
 include_graphics("Figs/data-structure-v1.png")
 ```
 
-## Fixed and Conditioned variables {#sec:synergy}
+## Synergy of fixed and conditioned variables {#sec:synergy}
 
 The cyclic time granularities which are essentially categorisations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes.
 
@@ -723,13 +723,23 @@ An example when there will be no empty combinations could be where $C_1$ maps ro
 Therefore, pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are called **harmonies**. 
 
 
-## Measured variable
+## Density estimation of measured variable
 
-The measured variable which is the univariate observational units can be dicrete or continuous. 
-
-
+The measured variable can be dicrete or continuous. The probability distribution of these univariate measured variable could be studied by estimating the proability density function (pdf for continuous) or probability mass function (pmf for dicrete). Both pdf and pmf are concerned with point probabilities of the random variable. Suppose we have observations which are realizations of univariate random variables, $X_1, X_2, \dots, X_n \sim F$, where $F$ denotes an unknown cumulative distribution function and $X_1, X_2, \dots, X_n$ are i.i.d. The densities can either be estimated or summarized using quantiles.Instead of assuming a parametric model for the distribution (e.g. a Normal distribution with unknown expectation and variance), a non-parametric estimation assumes that the density exists and is suitably smooth (e.g. differentiable). It is then possible to estimate the unknown density function f(·).
 
 
+The histogram is the oldest and most popular density estimator method. The form of the histogram depends very much on the tuning parameters class width and origin. The naive estimator was introduced by Fix and Hodges (1951) and first discussed by Rosenblatt(1956). Whittle (1958) formulated the general weight function class of estimators, while the orthogonal series estimator was introduced by Cencov (1962). The nearest neighbour estimate considered by Loftsgaarden and Quesenbury (1965), while the variable Kernel method is due to Brieman, Meisel and Purcell (1977). There are quite a few other approaches to density estimation than the kernel estimators, but the fixed bandwidth kernel estimators are used predominantly because of their simplicity.
+
+
+The quantile of a distribution is defined as $Q(p)= F^{-1}(p) = inf{{x: F(x) >p}}$, $0<p< 1$, where $F(x)$ is the distribution function. Let $X_{(1)},\dots X_{(n)}$ denote the order statistics of $X_1, X_2, \dots, X_n$, and let $Qi(p)$ denote the ith sample quantile definition, then  
+
+\begin{equation}
+\hat{Q_{i}(p)} = (l - \gamma)X_{(j)} + \gamma X_{(j + 1)}
+\end{equation}
+
+where,  $(j - m)/n \leq p < (j - m + 1)/n$
+
+There have been several other nonparametric quantile estimators proposed e.g., Harrell and Davis 1982; Sheather and Marron 1990). Also sample quantiles can be of the form that are not defined for all p including hinges and other letter values (Hoaglin 1983) and related methods (Freund and Perles 1987).
 
 
 <!-- would invlove a faceting approach with one temporal granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
@@ -804,7 +814,7 @@ There are several ways to plot statistical distributions. The displayed probabil
 We will discuss few conventional and recent ways to plot distributions using both of these methods.
 
 
-### Empirical methods
+### Quantile based methods
 
 Most commonly used techniques to display a distribution of data include the histogram (Karl Pearson), which shows the prevalence of values grouped into bins and the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of these variations are helpful to get an idea of the distribution at a glance. Moreover, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
 
@@ -1415,7 +1425,7 @@ cricket_tsibble <- gravitas::cricket %>%
 ```
 
 
-```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), one (facet 2) and two (facet 3) dot balls per over. For all three cases, difference in runs between subsequent overs decrease.", fig.pos="htb"}
+```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), one (facet 2) and two (facet 3) dot balls per over. For all three cases, difference in runs between subsequent overs decrease.", fig.pos="h"}
 
 library(gravitas)
 library(tsibble)
