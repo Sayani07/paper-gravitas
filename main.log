@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  2 DEC 2019 22:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  2 DEC 2019 23:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -782,12 +782,12 @@ File: Figs/aperiodic.png Graphic file (type png)
 Package pdftex.def Info: Figs/aperiodic.png  used on input line 503.
 (pdftex.def)             Requested size: 469.7541pt x 78.14517pt.
 [10 <./Figs/aperiodic.png>] [11] [12]
-<Figs/data-structure.png, id=276, 1127.21124pt x 168.63pt>
-File: Figs/data-structure.png Graphic file (type png)
-<use Figs/data-structure.png>
-Package pdftex.def Info: Figs/data-structure.png  used on input line 642.
-(pdftex.def)             Requested size: 469.76193pt x 70.27605pt.
-[13 <./Figs/data-structure.png>] [14] [15]
+<Figs/data-structure-v1.png, id=276, 1122.1925pt x 167.62625pt>
+File: Figs/data-structure-v1.png Graphic file (type png)
+<use Figs/data-structure-v1.png>
+Package pdftex.def Info: Figs/data-structure-v1.png  used on input line 642.
+(pdftex.def)             Requested size: 469.74231pt x 70.16722pt.
+[13 <./Figs/data-structure-v1.png>] [14] [15]
 <figure/allFig-1.pdf, id=311, 572.1375pt x 382.42876pt>
 File: figure/allFig-1.pdf Graphic file (type pdf)
 <use figure/allFig-1.pdf>
@@ -921,8 +921,8 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1086.
  ) 
 Here is how much of TeX's memory you used:
  13474 strings out of 492616
- 197833 string characters out of 6129482
- 314171 words of memory out of 5000000
+ 197845 string characters out of 6129482
+ 314173 words of memory out of 5000000
  16900 multiletter control sequences out of 15000+600000
  56589 words of font info for 125 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -950,7 +950,7 @@ ic/lm/lmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy
 live/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/
 texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2
 019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (29 pages, 1393272 bytes).
+Output written on main.pdf (29 pages, 1399693 bytes).
 PDF statistics:
  664 PDF objects out of 1000 (max. 8388607)
  550 compressed objects within 6 object streams

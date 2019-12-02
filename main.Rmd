@@ -661,7 +661,7 @@ include_graphics("Figs/data-structure-v1.png")
 
 ## Fixed and Conditioned variables {#sec:synergy}
 
-The cyclic time granularities which are essentially a function of the index of the tsibble are abstractions of time and hence are discrete variable, mapped as a factor. The relationships between the fixed and conditioned variable are of importance in this data structure due to the ways the cyclic granularities, which are mapped to fixed and conditional variable, relate to one another. To define a general framework, we define harmony and clashes.
+The cyclic time granularities which are essentially categorisations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes.
 
 
 <!-- Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations. -->
