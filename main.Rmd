@@ -351,8 +351,8 @@ Week-of-Month: & $QC_4(z)$ && $k_4=5, 4$\\
 \label{tab:quasi}
 \end{table}
 
-
-\begin{timedom}\label{def:quasicircular}
+\newtheorem{timedom1}{Definition}[subsection]
+\begin{timedom1}\label{def:quasicircular}
 A quasi-circular granularity QC_(BG, G') that relates linear granularities G' and bottom granularity BG, if
 
 \begin{equation}\label{eq:eq3}
@@ -365,7 +365,7 @@ BG denotes the index of the tsibble (bottom granularity),
 G' is a linear granularity periodic with respect to BG with irregular mapping,   
 R' denotes the number of granules of G' in each period of the grouping (BG,G),   
 T_w are the sets of indices of BG describing G'(w) such that $G'(w) = \bigcup_{z \in T_w}BG(z)$,$T_w = 0$ for $w \epsilon Z_{<0}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
-\end{timedom}
+\end{timedom1}
 
 Since G' is periodical with respect to BG, from definition \ref{def:periodical} the following holds true:
 
@@ -402,7 +402,7 @@ QC(BG,H')(10) & = BG(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,  10 \in T_{
 
 
 
-```{r quasi-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "}
+```{r quasi-gran, echo=FALSE,out.width = "100%",fig.cap="Relating quasi-circular granularities and bottom linear granularity "}
 knitr::include_graphics("Figs/aperiodic-granv1.png")
 ```
 
@@ -446,17 +446,17 @@ If we ignore leap years and all its exception, the periodicity of the grouping (
 <!-- Identifying repeating (periodic/aperiodic) patterns are necessary in revealing patterns and future trends of a temporal data. Often there is a need for periodicity detection to find whether and how frequent a periodic/aperiodic pattern is repeated within the series. -->
 
 
-The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG. It can be noted here that if a linear granularity AG is quasi-periodic with respect to BG, then \autoref{eq:eq3} can be modified as follows to account for exceptions $E = [e_{begin}, e_{end}]$ (by Definition \autoref{def:quasi})
+The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG. It can be noted here that if a linear granularity AG is quasi-periodic with respect to BG, then \autoref{eq:eq3} can be modified as follows to account for exceptions $E = [e_{begin}, e_{end}]$ (by Definition \autoref{def:quasi}).
 
 \begin{equation}\label{eq6}
-A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w} \vert - \sum_{u=0}^{e_k}\vert E_{u} \vert)
+A_{BG, AG}(z) = BG(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert - \sum_{u=0}^{e_k}\vert E_{u} \vert)
 \end{equation}
 
 for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}^{k} T_w$ and $E_{u} = [e_{begin}(u), e_{end}(u)]$.
 
 ## Aperiodic {#sec:circular-gran-def}
 
-Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. For example, U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. Examples of aperiodic granularity may also include school holidays or a scheduling event that covers the first and third Monday of the month between June and October, except for state holidays. All of these are still recurring events, but recurring with non-periodic patterns. As such, plausible $k_i$ from \autoref{tab:aperiodic} can be infinite for aperiodic granularities. 
+Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $k_i$ from \autoref{tab:quasi} can be infinite for aperiodic granularities. 
 
 
 \begin{timedom}\label{def:acyclic}
@@ -464,7 +464,7 @@ An aperiodic granularity A_(BG, G'') that relates linear granularities G and bot
 
 \begin{equation}\label{eq:eq}
 \begin{split}
-A_{BG, G}(z) & = 1, z \in T_q\\
+A_{BG, G''}(z) & = 1, z \in T_q\\
      & = 0, z \not\in T_q\\
 \end{split}
 \end{equation}
@@ -472,6 +472,14 @@ where,
 z denotes the index set (index of BG),
 $T_q$ are the sets of indices of BG describing $G''(q)$ such that $G''(q) = \bigcup_{z \in T_q}BG(z)$,$T_q = 0$ for $q \epsilon Z_{<0}$.
 \end{timedom}
+
+Discussion: Aperiodic time granularities map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. An example of aperiodic granularity can be one that relates a bottom granularity ($BG$) and linear granularity ($G''$) such that $BG \trianglelefteq G''$, $BG \not\preceq G$ and $BG$ is not periodic or quasi-periodic with respect to $G''$, as shown in \autoref{fig:aperiodic}.
+
+
+
+```{r aperiodic, echo=FALSE,out.width = "100%",fig.cap="Relating aperiodic granularity and bottom linear granularity "}
+knitr::include_graphics("Figs/aperiodic.png")
+```
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
@@ -491,7 +499,7 @@ We refer to granularities which are nested within multiple levels as **multiple-
 
 <!-- If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided. -->
 
-### Computation of multiple-order from single-order {#sec:multiplefromsingle}
+## Multiple-order from single-order {#sec:multiplefromsingle}
 
 
 \begin{equation} \label{eq7}
@@ -538,7 +546,7 @@ C(uinal, baktun) & = C(uinal, tun) + kuinal, tun)C(tun,katun) + C(uinal, katun)C
 
 
 
-### Computation of single-order from multiple-order {#sec:singlefrommultiple}
+## Single-order from multiple-order {#sec:singlefrommultiple}
 
 
 For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
