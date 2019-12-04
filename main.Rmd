@@ -288,20 +288,19 @@ Cyclic time granularities which accomodate periodicities can be constructed by r
 ## Circular {#sec:circular-gran-def}
 
 \begin{timedom}\label{def:circular}
-A circular granularity C(BG, G) relates a linear granularity G to the bottom granularity, if
+A circular granularity C(B, G) relates a linear granularity G to the bottom granularity B, if
 
 \begin{equation} \label{eq:eq2}
-C_{BG, G}(z) = BG(z\mod k(BG,G)) \forall z \in \mathbb{Z}^+,
-BG(z) \neq \phi,
+C_{B, G}(z) = {L}(z\mod k(B,G)) \quad \forall z \in \mathbb{Z}^+
 \end{equation}
-where,  
-z denotes the index set, 
-BG denotes the index of the tsibble (bottom granularity), 
-G is a linear granularity periodic with respect to BG with regular mapping,     
-and k(BG,G) be the period length of the bottom granularity with respect to linear granularity G.
+where,\\
+z denotes the index set, \\
+B denotes a full-integer labelled bottom granularity which groups periodicially into linear granularity G with regular mapping, \\
+{L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (k-1)}$,\\
+and k(B,G) is the number of granules of B in each granule of G.
 \end{timedom}
 
-**Discussion**: Example showing circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the \autoref{fig:circular-gran}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. G and H are two linear granularities denoting days and weeks respectively. The period length of days with respect to weeks is 7, hence, $C_{G, BG}(z)$ represented by C(BG, G) is given by $BG(z\mod 7)$. The circular granularity C(BG, G) consists of repetitive pattern {BG(0), BG(1), BG(2), BG(3), BG(4), BG(5), BG(6)} which repeats itself after each period length. Similarly, C(BG, H) is given by $BG(z\mod 14)$ since the period length of days with respect to fortnight is 14. C(BG, H) also repeats the pattern ${BG(0), BG(1), \dots, BG(13)}$ in every period. Hence, circular granularities are represented as repetitive categorization of time in the diagram.
+**Discussion**:  In general, the set of labels will be a set of strings that is more descriptive than the index and used to identify a categorisation of the circular granularity. However, the labels can coincide with indexes in which case integers are directly used to refer to categorisations of the circular granularity.  Example showing circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the \autoref{fig:circular-gran}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. G and H are two linear granularities denoting days and weeks respectively. $k(day, week) =  7$ and hence, $C_{G, B}(z)$ represented by C(BG, G) is given by $B(z\mod 7)$. The circular granularity C(B, G) consists of repetitive pattern {B(0), B(1), B(2), B(3), B(4), B(5), B(6)} which repeats itself after each period length. Similarly, C(BG, H) is given by $BG(z\mod 14)$ since the period length of days with respect to fortnight is 14. C(B, H) also repeats the pattern ${B(0), B(1), \dots, B(13)}$ in every period. Hence, circular granularities are represented as repetitive categorization of time in the diagram.
 
 ```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "}
 knitr::include_graphics("Figs/circular-gran-diagram.png")
