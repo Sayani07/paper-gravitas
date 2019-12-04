@@ -117,7 +117,7 @@ Q_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert), \quad z \in T_k
 
 where,  
 $z$ denotes the index set,
-$B$ denotes a full-integer labelled bottom granularity which groups periodicially into linear granularity $G'$ with irregular mapping, {L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (k-1)}$, $T_w$ are the sets of indices of B describing $G'(w)$ such that 
+$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, {L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (k-1)}$, $T_w$ are the sets of indices of B describing $G'(w)$ such that 
 \begin{equation}
 G'(w) = \bigcup_{z \in T_w}B(z),\\
 \end{equation}
