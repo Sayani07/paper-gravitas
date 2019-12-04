@@ -650,18 +650,31 @@ A_{P, Q)} & = (A{AG_Q} - 1)*k(P_AG) + A_{P, AG} {TO REVISE: many aperiodic granu
 
 <!-- How volumes of continuously collected data can be visualized to ease further decision making?  -->
 
-Effective exploration or good visualization require good data structures. Commonly, simple sequences of time value pairs $<t_0, v_0> \dots, <t_n, v_n>$ are the basis of analysis and visualization. It is recognized that the initial approaches of just considering time as an ordinal dimension in a 2D or 3D visualisation are inadequate to capture characteristics of time-dependent information. There is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis.  Moreover, one can use calendars based on application domain that define meaningful system of granularities. Data can then be consolidated for different levels of granularity enabling statistical summaries of values along granularities. Since, we are interested in detection of previously unknown periodic behavior of data, it makes sense to support the detection of patterns by obtaining statistical summaries across cyclic time granularities. Any attempt to encode all or many cyclic granularities at the same time to develop insights on periodicity might fail or become clumsy. Instead, the big problem can be broken down into smaller pieces by focusing on two cyclic granularities at a time.
+Effective exploration or good visualization require good data structures. Commonly, simple sequences of time value pairs $(<t_0, v_0> \dots, <t_n, v_n>)$ are the basis of analysis and visualization. It is recognized that the initial approaches of just considering time as an ordinal dimension in visualisation are inadequate to capture characteristics of time-dependent information. There is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis.  Moreover, one can use calendars based on application domain that define contextual system of granularities. Data can then be consolidated for different levels of granularity enabling statistical summaries of values along granularities. Since, we are interested in detection of previously unknown periodic behavior of data, it makes sense to support the detection of patterns by obtaining statistical summaries across cyclic time granularities. Any attempt to encode all or many cyclic granularities at the same time to develop insights on periodicity might fail or become clumsy. Instead, the big problem can be broken down into smaller pieces by focusing on two cyclic granularities at a time.
 
 
-A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble], where data is structured in a semantic manner with reference to observations and variables, with the time index stated explicitly. Since all cyclic granularities can be expressed in terms of the bottom granularity, which is the index of the tsibble, we consider the data structure in (Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. Data subsets are formed for each level of the conditioned variable and the fixed variable. This can be an useful data structure for exploratory data analysis as we can rapidly compare patterns in different parts of the data.
+A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble], where data is structured in a semantic manner with reference to observations and variables, with the time index stated explicitly. Since all cyclic granularities can be expressed in terms of the bottom granularity, which is the index of the tsibble, we consider the data structure in (Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is extending the columns of tsibble by including the cyclic granularities.Now suppose we want to explore the measurement variable $v$ across two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. Also, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ such sets. These sets can form the basis for exploration and analysis of the measured variable across these bivariate cyclic granularities.
+
+
+
+<!-- This data representation can lead to comprehensive exploration by conditioning the levels taken by one or more of the cyclic granularities. -->
+
+
+<!-- This can be an useful data structure for exploratory data analysis as we can rapidly compare patterns in different parts of the data by creating same plots using data subsets corresponding to each level of the conditioned variable. -->
+
+
+<!-- These are based on conditioning the values taken on by one or more of the variables in a data set. This means creating same plots using data subsets corresponding to each level of the conditioned variable. This is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data. -->
+
 
 ```{r data-structure, fig.cap = "The data structure for exploring periodicities in data. Two cyclic granularities serve as fixed and conditioned variable and the measurement variable is the observation across combinations of these cyclic time granularities.", fig.pos="htb"}
 include_graphics("Figs/data-structure-v1.png")
 ```
 
-## Synergy of fixed and conditioned variables {#sec:synergy}
+## Synergy of the cyclic granularities {#sec:synergy}
 
-The cyclic time granularities which are essentially categorisations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes.
+The way cyclic granularities relate become important when we consider the data structure <$A_i$, $B_j(s)$, $v(s)$> for exploration. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
+
+<!-- The cyclic time granularities which are essentially categorisations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes. -->
 
 
 <!-- Let's take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. These are structurally empty sets in that it is impossible for them to have any observations. -->
@@ -704,7 +717,13 @@ The cyclic time granularities which are essentially categorisations of time are 
 
 <!-- When we plot some observations with two circular or aperiodic granularities used as aesthetics or facets, problems arise when we have empty combinations. It is important to check how these two granularities interact with each other, before we expect to gain insights by plotting them together.  -->
 
-Suppose we have two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1,A_2,A_3,\dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1,B_2,B_3,\dots, B_m$\}.  That is, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = i$ and $C_2(s) = j$. Since, $C_1$ has n levels and $C_2$ has m levels there will be $nm$ such sets $S_{ij}$. Now, many situations can lead to any of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty.
+<!-- Suppose we have two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1,A_2,A_3,\dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1,B_2,B_3,\dots, B_m$\}.  That is, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = i$ and $C_2(s) = j$. Since, $C_1$ has n levels and $C_2$ has m levels there will be $nm$ such sets $S_{ij}$.  -->
+
+
+
+<!-- The cyclic time granularities which are essentially categorisations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes. -->
+
+<!-- Now, many situations can lead to some of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty. -->
 
 Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
 These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
@@ -739,7 +758,7 @@ The quantile of a distribution is defined as $Q(p)= F^{-1}(p) = inf{{x: F(x) >p}
 
 where,  $(j - m)/n \leq p < (j - m + 1)/n$
 
-There have been several other nonparametric quantile estimators proposed e.g., Harrell and Davis 1982; Sheather and Marron 1990). Also sample quantiles can be of the form that are not defined for all p including hinges and other letter values (Hoaglin 1983) and related methods (Freund and Perles 1987).
+There have been several other nonparametric quantile estimators proposed e.g., Harrell and Davis 1982; Sheather and Marron 1990). Also sample quantiles can be of the form that are not defined for all p including hinges, letter values (Hoaglin 1983) and related methods (Freund and Perles 1987).
 
 
 <!-- would invlove a faceting approach with one temporal granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
@@ -1425,7 +1444,7 @@ cricket_tsibble <- gravitas::cricket %>%
 ```
 
 
-```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), one (facet 2) and two (facet 3) dot balls per over. For all three cases, difference in runs between subsequent overs decrease.", fig.pos="h"}
+```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), one (facet 2) and two (facet 3) dot balls per over. For all three cases, difference in runs between subsequent overs decrease.", fig.pos="ht"}
 
 library(gravitas)
 library(tsibble)

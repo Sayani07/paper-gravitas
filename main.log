@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  3 DEC 2019 10:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  4 DEC 2019 10:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -749,59 +749,59 @@ File: Figs/aperiodic.png Graphic file (type png)
 Package pdftex.def Info: Figs/aperiodic.png  used on input line 503.
 (pdftex.def)             Requested size: 469.7541pt x 78.14517pt.
 [10 <./Figs/aperiodic.png>] [11] [12]
-<Figs/data-structure-v1.png, id=280, 1122.1925pt x 167.62625pt>
+<Figs/data-structure-v1.png, id=280, 1134.2375pt x 152.57pt>
 File: Figs/data-structure-v1.png Graphic file (type png)
 <use Figs/data-structure-v1.png>
 Package pdftex.def Info: Figs/data-structure-v1.png  used on input line 642.
-(pdftex.def)             Requested size: 469.74231pt x 70.16722pt.
+(pdftex.def)             Requested size: 469.74791pt x 63.18732pt.
 [13 <./Figs/data-structure-v1.png>] [14] [15] [16]
 <figure/allFig-1.pdf, id=323, 572.1375pt x 382.42876pt>
 File: figure/allFig-1.pdf Graphic file (type pdf)
 <use figure/allFig-1.pdf>
-Package pdftex.def Info: figure/allFig-1.pdf  used on input line 754.
+Package pdftex.def Info: figure/allFig-1.pdf  used on input line 752.
 (pdftex.def)             Requested size: 234.87471pt x 156.9952pt.
 <figure/allFig-2.pdf, id=324, 572.1375pt x 382.42876pt>
 File: figure/allFig-2.pdf Graphic file (type pdf)
 <use figure/allFig-2.pdf>
-Package pdftex.def Info: figure/allFig-2.pdf  used on input line 754.
+Package pdftex.def Info: figure/allFig-2.pdf  used on input line 752.
 (pdftex.def)             Requested size: 234.87471pt x 156.9952pt.
 <figure/allFig-3.pdf, id=325, 572.1375pt x 387.4475pt>
 File: figure/allFig-3.pdf Graphic file (type pdf)
 <use figure/allFig-3.pdf>
-Package pdftex.def Info: figure/allFig-3.pdf  used on input line 754.
+Package pdftex.def Info: figure/allFig-3.pdf  used on input line 752.
 (pdftex.def)             Requested size: 234.87471pt x 159.0555pt.
 <figure/allFig-4.pdf, id=326, 555.07375pt x 388.45125pt>
 File: figure/allFig-4.pdf Graphic file (type pdf)
 <use figure/allFig-4.pdf>
-Package pdftex.def Info: figure/allFig-4.pdf  used on input line 754.
+Package pdftex.def Info: figure/allFig-4.pdf  used on input line 752.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
 <figure/allFig-5.pdf, id=327, 572.1375pt x 388.45125pt>
 File: figure/allFig-5.pdf Graphic file (type pdf)
 <use figure/allFig-5.pdf>
-Package pdftex.def Info: figure/allFig-5.pdf  used on input line 754.
+Package pdftex.def Info: figure/allFig-5.pdf  used on input line 752.
 (pdftex.def)             Requested size: 234.87471pt x 159.46756pt.
 <figure/allFig-6.pdf, id=328, 555.07375pt x 388.45125pt>
 File: figure/allFig-6.pdf Graphic file (type pdf)
 <use figure/allFig-6.pdf>
-Package pdftex.def Info: figure/allFig-6.pdf  used on input line 754.
+Package pdftex.def Info: figure/allFig-6.pdf  used on input line 752.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
 
-Overfull \hbox (2.21661pt too wide) in paragraph at lines 754--755
+Overfull \hbox (2.21661pt too wide) in paragraph at lines 752--753
 [][] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 754--755
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 752--753
 [] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 754--755
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 752--753
 [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 754--755
+Underfull \hbox (badness 10000) in paragraph at lines 752--753
 
  []
 
@@ -810,89 +810,86 @@ Underfull \hbox (badness 10000) in paragraph at lines 754--755
 <figure/day-fortnight-1.pdf, id=387, 562.1pt x 351.3125pt>
 File: figure/day-fortnight-1.pdf Graphic file (type pdf)
 <use figure/day-fortnight-1.pdf>
-Package pdftex.def Info: figure/day-fortnight-1.pdf  used on input line 786.
+Package pdftex.def Info: figure/day-fortnight-1.pdf  used on input line 784.
 (pdftex.def)             Requested size: 469.75067pt x 293.59415pt.
 [19 <./figure/day-fortnight-1.pdf>]
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 795.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 793.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 835.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 833.
 [20]
 <figure/bothcust-1.pdf, id=409, 568.1225pt x 351.3125pt>
 File: figure/bothcust-1.pdf Graphic file (type pdf)
 <use figure/bothcust-1.pdf>
-Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 900.
+Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 898.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
 <figure/bothcust-2.pdf, id=410, 568.1225pt x 351.3125pt>
 File: figure/bothcust-2.pdf Graphic file (type pdf)
 <use figure/bothcust-2.pdf>
-Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 900.
+Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 898.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
 [21] [22 <./figure/bothcust-1.pdf> <./figure/bothcust-2.pdf>]
 <figure/wknd-wday50-1.pdf, id=439, 568.1225pt x 346.29375pt>
 File: figure/wknd-wday50-1.pdf Graphic file (type pdf)
 <use figure/wknd-wday50-1.pdf>
-Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 922.
+Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 920.
 (pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
 <figure/my-hd-1.pdf, id=440, 568.1225pt x 333.245pt>
 File: figure/my-hd-1.pdf Graphic file (type pdf)
 <use figure/my-hd-1.pdf>
-Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 931.
+Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 929.
 (pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
 [23 <./figure/wknd-wday50-1.pdf>] [24 <./figure/my-hd-1.pdf>]
 <figure/seas-over-inning-1.pdf, id=469, 566.115pt x 346.29375pt>
 File: figure/seas-over-inning-1.pdf Graphic file (type pdf)
 <use figure/seas-over-inning-1.pdf>
-Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 970.
+Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 968.
 
 (pdftex.def)             Requested size: 469.76303pt x 287.35504pt.
 <figure/cricex-1.pdf, id=471, 566.115pt x 328.22626pt>
 File: figure/cricex-1.pdf Graphic file (type pdf)
 <use figure/cricex-1.pdf>
-Package pdftex.def Info: figure/cricex-1.pdf  used on input line 981.
+Package pdftex.def Info: figure/cricex-1.pdf  used on input line 979.
 (pdftex.def)             Requested size: 469.76303pt x 272.36261pt.
 [25 <./figure/seas-over-inning-1.pdf>]
 LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 100
-3.
+1.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 <figure/field-1.pdf, id=488, 568.1225pt x 331.2375pt>
 File: figure/field-1.pdf Graphic file (type pdf)
 <use figure/field-1.pdf>
-Package pdftex.def Info: figure/field-1.pdf  used on input line 1007.
+Package pdftex.def Info: figure/field-1.pdf  used on input line 1005.
 (pdftex.def)             Requested size: 469.7731pt x 273.89597pt.
 [26 <./figure/cricex-1.pdf>]
 <figure/exdot-1.pdf, id=503, 568.1225pt x 328.22626pt>
 File: figure/exdot-1.pdf Graphic file (type pdf)
 <use figure/exdot-1.pdf>
-Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1020.
+Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1018.
 (pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 [27 <./figure/field-1.pdf>] [28 <./figure/exdot-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1098.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1096.
 [29]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1098.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1096.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1098.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1098.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1096.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1096.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: DFF54E8A173746E95BDC8F69CEE50B53;4245.
+(rerunfilecheck)             Checksum: 7186D4FF3EA6F80C8ED13F6A5A54FE4F;4207.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1098.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1096.
  ) 
 Here is how much of TeX's memory you used:
  13485 strings out of 492616
  198096 string characters out of 6129482
- 314305 words of memory out of 5000000
+ 314298 words of memory out of 5000000
  16903 multiletter control sequences out of 15000+600000
  56755 words of font info for 127 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -920,7 +917,7 @@ ic/lm/lmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy
 live/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/
 texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2
 019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (29 pages, 1404697 bytes).
+Output written on main.pdf (29 pages, 1398945 bytes).
 PDF statistics:
  670 PDF objects out of 1000 (max. 8388607)
  556 compressed objects within 6 object streams
