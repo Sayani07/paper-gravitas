@@ -228,7 +228,7 @@ month(0) & = day(0)\bigcup day(1)\dots\bigcup day(30)\\
 month(1) & = day(31)\bigcup day(32)\dots\bigcup day(58)\\
 month(2) & = day(59)\bigcup day(60)\dots\bigcup day(89)\\
 \dots\\
-month(11) & = day(334)\dots day(363)\bigcup day(364)\\a
+month(11) & = day(334)\dots day(363)\bigcup day(364)\\
 \end{split}
 \end{equation}
 
@@ -356,9 +356,17 @@ depending on the context.
 \begin{split}
 Q_{day, month}(34) & = L(34 - 31)       = L(3) \quad since \quad 35 \in \quad month(1)\\
 Q_{day, month}(60) & = L(60 - 31 - 28)  = L(2) , \quad since\quad 60 \in \quad month(2)\\
-Q_{day, month}(334) & = L(334 - 334)    = L(0) \quad since \quad 334 \in \quad month(11)
+Q_{day, month}(334) & = L(334 - 334)    = L(0) \quad since \quad 334 \in \quad month(11)\\
+Q_{day, month}(439) & = L(439 - \sum_{w=0}^{14-1}\vert T_{w \text{~mod~}12} \vert)\quad since \quad 439 \in \quad month(14)\\
+& = L(439 - \sum_{w=0}^{13}\vert T_{w \text{~mod~}R'} \vert)\\
+&  = L(439 - (2\vert T_{0} \vert + 2\vert T_{1}\vert + \vert T_{3}\vert + \vert T_{4}\vert + \dots + \vert T_{11}\vert))\\
+&  = L(439 - 2\times 31 - 2\times 28 - 31 - 30 - \dots - 30)\\
+&  = L(439 - 423)\\
+&  = L(6)
 \end{split}
 \end{equation}.
+
+The idea is we can find any day of the month beyond 1 year provided we have the composition of days across months in one year due to the periodic property.
 
 \hypertarget{aperiodic-aperiodic-linear-granularities}{%
 \section{Aperiodic (Aperiodic linear granularities)}\label{aperiodic-aperiodic-linear-granularities}}
