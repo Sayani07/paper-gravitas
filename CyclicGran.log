@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  5 DEC 2019 16:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  5 DEC 2019 18:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1362,11 +1362,11 @@ Package logreq Info: Writing requests to 'CyclicGran.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 32957 strings out of 492616
- 564648 string characters out of 6129482
+ 32955 strings out of 492616
+ 564630 string characters out of 6129482
  1028912 words of memory out of 5000000
  36359 multiletter control sequences out of 15000+600000
- 613211 words of font info for 174 fonts, out of 8000000 for 9000
+ 613055 words of font info for 172 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,19n,92p,1199b,1595s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
@@ -1384,7 +1384,7 @@ st/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2019/texm
 f-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2019/texmf-dist/
 fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/t
 ype1/urw/palatino/uplri8a.pfb>
-Output written on CyclicGran.pdf (5 pages, 220571 bytes).
+Output written on CyclicGran.pdf (5 pages, 220579 bytes).
 PDF statistics:
  145 PDF objects out of 1000 (max. 8388607)
  117 compressed objects within 2 object streams

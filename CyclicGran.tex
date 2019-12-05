@@ -271,10 +271,10 @@ month(11) &  = \bigcup_{i \in S_{11}}day(i), \quad S_{11} = {334, 335, \dots, 36
 Here, \({S_0,...,S_{11}}\) are the sets of indexes of \(G\) describing \(month(0), . . . , month(11)\). Then from Definition \autoref{def:periodical}, it also follows that if \(H\) is periodical with respect to \(G\), then
 
 \begin{equation}\label{eq:eq4}
-H(j) = \bigcup_{i \in S_j \text{~mod~}R}G(P*\lfloor j/R \rfloor + i), 
+H(j) = \bigcup_{i \in S_{j \text{~mod~}R}}G(P*\lfloor j/R \rfloor + i), 
 \end{equation},
 
-where \({S_0,...,S_{R-1}}\) are the sets of indexes of \(G\) describing \(H (0), . . . , H (R - 1)\) respectively. Here \(j \text{~mod~}R\) represents the index among those in \({0, 1, \dots, R-1}\) that must be shifted to obtain \(H(j)\). The number of periods each granule of \(G\) composing \(H(j \text{~mod~}R)\) should be shifted is given by \(\lfloor j/R\rfloor\).
+where \({S_0,...,S_{R-1}}\) are the sets of indexes of \(G\) describing \(H (0), . . . , H (R - 1)\) respectively. Here \((j \text{~mod~}R)\) represents the index among those in \({0, 1, \dots, R-1}\) that must be shifted to obtain \(H(j)\). The number of periods each granule of \(G\) composing \(H(j \text{~mod~}R)\) should be shifted is given by \(\lfloor j/R\rfloor\).
 
 Thus, to obtain \(month(13)\) in terms of days we can either use Definition \autoref{def:periodical} or \autoref{eq:eq4}
 
