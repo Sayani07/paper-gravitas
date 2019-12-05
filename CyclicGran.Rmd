@@ -1,5 +1,5 @@
 ---
-title: Revisiting some definitions with examples from Gregorian calendar
+title: Revisiting some definitions with common examples from Gregorian calendar
 author: Sayani Gupta
 branding: FALSE
 fontfamily: mathpazo
@@ -71,7 +71,7 @@ H(j) = \bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)
 where ${S_0,...,S_{R-1}}$ are the sets of indexes of G describing $H (0), . . . , H (R - 1)$ respectively. Here $j \mod R$ represents the index among those in ${0, 1, \dots, R-1}$ that must be shifted to obtain $H(j)$. The number of periods each granule of G composing $H(j \mod R)$ should be shifted is given by $\lfloor j/R\rfloor$.
 
 
-Thus,  to obtain $month(13)$ in terms of days we can either use \autoref{def:periodical} or \autoref{eq:eq4}
+Thus,  to obtain $month(13)$ in terms of days we can either use Definition \autoref{def:periodical} or \autoref{eq:eq4}
 \begin{equation}
 \begin{split}
 month(13) & =  month (1 + 12)\\
@@ -94,19 +94,21 @@ month(13) & = \bigcup_{i \in S_{13 \mod 12}}day(365*\lfloor 13/12 \rfloor + i)\\
 
 # Circular (Periodic linear granularities + regular mapping)
 
-A **circular** granularity can be defined using modular arithmetic due to its irregular mapping with the bottom granularity. They are formed with linear granularities, one of which "groups periodically into" the other.
+A **circular** granularity can be defined using modular arithmetic due to its regular mapping with the bottom granularity. They are formed with linear granularities, one of which "groups periodically into" the other. In the following definition, we would assume that bottom granularity $B$ groups periodically into $G$ and number of granules of $B$ in each granule of $G$ is constant. Thus, if $P$ and $R$  have the meaning of the period of the grouping $(B, G)$ and the number of granules of $G$ in each of these periods, then for circular granularity, $P/R \in \mathbb{Z}^+$. Also, since each granule of $G$ has same number of granules of $B$, $R$ can be taken to be $1$ and $P$ can be interpreted as the number of granules of B in any granule of G.
 
 \begin{definition}\label{def:circular}
 A circular granularity C(B, G) relates a linear granularity G to the bottom granularity B, if
 
 \begin{equation} \label{eq:eq2}
-C_{B, G}(z) = {L}(z\mod k(B,G)) \quad \forall z \in \mathbb{Z}^+
+\begin{split}
+C_{B, G}(z) & = {L}(z\mod P) \quad \forall z \in \mathbb{Z}^+ \\
+\end{split}
 \end{equation}
 where,
 z denotes the index set,
 B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity G with regular mapping, 
-{L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (k-1)}$,
-and k(B,G) is the number of granules of B in each granule of G.
+{L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (P-1)}$,
+and P is the number of granules of B in each granule of G.
 \end{definition}
 
 
@@ -121,11 +123,7 @@ knitr::include_graphics("Figs/day-of-week.png")
 
 # Quasi-circular (Periodic linear granularities + irregular mapping)
 
-A **quasi-circular** granularity can not be defined using modular arithmetic due to its irregular mapping with the bottom granularity. However, they are still formed with linear granularities, one of which "groups periodically into" the other. We will take the example of days and months to illustrate the notion of "groups periodically into" and "quasi-circular" granularities.
-
-
-
-Till now, we saw how the formal definitions of "groups periodically into" can be seen through the example of (day, month). Now, we shall discuss how some quasi-circular granularity can be obtained. \autoref{fig:quasi-circular-explain} shows that index set 34 should correspond to L(3) which is "4th-day-of-month", that of 60 should correspond to L(1), which is "2nd-day-of-month" and 334 should correspond to L(0), which is "1st-day-of-month". Now, quasi-circular granularities can be defined as follows to obtain these labels:
+A **quasi-circular** granularity can not be defined using modular arithmetic due to its irregular mapping with the bottom granularity. Here $P/R \not \in \mathbb{Z}^+$. However, they are still formed with linear granularities, one of which "groups periodically into" the other. We shall discuss an example of  quasi-circular granularity day-of-month in \autoref{fig:quasi-circular-explain}. The index 34 should correspond to L(3) which is "4th-day-of-month", that of 60 should correspond to L(1), which is "2nd-day-of-month" and 334 should correspond to L(0), which is "1st-day-of-month". Now, quasi-circular granularities can be defined as follows to obtain these labels:
 
 
 ```{r quasi-circular-explain,echo=FALSE,out.width = "100%",fig.cap="Quasi-circular granularity day-of-month"}
@@ -160,6 +158,10 @@ $T_w = 0 \quad for \quad w\epsilon Z_{<0}$ and $\vert T_w \vert$ is the cardinal
 Here, $\vert T_w \vert$ = $\vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R)^{th}$ granule will have the same number of granules of B. $T_w$ are the sets of indexes of $B$ describing $G'(0), . . . , G'(R'- 1)$. The term $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$.
 
 
+In \autoref{fig:quasi-circular-explain}, the label mapping L can be defined as $L: ({0,1,2, \dots, 31}) \longmapsto\ ({DOM_1, DOM_2, \dots, DOM_{31})}$ or $L: ({0,1,2, \dots, 31}) \longmapsto\ ({1, 2, \dots, 31)}$
+depending on the context.
+
+
 \begin{equation}
 \begin{split}
 Q_{day, month}(34) & = L(35 - 31) \quad since \quad 35 \in \quad month(1)\\
@@ -175,20 +177,20 @@ An aperiodic granularity $A_{B, G''}$ that relates linear granularities G and bo
 
 \begin{equation}\label{eq:eq4}
 \begin{split}
-A_{B, G''}(z) & = L(1), z \in T_q\\
-     & = L(0), z \not\in T_q\\
+A_{B, G''}(z) & = L(1), \quad z \in T_q\\
+     & = L(0), \quad z \not\in T_q\\
 \end{split}
 \end{equation}
-where,  
-$z$ denotes the index set (index of $B$),
-$T_q$ are the sets of indices of $B$ describing $G''(q)$ such that $G''(q) = \bigcup_{z \in T_q}BG(z)$,$T_q = 0$ for $q \epsilon Z_{<0}$.
+where  
+$z$ denotes the index set,
+$T_q$ are the sets of indices of $B$ describing $G''(q)$ such that $$G''(q) = \bigcup_{z \in T_q}B(z)$$
 \end{definition}
 
-Discussion: Aperiodic time granularities map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. An example of aperiodic granularity can be one that relates a bottom granularity ($BG$) and linear granularity ($G''$) such that $BG \trianglelefteq G''$, $BG \not\preceq G$ and $BG$ is not periodic or quasi-periodic with respect to $G''$, as shown in \autoref{fig:aperiodic}.
+ Aperiodic time granularities map a time index to binary categories. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. \autoref{fig:aperiodic} shows the linear granularity academic semester and days. Academic semesters are not periodic with respect to days. The label mapping L can be defined as $L: ({0,1}) \longmapsto\ ({On, Off)}$ or can be customised based on context.
 
 
 
-```{r aperiodic, echo=FALSE,out.width = "100%",fig.cap="Relating aperiodic granularity and bottom linear granularity "}
-knitr::include_graphics("Figs/aperiodic.png")
+```{r aperiodic, echo=FALSE,out.width = "100%",fig.cap=" Aperiodic granularity day-semester"}
+knitr::include_graphics("Figs/academ-semester.png")
 
 
