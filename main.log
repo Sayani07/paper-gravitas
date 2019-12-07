@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  7 DEC 2019 14:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  8 DEC 2019 02:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -740,165 +740,164 @@ T1/lmr/m/n/10 (-20) ,
  []
 
 [6]
+<Figs/circular-dow.png, id=201, 1126.2075pt x 189.70876pt>
+File: Figs/circular-dow.png Graphic file (type png)
+<use Figs/circular-dow.png>
+Package pdftex.def Info: Figs/circular-dow.png  used on input line 372.
+(pdftex.def)             Requested size: 469.75606pt x 79.13002pt.
+[7 <./Figs/circular-dow.png>] [8]
 
-LaTeX Warning: Reference `fig:circular-gran' on page 7 undefined on input line 
-365.
+Package hyperref Warning: No autoref name for `definition' on input line 467.
 
-<Figs/day-of-week.png, id=200, 1044.90375pt x 122.4575pt>
-File: Figs/day-of-week.png Graphic file (type png)
-<use Figs/day-of-week.png>
-Package pdftex.def Info: Figs/day-of-week.png  used on input line 370.
-(pdftex.def)             Requested size: 469.75592pt x 55.05304pt.
+<Figs/quasi-circular-example.png, id=231, 1137.24875pt x 317.185pt>
+File: Figs/quasi-circular-example.png Graphic file (type png)
+<use Figs/quasi-circular-example.png>
+Package pdftex.def Info: Figs/quasi-circular-example.png  used on input line 47
+1.
+(pdftex.def)             Requested size: 469.76297pt x 131.01949pt.
 
-LaTeX Warning: Reference `eq:eq2' on page 7 undefined on input line 377.
+Package hyperref Warning: No autoref name for `definition' on input line 478.
 
-[7 <./Figs/day-of-week.png>]
+[9 <./Figs/quasi-circular-example.png>]
 
-LaTeX Warning: Reference `fig:circular-gran' on page 8 undefined on input line 
-451.
+Package hyperref Warning: No autoref name for `definition' on input line 491.
 
-[8]
-<Figs/aperiodic-granv1.png, id=230, 1096.095pt x 369.38pt>
-File: Figs/aperiodic-granv1.png Graphic file (type png)
-<use Figs/aperiodic-granv1.png>
-Package pdftex.def Info: Figs/aperiodic-granv1.png  used on input line 479.
-(pdftex.def)             Requested size: 469.75624pt x 158.30612pt.
+<Figs/aperiodic-example.png, id=244, 1051.93pt x 160.6pt>
+File: Figs/aperiodic-example.png Graphic file (type png)
+<use Figs/aperiodic-example.png>
+Package pdftex.def Info: Figs/aperiodic-example.png  used on input line 517.
+(pdftex.def)             Requested size: 469.75262pt x 71.71794pt.
+[10 <./Figs/aperiodic-example.png>]
 
-Package hyperref Warning: No autoref name for `definition' on input line 488.
+LaTeX Warning: Reference `eq:eq3' on page 11 undefined on input line 584.
 
-[9 <./Figs/aperiodic-granv1.png>]
-<Figs/aperiodic.png, id=241, 1067.99pt x 177.66376pt>
-File: Figs/aperiodic.png Graphic file (type png)
-<use Figs/aperiodic.png>
-Package pdftex.def Info: Figs/aperiodic.png  used on input line 519.
-(pdftex.def)             Requested size: 469.7541pt x 78.14517pt.
-[10 <./Figs/aperiodic.png>] [11] [12]
-<Figs/data-structure-v1.png, id=278, 1134.2375pt x 152.57pt>
+[11] [12]
+<Figs/data-structure-v1.png, id=279, 1134.2375pt x 152.57pt>
 File: Figs/data-structure-v1.png Graphic file (type png)
 <use Figs/data-structure-v1.png>
-Package pdftex.def Info: Figs/data-structure-v1.png  used on input line 658.
+Package pdftex.def Info: Figs/data-structure-v1.png  used on input line 656.
 (pdftex.def)             Requested size: 469.74791pt x 63.18732pt.
 [13 <./Figs/data-structure-v1.png>] [14] [15] [16]
-<figure/allFig-1.pdf, id=322, 572.1375pt x 382.42876pt>
+<figure/allFig-1.pdf, id=323, 572.1375pt x 382.42876pt>
 File: figure/allFig-1.pdf Graphic file (type pdf)
 <use figure/allFig-1.pdf>
-Package pdftex.def Info: figure/allFig-1.pdf  used on input line 781.
+Package pdftex.def Info: figure/allFig-1.pdf  used on input line 779.
 (pdftex.def)             Requested size: 234.87471pt x 156.9952pt.
-<figure/allFig-2.pdf, id=323, 572.1375pt x 382.42876pt>
+<figure/allFig-2.pdf, id=324, 572.1375pt x 382.42876pt>
 File: figure/allFig-2.pdf Graphic file (type pdf)
 <use figure/allFig-2.pdf>
-Package pdftex.def Info: figure/allFig-2.pdf  used on input line 781.
+Package pdftex.def Info: figure/allFig-2.pdf  used on input line 779.
 (pdftex.def)             Requested size: 234.87471pt x 156.9952pt.
-<figure/allFig-3.pdf, id=324, 572.1375pt x 387.4475pt>
+<figure/allFig-3.pdf, id=325, 572.1375pt x 387.4475pt>
 File: figure/allFig-3.pdf Graphic file (type pdf)
 <use figure/allFig-3.pdf>
-Package pdftex.def Info: figure/allFig-3.pdf  used on input line 781.
+Package pdftex.def Info: figure/allFig-3.pdf  used on input line 779.
 (pdftex.def)             Requested size: 234.87471pt x 159.0555pt.
-<figure/allFig-4.pdf, id=325, 555.07375pt x 388.45125pt>
+<figure/allFig-4.pdf, id=326, 555.07375pt x 388.45125pt>
 File: figure/allFig-4.pdf Graphic file (type pdf)
 <use figure/allFig-4.pdf>
-Package pdftex.def Info: figure/allFig-4.pdf  used on input line 781.
+Package pdftex.def Info: figure/allFig-4.pdf  used on input line 779.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
-<figure/allFig-5.pdf, id=326, 572.1375pt x 388.45125pt>
+<figure/allFig-5.pdf, id=327, 572.1375pt x 388.45125pt>
 File: figure/allFig-5.pdf Graphic file (type pdf)
 <use figure/allFig-5.pdf>
-Package pdftex.def Info: figure/allFig-5.pdf  used on input line 781.
+Package pdftex.def Info: figure/allFig-5.pdf  used on input line 779.
 (pdftex.def)             Requested size: 234.87471pt x 159.46756pt.
-<figure/allFig-6.pdf, id=327, 555.07375pt x 388.45125pt>
+<figure/allFig-6.pdf, id=328, 555.07375pt x 388.45125pt>
 File: figure/allFig-6.pdf Graphic file (type pdf)
 <use figure/allFig-6.pdf>
-Package pdftex.def Info: figure/allFig-6.pdf  used on input line 781.
+Package pdftex.def Info: figure/allFig-6.pdf  used on input line 779.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
 
-Overfull \hbox (2.21661pt too wide) in paragraph at lines 781--782
+Overfull \hbox (2.21661pt too wide) in paragraph at lines 779--780
 [][] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 781--782
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 779--780
 [] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 781--782
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 779--780
 [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 781--782
+Underfull \hbox (badness 10000) in paragraph at lines 779--780
 
  []
 
 [17] [18 <./figure/allFig-1.pdf> <./figure/allFig-2.pdf> <./figure/allFig-3.pdf
 > <./figure/allFig-4.pdf> <./figure/allFig-5.pdf> <./figure/allFig-6.pdf>]
-<figure/day-fortnight-1.pdf, id=385, 562.1pt x 351.3125pt>
+<figure/day-fortnight-1.pdf, id=386, 562.1pt x 351.3125pt>
 File: figure/day-fortnight-1.pdf Graphic file (type pdf)
 <use figure/day-fortnight-1.pdf>
-Package pdftex.def Info: figure/day-fortnight-1.pdf  used on input line 813.
+Package pdftex.def Info: figure/day-fortnight-1.pdf  used on input line 811.
 (pdftex.def)             Requested size: 469.75067pt x 293.59415pt.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 822.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 820.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [19] [20 <./figure/day-fortnight-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 861.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 859.
 [21]
-<figure/bothcust-1.pdf, id=417, 568.1225pt x 351.3125pt>
+<figure/bothcust-1.pdf, id=418, 568.1225pt x 351.3125pt>
 File: figure/bothcust-1.pdf Graphic file (type pdf)
 <use figure/bothcust-1.pdf>
-Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 926.
+Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 924.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/bothcust-2.pdf, id=418, 568.1225pt x 351.3125pt>
+<figure/bothcust-2.pdf, id=419, 568.1225pt x 351.3125pt>
 File: figure/bothcust-2.pdf Graphic file (type pdf)
 <use figure/bothcust-2.pdf>
-Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 926.
+Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 924.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/wknd-wday50-1.pdf, id=421, 568.1225pt x 346.29375pt>
+<figure/wknd-wday50-1.pdf, id=422, 568.1225pt x 346.29375pt>
 File: figure/wknd-wday50-1.pdf Graphic file (type pdf)
 <use figure/wknd-wday50-1.pdf>
-Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 948.
+Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 946.
 (pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
-<figure/my-hd-1.pdf, id=422, 568.1225pt x 333.245pt>
+<figure/my-hd-1.pdf, id=423, 568.1225pt x 333.245pt>
 File: figure/my-hd-1.pdf Graphic file (type pdf)
 <use figure/my-hd-1.pdf>
-Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 957.
+Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 955.
 (pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
 [22] [23 <./figure/bothcust-1.pdf> <./figure/bothcust-2.pdf>] [24 <./figure/wkn
 d-wday50-1.pdf>] [25 <./figure/my-hd-1.pdf>]
-<figure/seas-over-inning-1.pdf, id=476, 566.115pt x 346.29375pt>
+<figure/seas-over-inning-1.pdf, id=477, 566.115pt x 346.29375pt>
 File: figure/seas-over-inning-1.pdf Graphic file (type pdf)
 <use figure/seas-over-inning-1.pdf>
-Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 996.
+Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 994.
 
 (pdftex.def)             Requested size: 469.76303pt x 287.35504pt.
-<figure/cricex-1.pdf, id=478, 566.115pt x 328.22626pt>
+<figure/cricex-1.pdf, id=479, 566.115pt x 328.22626pt>
 File: figure/cricex-1.pdf Graphic file (type pdf)
 <use figure/cricex-1.pdf>
-Package pdftex.def Info: figure/cricex-1.pdf  used on input line 1007.
+Package pdftex.def Info: figure/cricex-1.pdf  used on input line 1005.
 (pdftex.def)             Requested size: 469.76303pt x 272.36261pt.
 LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 102
-8.
+6.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [26] [27 <./figure/seas-over-inning-1.pdf> <./figure/cricex-1.pdf>]
-<figure/field-1.pdf, id=507, 568.1225pt x 331.2375pt>
+<figure/field-1.pdf, id=508, 568.1225pt x 331.2375pt>
 File: figure/field-1.pdf Graphic file (type pdf)
 <use figure/field-1.pdf>
-Package pdftex.def Info: figure/field-1.pdf  used on input line 1032.
+Package pdftex.def Info: figure/field-1.pdf  used on input line 1030.
 (pdftex.def)             Requested size: 469.7731pt x 273.89597pt.
-<figure/exdot-1.pdf, id=509, 568.1225pt x 328.22626pt>
+<figure/exdot-1.pdf, id=510, 568.1225pt x 328.22626pt>
 File: figure/exdot-1.pdf Graphic file (type pdf)
 <use figure/exdot-1.pdf>
-Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1045.
+Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1043.
 (pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
 [28 <./figure/field-1.pdf>] [29 <./figure/exdot-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1122.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1120.
 [30]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1122.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1120.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1122.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1122.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1120.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1120.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 7E9C72DA4AB28F44EE3D363A7E2FB729;4187.
@@ -910,11 +909,11 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 13547 strings out of 492616
- 199257 string characters out of 6129482
- 315008 words of memory out of 5000000
- 16941 multiletter control sequences out of 15000+600000
- 61535 words of font info for 132 fonts, out of 8000000 for 9000
+ 13556 strings out of 492616
+ 199442 string characters out of 6129482
+ 315005 words of memory out of 5000000
+ 16940 multiletter control sequences out of 15000+600000
+ 61950 words of font info for 137 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  35i,16n,38p,1826b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
@@ -940,10 +939,10 @@ ic/lm/lmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy
 live/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/
 texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2
 019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (30 pages, 1328881 bytes).
+Output written on main.pdf (30 pages, 1234853 bytes).
 PDF statistics:
- 677 PDF objects out of 1000 (max. 8388607)
- 562 compressed objects within 6 object streams
+ 678 PDF objects out of 1000 (max. 8388607)
+ 563 compressed objects within 6 object streams
  156 named destinations out of 1000 (max. 500000)
  12586 words of extra memory for PDF output out of 14400 (max. 10000000)
 

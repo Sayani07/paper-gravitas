@@ -493,7 +493,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing $M_{i}(j)$ such that $M_{i}(
 
 
 
-**Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and A_{B, M} consists of three categories, one corresponding to the first aperiodic event $M_1$, the second corresponding to aperiodic event $M_2$ and the third corresponding to no event/aperiodic linear granularity.
+**Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and $A_{B, M}$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.
 
 
 **Discussion**: The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event. The index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
