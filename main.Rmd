@@ -289,7 +289,7 @@ Cyclic time granularities which accommodate periodicities can be constructed by 
 ## Circular {#sec:circular-gran-def}
 
 \begin{definition}\label{def:circular}
-A circular granularity C(B, G) relates a linear granularity $G$ to the bottom granularity B, if
+A circular granularity $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
 
 \begin{equation} \label{eq:eq5}
 \begin{split}
@@ -300,12 +300,11 @@ where
 z denotes the index set,
 B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping, 
 $P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$,
-and ${L}$ is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (P-1)}$,
+and ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$.
 
 \end{definition}
 
-**Discussion**:  In general, the set of labels will be a set of strings that is more descriptive than the index and used to identify a categorization of the circular granularity. However, the labels can coincide with indexes in which case integers are directly used to refer to categorizations of the circular granularity. Note that each circular granularity can use a different set of labels. Example showing circular granularity relating two linear granularities with bottom granularities are visually depicted in a series of slots in the \autoref{fig:circular-gran}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. Note that each
-circular granularity can use different label mappings. In \autoref{fig:day-of-week}, Day and Week are two linear granularities and $k(Day, Week) =  7$. The circular granularity C(Day, Week) representing Day-of-Week will consist of pattern {L(0), L(1), L(2), L(3), L(4), L(5), L(6)} which repeats itself after each period length. The label mapping $L$ can be defined as $L: ({0,1,2, \dots, 6}) \longmapsto\ ({Sun, Mon, \dots, Sat)}$ or $L: ({0,1,2, \dots, 6}) \longmapsto\ ({Sunday, Monday, \dots, Saturday)}$ or $L: ({0,1,2, \dots, 6}) \longmapsto\ ({0, 1, \dots, 6)}$ depending on the context.
+**Discussion**:  In general, the set of labels will be a set of strings that is more descriptive than the index and used to identify a categorization of the circular granularity. However, the labels can coincide with indexes in which case integers are directly used to refer to categorizations of the circular granularity. Note that each circular granularity can use a different set of labels. Example showing circular granularity relating two linear granularities with bottom granularities are visually depicted in a series of slots in the \autoref{fig:circular-dow}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. Note that each circular granularity can use different label mappings. Day and Week are two linear granularities with $P =  7$. The circular granularity C(Day, Week) representing Day-of-Week will thus consist of pattern {L(0), L(1), L(2), L(3), L(4), L(5), L(6)} which repeats itself after each period length. The label mapping $L$ can be defined as $L: ({0,1,2, \dots, 6}) \longmapsto\ ({Sun, Mon, \dots, Sat)}$ or $L: \{0,1,2, \dots, 6\} \longmapsto\ \{Sunday, Monday, \dots, Saturday\}$ or $L: \{0,1,2, \dots, 6\} \longmapsto\ \{0, 1, \dots, 6\}$ depending on the context.
 
 <!-- # ```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "} -->
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
@@ -313,25 +312,25 @@ circular granularity can use different label mappings. In \autoref{fig:day-of-we
 
 
 
-```{r day-of-week,echo=FALSE,out.width = "100%",fig.cap="Circular granularity day-of-week"}
-knitr::include_graphics("Figs/day-of-week.png")
+```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Circular granularity day-of-week"}
+knitr::include_graphics("Figs/circular-dow.png")
 ```
 
-All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}.
+<!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
 
-In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as $C_{(G, H)}(z) = L(\lfloor z/k(B,G) \rfloor\mod k(G,H))$, where linear granularity H is periodic with respect to linear granularity G and k(G, H) represents the number of granules of G in one granule of H. 
+In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as $C_{(G, H)}(z) = L(\lfloor z/P(B,G) \rfloor\mod P(G,H))$, where linear granularity H is periodic with respect to linear granularity G with regular mapping such that the number of granules of G in each granule of H is $P(G,H)$.
 
-Table \ref{tab:definitions} shows representation of circular granularities relating two linear granularities. It is possible that none of these two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the index set. Suppose the bottom granularity is minutes, $k_i$ is the number of granules of the finer granularity in each granule of the coarser granularity in the circular granularity $C_i$ and $L_i$ is the associated label mapping.
+Table \ref{tab:definitions} shows representation of circular granularities relating two linear granularities. It is possible that none of these two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the index set. Suppose the bottom granularity is minutes, $P_i$ is the number of granules of the finer granularity in each granule of the coarser granularity in the circular granularity $C_i$ and $L_i$ is the associated label mapping.
 
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{lr@{~}lr@{~}r}
 \toprule
-Minute-of-Hour: & $C_1(z)$ & $= L_1(z \mod 60)$ & $k_1 =$&$60$ \\
-Minute-of-Day: & $C_2(z)$ & $= L_2(z \mod 60*24)$ & $k_2=$&$`r 60*24`$\\
-Hour-of-Day: & $C_4(z)$ & $= L_3(\lfloor z/60\rfloor\mod 24)$  & $k_3 =$&$24$ \\
-Hour-of-Week: & $C_6(z)$ & $= L_4(\lfloor z/60\rfloor\mod 24*7)$  & $k_4=$&$`r 24*7`$\\
-Day-of-Week: & $C_7(z)$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$ & $k_5=$&$7$\\
+Minute-of-Hour: & $C_1$ & $= L_1(z \mod 60)$ & $P_1 =$&$60$ \\
+Minute-of-Day: & $C_2$ & $= L_2(z \mod 60*24)$ & $P_2=$&$`r 60*24`$\\
+Hour-of-Day: & $C_3$ & $= L_3(\lfloor z/60\rfloor\mod 24)$  & $P_3 =$&$24$ \\
+Hour-of-Week: & $C_4$ & $= L_4(\lfloor z/60\rfloor\mod 24*7)$  & $P_4=$&$`r 24*7`$\\
+Day-of-Week: & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$ & $P_5=$&$7$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -342,7 +341,7 @@ Day-of-Week: & $C_7(z)$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$ & $k_5=$&$7$\\
 
 ## Quasi-circular {#sec:quasi-circular-gran-def}
 
-A **quasi-circular** granularity can not be defined using modular arithmetic due to its irregular mapping with the bottom granularity. For example, \autoref{tab:quasi} shows some example of quasi-circular granularities ($Q_i$) and plausible choices of number of granules ($k_i$) of the finer granularity inside each granule of the coarser one in the cyclic granularity ($Q_i$).
+A **quasi-circular** granularity can not be defined using modular arithmetic due to its irregular mapping with the bottom granularity. However, they are still formed with linear granularities, one of which "groups periodically into" the other. \autoref{tab:quasi} shows some example of quasi-circular granularities ($Q_i$) and plausible choices of number of granules of the finer granularity inside each granule of the coarser one in the cyclic granularity ($Q_i$) is ($P_i$).
 
 
 \begin{table}[ht]
@@ -350,10 +349,10 @@ A **quasi-circular** granularity can not be defined using modular arithmetic due
 \begin{tabular}{lr@{~}lr@{~}r}
 \toprule
 
-Day-of-Month: & $Q_1(z)$ && $k_1=31, 30, 29, 28$\\
-Hour-of-Month: & $Q_2(z)$ && $k_2=24*31, 24*30, 24*29, 24*28$\\
-Day-of-Year: & $Q_3(z)$ && $k_3=366, 365$\\
-Week-of-Month: & $Q_4(z)$ && $k_4=5, 4$\\ 
+Day-of-Month: & $Q_1(z)$ && $P_1=31, 30, 29, 28$\\
+Hour-of-Month: & $Q_2(z)$ && $P_2=24*31, 24*30, 24*29, 24*28$\\
+Day-of-Year: & $Q_3(z)$ && $P_3=366, 365$\\
+Week-of-Month: & $Q_4(z)$ && $P_4=5, 4$\\ 
 \bottomrule
 \end{tabular}
 \end{center}
@@ -362,30 +361,27 @@ Week-of-Month: & $Q_4(z)$ && $k_4=5, 4$\\
 \end{table}
 
 
-
 \begin{definition}\label{quasicircular}
-A quasi-circular granularity $Q_(B, G')$ that relates linear granularities $G'$ and bottom granularity $B$, if
+A quasi-circular granularity $Q_{B, G'}$ that relates linear granularities $G'$ and bottom granularity $B$, if
 
-\begin{equation}\label{eq:eq3}
+\begin{equation}\label{eq:eq6}
 Q_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert), \quad z \in T_k
 \end{equation}
 
-where,  
-$z$ denotes the index set,\\
-$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping,\\
-{L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (k-1)}$,\\
-$T_w$ are the sets of indices of B describing $G'(w)$ such that 
+where
+$z$ denotes the index set,
+$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, ${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (k-1)\}$, $T_w$ are the sets of indices of B describing $G'(w)$ such that 
 \begin{equation}
 G'(w) = \bigcup_{z \in T_w}B(z),\\
 \end{equation}
-$T_w = 0$ for $w \epsilon Z_{<0}$,\\
-$\vert T_w \vert$ is the cardinality of set $T_w$.
+$T_w = 0 \quad for \quad w\epsilon Z_{<0}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{definition}
 
-Since G' is periodical with respect to BG, from definition \ref{def:periodical} the following holds true:
 
-- $BG \trianglelefteq G'$
-- $G'(w) = \bigcup_{z \in T_w \mod R'}BG(P'*\lfloor w/R' \rfloor + z)$,  where P' denotes the period of the grouping $(BG, G')$.
+Since G' is periodical with respect to BG, from definition \ref{def:periodical} the following still holds true:
+
+- $B \trianglelefteq G'$
+- there exist $R', P' \epsilon Z+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ and $G(w + R') \neq \phi$ then $G'(w + R') = \bigcup_{z \in T_w}B(z + P')$ and hence $G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$,  where P' denotes the period of the grouping $(B, G')$.
 
 **Discussion**: According to the first condition, assume, for instance, that G'(w) is the union of the granules G(a1), G(a2), . . . , G(ak). The periodicity property (condition (2) in the definition) ensures that the Rth granule after H(i), i.e., H(i + R), if non-empty, is the union of G(a1 + P ), G(a2 + P), . . . , G(ak + P). 
 
