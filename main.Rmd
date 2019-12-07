@@ -80,7 +80,7 @@ Calendar-based graphics[@wang2018calendar] are useful in visualizing patterns in
 
 <!--motivation --> 
    
-The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates [@2012-la],  of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. However, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
+The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates [@2012-la],  of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
 
 <!-- at finer or coarser scales can be benefited from the approach of Exploratory Data Analysis (EDA). EDA calls for utilizing visualization and transformation to explore data systematically. It is a process of generating hypothesis, testing them and consequently refining them through investigations. --> 
 
@@ -753,31 +753,63 @@ An example when there will be no empty combinations could be where $C_1$ maps ro
 Therefore, pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are called **harmonies**. 
 
 
-## Density estimation of measured variable
+## Estimation of the measured variable
 
-Density estimates are ueful in investigation of the properties of the measured variable. They can give valuable indication of features like skewness, multimodality or tail behavior. The measured variable can be dicrete or continuous. The probability distribution of these univariate measured variable could be studied by estimating the probability density function (continuous) or probability mass function (dicrete). The densities can either be estimated or summarized using empirical quantiles. The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself.
+Density estimates are useful in exploring the properties of the measured variable. They can give valuable indication of features like skewness, multimodality or tail behavior. The measured variable in the considered data structure can be dicrete or continuous. The probability distribution of them could be studied by estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. The entire distribution could be estimated using different density estimation methods or summarized using empirical quantiles. Several non-parametric density estimators and quantile estimators are proposed in the literature, the most commonly used form are as follows:
 
-The most commonly used density estimation method is the kernel density estimator. The Kernel density estimator with Kernel K is defined by:
+<!-- The most commonly used density estimation method is the kernel density estimator.  -->
 
-$$\hat{f(x)} = (1/nh)\sum_{i=1}^{n} K(x-X_i)/h$$ , where $h$ is the smoothing parameter or the bandwidth. where $X_1, X_2, \dots, X_n \sim F$ are independent and identically distributed observations from a continuous univariate distribution with probabilitty density function f(·).
+
+If we assume that $X_1, X_2, \dots, X_n \sim F$ are independent and identically distributed observations from an univariate distribution with probability density/mass function $f(.)$ and $X_{(1)},\dots X_{(n)}$ denote the order statistics of $X_1, X_2, \dots, X_n$, the Kernel density estimator $\hat{f(x)}$ with Kernel $K$ is defined by:
+
+\begin{equation}
+\hat{f(x)} = (1/nh)\sum_{i=1}^{n} K(x-X_i)/h
+\end{equation}
+
+where $h$ is the smoothing parameter or the bandwidth. The sample quantile estimator  $\hat{q(u)}$ with Kernel $K$ is given by:
+
+<!-- $Q$, $(q \equiv  Q')$, which is the quantile density function -->
+<!-- $ Q_{n} (u) = \sum_{i=1}^ n X_{(i)} I((i-1)/n <u \leq i/n)$\\ -->
+<!--             $= X_(1) + \sum_{i=1}^ n (X_{(i)} - X_{(i-1)}) I((i-1)/n < u)$ -->
+
+
+<!-- and most widely used definition of sample quantile is given in  by: -->
+
+
+<!-- $$\hat{Q_{i}(p)} = (l - \gamma)X_{(j)} + \gamma X_{(j + 1)}$$ where,  $(j - m)/n \leq p < (j - m + 1)/n$,  -->
+<!-- for some $m \in R$ and $0 < \gamma < 1$.  $\hat{Qi(p)}$ is the ith sample quantile  -->
+
+\begin{equation}
+\hat{q(u)} = \sum_{i=2}^{n}(X_{(i)} - X_{(i-1)})K(u - (i-1)/n)) - X_{(n)}K(u-1) + X_{(1)}K(u)
+\end{equation}
+
+
+
+where $Q(u)= F^{-1}(u) = inf({x: F(x) >u)}$, $0<u< 1$ and  $q \equiv  Q'$.
+
 
  <!-- Both pdf and pmf are concerned with point probabilities of the random variable. Suppose we have observations which are realizations of univariate random variables, $X_1, X_2, \dots, X_n \sim F$, where $F$ denotes an unknown cumulative distribution function and $X_1, X_2, \dots, X_n$ are i.i.d. -->
 
 <!-- Instead of assuming a parametric model for the distribution (e.g. a Normal distribution with unknown expectation and variance), a non-parametric estimation assumes that the density exists and is suitably smooth (e.g. differentiable). It is then possible to estimate the u2nknown density function f(·). -->
 
 
-The histogram is the oldest and most popular density estimator method. The form of the histogram depends very much on the tuning parameters class width and origin. The naive estimator was introduced by Fix and Hodges (1951) and first discussed by Rosenblatt(1956). Whittle (1958) formulated the general weight function class of estimators, while the orthogonal series estimator was introduced by Cencov (1962). The nearest neighbor estimate considered by Loftsgaarden and Quesenbury (1965), while the variable Kernel method is due to Brieman, Meisel and Purcell (1977). There are quite a few other approaches to density estimation than the kernel estimators, but the fixed bandwidth kernel estimators are used predominantly because of their simplicity.
+<!-- The histogram is the oldest and most popular density estimator method. The form of the histogram depends very much on the tuning parameters class width and origin. The naive estimator was introduced by Fix and Hodges (1951) and first discussed by Rosenblatt(1956). Whittle (1958) formulated the general weight function class of estimators, while the orthogonal series estimator was introduced by Cencov (1962). The nearest neighbor estimate considered by Loftsgaarden and Quesenbury (1965), while the variable Kernel method is due to Brieman, Meisel and Purcell (1977). There are quite a few other approaches to density estimation than the kernel estimators, but the fixed bandwidth kernel estimators are used predominantly because of their simplicity. -->
 
 
-The quantile of a distribution is defined as $Q(p)= F^{-1}(p) = inf{{x: F(x) >p}}$, $0<p< 1$, where $F(x)$ is the distribution function. Let $X_{(1)},\dots X_{(n)}$ denote the order statistics of $X_1, X_2, \dots, X_n$, and let $Qi(p)$ denote the ith sample quantile definition, then  
+<!-- The inverse $Q = F^{-1}$, which is the quantile function can be defined as $Q(u)= F^{-1}(u) = inf({x: F(x) >u)}$, $0<u< 1$.  -->
+
+The MSE of the estimators are given as follows:
 
 \begin{equation}
-\hat{Q_{i}(p)} = (l - \gamma)X_{(j)} + \gamma X_{(j + 1)}
+\begin{split}
+MSE(\hat{q(u)}) & = (1/4)h^4(q''(u))^2 \sigma_k^4 + (1/nh)q^2(u) \kappa \\
+MSE(\hat{f(x)}) & = (1/4)h^4(f''(x))^2 \sigma_k^4 + (1/nh)f(x) \kappa
+\end{split}
 \end{equation}
 
-where,  $(j - m)/n \leq p < (j - m + 1)/n$
+where $\kappa = \int k^2(y)dy$.
 
-There have been several other non parametric quantile estimators proposed e.g., Harrell and Davis 1982; Sheather and Marron 1990). Also sample quantiles can be of the form that are not defined for all p including hinges, letter values (Hoaglin 1983) and related methods (Freund and Perles 1987).
+<!-- other non parametric quantile estimators proposed e.g., Harrell and Davis 1982; Sheather and Marron 1990). Also sample quantiles can be of the form that are not defined for all p including hinges, letter values (Hoaglin 1983) and related methods (Freund and Perles 1987). -->
 
 
 <!-- would involve a faceting approach with one temporal granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
@@ -1047,7 +1079,10 @@ Suppose we have $T$ observations, and two cyclic granularities -  $C_1$ with $n$
 
 ### Unevenly distributed events
 
+
+
 Even when there are no rarely occuring events, number of observations might vary hugely within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the visualizations that use kernel density estimates should be used with caution as sample size would directly affect both the variance of the estimator and the confidence intervals. Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels.
+the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$, unless $h$ is chosen as a function of $n$. However, the variance of the $f(x)$ is $(1/nh)\int K(t)^2dt$ is a function of n.
 
 # Applications {#sec:application}
 
