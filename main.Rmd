@@ -471,36 +471,40 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} can be infinite for aperiodic granularities. 
 
-Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularity $A_i$ such that $B \trianglelefteq A_i, \forall i\in{1, 2, \dots, n}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i, j\}}$ of the integers such
-that
+Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ none of which can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that
 \begin{equation*}
-A_(j) = \bigcup_{z \in T_{\{i, j\}}}B(z)
+M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
-
+and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$.
 
 \begin{definition}\label{aperiodic}
-An aperiodic granularity $AX_{B, G''}$ that relates linear granularities $G''$ and bottom granularity $B$, with $G''$ being aperiodical with respect to $B$, is given by
+An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
 
-\begin{equation}\label{eq:eq7}
+\begin{equation}\label{eq:aperiodic}
 \begin{split}
-A_{B, G''}(z) & = L(i) \quad z \in T_q(i) \quad and \quad \forall i \in E \\
-     & = L(0) otherwise
+A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \dots, n}\\
+     & = L(0), \quad otherwise
 \end{split}     
 \end{equation}
 where, 
-$z$ denotes the index set,
-$T_q$ are the sets of indices of $B$ describing $G''(q)$ such that $$G''(q) = \bigcup_{z \in T_q}B(z)$$ and $T_q(z) = \bigcup_{i \in E} T_q(i)$, E denotes the set of linear aperiodic granularities.
+$z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
+$T_{i_j}$ are the sets of indices of $B$ describing $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$ and $M = \bigcup_{j=1}^{n}M_{j}$.
 \end{definition}
 
 
-Discussion: Aperiodic cyclic time granularities relate many aperiodic linear granularities to the bottom granularity. The number of categories obtained coincides with the number of aperiodic linear granularities considered.
 
-map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. An example of aperiodic granularity can be one that relates a bottom granularity ($B$) and linear granularity ($G''$) such that $BG \trianglelefteq G''$, $BG \not\preceq G$ and $B$ is not periodic or quasi-periodic with respect to $G''$, as shown in \autoref{fig:aperiodic}.
-
+**Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and A_{B, M} consists of three categories, one corresponding to the first aperiodic event $M_1$, the second corresponding to aperiodic event $M_2$ and the third corresponding to no event/aperiodic linear granularity.
 
 
-```{r aperiodic, echo=FALSE,out.width = "100%",fig.cap="Relating aperiodic granularity and bottom linear granularity "}
-knitr::include_graphics("Figs/aperiodic.png")
+**Discussion**: The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event. The index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
+
+
+
+<!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
+
+
+```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Relating aperiodic granularity and bottom linear granularity "}
+knitr::include_graphics("Figs/aperiodic-example.png")
 ```
 
 <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
