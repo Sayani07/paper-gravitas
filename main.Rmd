@@ -139,26 +139,26 @@ Often we partition time into months, weeks or days to relate it to data. Such di
 <!-- ### Linear {#sec:linear-gran-def} -->
 
 
-\newtheorem{timedom}{Definition}[section]
+\newtheorem{definition}{Definition}[section]
 
-\begin{timedom}\label{def:timedom}
+\begin{definition}\label{def:definition}
 A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
-\end{timedom}
+\end{definition}
 
 A time domain can be **discrete** (if there is unique predecessor and successor for every element except for the first and last one in the time domain), or it can be **dense** (if it is an infinite set). A time domain is assumed to be discrete for the purpose of our discussion.
 
 
-\begin{timedom}\label{def:linear}
+\begin{definition}\label{def:linear}
 A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
 
   (1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
 than all elements of $G(j)$, and  
   (2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.  
-\end{timedom}
+\end{definition}
 
-\begin{timedom}\label{def:granule}
+\begin{definition}\label{def:granule}
 Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
-\end{timedom}
+\end{definition}
 
 **Discussion:** The first condition in \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
 \autoref{fig:linear-time} shows the implication of this condition. It shows the linear granularities hours, days, weeks, months and years, each of which are unidirectional in nature and arranged from past to future. If we consider the chronon [@aigner2011visualization] as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on. Each granule of the linear granularities shown are represented through a box.
@@ -171,13 +171,13 @@ knitr::include_graphics("Figs/linear-arr.png")
 
 [@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
 
-\begin{timedom}\label{def:finerthan}
+\begin{definition}\label{def:finerthan}
 A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
 for each index i, there exists an index j such that $G(i) \subset H(j)$.
-\end{timedom}.
+\end{definition}.
 
 
-\begin{timedom}\label{def:groupsinto}
+\begin{definition}\label{def:groupsinto}
 A linear granularity G groups into a linear granularity H, denoted
 $G \trianglelefteq H,$
 if for each index j there exists a (possibly infinite) subset S of the integers such
@@ -185,7 +185,7 @@ that
 \begin{equation}
 H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
-\end{timedom}
+\end{definition}
 
 **Discussion:** $G \trianglelefteq H$ if each granule H(j) is the union of some granules of G.  $G \preceq H$ if every granule in G is a subset of some granule in H. In \autoref{fig:groups-finer}, both $Days \trianglelefteq Weeks$ and $Days \preceq Weeks$ hold true. However, Weekends groups into Holidays but Weekends are not finer than Holidays. On the other hand, Weekends are finer than weeks but do not group into weeks. Consider another example where $Days \trianglelefteq Months$. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions, . 
 
@@ -194,13 +194,13 @@ knitr::include_graphics("Figs/groupsandfiner.png")
 ```
 
 
-\begin{timedom}\label{def:periodical}
+\begin{definition}\label{def:periodical}
 A granularity H is periodical with respect to a granularity G if
 (1) $G \trianglelefteq H,$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
 $H (i + R) = \bigcup_{j \in S} G(j + P)$.
-\end{timedom}
+\end{definition}
 
 A granularity H which is periodical with respect to G is specified by:
 (i) the R sets of indexes of G, ${S_0,...,S_(R-1)}$ describing the granules of H within one period;
@@ -214,21 +214,21 @@ $H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary g
 
 Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
-\begin{timedom}\label{def:quasi}
+\begin{definition}\label{def:quasi}
 A granularity H is quasi-periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
 (2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
 integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
-\end{timedom}
+\end{definition}
 
 **Discussion:**
  
 Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
 
-\begin{timedom}\label{def:BG}
+\begin{definition}\label{def:BG}
 Bottom granularity - Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
-\end{timedom}
+\end{definition}
 
 **Discussion:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
 
@@ -279,7 +279,6 @@ For more variations of grouping operations and granule oriented operations, the 
 We propose a formalism of cyclic time granularities through the tsibble [@wang2019tsibble] framework of organizing temporal data. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. Lining up with the the assumption in [@Bettini2000-vy] that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists and is represented by the index of the tsibble. In a cyclic organization of time, the domain is composed of a set of recurring time values, where any time value can be preceded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also succeeds Wednesday). Hence intuitively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
 
 
-
 Cyclic time granularities which accommodate periodicities can be constructed by relating two linear granularities. The mappings between linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might can have days ranging from 28 to 31. To elaborate more, mappings will be regular if, for example, linear granularities are formed by grouping operation. Grouping operations combine fixed granules of a linear granularity to form a new granule of the resulting linear granularity. However, if granularities are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of the root granularity. Cyclic time granularities are referred to as **circular** if mappings between linear time granularities are regular and **quasi-circular** if the same is irregular. Examples of circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month. The formalism would differ for circular and quasi-circular granularities although both accommodate periodicities in data.
 
 <!--sub:How to relate linear granularities to tsibble and manipulation of indices required for circular and quasi-circular granularities -->
@@ -289,24 +288,33 @@ Cyclic time granularities which accommodate periodicities can be constructed by 
 
 ## Circular {#sec:circular-gran-def}
 
-\begin{timedom}\label{def:circular}
-A circular granularity C(B, G) relates a linear granularity G to the bottom granularity B, if
+\begin{definition}\label{def:circular}
+A circular granularity C(B, G) relates a linear granularity $G$ to the bottom granularity B, if
 
-\begin{equation} \label{eq:eq2}
-C_{B, G}(z) = {L}(z\mod k(B,G)) \quad \forall z \in \mathbb{Z}^+
+\begin{equation} \label{eq:eq5}
+\begin{split}
+C_{B, G}(z) & = {L}(z\mod P(B, G)) \quad \forall z \in \mathbb{Z}^+ \\
+\end{split}
 \end{equation}
-where,\\
-z denotes the index set, \\
-B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity G with regular mapping, \\
-{L} is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (k-1)}$,\\
-and k(B,G) is the number of granules of B in each granule of G.
-\end{timedom}
+where
+z denotes the index set,
+B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping, 
+$P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$,
+and ${L}$ is a label mapping that defines an unique label for each index $l \in {0,1,\dots, (P-1)}$,
 
-**Discussion**:  In general, the set of labels will be a set of strings that is more descriptive than the index and used to identify a categorization of the circular granularity. However, the labels can coincide with indexes in which case integers are directly used to refer to categorizations of the circular granularity. Note that each
-circular granularity can use a different set of labels. Example showing circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in the \autoref{fig:circular-gran}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. G and H are two linear granularities denoting days and weeks respectively. $k(day, week) =  7$ and hence, $C_{G, B}(z)$ represented by C(BG, G) is given by $B(z\mod 7)$. The circular granularity C(B, G) consists of repetitive pattern {L(0), L(1), L(2), L(3), L(4), L(5), L(6)} which repeats itself after each period length. $L$ can be defined such that the labels corresponding to ${0,1,\dots,6}$ correspond to different days of the week ${Sun, Mon ,\dots, Sat}$ . Similarly, C(B, H) is given by $BG(z\mod 14)$ since the period length of days with respect to fortnight is 14. C(B, H) also repeats the pattern ${L'(0), \dots, L'(13)}$ in every period. Hence, circular granularities are represented as repetitive categorization of time in the diagram.
+\end{definition}
 
-```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "}
-knitr::include_graphics("Figs/circular-gran-diagram.png")
+**Discussion**:  In general, the set of labels will be a set of strings that is more descriptive than the index and used to identify a categorization of the circular granularity. However, the labels can coincide with indexes in which case integers are directly used to refer to categorizations of the circular granularity. Note that each circular granularity can use a different set of labels. Example showing circular granularity relating two linear granularities with bottom granularities are visually depicted in a series of slots in the \autoref{fig:circular-gran}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and the bottom granularity. The index of the tsibble considered is days. Note that each
+circular granularity can use different label mappings. In \autoref{fig:day-of-week}, Day and Week are two linear granularities and $k(Day, Week) =  7$. The circular granularity C(Day, Week) representing Day-of-Week will consist of pattern {L(0), L(1), L(2), L(3), L(4), L(5), L(6)} which repeats itself after each period length. The label mapping $L$ can be defined as $L: ({0,1,2, \dots, 6}) \longmapsto\ ({Sun, Mon, \dots, Sat)}$ or $L: ({0,1,2, \dots, 6}) \longmapsto\ ({Sunday, Monday, \dots, Saturday)}$ or $L: ({0,1,2, \dots, 6}) \longmapsto\ ({0, 1, \dots, 6)}$ depending on the context.
+
+<!-- # ```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "} -->
+<!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
+<!-- # ``` -->
+
+
+
+```{r day-of-week,echo=FALSE,out.width = "100%",fig.cap="Circular granularity day-of-week"}
+knitr::include_graphics("Figs/day-of-week.png")
 ```
 
 All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}.
@@ -355,7 +363,7 @@ Week-of-Month: & $Q_4(z)$ && $k_4=5, 4$\\
 
 
 
-\begin{timedom}\label{quasicircular}
+\begin{definition}\label{quasicircular}
 A quasi-circular granularity $Q_(B, G')$ that relates linear granularities $G'$ and bottom granularity $B$, if
 
 \begin{equation}\label{eq:eq3}
@@ -372,7 +380,7 @@ G'(w) = \bigcup_{z \in T_w}B(z),\\
 \end{equation}
 $T_w = 0$ for $w \epsilon Z_{<0}$,\\
 $\vert T_w \vert$ is the cardinality of set $T_w$.
-\end{timedom}
+\end{definition}
 
 Since G' is periodical with respect to BG, from definition \ref{def:periodical} the following holds true:
 
@@ -470,7 +478,7 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $k_i$ from \autoref{tab:quasi} can be infinite for aperiodic granularities. 
 
 
-\begin{timedom}\label{aperiodic}
+\begin{definition}\label{aperiodic}
 An aperiodic granularity A_(BG, G'') that relates linear granularities G and bottom granularity BG, with G'' being aperiodical with respect to BG, is given by
 
 \begin{equation}\label{eq:eq}
@@ -482,7 +490,7 @@ A_{BG, G''}(z) & = 1, z \in T_q\\
 where,  
 z denotes the index set (index of BG),
 $T_q$ are the sets of indices of BG describing $G''(q)$ such that $G''(q) = \bigcup_{z \in T_q}BG(z)$,$T_q = 0$ for $q \epsilon Z_{<0}$.
-\end{timedom}
+\end{definition}
 
 Discussion: Aperiodic time granularities map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. An example of aperiodic granularity can be one that relates a bottom granularity ($BG$) and linear granularity ($G''$) such that $BG \trianglelefteq G''$, $BG \not\preceq G$ and $BG$ is not periodic or quasi-periodic with respect to $G''$, as shown in \autoref{fig:aperiodic}.
 
@@ -800,7 +808,7 @@ where $Q(u)= F^{-1}(u) = inf({x: F(x) >u)}$, $0<u< 1$ and  $q \equiv  Q'$.
 
 The MSE of the estimators are given as follows:
 
-\begin{equation}
+\begin{equation}\label{eq:MSE}
 \begin{split}
 MSE(\hat{q(u)}) & = (1/4)h^4(q''(u))^2 \sigma_k^4 + (1/nh)q^2(u) \kappa \\
 MSE(\hat{f(x)}) & = (1/4)h^4(f''(x))^2 \sigma_k^4 + (1/nh)f(x) \kappa
@@ -1079,10 +1087,12 @@ Suppose we have $T$ observations, and two cyclic granularities -  $C_1$ with $n$
 
 ### Unevenly distributed events
 
+Even when there are no rarely occuring events, number of observations might vary hugely within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the visualizations that use density or quantile estimates should be used with caution as sample size would directly affect both the variance and consequently the confidence interval of the estimators. \autoref{eq:MSE} shows that the variance of both $\hat{f(x)}$ and $\hat{q(u)}$ is a function of the sample size $n$.
 
 
-Even when there are no rarely occuring events, number of observations might vary hugely within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the visualizations that use kernel density estimates should be used with caution as sample size would directly affect both the variance of the estimator and the confidence intervals. Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels.
-the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$, unless $h$ is chosen as a function of $n$. However, the variance of the $f(x)$ is $(1/nh)\int K(t)^2dt$ is a function of n.
+<!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
+
+<!-- Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels. -->
 
 # Applications {#sec:application}
 

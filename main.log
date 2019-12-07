@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  4 DEC 2019 18:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  7 DEC 2019 14:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -140,10 +140,7 @@ LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 Package: inputenc 2018/08/11 v1.3c Input encoding file
 \inpenc@prehook=\toks20
 \inpenc@posthook=\toks21
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/upquote/upquote.sty
-Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
-tim
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/textcomp.sty
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2018/08/11 v2.0j Standard LaTeX package
 Package textcomp Info: Sub-encoding information:
 (textcomp)               5 = only ISO-Adobe without \textcurrency
@@ -297,7 +294,10 @@ Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
 Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
-)) (/usr/local/texlive/2019/texmf-dist/tex/latex/microtype/microtype.sty
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2019/02/28 v2.7b Micro-typographical refinements (RS)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
@@ -319,27 +319,22 @@ LaTeX Info: Redefining \lslig on input line 914.
 Package microtype Info: Loading configuration file microtype.cfg.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/microtype/microtype.cfg
 File: microtype.cfg 2019/02/28 v2.7b microtype main configuration file (RS)
-)) (/usr/local/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2018/04/16 v5.8 Page Geometry
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
-) (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ifvtex.sty
-Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
-)
-\Gm@cnth=\count102
-\Gm@cntv=\count103
-\c@Gm@tempcnt=\count104
-\Gm@bindingoffset=\dimen113
-\Gm@wd@mp=\dimen114
-\Gm@odd@mp=\dimen115
-\Gm@even@mp=\dimen116
-\Gm@layoutwidth=\dimen117
-\Gm@layoutheight=\dimen118
-\Gm@layouthoffset=\dimen119
-\Gm@layoutvoffset=\dimen120
-\Gm@dimlist=\toks24
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/hyperref.sty
+)) (/usr/local/texlive/2019/texmf-dist/tex/latex/parskip/parskip.sty
+Package: parskip 2019-01-16 v2.0c non-zero parskip adjustments
+(/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+) (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+) (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+))) (/usr/local/texlive/2019/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2018/08/19 v2.5f e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count102
+)) (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2018/11/30 v6.88e Hypertext links for LaTeX
 (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
@@ -347,14 +342,15 @@ Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
 (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
 Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
-Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
-Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
 Package hobsub Info: Skipping package `ifluatex' (already loaded).
-Package hobsub Info: Skipping package `ifvtex' (already loaded).
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
 Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
-Package hobsub Info: Skipping package `ifpdf' (already loaded).
-Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
+Package hobsub Info: Skipping package `etexcmds' (already loaded).
+Package hobsub Info: Skipping package `kvsetkeys' (already loaded).
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 Package: pdftexcmds 2018/09/10 v0.29 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -373,26 +369,29 @@ Package: letltxmacro 2016/05/16 v1.5 Let assignment for LaTeX macros (HO)
 Package: hopatch 2016/05/16 v1.3 Wrapper for package hooks (HO)
 Package: xcolor-patch 2016/05/16 xcolor patch
 Package: atveryend 2016/05/16 v1.9 Hooks at the very end of document (HO)
-Package atveryend Info: \enddocument detected (standard20110627).
 Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
 Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
 Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/auxhook.sty
 Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 )
-\@linkdim=\dimen121
-\Hy@linkcounter=\count105
-\Hy@pagecounter=\count106
+\@linkdim=\dimen113
+\Hy@linkcounter=\count103
+\Hy@pagecounter=\count104
 (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2018/11/30 v6.88e Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
-\Hy@SavedSpaceFactor=\count107
+\Hy@SavedSpaceFactor=\count105
 (/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `unicode' set `true' on input line 4393.
+(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2018/11/30 v6.88e Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
 )
 Package hyperref Info: Hyper figures OFF on input line 4519.
 Package hyperref Info: Link nesting OFF on input line 4524.
@@ -401,16 +400,16 @@ Package hyperref Info: Plain pages OFF on input line 4534.
 Package hyperref Info: Backreferencing OFF on input line 4539.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4772.
-\c@Hy@tempcnt=\count108
+\c@Hy@tempcnt=\count106
 (/usr/local/texlive/2019/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5125.
-\XeTeXLinkMargin=\dimen122
-\Fld@menulength=\count109
-\Field@Width=\dimen123
-\Fld@charsize=\dimen124
+\XeTeXLinkMargin=\dimen114
+\Fld@menulength=\count107
+\Field@Width=\dimen115
+\Fld@charsize=\dimen116
 Package hyperref Info: Hyper figures OFF on input line 6380.
 Package hyperref Info: Link nesting OFF on input line 6385.
 Package hyperref Info: Hyper index ON on input line 6388.
@@ -420,15 +419,15 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6405.
 Package hyperref Info: PDF/A mode OFF on input line 6410.
 LaTeX Info: Redefining \ref on input line 6450.
 LaTeX Info: Redefining \pageref on input line 6454.
-\Hy@abspage=\count110
-\c@Item=\count111
-\c@Hfootnote=\count112
+\Hy@abspage=\count108
+\c@Item=\count109
+\c@Hfootnote=\count110
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2018/11/30 v6.88e Hyperref driver for pdfTeX
-\Fld@listcount=\count113
-\c@bookmark@seq@number=\count114
+\Fld@listcount=\count111
+\c@bookmark@seq@number=\count112
 (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
@@ -436,14 +435,22 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip47
 )
-Package hyperref Info: Option `unicode' set `true' on input line 30.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2018/11/30 v6.88e Hyperref: PDF Unicode definition (HO)
-Now handling font encoding PU ...
-... no UTF-8 mapping file for font encoding PU
-)
-Package hyperref Info: Option `breaklinks' set `true' on input line 30.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/color.sty
+Package hyperref Info: Option `breaklinks' set `true' on input line 35.
+(/usr/local/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2018/04/16 v5.8 Page Geometry
+\Gm@cnth=\count113
+\Gm@cntv=\count114
+\c@Gm@tempcnt=\count115
+\Gm@bindingoffset=\dimen117
+\Gm@wd@mp=\dimen118
+\Gm@odd@mp=\dimen119
+\Gm@even@mp=\dimen120
+\Gm@layoutwidth=\dimen121
+\Gm@layoutheight=\dimen122
+\Gm@layouthoffset=\dimen123
+\Gm@layoutvoffset=\dimen124
+\Gm@dimlist=\toks24
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
@@ -454,11 +461,11 @@ File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 )) (/usr/local/texlive/2019/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2019/01/15
 Style option: `fancyvrb' v3.2a <2019/01/15> (tvz)
-\FV@CodeLineNo=\count115
+\FV@CodeLineNo=\count116
 \FV@InFile=\read1
 \FV@TabBox=\box29
-\c@FancyVerbLine=\count116
-\FV@StepNumber=\count117
+\c@FancyVerbLine=\count117
+\FV@StepNumber=\count118
 \FV@OutFile=\write3
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
@@ -473,16 +480,16 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)+ FMi change
 \LTright=\skip50
 \LTpre=\skip51
 \LTpost=\skip52
-\LTchunksize=\count118
+\LTchunksize=\count119
 \LTcapwidth=\dimen129
 \LT@head=\box30
 \LT@firsthead=\box31
 \LT@foot=\box32
 \LT@lastfoot=\box33
-\LT@cols=\count119
-\LT@rows=\count120
-\c@LT@tables=\count121
-\c@LT@chunks=\count122
+\LT@cols=\count120
+\LT@rows=\count121
+\c@LT@tables=\count122
+\c@LT@chunks=\count123
 \LT@p@ftn=\toks25
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2016/04/27 v1.618033 publication quality tables
@@ -496,13 +503,17 @@ Package: booktabs 2016/04/27 v1.618033 publication quality tables
 \cmidrulesep=\dimen137
 \cmidrulekern=\dimen138
 \defaultaddspace=\dimen139
-\@cmidla=\count123
-\@cmidlb=\count124
+\@cmidla=\count124
+\@cmidlb=\count125
 \@aboverulesep=\dimen140
 \@belowrulesep=\dimen141
-\@thisruleclass=\count125
-\@lastruleclass=\count126
+\@thisruleclass=\count126
+\@lastruleclass=\count127
 \@thisrulewidth=\dimen142
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/mdwtools/footnote.sty
+Package: footnote 1997/01/28 1.13 Save footnotes around boxes
+\fn@notes=\box34
+\fn@width=\dimen143
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
@@ -514,55 +525,54 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 )
-\Gin@req@height=\dimen143
-\Gin@req@width=\dimen144
+\Gin@req@height=\dimen144
+\Gin@req@width=\dimen145
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/grffile.sty
 Package: grffile 2017/06/30 v1.18 Extended file name support for graphics (HO)
 Package grffile Info: Option `multidot' is set to `true'.
 Package grffile Info: Option `extendedchars' is set to `false'.
 Package grffile Info: Option `space' is set to `true'.
 Package grffile Info: \Gin@ii of package `graphicx' fixed on input line 494.
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/parskip/parskip.sty
-Package: parskip 2019-01-16 v2.0c non-zero parskip adjustments
-(/usr/local/texlive/2019/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2018/08/19 v2.5f e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count127
-)) (/usr/local/texlive/2019/texmf-dist/tex/latex/titling/titling.sty
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
 \thanksmarkwidth=\skip53
 \thanksmargin=\skip54
 \droptitle=\skip55
-) (./main.aux)
+) (./main.aux
+
+LaTeX Warning: Label `eq:eq5' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 127.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 127.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 135.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 135.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 127.
-LaTeX Font Info:    ... okay on input line 127.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 127.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 135.
+LaTeX Font Info:    ... okay on input line 135.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 135.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 127.
+LaTeX Info: Redefining \microtypecontext on input line 135.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -576,6 +586,22 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
+\AtBeginShipoutBox=\box35
+Package hyperref Info: Link coloring OFF on input line 135.
+(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
+(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
+)
+\c@section@level=\count128
+)
+LaTeX Info: Redefining \ref on input line 135.
+LaTeX Info: Redefining \pageref on input line 135.
+LaTeX Info: Redefining \nameref on input line 135.
+(./main.out) (./main.out)
+\@outlinefile=\write4
+\openout4 = `main.out'.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -610,32 +636,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring OFF on input line 127.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
-(/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
-)
-\c@section@level=\count128
-)
-LaTeX Info: Redefining \ref on input line 127.
-LaTeX Info: Redefining \pageref on input line 127.
-LaTeX Info: Redefining \nameref on input line 127.
-(./main.out) (./main.out)
-\@outlinefile=\write4
-\openout4 = `main.out'.
-
 (/usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count129
-\scratchdimen=\dimen145
-\scratchbox=\box35
+\scratchdimen=\dimen146
+\scratchbox=\box36
 \nofMPsegments=\count130
 \nofMParguments=\count131
 \everyMPshowfont=\toks26
 \MPscratchCnt=\count132
-\MPscratchDim=\dimen146
+\MPscratchDim=\dimen147
 \MPnumerator=\count133
 \makeMPintoPDFobject=\count134
 \everyMPtoPDFconversion=\toks27
@@ -653,7 +663,11 @@ G,.JBIG2,.JB2,.eps]
 (/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
-)) (./main.toc
+))
+
+LaTeX Warning: No \author given.
+
+(./main.toc
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 3.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -694,29 +708,29 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \openout5 = `main.toc'.
 
 [2]
-LaTeX Font Info:    Try loading font information for TS1+lmr on input line 155.
+LaTeX Font Info:    Try loading font information for TS1+lmr on input line 163.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-LaTeX Warning: Reference `sec:timegrandef' on page 3 undefined on input line 16
-4.
+LaTeX Warning: Reference `sec:timegrandef' on page 3 undefined on input line 17
+2.
 
-\c@timedom=\count135
+\c@definition=\count135
 <Figs/linear-arr.png, id=147, 752.8125pt x 202.7575pt>
 File: Figs/linear-arr.png Graphic file (type png)
 <use Figs/linear-arr.png>
-Package pdftex.def Info: Figs/linear-arr.png  used on input line 201.
+Package pdftex.def Info: Figs/linear-arr.png  used on input line 209.
 (pdftex.def)             Requested size: 469.77148pt x 126.52512pt.
 [3]
-<Figs/groupsandfiner.png, id=166, 1055.945pt x 209.78375pt>
+<Figs/groupsandfiner.png, id=165, 1055.945pt x 209.78375pt>
 File: Figs/groupsandfiner.png Graphic file (type png)
 <use Figs/groupsandfiner.png>
-Package pdftex.def Info: Figs/groupsandfiner.png  used on input line 231.
+Package pdftex.def Info: Figs/groupsandfiner.png  used on input line 239.
 (pdftex.def)             Requested size: 469.7571pt x 93.32625pt.
 [4 <./Figs/linear-arr.png> <./Figs/groupsandfiner.png>] [5]
-Overfull \hbox (40.92851pt too wide) in paragraph at lines 323--328
+Overfull \hbox (40.92851pt too wide) in paragraph at lines 331--336
 []\T1/lmr/m/n/10 (-20) pseudomonth = $\OML/lmm/m/it/10 Alter[]\OT1/lmr/m/n/10 (
 -20) (\OML/lmm/m/it/10 day; Alter[]\OT1/lmr/m/n/10 (-20) (\OML/lmm/m/it/10 day;
  Alter[]\OT1/lmr/m/n/10 (-20) (\OML/lmm/m/it/10 day; Alter[]\OT1/lmr/m/n/10 (-2
@@ -726,81 +740,92 @@ T1/lmr/m/n/10 (-20) ,
  []
 
 [6]
-<Figs/circular-gran-diagram.png, id=202, 1063.975pt x 323.2075pt>
-File: Figs/circular-gran-diagram.png Graphic file (type png)
-<use Figs/circular-gran-diagram.png>
-Package pdftex.def Info: Figs/circular-gran-diagram.png  used on input line 360
-.
-(pdftex.def)             Requested size: 469.74147pt x 142.69504pt.
-[7 <./Figs/circular-gran-diagram.png>] [8]
-<Figs/aperiodic-granv1.png, id=232, 1096.095pt x 369.38pt>
+
+LaTeX Warning: Reference `fig:circular-gran' on page 7 undefined on input line 
+365.
+
+<Figs/day-of-week.png, id=200, 1044.90375pt x 122.4575pt>
+File: Figs/day-of-week.png Graphic file (type png)
+<use Figs/day-of-week.png>
+Package pdftex.def Info: Figs/day-of-week.png  used on input line 370.
+(pdftex.def)             Requested size: 469.75592pt x 55.05304pt.
+
+LaTeX Warning: Reference `eq:eq2' on page 7 undefined on input line 377.
+
+[7 <./Figs/day-of-week.png>]
+
+LaTeX Warning: Reference `fig:circular-gran' on page 8 undefined on input line 
+451.
+
+[8]
+<Figs/aperiodic-granv1.png, id=230, 1096.095pt x 369.38pt>
 File: Figs/aperiodic-granv1.png Graphic file (type png)
 <use Figs/aperiodic-granv1.png>
-Package pdftex.def Info: Figs/aperiodic-granv1.png  used on input line 467.
+Package pdftex.def Info: Figs/aperiodic-granv1.png  used on input line 479.
 (pdftex.def)             Requested size: 469.75624pt x 158.30612pt.
 
-Package hyperref Warning: No autoref name for `timedom' on input line 476.
+Package hyperref Warning: No autoref name for `definition' on input line 488.
 
 [9 <./Figs/aperiodic-granv1.png>]
-<Figs/aperiodic.png, id=243, 1067.99pt x 177.66376pt>
+<Figs/aperiodic.png, id=241, 1067.99pt x 177.66376pt>
 File: Figs/aperiodic.png Graphic file (type png)
 <use Figs/aperiodic.png>
-Package pdftex.def Info: Figs/aperiodic.png  used on input line 507.
+Package pdftex.def Info: Figs/aperiodic.png  used on input line 519.
 (pdftex.def)             Requested size: 469.7541pt x 78.14517pt.
 [10 <./Figs/aperiodic.png>] [11] [12]
-<Figs/data-structure-v1.png, id=280, 1134.2375pt x 152.57pt>
+<Figs/data-structure-v1.png, id=278, 1134.2375pt x 152.57pt>
 File: Figs/data-structure-v1.png Graphic file (type png)
 <use Figs/data-structure-v1.png>
-Package pdftex.def Info: Figs/data-structure-v1.png  used on input line 646.
+Package pdftex.def Info: Figs/data-structure-v1.png  used on input line 658.
 (pdftex.def)             Requested size: 469.74791pt x 63.18732pt.
 [13 <./Figs/data-structure-v1.png>] [14] [15] [16]
-<figure/allFig-1.pdf, id=323, 572.1375pt x 382.42876pt>
+<figure/allFig-1.pdf, id=322, 572.1375pt x 382.42876pt>
 File: figure/allFig-1.pdf Graphic file (type pdf)
 <use figure/allFig-1.pdf>
-Package pdftex.def Info: figure/allFig-1.pdf  used on input line 756.
+Package pdftex.def Info: figure/allFig-1.pdf  used on input line 781.
 (pdftex.def)             Requested size: 234.87471pt x 156.9952pt.
-<figure/allFig-2.pdf, id=324, 572.1375pt x 382.42876pt>
+<figure/allFig-2.pdf, id=323, 572.1375pt x 382.42876pt>
 File: figure/allFig-2.pdf Graphic file (type pdf)
 <use figure/allFig-2.pdf>
-Package pdftex.def Info: figure/allFig-2.pdf  used on input line 756.
+Package pdftex.def Info: figure/allFig-2.pdf  used on input line 781.
 (pdftex.def)             Requested size: 234.87471pt x 156.9952pt.
-<figure/allFig-3.pdf, id=325, 572.1375pt x 387.4475pt>
+<figure/allFig-3.pdf, id=324, 572.1375pt x 387.4475pt>
 File: figure/allFig-3.pdf Graphic file (type pdf)
 <use figure/allFig-3.pdf>
-Package pdftex.def Info: figure/allFig-3.pdf  used on input line 756.
+Package pdftex.def Info: figure/allFig-3.pdf  used on input line 781.
 (pdftex.def)             Requested size: 234.87471pt x 159.0555pt.
-<figure/allFig-4.pdf, id=326, 555.07375pt x 388.45125pt>
+<figure/allFig-4.pdf, id=325, 555.07375pt x 388.45125pt>
 File: figure/allFig-4.pdf Graphic file (type pdf)
 <use figure/allFig-4.pdf>
-Package pdftex.def Info: figure/allFig-4.pdf  used on input line 756.
+Package pdftex.def Info: figure/allFig-4.pdf  used on input line 781.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
-<figure/allFig-5.pdf, id=327, 572.1375pt x 388.45125pt>
+<figure/allFig-5.pdf, id=326, 572.1375pt x 388.45125pt>
 File: figure/allFig-5.pdf Graphic file (type pdf)
 <use figure/allFig-5.pdf>
-Package pdftex.def Info: figure/allFig-5.pdf  used on input line 756.
+Package pdftex.def Info: figure/allFig-5.pdf  used on input line 781.
 (pdftex.def)             Requested size: 234.87471pt x 159.46756pt.
-<figure/allFig-6.pdf, id=328, 555.07375pt x 388.45125pt>
+<figure/allFig-6.pdf, id=327, 555.07375pt x 388.45125pt>
 File: figure/allFig-6.pdf Graphic file (type pdf)
 <use figure/allFig-6.pdf>
-Package pdftex.def Info: figure/allFig-6.pdf  used on input line 756.
+Package pdftex.def Info: figure/allFig-6.pdf  used on input line 781.
 (pdftex.def)             Requested size: 234.87413pt x 164.36942pt.
 
-Overfull \hbox (2.21661pt too wide) in paragraph at lines 756--757
+Overfull \hbox (2.21661pt too wide) in paragraph at lines 781--782
 [][] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 756--757
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 781--782
 [] []
  []
 
 
-Overfull \hbox (2.21603pt too wide) in paragraph at lines 756--757
+Overfull \hbox (2.21603pt too wide) in paragraph at lines 781--782
 [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 756--757
+Underfull \hbox (badness 10000) in paragraph at lines 781--782
 
  []
 
@@ -809,87 +834,89 @@ Underfull \hbox (badness 10000) in paragraph at lines 756--757
 <figure/day-fortnight-1.pdf, id=385, 562.1pt x 351.3125pt>
 File: figure/day-fortnight-1.pdf Graphic file (type pdf)
 <use figure/day-fortnight-1.pdf>
-Package pdftex.def Info: figure/day-fortnight-1.pdf  used on input line 788.
+Package pdftex.def Info: figure/day-fortnight-1.pdf  used on input line 813.
 (pdftex.def)             Requested size: 469.75067pt x 293.59415pt.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 797.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 822.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [19] [20 <./figure/day-fortnight-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 837.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 861.
 [21]
-<figure/bothcust-1.pdf, id=416, 568.1225pt x 351.3125pt>
+<figure/bothcust-1.pdf, id=417, 568.1225pt x 351.3125pt>
 File: figure/bothcust-1.pdf Graphic file (type pdf)
 <use figure/bothcust-1.pdf>
-Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 902.
+Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 926.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/bothcust-2.pdf, id=417, 568.1225pt x 351.3125pt>
+<figure/bothcust-2.pdf, id=418, 568.1225pt x 351.3125pt>
 File: figure/bothcust-2.pdf Graphic file (type pdf)
 <use figure/bothcust-2.pdf>
-Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 902.
+Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 926.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/wknd-wday50-1.pdf, id=420, 568.1225pt x 346.29375pt>
+<figure/wknd-wday50-1.pdf, id=421, 568.1225pt x 346.29375pt>
 File: figure/wknd-wday50-1.pdf Graphic file (type pdf)
 <use figure/wknd-wday50-1.pdf>
-Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 924.
+Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 948.
 (pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
-<figure/my-hd-1.pdf, id=421, 568.1225pt x 333.245pt>
+<figure/my-hd-1.pdf, id=422, 568.1225pt x 333.245pt>
 File: figure/my-hd-1.pdf Graphic file (type pdf)
 <use figure/my-hd-1.pdf>
-Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 933.
+Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 957.
 (pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
 [22] [23 <./figure/bothcust-1.pdf> <./figure/bothcust-2.pdf>] [24 <./figure/wkn
 d-wday50-1.pdf>] [25 <./figure/my-hd-1.pdf>]
 <figure/seas-over-inning-1.pdf, id=476, 566.115pt x 346.29375pt>
 File: figure/seas-over-inning-1.pdf Graphic file (type pdf)
 <use figure/seas-over-inning-1.pdf>
-Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 972.
+Package pdftex.def Info: figure/seas-over-inning-1.pdf  used on input line 996.
 
 (pdftex.def)             Requested size: 469.76303pt x 287.35504pt.
 <figure/cricex-1.pdf, id=478, 566.115pt x 328.22626pt>
 File: figure/cricex-1.pdf Graphic file (type pdf)
 <use figure/cricex-1.pdf>
-Package pdftex.def Info: figure/cricex-1.pdf  used on input line 983.
+Package pdftex.def Info: figure/cricex-1.pdf  used on input line 1007.
 (pdftex.def)             Requested size: 469.76303pt x 272.36261pt.
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 100
-5.
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 102
+8.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [26] [27 <./figure/seas-over-inning-1.pdf> <./figure/cricex-1.pdf>]
 <figure/field-1.pdf, id=507, 568.1225pt x 331.2375pt>
 File: figure/field-1.pdf Graphic file (type pdf)
 <use figure/field-1.pdf>
-Package pdftex.def Info: figure/field-1.pdf  used on input line 1009.
+Package pdftex.def Info: figure/field-1.pdf  used on input line 1032.
 (pdftex.def)             Requested size: 469.7731pt x 273.89597pt.
 <figure/exdot-1.pdf, id=509, 568.1225pt x 328.22626pt>
 File: figure/exdot-1.pdf Graphic file (type pdf)
 <use figure/exdot-1.pdf>
-Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1022.
+Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1045.
 (pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
 [28 <./figure/field-1.pdf>] [29 <./figure/exdot-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1100.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1122.
 [30]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1100.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1122.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1100.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1100.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1122.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1122.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7186D4FF3EA6F80C8ED13F6A5A54FE4F;4207.
+(rerunfilecheck)             Checksum: 7E9C72DA4AB28F44EE3D363A7E2FB729;4187.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1100.
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 13489 strings out of 492616
- 198141 string characters out of 6129482
- 314304 words of memory out of 5000000
- 16896 multiletter control sequences out of 15000+600000
- 57228 words of font info for 131 fonts, out of 8000000 for 9000
+ 13547 strings out of 492616
+ 199257 string characters out of 6129482
+ 315008 words of memory out of 5000000
+ 16941 multiletter control sequences out of 15000+600000
+ 61535 words of font info for 132 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,16n,38p,1826b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 35i,16n,38p,1826b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
 /texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2019/
 texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2019/texmf-dist/fon
@@ -913,10 +940,10 @@ ic/lm/lmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy
 live/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/
 texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2
 019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (30 pages, 1400431 bytes).
+Output written on main.pdf (30 pages, 1328881 bytes).
 PDF statistics:
- 676 PDF objects out of 1000 (max. 8388607)
- 561 compressed objects within 6 object streams
- 154 named destinations out of 1000 (max. 500000)
- 10538 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 677 PDF objects out of 1000 (max. 8388607)
+ 562 compressed objects within 6 object streams
+ 156 named destinations out of 1000 (max. 500000)
+ 12586 words of extra memory for PDF output out of 14400 (max. 10000000)
 
