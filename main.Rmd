@@ -678,7 +678,7 @@ C_{tun, katun}(z) =  L(\lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20)
 <!-- C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod P(m_1, m_2)) -->
 <!-- \end{equation} -->
 
-The representation of single order-up quasi-circular granularities using multiple order-up quasi-circular granularities is not discussed in this paper.
+The representation of single order-up quasi-circular granularities using multiple order-up quasi-circular granularities is not discussed in this paper and is left for future work.
 
 
 <!-- as they promote the exploratory analysis through visualization. -->
@@ -1607,7 +1607,12 @@ cricket_tsibble_bow %>%
 
 # Discussion {#sec:discussion}
 
-Exploratory data analysis is iterative, finding and summarizing patterns and then probing more deeply.
+Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by choosing a list of harmonies that need to be plotted together given a hierarchy or calendar structure and recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
+
+The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
+R package `gravitas`. A missing piece of the gravitas package is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first.  A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accomodate for aperiodic cyclic granularities.
+
+
 Some guidelines and best practices to explore without wandering aimlessly can save 
 
 # Acknowledgements {-}
