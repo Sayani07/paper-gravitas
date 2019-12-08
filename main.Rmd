@@ -557,7 +557,7 @@ Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun 
 ## Single-to-multiple {#sec:single-to-multiple}
 
 
-### All circular single order-up granularities
+### All circular single order-up granularities {#sec:all-circular}
 
 Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of each circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can however be chosen arbitrarily, depending on the context.
 
@@ -573,59 +573,55 @@ C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1)) \
 \end{split}
 \end{equation}
 
-*Examplle*
-Let us use the equation \ref{eq:eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic and regular.
+*Example:*Let us use the equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar..
 
 \begin{equation} \label{eq8}
 \begin{split}
-C(uinal, baktun) & = C(uinal, tun) + kuinal, tun)C(tun,katun) + C(uinal, katun)C(katun, baktun) \\
-              & = \lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20 \\
+C_{uinal, baktun}(z) & = L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C_{uinal, katun}C_{katun, baktun}(z)) \\
+              & = L(\lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
 \end{split}
 \end{equation}
 
 
-### Circular or aperiodic single order-up granularities
+### Circular or quasi-circular single order-up granularities
 
-
-## multiple-to-single {#sec:multiple-to-single}
-
-
-For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
-
-\begin{equation} \label{eq9}
-C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod k(m_1, m_2))
-\end{equation}
-
-
-**Example:** Considering the same example of Mayan Calendar,  it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq:eq5}
-
-\begin{equation} \label{eq10}
-\begin{split}
-C(tun, katun) =  \lfloor C(uinal, baktun)(z)/18\rfloor \mod 20 \\
-\end{split}
-\end{equation}
-
-In \autoref{sec:singlefrommultiple} and \autoref{sec:multiplefromsingle}, we assume that all single order granularities are circular.What happens when we have a mix of circular and aperiodic granularities.
-
-Let us turn to Gregorian calendar for addressing this case. Suppose we have a hierarchy table using some linear granularties from Gregorian calendar. Since months consists of unequal number of days, any temporal unit which is higher in order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and aperiodic single-order-up granularities. The single-order-up granularity day_month is aperiodic. Any single-order-up granularities which are formed by units below days are periodic. Similarly, all single-order-up granularities which are formed using units whose orders are higher than months are also periodic.
+Let us revisit Gregorian calendar for addressing this case. Suppose we have a hierarchy table using some linear granularties from Gregorian calendar. Since months consists of unequal number of days, any linear granularity unit with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. The single-order-up granularity day_month is quasi-circular. Any single-order-up granularities which are formed by linear granularities below days are circular. Similarly, all single-order-up granularities which are formed using linear granularities with orders higher than months are also circular.
 
 
 <!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. -->
 
-|  G	        |C/A               |k
-|------------	|------------------|------------|
-|  minute     |minute-of-hour    |  60        |
-|  hour    	  |hour-of-day       |  24  	    |
-|  day      	|day-of-month      | "aperiodic"|
-|  month    	|month-of-year     |  12        |
-|  year   	  | 1                |	1         |
+|  G	        |C                 |P
+|------------	|------------------|----------------|
+|  minute     |minute-of-hour    |  60            |
+|  hour    	  |hour-of-day       |  24  	        |
+|  day      	|day-of-month      |"quasi-circular"|
+|  month    	|month-of-year     |  12            |
+|  year   	  | 1                |	1             |
 
 There can be three scenarios for obtaining multiple-order-granularities here:
-- granularities relating two linear granularities whose orders are less than day
-- granularities relating two linear granularities whose orders are more than month
-- granularities relating two linear granularities with order at most day and another with order at least month
+- cyclic granularities relating two linear granularities whose orders are less than day  
+- cyclic granularities relating two linear granularities whose orders are more than month  
+- granularities relating two linear granularities with order at most day and another with order at least month  
 
-The single order-up granularites resulting from the first two cases are periodic and has been handled in \autoref{sec:singlefrommultiple} and \autoref{sec:multiplefromsingle}. The calendar categorization resulting from the last case are aperiodic. Examples might include day of the quarter or hour of the month. Let us consider the computation of $A_{hour, month}$ given single order-up granularities $A_{hour, day} = 12$, $A_{day, month} = 20$ and $C_{month, year} = 9$.
+The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:singlefrommultiple} and \autoref{sec:all-circular}. The calendar categorization resulting from the last case are quasi-circular. Examples might include day of the quarter or hour of the month. Let us consider the computation of $A_{hour, month}$ given single order-up granularities $A_{hour, day} = 12$, $A_{day, month} = 20$ and $C_{month, year} = 9$.
+
+
+\begin{equation} \label{eq:hour-month}
+\begin{split}
+C_{hour, month}(z) & = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))
+\end{split}
+\end{equation}
+
+\begin{equation} \label{eq:day-year}
+\begin{split}
+C_{day, year}(z) & = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}-1}(\vert T_{w} \vert))
+\end{split}
+\end{equation}
+
+where, $T_w$ are the sets of indices of linear granularity day such that $month(w) = \bigcup_{z \in T_w}day(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+
+
+
 
 \begin{equation} \label{eq11}
 \begin{split}
@@ -640,6 +636,28 @@ where, $month(w) = \bigcup_{z \in T_w}day(z)$
 Clearly, the computation of multiple order-up granularities become more involved with aperiodic mappings of linear granularities in the calendar structure. With one aperiodic granularity, we can write the following:
 
 A_{P, Q)} & = (A{AG_Q} - 1)*k(P_AG) + A_{P, AG} {TO REVISE: many aperiodic granularties not to be included}
+
+
+## multiple-to-single {#sec:multiple-to-single}
+
+
+For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
+
+\begin{equation} \label{eq9}
+C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod k(m_1, m_2))
+\end{equation}
+
+
+**Example:** Considering the same example of Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq:eq5}
+
+\begin{equation} \label{eq10}
+\begin{split}
+C_{tun, katun}(z) =  L(\lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20) 
+\end{split}
+\end{equation}
+
+In \autoref{sec:singlefrommultiple} and \autoref{sec:multiplefromsingle}, we assume that all single order granularities are circular. What happens when we have a mix of circular and aperiodic granularities.
+
 
 
 <!-- as they promote the exploratory analysis through visualization. -->
@@ -1568,6 +1586,8 @@ cricket_tsibble_bow %>%
 
 # Discussion {#sec:discussion}
 
+Exploratory data analysis is iterative, finding and summarizing patterns and then probing more deeply.
+Some guidelines and best practices to explore without wandering aimlessly can save 
 
 # Acknowledgements {-}
 
