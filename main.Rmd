@@ -68,19 +68,19 @@ knitr::opts_knit$set(root.dir = here::here())
 
 <!-- problem of analyzing data with such finer scales and classical ways to deal with it -->
 
-Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales like monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption is collected every half an hour, while energy supply is collected every minute and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities[@aigner2011visualization].
+Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales like monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption is collected every half an hour, while energy supply is collected every minute and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities [@aigner2011visualization].
 It is important to be able to navigate through all of these temporal granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to iteratively explore all possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming. 
 
 
 <!-- # existing ways and challenges -->
 
-Calendar-based graphics[@wang2018calendar] are useful in visualizing patterns in the weekly and monthly structure well and are capable of checking the weekends or special days.  Any sub-daily resolution temporal data can also be displayed using this type of faceting [@Wickham2009-pk] with days of the week, month of the year and another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week, month-of-year ways of deconstructing time. There can be several classes of time deconstructions, viz. based on the arrangement (linear vs. cyclic) or hierarchical order of the calendar. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. One of the first attempts of characterizing these granularities occur in [@Bettini1998-ed]. The definitions and rules defined are inadequate to reflect periodicities in time. Hence, there is a need to define cyclic time granularities in a different approach, which can be useful in visualizing periodic behavior. Cyclic time granularities can be circular or aperiodic depending on if mappings between granularities are regular or irregular. Examples of circular can be hour of the day, day of the week and that of aperiodic granularities can be day of the month or public holidays. Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities like second of the minute or multiple-order-up granularities like second of the hour. lubridate [@G_Grolemund2011-vm] creates easy access and manipulation of common date-time objects. But most accessor functions are limited to single-order-up granularities.
+Calendar-based graphics [@wang2018calendar] are useful in visualizing patterns in the weekly and monthly structure well and are capable of checking the weekends or special days. Any sub-daily resolution temporal data can also be displayed using this type of faceting [@Wickham2009-pk] with days of the week, month of the year and another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week, month-of-year ways of deconstructing time. There can be several classes of time deconstructions, viz. based on the arrangement (linear vs. cyclic) or hierarchical order of the calendar. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. One of the first attempts of characterizing these granularities occur in @Bettini1998-ed. The definitions and rules defined are inadequate to reflect periodicities in time. Hence, there is a need to define cyclic time granularities in a different approach, which can be useful in visualizing periodic behavior. Cyclic time granularities can be circular, quasi-circular or aperiodic. Examples of circular can be hour of the day, day of the week, that of quasi-circular can be day of the month and examples of aperiodic granularities can be public or school holidays. Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities like second of the minute or multiple-order-up granularities like second of the hour. lubridate [@G_Grolemund2011-vm] creates easy access and manipulation of common date-time objects. But most accessor functions are limited to single-order-up granularities.
 
 
 
 <!--motivation --> 
    
-The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates [@2012-la],  of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
+The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates (see @2012-la) of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
 
 <!-- at finer or coarser scales can be benefited from the approach of Exploratory Data Analysis (EDA). EDA calls for utilizing visualization and transformation to explore data systematically. It is a process of generating hypothesis, testing them and consequently refining them through investigations. --> 
 
@@ -94,20 +94,19 @@ The motivation for this work comes from the desire to provide methods to better 
 <!-- challenges and how you are dealing wih it --> 
 This work provides tools for systematically exploring bivariate granularities within the tidy workflow through the following:
 
-
 <!-- Pairs of granularities are categorized as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
 
   * Formal characterization of cyclic granularities
   
-  * Facilitate manipulation of single and multiple order-up time granularities 
+  * Facilitate manipulation of single and multiple order-up time granularities through cyclic calendar algebra 
 
-  * Checking feasibility of creating plots or drawing inferences from any two cyclic granularities
+  * Checking feasibility of creating plots or drawing inferences for any two cyclic granularities
   
   * Recommend prospective probability distributions for exploring distributions of univariate dependent variable across pair of granularities
   
   <!-- Pairs of granularities can be categorized as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
 
-The remainder of the paper is organized as follows. Section \ref{sec:timegrandef} details the background of linear granularities in depth and introduces the characterization of circular and aperiodic time granularities. Section \ref{sec:synergy} discusses the effect in data structure due to how pairs of cyclic time granularities are related. Section \ref{sec:visualization} discusses the role of plot choices, synergy of time granularities and number of observations to construct an informative and trustworthy visualization. Section \ref{sec:application} discusses how systematic exploration can be carried out for a temporal and non-temporal case. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
+The remainder of the paper is organized as follows. \autoref{sec:lineartime} details the background of linear granularities in depth and briefly explain calendar algebra for computing different linear granularities. \autoref{sec:cyclic-gran-def} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. \autoref{sec:data-structure} discusses the data structure for exploring distribution of an observed variable across pair of cyclic time granularities. \autoref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
 # Linear time granularities {#sec:lineartime}
 
@@ -511,7 +510,7 @@ knitr::include_graphics("Figs/aperiodic-example.png")
 
 # Cyclic calendar algebra {#sec:cyclic-calendar}
 
-In \autoref{sec:}, we discussed how we can define cyclic granularities by extending the concept of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
+In \autoref{sec:cyclic-gran-def}, we discussed how we can define cyclic granularities by extending the concept of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
 
 The cyclic calendar algebra consists of two kinds of operations:  
 (1) **single-to-multiple:** representation of multiple-order-up cyclic granularities from single order-up cyclic granularities  
@@ -603,52 +602,69 @@ There can be three scenarios for obtaining multiple-order-granularities here:
 - cyclic granularities relating two linear granularities whose orders are more than month  
 - granularities relating two linear granularities with order at most day and another with order at least month  
 
-The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:singlefrommultiple} and \autoref{sec:all-circular}. The calendar categorization resulting from the last case are quasi-circular. Examples might include day of the quarter or hour of the month. Let us consider the computation of $A_{hour, month}$ given single order-up granularities $A_{hour, day} = 12$, $A_{day, month} = 20$ and $C_{month, year} = 9$.
+The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. Let us consider the computation of $C_{hour, month}(z)$ for $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$.
 
 
 \begin{equation} \label{eq:hour-month}
 \begin{split}
-C_{hour, month}(z) & = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))
+C_{hour, month}(z) & = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))\\
+& = L(12 + 24*20)\\
 \end{split}
 \end{equation}
 
 \begin{equation} \label{eq:day-year}
 \begin{split}
-C_{day, year}(z) & = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}-1}(\vert T_{w} \vert))
+C_{day, year}(z) & = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert))\\
 \end{split}
 \end{equation}
 
 where, $T_w$ are the sets of indices of linear granularity day such that $month(w) = \bigcup_{z \in T_w}day(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
 
+Clearly, the computation of multiple order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$. To keep it simple, we include only the case where there is just one single order-up quasi-circular granularity in the hierarchy table and any multiple order-up quasi-circular granularity need to be expressed with single order-up circular granularities and a quasi-circular granularity, that is not necessarily single order-up.
 
-
-\begin{equation} \label{eq11}
+\begin{equation} \label{eq:multifromsingle-quasi}
 \begin{split}
-A_{(hour, month)} & = (\sum_{w=0}^{9 - 1}(\vert T(w)\vert) +  20)/24 + 12 \\
-                  & = (\sum_{w=0}^{C_{month, year} - 1}(\vert T(w)\vert) +  A_{day, month})*k(hour_day) + A_{hour, day} \\
-                  & = (A{day_year} - 1)*k(hour_day) + A_{hour, day} \\
+C_{G_l,G_m}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z)-1)) \\ 
+& = L(\sum_{i=0}^{m' - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z) - 1)) + P(l, m')(C_{G_{m'},G_{m}}(z)-1)\\
 \end{split}
 \end{equation}
-where, $month(w) = \bigcup_{z \in T_w}day(z)$
+
+where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping.
 
 
-Clearly, the computation of multiple order-up granularities become more involved with aperiodic mappings of linear granularities in the calendar structure. With one aperiodic granularity, we can write the following:
-
-A_{P, Q)} & = (A{AG_Q} - 1)*k(P_AG) + A_{P, AG} {TO REVISE: many aperiodic granularties not to be included}
+<!-- The aperiodic granularity $C_{day, quarter}(z))$ in \autoref{eq:hour-month} can be broken further. -->
 
 
-## multiple-to-single {#sec:multiple-to-single}
 
+<!-- \begin{equation} \label{eq11} -->
+<!-- \begin{split} -->
+<!-- A_{(hour, month)} & = (\sum_{w=0}^{9 - 1}(\vert T(w)\vert) +  20)/24 + 12 \\ -->
+<!--                   & = (\sum_{w=0}^{C_{month, year} - 1}(\vert T(w)\vert) +  A_{day, month})*k(hour_day) + A_{hour, day} \\ -->
+<!--                   & = (A{day_year} - 1)*k(hour_day) + A_{hour, day} \\ -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+<!-- where, $month(w) = \bigcup_{z \in T_w}day(z)$ -->
+
+
+
+<!--  With one aperiodic granularity, we can write the following:  -->
+<!-- A_{P, Q)} & = (A{AG_Q} - 1)*k(P_AG) + A_{P, AG} {TO REVISE: many aperiodic granularties not to be included} -->
+
+
+## Multiple-to-single {#sec:multiple-to-single}
+
+
+### Muliple order-up circular granularities {#sec:all-circular-multiple}
 
 For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
 
-\begin{equation} \label{eq9}
+\begin{equation} \label{eq:all-circular-multiple}
 C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod k(m_1, m_2))
 \end{equation}
 
 
-**Example:** Considering the same example of Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq:eq5}
+**Example:** Considering the same example of Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun  given the multiple-order-up granularity uinal-baktun using equation \ref{eq:all-circular-multiple}
 
 \begin{equation} \label{eq10}
 \begin{split}
@@ -656,8 +672,13 @@ C_{tun, katun}(z) =  L(\lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20)
 \end{split}
 \end{equation}
 
-In \autoref{sec:singlefrommultiple} and \autoref{sec:multiplefromsingle}, we assume that all single order granularities are circular. What happens when we have a mix of circular and aperiodic granularities.
+### Muliple order-up quasi-circular granularities {#sec:quasi-circular-multiple}
 
+<!-- \begin{equation} \label{eq:quasi-circular-multiple} -->
+<!-- C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod P(m_1, m_2)) -->
+<!-- \end{equation} -->
+
+The representation of single order-up quasi-circular granularities using multiple order-up quasi-circular granularities is not discussed in this paper.
 
 
 <!-- as they promote the exploratory analysis through visualization. -->
@@ -705,7 +726,7 @@ In \autoref{sec:singlefrommultiple} and \autoref{sec:multiplefromsingle}, we ass
 
 <!--   b) There should not be any level of the factor plotted across x-axis which doesn't have values for all levels of factors plotted across facets. -->
 
-# Data structure
+# Data structure{#sec:data-structure}
 
 <!-- How volumes of continuously collected data can be visualized to ease further decision making?  -->
 
@@ -1590,6 +1611,8 @@ Exploratory data analysis is iterative, finding and summarizing patterns and the
 Some guidelines and best practices to explore without wandering aimlessly can save 
 
 # Acknowledgements {-}
+
+The authors would like to thank Prof. Antony Unwin for his immense inpu
 
 
 # Bibliography
