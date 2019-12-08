@@ -109,7 +109,7 @@ This work provides tools for systematically exploring bivariate granularities wi
 
 The remainder of the paper is organized as follows. Section \ref{sec:timegrandef} details the background of linear granularities in depth and introduces the characterization of circular and aperiodic time granularities. Section \ref{sec:synergy} discusses the effect in data structure due to how pairs of cyclic time granularities are related. Section \ref{sec:visualization} discusses the role of plot choices, synergy of time granularities and number of observations to construct an informative and trustworthy visualization. Section \ref{sec:application} discusses how systematic exploration can be carried out for a temporal and non-temporal case. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
-# Linear Time granularities {#sec:lineartime}
+# Linear time granularities {#sec:lineartime}
 
 <!-- general calendar categorization -->
 <!-- Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data. Classes of time abstractions may be based on arrangement or hierarchical order of time, discussed in further details in \autoref{sec:arrangement} and \autoref{sec:order}. -->
@@ -271,7 +271,7 @@ where, second(1) would start a minute and likewise.
 
 For more variations of grouping operations and granule oriented operations, the readers are recommended to see [@Ning2002-tf].s
 
-# Cyclic Time granularities {#sec:cyclic-gran-def}
+# Cyclic time granularities {#sec:cyclic-gran-def}
 
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
@@ -513,10 +513,18 @@ knitr::include_graphics("Figs/aperiodic-example.png")
 
 In \autoref{sec:}, we discussed how we can define cyclic granularities by extending the concept of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
 
-The cyclic calendar algebra consists of two kinds of operations: one that requires computing multiple order-up from single order-up cyclic granularities and the other that require the reverse. The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We refer to granularities which are nested within multiple levels as **multiple-order-up** granularities and those concerning a single level as **single-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
+The cyclic calendar algebra consists of two kinds of operations:  
+(1) **single-to-multiple:** representation of multiple-order-up cyclic granularities from single order-up cyclic granularities  
+(2) **multiple-to-single:** representation of single-order-up cyclic granularities from multiple order-up cyclic granularities  
+
+The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
 
-**Notation:  Hierarchy table** Let $H_n: (G, C, P)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $P(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the cyclic granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$.  **Order** of a linear granularity can be comprehended as the level of graininess associated with a linear granularity. For example, if we consider two linear granularities $G$ and $H$, such that $G$ is finer than or groups into $H$, then $H$ is of higher order than $G$. In any hierarchy table, linear granularities are arranged from lowest to highest order of linear granularities. Let us look at some examples of single and multiple order-up granularities. 
+**Hierarchy table** Let $H_n: (G, C, P)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $P(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the cyclic granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$.  
+
+**Order** of a linear granularity can be comprehended as the level of graininess associated with a linear granularity. For example, if we consider two linear granularities $G$ and $H$, such that $G$ is finer than or groups into $H$, then $H$ is of higher order than $G$. In any hierarchy table, linear granularities are arranged from lowest to highest order of linear granularities.  
+
+We refer to granularities which are nested within multiple levels of the hierarchy table as multiple-order-up granularities and those concerning a single level as single-order-up granularities.
 
 
 <!-- Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities and the other granularities are subsequently more "coarse" than the earlier one. -->
@@ -524,7 +532,7 @@ The cyclic calendar algebra consists of two kinds of operations: one that requir
 <!-- If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided. -->
 
 <!-- some discussions on primary units of calendar -->
-**Example:** So far we have used the Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows [@Reingold2001-kf]: 
+**Example:** So far we have used example of cyclic granularities from Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars [@Reingold2001-kf]. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows:   
 
  - 1 kin = 1 day
  - 1 uinal = 20 kin
@@ -546,21 +554,26 @@ Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun 
 
 
 
-## Multiple-order from single-order {#sec:multiplefromsingle}
+## Single-to-multiple {#sec:single-to-multiple}
+
+
+### All circular single order-up granularities
+
+Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of each circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can however be chosen arbitrarily, depending on the context.
 
 
 \begin{equation} \label{eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1) \\  
-  & =   C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z) - 1) - 1] \\
-  & =  C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}} - 1)\\
-  & =  C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z) - 1)\\
+C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1)) \\  
+  & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z) - 1) - 1]) \\
+  & =  L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}} - 1))\\
+  & =  L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z) - 1))\\
   &\vdots\\
-  & = \sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z) - 1)\\
+  & = L(\sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z) - 1))\\
 \end{split}
 \end{equation}
 
-
+*Examplle*
 Let us use the equation \ref{eq:eq3} to compute the multiple-order-up granularity uinal_katun for Mayan calendar, which is periodic and regular.
 
 \begin{equation} \label{eq8}
@@ -571,8 +584,10 @@ C(uinal, baktun) & = C(uinal, tun) + kuinal, tun)C(tun,katun) + C(uinal, katun)C
 \end{equation}
 
 
+### Circular or aperiodic single order-up granularities
 
-## Single-order from multiple-order {#sec:singlefrommultiple}
+
+## multiple-to-single {#sec:multiple-to-single}
 
 
 For a hierarchy table $H_n: (G, C, k)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
