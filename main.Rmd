@@ -293,7 +293,7 @@ Cyclic time granularities which accommodate periodicities can be constructed by 
 \begin{definition}\label{def:circular}
 A circular granularity $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
 
-\begin{equation} \label{eq:eq5}
+\begin{equation} \label{eq:circular-gran}
 \begin{split}
 C_{B, G}(z) & = {L}(z\mod P(B, G)) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 \end{split}
@@ -380,7 +380,7 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 
 
 
-**Example**: Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box. Two linear granularities $G' = Alter^{2}_{(1,-1)}(BG, Group_3(B))$ and $H' = Alter^{2}_{(1,-2)}(BG, Group_7(B))$ are considered. This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different. $Q_{B, G'}$ and $Q_{B, H'}$ are repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$ or $H'$. For $G'$, $T_0 = \{0,1\}$ and $T_1 = \{2, 3, 4\}$. For $H'$, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$, then we will have \autoref{eq:eq4} and  \autoref{eq:eq5}.
+**Example**: Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box. Two linear granularities $G' = Alter^{2}_{(1,-1)}(BG, Group_3(B))$ and $H' = Alter^{2}_{(1,-2)}(BG, Group_7(B))$ are considered. This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different. $Q_{B, G'}$ and $Q_{B, H'}$ are repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$ or $H'$. For $G'$, $T_0 = \{0,1\}$ and $T_1 = \{2, 3, 4\}$. For $H'$, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$, then we will have \autoref{eq:eq4} and  \autoref{eq:circular-gran}.
 
 \begin{equation} \label{eq:eq4}
 \begin{split}
@@ -564,7 +564,7 @@ Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun 
 Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of each circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can however be chosen arbitrarily, depending on the context.
 
 
-\begin{equation} \label{eq7}
+\begin{equation} \label{eq:eq7}
 \begin{split}
 C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1)) \\  
   & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z) - 1) - 1]) \\
@@ -1610,14 +1610,14 @@ cricket_tsibble_bow %>%
 
 # Discussion {#sec:discussion}
 
-Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and therby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
+Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and thereby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
 
 The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
-R package `gravitas`. A missing piece of the gravitas package is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first.  A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accomodate for aperiodic cyclic granularities.
+R package `gravitas`. A missing piece of the gravitas package is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first.  A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
 
 # Acknowledgements {-}
 
-The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages. This manuscipt was created with knitr [@knitr] and R Markdown [@rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all required materials required to reproduce this article.
+The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs for improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/) This article was created with knitr [@knitr] and R Markdown [@rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all required materials required to reproduce this article.
 
 
 # Bibliography
