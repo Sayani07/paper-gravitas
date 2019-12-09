@@ -517,7 +517,7 @@ knitr::include_graphics("Figs/aperiodic-example.png")
 
 In \autoref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the framework of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
 
-The cyclic calendar algebra consists of two kinds of operations:  
+The cyclic calendar algebra consists of broadly two kinds of operations:  
 (1) **single-to-multiple:** representation of multiple-order-up cyclic granularities from single order-up cyclic granularities  
 (2) **multiple-to-single:** representation of single-order-up cyclic granularities from multiple order-up cyclic granularities  
 
@@ -568,16 +568,16 @@ Circular single-order-up granularities can be used recursively to obtain multipl
 
 \begin{equation} \label{eq:eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z)-1)) \\  
-  & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z) - 1) - 1]) \\
-  & =  L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}} - 1))\\
-  & =  L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z) - 1))\\
+C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z))) \\  
+  & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
+  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
+  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
   &\vdots\\
-  & = L(\sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z) - 1))\\
+  & = L(\sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z)))\\
 \end{split}
 \end{equation}
 
-*Example:*Let us use the equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar..
+*Example:* Let us use the equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar.
 
 \begin{equation} \label{eq8}
 \begin{split}
@@ -589,7 +589,7 @@ C_{uinal, baktun}(z) & = L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C
 
 ### Circular or quasi-circular single order-up granularities
 
-Let us revisit Gregorian calendar for addressing this case. Suppose we have a hierarchy table using some linear granularties from Gregorian calendar. Since months consists of unequal number of days, any linear granularity unit with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. The single-order-up granularity day_month is quasi-circular. Any single-order-up granularities which are formed by linear granularities below days are circular. Similarly, all single-order-up granularities which are formed using linear granularities with orders higher than months are also circular.
+Let us revisit Gregorian calendar for addressing this case. Suppose we have a hierarchy table using some linear granularties from Gregorian calendar. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. The single-order-up granularity day-of-month is quasi-circular. Any single-order-up granularities which are formed by linear granularities below days are circular. Similarly, all single-order-up granularities which are formed using linear granularities with orders higher than months are also circular.
 
 
 <!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. -->
@@ -598,7 +598,7 @@ Let us revisit Gregorian calendar for addressing this case. Suppose we have a hi
 |------------	|------------------|----------------|
 |  minute     |minute-of-hour    |  60            |
 |  hour    	  |hour-of-day       |  24  	        |
-|  day      	|day-of-month      |"quasi-circular"|
+|  day      	|day-of-month      |quasi-circular  |
 |  month    	|month-of-year     |  12            |
 |  year   	  | 1                |	1             |
 
@@ -623,7 +623,7 @@ C_{day, year}(z) & = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\ver
 \end{split}
 \end{equation}
 
-where, $T_w$ are the sets of indices of linear granularity day such that $month(w) = \bigcup_{z \in T_w}day(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
 
 Clearly, the computation of multiple order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$. To keep it simple, we include only the case where there is just one single order-up quasi-circular granularity in the hierarchy table and any multiple order-up quasi-circular granularity need to be expressed with single order-up circular granularities and a quasi-circular granularity, that is not necessarily single order-up.
@@ -631,7 +631,7 @@ Clearly, the computation of multiple order-up granularities become more involved
 \begin{equation} \label{eq:multifromsingle-quasi}
 \begin{split}
 C_{G_l,G_m}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z)-1)) \\ 
-& = L(\sum_{i=0}^{m' - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z) - 1)) + P(l, m')(C_{G_{m'},G_{m}}(z)-1)\\
+& = L(\sum_{i=0}^{m' - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z))) + P(l, m')(C_{G_{m'},G_{m}}(z))\\
 \end{split}
 \end{equation}
 
@@ -824,12 +824,12 @@ Thirdly, empty combinations can be a result of how granularities are constructed
 
 An example when there will be no empty combinations could be where $C_1$ maps index set to day-of-week and $C_2$ maps index set to month-of-year. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of day-of-week and month-of-year. All of these are non-empty because every day-of-week can occur in every month.
 
-A pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are referrednto as **harmonies**. 
+A pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are referred as **harmonies**. 
 
 
 ## Estimation of the measured variable
 
-Estimating the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. The measured variable in the considered data structure can be dicrete or continuous. The probability distribution of them could be studied by estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. The entire distribution could be estimated using different density estimation methods or summarized using empirical quantiles. Severalforms of  non-parametric density estimators and quantile estimators exist in the literature, the most commonly used form ( @Silverman1986-cl,  @Jones1992-pj) are as follows:
+Estimating the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. The measured variable in the considered data structure can be dicrete or continuous. The probability distribution of them could be studied by estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. The entire distribution could be estimated using different density estimation methods or summarized using empirical quantiles. Several forms of  non-parametric density estimators and quantile estimators exist in the literature, the most commonly used form ( @Silverman1986-cl,  @Jones1992-pj) are as follows:
 
 <!-- The most commonly used density estimation method is the kernel density estimator.  -->
 
