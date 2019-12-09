@@ -1434,8 +1434,8 @@ library(gravitas)
 library(tibble)
 hierarchy_model <- tibble::tibble(
   G = c("over", "inning", "match"),
-  k = c(20, 2, 1))
-
+  C = c("over_inning", "inning_match", 1),
+  P = c(20, 2, 1))
 knitr::kable(hierarchy_model, format = "markdown")
 
 ```
@@ -1604,6 +1604,8 @@ cricket_tsibble_bow %>%
 
 ```
 
+
+In Q2 and Q3s we considered dots balls per over or catches per over as aperiodic cyclic granularities, which not necessarily appear in the hierarchy table since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity.
 
 
 # Discussion {#sec:discussion}
