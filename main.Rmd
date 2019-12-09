@@ -951,7 +951,7 @@ While we accomplish that, we need to bear in mind that any customized species of
 
 <!-- Common benefits and challenges of empirical and density based visualization -->
 
-There are several ways to plot statistical distributions. The displayed probabilities in these plots are either computed using kernel density estimation methods or quantile estimation methods. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter, where some specific probabilities representing typical and extreme behavior are on focus.  Density plots which uses a kernel density estimate to show the probability density function of the variable can show the entire distribution, unlike discretizing the distribution and showing only parts of it. The methods are subject to the same sample size restrictions and challenges that apply to any density estimation. In practice, the densities are estimated reasonably with at least 30 observations. Even with sample sizes of several hundred, however, choosing too large a value for bandwidth can cause the estimate to oversmooth the data.
+There are several ways to plot statistical distributions. The entire distribution can be displayed or some quantiles can be visualized with probabilities in these plots either computed using kernel density estimation methods or quantile estimation methods. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter, where some specific probabilities representing typical and extreme behavior are on focus.  Density plots can show the entire distribution, unlike discretizing and showing only parts of it. The methods are subject to the same sample size restrictions and challenges that apply to any density estimation. In practice, the densities are estimated reasonably with at least 30 observations. Even with sample sizes of several hundred, however, choosing too large a value for bandwidth can cause the estimate to oversmooth the data.
 
 We will discuss few conventional and recent ways to plot distributions using both of these methods.
 
@@ -959,29 +959,29 @@ We will discuss few conventional and recent ways to plot distributions using bot
 
 ### Quantile based methods
 
-Most commonly used techniques to display a distribution of data include the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary, displaying less detail than a histogram. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of these variations are helpful to get an idea of the distribution at a glance. Moreover, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
+Most commonly used techniques to display a distribution of data include the box-and-whisker plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. The box plot is a compact distributional summary. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of these variations are helpful to get an idea of the distribution at a glance. However, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
 
 <!-- Description and lit review of letter-value plots -->
-The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown and leading to overload of information in one plot.
+The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown, leading to overload of information in one plot.
 
 
 <!-- Description and lit review of quantile plots -->
 
-Quantile plots visually portray the quantiles of the distribution of sample data. Much like the quartiles divide the data set equally into four equal parts, extensions include dividing the data set even further. These plots are referred to as "quantile" plots. For example, number of quantiles would be 9 for a decile plot and 99 for percentile plot. It avoids much clutter and just enable us to focus on specific probabilities, typically representing typical and extreme behaviors. A large data set is required for the extreme percentiles to be estimated with any accuracy. These plots can display any quantiles instead of quartiles in a traditional boxplot. When reviewing a boxplot, an outlier is defined as a data point that is located outside the fences (“whiskers”) of the boxplot (e.g: outside 1.5 times the interquartile range above the upper quartile and below the lower quartile). However, outliers are open to interpretation and not shown in an quantile plot.
+Quantile plots visually portray the quantiles of the distribution of sample data. These plots can display any quantiles instead of quartiles in a traditional boxplot. This gives more information than box plots and yet avoid clutter by enabling us to focus just on specific probabilities. When reviewing a boxplot, an outlier is defined as a data point that is located outside the fences (“whiskers”) of the boxplot (e.g. outside 1.5 times the interquartile range above the upper quartile and below the lower quartile). However, outliers are open to interpretation and not shown in an quantile plot.
 
 <!-- Description and lit review of density plots -->
 
 <!-- The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density.  -->
 
-### Kernel density estimation methods
+### Kernel density based methods
 
 Traditional ways to visualize densities include violin plots [@Hintze1998-zi]. The shape of the violin represents the density estimate of the variable. The more data points in a specific range, the larger the violin is for that range. Adding two density plots gives a symmetric plot which makes it easier to see the magnitude of the density and compare across categories, enabling easier detection of clusters or bumps within a distribution.
 
 
-The summary plot [@Potter2010-qc, 2010] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot (both color and width are mapped to estimated density), and an overlay of a reference distribution. This suffers from the same problem as boxplots or violin plot, as it is combination of those two.
+The summary plot [@Potter2010-qc] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot and an overlay of a reference distribution. This suffers from the same problem as boxplots or violin plot, as it is combination of those two.
 
 <!-- Description and lit review of density plots -->
- A Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap. A clear advantage over boxplots is that these plots allow us to see multimodality in the distribution. However, these plots can be obscuring when there is overlap of distribution for two or more categories of the y-axis. Also, if there are lot of categories, it is difficult to compare the height of the densities across categories.
+ A Ridge line plot (sometimes called Joy plot) shows the distribution of a numeric value for several groups. Distribution can be represented using histograms or density plots, all aligned to the same horizontal scale and presented with a slight overlap. Like other density based displays, these plots allow us to see multimodality in the distribution. However, these plots can be obscuring when there is overlap of distribution for two or more categories of the y-axis. Also, with lot of categories, it is difficult to compare the height of the densities across categories.
 
 <!-- Description and lit review of HDR plots -->
 The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality.
@@ -989,16 +989,16 @@ The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays
 Given a context, it is good to be conversant with the benefits and challenges while choosing a distribution plot. As a general rule, if we have too many categories, the quantile plots are useful for comparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
 
 
-### Effect of levels of temporal granularities
+### Effect of levels of cyclic granularities
 
-The levels of the two granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
+The levels of the two cyclic granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
 
 Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are chosen based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. Any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively.
 
 
  <!-- - If levels of both the granularities are low, then any statistical distribution plot might be chosen depending on which feature of the distribution one is interested to look at.  -->
  
-The following principles are useful while choosing distribution plots given two temporal granularities.
+The following principles are useful while choosing distribution plots given two temporal granularities:
 
 
   - If levels of both granularity plotted are low/medium, then any distribution plots might be chosen depending on which feature of the distribution needs focus.
@@ -1007,9 +1007,7 @@ The following principles are useful while choosing distribution plots given two 
  
   - If level of the granularity plotted across x-axis is more than or equal to high, quantile plots are preferred. 
   
-  - If levels of any granularity plotted are more than medium, empirical based methods of distribution visualizing are preferred as they use less space by design than most density based methods.
-
-
+  - If levels of any granularity plotted are more than medium, quantile based methods of visualizing distribution is preferred as they use less space by design than most density based methods.
 
 <!-- Let us consider case by case and see which plots are better suitable in which scenarios. -->
 
@@ -1023,7 +1021,7 @@ The following principles are useful while choosing distribution plots given two 
 <!-- Faceting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
 
 
-## Effect of synergy of time granularities
+## Effect of synergy of cyclic granularities
 
 In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.
 
@@ -1032,7 +1030,7 @@ For illustration, distribution of half-hourly electricity consumption of Victori
 \autoref{fig:allFig}. \autoref{fig:allFig} (a) shows the letter value plot across days of the month faceted by months like January, March and December. \autoref{fig:allFig} (c) shows box plot  across days of the year by the 1st, 15th, 29th and 31st days of the month. \autoref{fig:allFig} (d) showing violin plot across days of the month faceted by week of the month. \autoref{fig:allFig} (e), variations across week of the year conditional on week of the month can be observed through a ridge plot and \autoref{fig:allFig} (f) shows decile plots across  day of the year and month of the year.
 
 
-Clearly, in \autoref{fig:allFig}, we observe that some choices of time granularities work and others do not. In \autoref{fig:allFig} (c), there will be no observations for some combinations "Day-of-Month" and "Day-of-Year". In particular, the 1st day of the month can never correspond to 2nd, 3rd or 4th day of the year. On the contrary, for \autoref{fig:allFig} (a), we will not have any combinations with zero combinations because every "Day-of-Week" can occur in any "Month-of-Year". Thus the graphs that don't work are those where many of the combination sets are empty. In other words, if there are levels of time granularities plotted across x-axis which are not spanned by levels of the time granularities plotted across facets or vice versa, we will have empty sets leading to potential ineffective graphs. We hypothesize that the synergy of these  granularities are in play while deciding if the resulting plot would be a good candidate for exploratory analysis.
+Clearly, in \autoref{fig:allFig}, we observe that some choices of cyclic time granularities work and others do not. In \autoref{fig:allFig} (c), there will be no observations for some combinations day-of-month and day-of-year. In particular, the 1st day of the month can never correspond to 2nd, 3rd or 4th day of the year. On the contrary, for \autoref{fig:allFig} (a), we will not have any combinations with zero combinations because every day-of-week can occur in any month-of-year. Thus the graphs that don't work are those where many of the combination sets are empty. In other words, if there are levels of cyclic granularities plotted across x-axis which are not spanned by levels of cyclic granularities plotted across facets or vice versa, we will have empty sets leading to potential ineffective graphs. We hypothesize that the synergy of these cyclic granularities are thus playing a role while deciding if the resulting plot would be a good candidate for exploratory analysis.
 
 We redefine harmony and clashes as follows: harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. As a result, we should avoid plotting clashes as they hinder the exploratory process by having missing combinations of time granularities in each panel.
 
@@ -1138,13 +1136,12 @@ VIC %>%
 
 ## Effect of number of observations
 
-
 Even with harmonies, visualizing probability distributions can be misleading either due to rarely occuring categories or unevenly distributed events.  
 
 
 ### Rarely occuring events
 
-Suppose we have $T$ observations, and two cyclic granularities -  $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no structurally empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For a decile plot, even $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
+Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For a decile plot, even $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
 
 
 <!-- The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations. -->
