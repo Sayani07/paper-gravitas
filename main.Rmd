@@ -386,7 +386,7 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 
 \begin{equation} \label{eq:eq4}
 \begin{split}
-Q_{B,G'}(8) & = L(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , 8 \in T_{3} \\
+Q_{B,G'}(8) & = L(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) ,\quad since \quad 8 \in T_{3} \\
   & = L(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = L(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = L(8 - \vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert - \vert T_{2 \mod 2}\vert) \\
@@ -398,7 +398,7 @@ Q_{B,G'}(8) & = L(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) , 8 \in T_{3} \\
 
 \begin{equation} \label{eq:eq5}
 \begin{split}
-Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,  10 \in T_{1}  \\
+Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \quad  10 \in T_{1}  \\
   & = L(10 - \sum_{w=0}^{0}\vert T_{w\mod 2}\vert) \\
   & = L(10 - \vert T_{0 \mod 2}\vert) \\
   & = L(10 - \vert T_{0}\vert) \\
@@ -414,7 +414,7 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,  10 \in T_{1}
 - there exist $R', P' \epsilon Z_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$
 - number of granules of $B$ in each granule of $G'$ is not a constant
 
-Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R)^{th}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in in \autoref{def:quasicircular}.
+Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R)^{th}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
           
 
 ```{r quasi-circular-example, echo=FALSE,out.width = "100%",fig.cap="Relating quasi-circular granularities and bottom linear granularity "}
@@ -463,7 +463,7 @@ knitr::include_graphics("Figs/quasi-circular-example.png")
 
 <!-- The linear granularities G, H, AG and AH considered in the definitions of circular and aperiodic granularities are all periodic with respect to the bottom granularity. The only difference is G, H have regular mapping, whereas, G1 and G2 have irregular mapping with respect to BG.  -->
 
-It can be noted here that if a linear granularity $G'$ is quasi-periodic with respect to $B$, then \autoref{eq:quasi} can be modified as follows to account for exceptions $E = [e_{begin}, e_{end}]$ (by Definition \autoref{def:quasi}).
+It can be noted here that if a linear granularity $G'$ is quasi-periodic (Definition \autoref{def:quasi}) with respect to $B$, then \autoref{eq:quasi} can be modified as follows to account for exceptions $E = [e_{begin}, e_{end}]$ (by Definition \autoref{def:quasi}).
 
 \begin{equation}\label{eq6}
 A_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert - \sum_{u=0}^{e_k}\vert E_{u} \vert)
@@ -475,14 +475,14 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} can be infinite for aperiodic granularities. 
 
-Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ none of which can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that
+Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ (that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity). Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that
 \begin{equation*}
 M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
 and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$.
 
 \begin{definition}\label{aperiodic}
-An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
+(aperiodic cyclic granularity): An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
 
 \begin{equation}\label{eq:aperiodic}
 \begin{split}
@@ -492,7 +492,7 @@ A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \
 \end{equation}
 where, 
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$T_{i_j}$ are the sets of indices of $B$ describing $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$ and $M = \bigcup_{j=1}^{n}M_{j}$.
+$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{j=1}^{n}M_{j}$ and index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
 \end{definition}
 
 
@@ -500,7 +500,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing $M_{i}(j)$ such that $M_{i}(
 **Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and $A_{B, M}$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.
 
 
-**Discussion**: The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event. The index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
+**Discussion**: The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event. 
 
 
 
@@ -515,7 +515,7 @@ knitr::include_graphics("Figs/aperiodic-example.png")
 
 # Cyclic calendar algebra {#sec:cyclic-calendar}
 
-In \autoref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the concept of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
+In \autoref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the framework of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
 
 The cyclic calendar algebra consists of two kinds of operations:  
 (1) **single-to-multiple:** representation of multiple-order-up cyclic granularities from single order-up cyclic granularities  
