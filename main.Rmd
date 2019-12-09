@@ -749,13 +749,13 @@ A recent tidy data structure to support exploration and modeling of temporal dat
 <!-- These are based on conditioning the values taken on by one or more of the variables in a data set. This means creating same plots using data subsets corresponding to each level of the conditioned variable. This is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data. -->
 
 
-```{r data-structure, fig.cap = "The data structure for exploring periodicities in data. Two cyclic granularities serve as fixed and conditioned variable and the measurement variable is the observation across combinations of these cyclic time granularities.", fig.pos="htb"}
+```{r data-structure, fig.cap = "The data structure for exploring periodicities in data by including two cyclic granularities in the tsibble structure", fig.pos="htb"}
 include_graphics("Figs/data-structure-v1.png")
 ```
 
 ## Synergy of the cyclic granularities {#sec:synergy}
 
-The way cyclic granularities relate become important when we consider the data structure <$A_i$, $B_j(s)$, $v(s)$> for exploration. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
+The way cyclic granularities relate become important when we consider the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ for exploration. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
 
 <!-- The cyclic time granularities which are essentially categorizations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes. -->
 
@@ -809,20 +809,20 @@ The way cyclic granularities relate become important when we consider the data s
 <!-- Now, many situations can lead to some of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty. -->
 
 Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
-These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps row numbers to Day-of-Month and $C_2$ maps row numbers to Week-of-Month. Here $C_1$ can take 31 values while $C_2$ can take 5 values. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of WOM and DOM. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
+These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps index set to day-of-month and $C_2$ maps index set to week-of-month. Here $C_1$ can have 31 levels/categories while $C_2$ can have 5 categories. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of day-of-month and week-of-month. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
 
 <!--  In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. -->
 
-Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be DOW and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can take 7 values while $C_2$ can take 2 values. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of DOW and WD/NWD. While potentially all of these can be non-empty (it is possible to have a public holiday on any DOW), in practice many of these combinations will probably have very few observations. For example, there are few if any public holidays on Wednesdays or Thursdays in any given year in Melbourne. 
+Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be day-of-week and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can have 7 levels while $C_2$ can have 2 levels. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of day-of-week and WorkingDay/NonWorkingDay. While potentially all of these can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these combinations will probably have very few observations. For example, there are few if any public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
 
 <!-- However, this is different from the first example because these are not structurally empty. Also, the graphic may still be useful if we want to look at whether the interaction of $C_1$ and $C_2$ affects the distribution we are plotting. -->
 
-Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ maps row numbers to "Business days", which are days from Monday to Friday except holidays and $C_2$ is Day-of-Month. Then the weekends in Days-of-Month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from the structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
+Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ maps index set to Business-days, which are days from Monday to Friday except holidays and $C_2$ is day-of-month. Then the days denoting weekends in a month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
 
 
-An example when there will be no empty combinations could be where $C_1$ maps row numbers to Day-of-Week and $C_2$ maps row numbers to Month-of-Year. Here $C_1$ can take 7 values while $C_2$ can take 12 values. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of DOW and MOY. All of these are non-empty because every DOW can occur in every month.
+An example when there will be no empty combinations could be where $C_1$ maps index set to day-of-week and $C_2$ maps index set to month-of-year. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of day-of-week and month-of-year. All of these are non-empty because every day-of-week can occur in every month.
 
-Therefore, pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are called **harmonies**. 
+A pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are referrednto as **harmonies**. 
 
 
 ## Estimation of the measured variable
