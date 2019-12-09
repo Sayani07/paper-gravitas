@@ -109,7 +109,7 @@ This work provides tools for systematically exploring bivariate granularities wi
   
   <!-- Pairs of granularities can be categorized as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
 
-The remainder of the paper is organized as follows: \ref{sec:linear-time} details the background of linear granularities in depth and briefly explain calendar algebra for computing different linear granularities. \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. \ref{sec:data-structure} discusses the data structure for exploring distribution of the associated time series across pair of cyclic time granularities. \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
+The remainder of the paper is organized as follows: Section \ref{sec:linear-time} details the background of linear granularities in depth and briefly explain calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring distribution of the associated time series across pair of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
 # Linear time granularities {#sec:linear-time}
 
@@ -124,7 +124,7 @@ Often we partition time into months, weeks or days to relate it to data. Such di
 
 <!-- The arrangement of the time domain can result in deconstructing time in linear, circular or aperiodic (nearly circular) ways.  -->
 
- There has been several attempts to provide the framework for formally characterizing time-granularities. One of the first attempts occur in [@Bettini1998-ed] with the help of the following definitions: 
+ There has been several attempts to provide the framework for formally characterizing time-granularities. One of the first attempts occur in @Bettini1998-ed with the help of the following definitions: 
 
 
 <!-- <!-- Representation with tsibble -->
@@ -141,17 +141,17 @@ Often we partition time into months, weeks or days to relate it to data. Such di
 <!-- ### Linear {#sec:linear-gran-def} -->
 
 
-\newtheorem{definition}{Definition}[section]
+\newtheorem{definition}{Definition}
 
 \begin{definition}\label{def:definition}
-A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
+(time domain): A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
 \end{definition}
 
 A time domain can be **discrete** (if there is unique predecessor and successor for every element except for the first and last one in the time domain), or it can be **dense** (if it is an infinite set). A time domain is assumed to be discrete for the purpose of our discussion.
 
 
 \begin{definition}\label{def:linear}
-A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
+(linear granularity): A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
 
   (1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
 than all elements of $G(j)$, and  
@@ -159,11 +159,11 @@ than all elements of $G(j)$, and
 \end{definition}
 
 \begin{definition}\label{def:granule}
-Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
+(granule) Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
 \end{definition}
 
-**Discussion:** The first condition in \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
-\autoref{fig:linear-time} shows the implication of this condition. It shows the linear granularities hours, days, weeks, months and years, each of which are unidirectional in nature and arranged from past to future. If we consider the chronon [@aigner2011visualization] as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on. Each granule of the linear granularities shown are represented through a box.
+**Discussion:** The first condition in Definition \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
+\autoref{fig:linear-time} shows the implication of this condition. It shows the linear granularities hours, days, weeks, months and years, each of which are unidirectional in nature and arranged from past to future. If we consider the chronon (see @aigner2011visualization) as hourly, the time domain with T hours will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on. Each granule of the linear granularities shown are represented through a box.
 
 
 ```{r linear-time,echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear granularities"}
@@ -174,13 +174,13 @@ knitr::include_graphics("Figs/linear-arr.png")
 [@Bettini1998-ed] talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
 
 \begin{definition}\label{def:finerthan}
-A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
+(finer than): A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
 for each index i, there exists an index j such that $G(i) \subset H(j)$.
 \end{definition}.
 
 
 \begin{definition}\label{def:groupsinto}
-A linear granularity G groups into a linear granularity H, denoted
+(groups into): A linear granularity G groups into a linear granularity H, denoted
 $G \trianglelefteq H,$
 if for each index j there exists a (possibly infinite) subset S of the integers such
 that
@@ -189,68 +189,59 @@ H(j) = \bigcup_{i \in S}G(i)
 \end{equation}
 \end{definition}
 
-**Discussion:** $G \trianglelefteq H$ if each granule H(j) is the union of some granules of G.  $G \preceq H$ if every granule in G is a subset of some granule in H. In \autoref{fig:groups-finer}, both $Days \trianglelefteq Weeks$ and $Days \preceq Weeks$ hold true. However, Weekends groups into Holidays but Weekends are not finer than Holidays. On the other hand, Weekends are finer than weeks but do not group into weeks. Consider another example where $Days \trianglelefteq Months$. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions, . 
+**Discussion:** $G \trianglelefteq H$ if each granule H(j) is the union of some granules of G.  $G \preceq H$ if every granule in G is a subset of some granule in H. In \autoref{fig:groups-finer}, both $day \trianglelefteq week$ and $day \preceq week$ hold true. However, weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays. Consider another example where $day \trianglelefteq month$. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions, . 
 
-```{r groups-finer,echo=FALSE,out.width = "100%",fig.cap="Illustrations of groups into and finer than relationships. Weekends groups into Holidays but Weekends are not finer than Holidays. On the other hand, Weekends are finer than weeks but do not group into weeks. Day groups into and are finer than weeks"}
+```{r groups-finer,echo=FALSE,out.width = "100%",fig.cap="Illustrations of groups into and finer than relationships. Weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays"}
 knitr::include_graphics("Figs/groupsandfiner.png")
 ```
 
 
 \begin{definition}\label{def:periodical}
-A granularity H is periodical with respect to a granularity G if
-(1) $G \trianglelefteq H,$, and
+(groups periodically): A granularity H is periodical with respect to a granularity G if
+(1) $G \trianglelefteq H,$ and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
 $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
 
-A granularity H which is periodical with respect to G is specified by:
-(i) the R sets of indexes of G, ${S_0,...,S_(R-1)}$ describing the granules of H within one period;
+
+**Discussion:** A granularity H which is periodical with respect to G is specified by:
+(i) the R sets of indexes of G, ${S_0,...,S_{R-1}}$ describing the granules of H within one period;
 (ii) the value of P; 
 (iii) the indexes of first and last granules in H, if their value is not infinite. 
 Then, if ${S_0,...,S_{R-1}}$ are the sets of indexes of G describing
-$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H(j) is given by: $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. 
-
-**Discussion:** 
-
-
-Granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
+$H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary granule H(j) is given by: $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
 \begin{definition}\label{def:quasi}
-A granularity H is quasi-periodical with respect to a granularity G if
+(groups quasi-periodically): A granularity H is quasi-periodical with respect to a granularity G if
 (1) $$G \trianglelefteq H,$$, and
 (2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
 integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
 \end{definition}
 
-**Discussion:**
- 
-Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by R and P.
+**Discussion:** Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
 
-\begin{definition}\label{def:BG}
-Bottom granularity - Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity G in the set is a bottom granularity with respect to g-rel, if G g-rel H for each granularity H in the set. 
+\begin{definition}\label{def:B}
+(bottom granularity): Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set. 
 \end{definition}
 
-**Discussion:** Given the set of all granularities defined over the time domain (Z; <), and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
+**Discussion:** Given the set of all granularities defined over the time domain $(Z; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. 
 
 <!-- Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations. -->
 
 ## Computation through calendar algebra
 
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and Calendar algebra operations are designed to generate
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and calendar algebra operations are designed to generate
 new granularities from the bottom one or recursively, from those already generated.
-Thus, the relationship between the operand(s) and the resulting granularities are encoded
-in the operations.
-
 The calendar algebra consists of two kinds of operations: grouping-oriented and
-granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. Example can be to consider a calendar with only two linear granularities minute and hour and hour is generated by grouping every 60 minutes. The granule-oriented operations do not change the granules of a granularity, but rather make choices of which granules should remain in the new granularity. For example, one can choose to look at the granularity "Monday" and hence select only Mondays while looking at the linear granularity "day".
+granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. Example can be to consider a calendar with only two linear granularities "minute" and "hour" and "hour" is generated by grouping every $60$ "minutes". The granule-oriented operations do not change the granules of a granularity, but rather make choices of which granules should remain in the new granularity. For example, one can choose to look at the granularity "Monday" and hence select only "Monday" from linear granularity "day".
 
 Some relevant grouping oriented operations are discussed, which will be used in Section \ref{sec:cyclic-gran} to define circular and aperiodic granularities.
 
-- **The grouping operation** : Let G be a full-integer labeled granularity, and m a positive integer. The grouping operation $Group_m(G)$ generates a new granularity G, by partitioning the granules of G into m-granule groups and making each group a granule of the resulting granularity.
-More precisely, $G = Group_m(G)$ is the full-integer labeled granularity such that for
-each integer $i$, $G(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G(j)$.  
+- **The grouping operation** : Let $G1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation $Group_m(G)$ generates a new granularity $G2$, by partitioning the granules of $G$ into m-granule groups and making each group a granule of the resulting granularity.
+More precisely, $G2 = Group_m(G1)$ is the full-integer labeled granularity such that for
+each integer $i$, $G2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G1(j)$.  
 
 **Examples** : 
 
@@ -265,13 +256,18 @@ where, second(1) would start a minute and likewise.
 
 **Example** :
 
-  - pseudomonth = 
-  $Alter^{12}_{11,-1}(day, Alter^{12}_{9,-1}(day, Alter^{12}_{6,-1}(day,   Alter^{12}_{4,-1)}(day, Alter^{12}_{(2,-3)}(day, Group_{31}(day))))))$,
-                  where the granularity pseudomonth is generated by grouping 31 days, 
-                  and then shrink April (4), June (6), September (9) and November (11)
-                  by 1 day, and shrink February (2) by 3 days. [@Ning2002-tf]
+begin{equation}
+pseudomonth & = Alter^{12}_{11,-1}(day, \\
+  Alter^{12}_{9,-1}(day, \\
+  Alter^{12}_{6,-1}(day,  \\
+  Alter^{12}_{4,-1)}(day, \\
+  Alter^{12}_{(2,-3)}(day, \\
+  Group_{31}(day))))))
+end{equation}
 
-For more variations of grouping operations and granule oriented operations, the readers are recommended to see [@Ning2002-tf].s
+where the granularity pseudomonth is generated by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days. [@Ning2002-tf]
+
+For more variations of grouping operations and granule oriented operations, the readers are recommended to see @Ning2002-tf.
 
 # Cyclic time granularities {#sec:cyclic-gran}
 
