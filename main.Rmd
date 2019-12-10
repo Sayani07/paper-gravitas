@@ -1415,9 +1415,11 @@ This case study shows systematic exploration of energy behavior starting with tw
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. With eight teams, each team plays each other twice in a home-and-away round-robin format in the league phase. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. 
+The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season can consist of several matches. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016), each of which has 6 balls in an over and 2 innings in a match.
+s
 
-The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data).  The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).
+
+<!-- the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. -->
 
 
 <!-- ```{r hierarchy, echo=FALSE} -->
@@ -1426,16 +1428,15 @@ The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https
 <!-- knitr::kable(hierarchy_model, caption = " A hierarchy table for T20 cricket") -->
 <!-- ``` -->
 
-
-Although there is no conventional time granularity in cricket, we can still represent the data set `cricket` through a `tsibble`, where each over, which represents an ordering from past to future, can form the index of the tsibble. The hierarchy table would look like the following:
+Although there is no conventional time granularity in cricket, we can still represent the data set `cricket` through a `tsibble`, with each over representing an ordering from past to future, can form the index of the tsibble. The hierarchy table would look like the following:
 
 ```{r hierarchy2}
 library(gravitas)
 library(tibble)
 hierarchy_model <- tibble::tibble(
-  G = c("over", "inning", "match"),
-  C = c("over_inning", "inning_match", 1),
-  P = c(20, 2, 1))
+  G = c("over", "inning", "match", "season"),
+  C = c("over-of-inning", "inning-of-match", "match-of-season",1),
+  P = c(20, 2, "aperiodic", 1))
 knitr::kable(hierarchy_model, format = "markdown")
 
 ```
@@ -1455,12 +1456,11 @@ There are many interesting questions that can possibly be answered with such a d
 
 <!-- We will look at the ball by ball data for all batting teams. Since we want a periodic world, where each over consists of 6 balls and each match consists of two innings, we shall filter out the matches or overs for which that is not true. Also, we look at runs per over as that would have more variability compared to runs per ball and it be easier to observe the strategies of the winning team through that.  -->
 
-First, we look at the distribution of runs per over across over of the innings and seasons in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions:
+First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperidic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions:
 
 Q1: How run rates vary depending on if a team bats first or second?
 
-
-Mumbai Indians(MI) and Chennai Super kings(CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final 4 from 2010 to 2015. It would be interesting to take their example in order to dive deeper into the first question.
+Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into the first question.
 
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
 
@@ -1522,9 +1522,9 @@ cricket_tsibble %>%
 ```
 
 
-Q2: Is run rate set to reduce in subsequent over if fielding/bowling is good in the previous over? Between fielding and bowling which penalizes runs in the subsequent over more?
+Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over? 
 
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include catches and run out as a measure of fielding. Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs. Let us see if this fact is true. Figure \ref{fig:field} shows the difference between run rate between two subsequent overs are negative when good fielding leads to one dismissal in an over, implying good fielding in one over has indeed an impact on runs scored in the subsequent overs.
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs. We can verify this fact through Figure \ref{fig:field} which shows that the difference in runs between two subsequent overs are negative when good fielding leads to one dismissal in an over, implying good fielding in one over has indeed an impact on runs scored in the subsequent overs.
 
 ```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and dismissals by catch and catch and bowled. This shows good fielding in one over leads to lower runs in the subsequent overs for at least 50 percentiles of times."}
 
@@ -1559,7 +1559,7 @@ cricket_tsibble_fld %>%
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
 
 
-Q3: Is runs set to reduce in the next over for dot balls in this over?
+Q3: Are runs set to reduce in the next over for dot balls in the previous over?
 
 A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? From figure \ref{fig:exdot} shows the quantile plot of runs across overs for none, one or two dot balls per over in the facets. Each of the quantiles decrease across facets. With two dot balls per over, at least 50% of the times, run rates decrease in the subsequent over as observed through the negative values for different quantiles.
 
@@ -1605,7 +1605,7 @@ cricket_tsibble_bow %>%
 ```
 
 
-In Q2 and Q3s we considered dots balls per over or catches per over as aperiodic cyclic granularities, which not necessarily appear in the hierarchy table since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity.
+In Q2 and Q3, we considered dots balls per over or catches per over as aperiodic cyclic granularities. They do not appear in the hierarchy table since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity.
 
 
 # Discussion {#sec:discussion}
