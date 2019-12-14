@@ -937,7 +937,17 @@ where $\kappa = \int k^2(y)dy$.
 
 <!-- The grammar of graphics introduced a framework to incorporate underlying features for statistical graphics to construct them by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, allows us to produce graphics using the same structured thinking that is used to design analysis. Briefly, any graphics are made up of **Layers**, **Facet**,**Scale** and a  **coordinate system**. **Layers** are made up of **data**, **mapping**, **statistical transformation**, **geometric objects** and **position adjustments**. -->
 
-Creating a visualisation requires a number of nuanced judgements. We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009-pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization.
+
+The three key components of every visualization is: data, aesthetic mappings between variables in the data and visual attributes, and at least one layer which describes how to render each observation. Layers are usually created with a geom function. Considering the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, visualizations can be defined by:
+- Data: <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$
+- Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position.
+- Layer: any geom that summarizes distribution
+
+To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or facetting. Facetting creates tables of graphics by displaying the same graph for each subset.
+- Facet:  $B_j(s)$
+
+
+We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009-pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization.
 
 While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
 
