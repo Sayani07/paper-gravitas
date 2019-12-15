@@ -942,33 +942,36 @@ where $\kappa = \int k^2(y)dy$.
 
 
 The grammar of graphics introduced a framework to incorporate underlying features for statistical graphics to construct them by relating data space to the graphic space [@Wilkinson1999-nk]. 
-The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, suggests that graphics are made up of distinct layers of grammatical elements. Briefly, the grammatical elements of any plot are as follows:
+The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, suggests that graphics are made up of distinct layers of grammatical elements. There are seven grammatical elements in total, out of which data, aesthetics and geometries are essential elements. Data are observations made on a number of variables, typically thought of as a sample from a population distribution. Aesthetic mapping describes how variables are mapped to elements of the plot, such as horizontal axis or color. Geometries determine the physical representation of the data in the plot. The remaining grammatical elements of a graphic namely facets, statistics, coordinates and themes are optional and contains detail of the plot. Facets dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different.
 
-- **Layers**:  made up of data, mapping, statistical transformation, geometric objects and position adjustments
 
-  - **Data**: observations made on a number of variables, typically thought of as a sample from a population distribution
+<!-- Briefly, the grammatical elements of any plot are as follows: -->
 
-  - **Mappings** describing how variables are mapped to elements of the plot, such as horizontal axis or color
+<!-- - **Layers**:  made up of data, mapping, statistical transformation, geometric objects and position adjustments -->
 
-  - **Statistical transformation** can summarize the data in many useful ways. The geometric object determines the physical representation of the data in the graph.
+<!--   - **Data**: observations made on a number of variables, typically thought of as a sample from a population distribution -->
 
-  - **Geometric objects** control the type of plot that is created and are classified by their dimensions, for example points (0 dimension), line (1 dimension), polygons(2 dimensions) and so on.
+<!--   - **Mappings** describing how variables are mapped to elements of the plot, such as horizontal axis or color -->
 
-  - **Position adjustment** of elements on the plot are needed for dense data, otherwise data points might obscure one another.
- 
-- **Facet** dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different.
+<!--   - **Statistical transformation** can summarize the data in many useful ways. The geometric object determines the physical representation of the data in the graph. -->
 
-- **Scale** controls how data is mapped to aesthetic attributes. For every aesthetic property employed in a layer, we need one scale. 
+<!--   - **Geometric objects** control the type of plot that is created and are classified by their dimensions, for example points (0 dimension), line (1 dimension), polygons(2 dimensions) and so on. -->
 
-- **A coordinate system** maps the position of objects onto the plane of the plot, and controls how the axes and grid lines are drawn. 
+<!--   - **Position adjustment** of elements on the plot are needed for dense data, otherwise data points might obscure one another. -->
 
-Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ serves as the basis of visualizing the distribution of the measured variable, the following components of the layered grammar can be specified:
+<!-- - **Facet** dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different. -->
 
-- Data: <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$
+<!-- - **Scale** controls how data is mapped to aesthetic attributes. For every aesthetic property employed in a layer, we need one scale.  -->
+
+<!-- - **A coordinate system** maps the position of objects onto the plane of the plot, and controls how the axes and grid lines are drawn.  -->
+
+Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
+
+- Data: <$A_i$, $B_j$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ 
 - Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position
-- Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution
-- Geometric objects: examples can include boxplot, letter value, violin, ridge, highest density region plots
-- Facet:  $B_j(s)$
+- Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution of $v(s)$
+- Geometric objects: Any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
+- Facet:  $B_j$
 
 
 
@@ -1009,12 +1012,12 @@ Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2,
 <!-- Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot. -->
 
 
-## Choice of plots
+## Choice of statistical transformations and geometric objects
 
 
 <!-- Common benefits and challenges of empirical and density based visualization -->
 
-Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice is display of density. In Section \ref{sec:measured-variable}, it is dicussed that these densities could be estimated using Kernel density estimates or some descriptive statistics. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter and help us to focus on some specific properties of the data. Kernel density estimates provide more detailed information about the distribution but depend on smoothing parameters and hence can vary for the same data set. In practice, the densities are estimated reasonably with at least 30 observations. However, even with large sample size, choosing too large a value for bandwidth can cause the estimate to oversmooth the data. The summaries based on descriptive statistics remain free of any tuning parameters or Kernels, which is sometimes more desirable for exploration.
+Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is the one that can display densities. In Section \ref{sec:measured-variable}, it is dicussed that these densities could be estimated using Kernel density estimates or some descriptive statistics. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter and help us to focus on some specific properties of the data. Kernel density estimates provide more detailed information about the distribution but depend on smoothing parameters and hence can vary for the same data set. In practice, the densities are estimated reasonably with at least 30 observations. However, even with large sample size, choosing too large a value for bandwidth can cause the estimate to oversmooth the data. The summaries based on descriptive statistics remain free of any tuning parameters or Kernels, which is sometimes more desirable for exploration.
 
 
 
@@ -1059,7 +1062,7 @@ The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays
 Each type of density display has different parameters, that need to be estimated given the data. Each is equipped with some benefits and challenges. For example, if we have too many categories in the variables mapped to facet or x-axis, the quantile plots might be useful for comparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
 
 
-### Effect of levels of cyclic granularities
+## Levels within facet and aesthetic variables
 
 The levels of the two cyclic granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
 
@@ -1091,7 +1094,7 @@ The following principles are useful while choosing distribution plots given two 
 <!-- Faceting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
 
 
-## Effect of synergy of cyclic granularities
+## Interaction of facet and aesthetic variables
 
 In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.
 
@@ -1204,7 +1207,7 @@ VIC %>%
 ```
 
 
-## Effect of number of observations
+## Statistical transformation computation
 
 Even with harmonies, visualizing probability distributions can be misleading either due to rarely occuring categories or unevenly distributed events.  
 
