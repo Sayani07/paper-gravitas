@@ -1056,7 +1056,7 @@ The summary plot [@Potter2010-qc] combines a minimal box plot with glyphs repres
 <!-- Description and lit review of HDR plots -->
 The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays a probability density region that contains points of relatively highest density. The probabilities for which the summarization is required can be chosen based on the requirement. These regions do not need to be contiguous and help identify multi-modality.
 
-Each type of density display has different parameters. These are quantities that need to be estimated given the data. Each is equipped with some benefits and challenges. For example, if we have too many categories in the variables mapped to facet or x-axis, the quantile plots might be useful for comparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
+Each type of density display has different parameters, that need to be estimated given the data. Each is equipped with some benefits and challenges. For example, if we have too many categories in the variables mapped to facet or x-axis, the quantile plots might be useful for comparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
 
 
 ### Effect of levels of cyclic granularities
