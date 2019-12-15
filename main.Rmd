@@ -1062,7 +1062,10 @@ The highest density region (HDR) box plot proposed by [@Hyndman1996-ft] displays
 Each type of density display has different parameters, that need to be estimated given the data. Each is equipped with some benefits and challenges. For example, if we have too many categories in the variables mapped to facet or x-axis, the quantile plots might be useful for comparing patterns, whereas, other more involved methods of plotting are useful for studying anomalies, outlier or multimodal behavior.
 
 
-## Levels within facet and aesthetic variables
+## Facet and aesthetic variables
+
+
+### Levels
 
 The levels of the two cyclic granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
 
@@ -1094,7 +1097,7 @@ The following principles are useful while choosing distribution plots given two 
 <!-- Faceting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
 
 
-## Interaction of facet and aesthetic variables
+### Interaction
 
 In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.
 
@@ -1207,14 +1210,20 @@ VIC %>%
 ```
 
 
-## Statistical transformation computation
+### Interchangeability
 
-Even with harmonies, visualizing probability distributions can be misleading either due to rarely occuring categories or unevenly distributed events.  
+When we consider the layers of grammars considered for our data structure <$A_i$, $B_j$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, mapping $A_i$ mapped to $x$ position and $B_j$ to facets
+suggests that levels of $A_i$'s which are placed in close proximity are to be compared against each other and each level of $B_j$ represent a group. When $A_i$ mapped to facets and $B_j$ is mapped to $x$ axis, distributions are compared across levels of $B_j$ and levels if $A_i$ start acting as a group. However, the variables used in the layers are the same, the difference in mapping emphasizes different behavior of the variables.
+
+
+## Number of observations and statistical transformations
+
+Even with harmonies, visualizing distributions can be misleading if statistical transformations are performed on rarely occuring categories or unevenly distributed events.
 
 
 ### Rarely occuring events
 
-Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on what type of visualization we are producing. For a decile plot, even $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
+Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
 
 
 <!-- The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations. -->
@@ -1222,7 +1231,7 @@ Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ ca
 
 ### Unevenly distributed events
 
-Even when there are no rarely occuring events, number of observations might vary hugely within or across each panel. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the visualizations that use density or quantile estimates should be used with caution as sample size would directly affect both the variance and consequently the confidence interval of the estimators. \autoref{eq:MSE} shows that the variance of both $\hat{f(x)}$ and $\hat{q(u)}$ is a function of the sample size $n$.
+Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density or quantile estimates should be used with caution as sample size would directly affect both the variance and consequently the confidence interval of the estimators. \autoref{eq:MSE} shows that the variance of both $\hat{f(x)}$ and $\hat{q(u)}$ is a function of the sample size $n$.
 
 
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
