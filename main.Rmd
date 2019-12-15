@@ -824,7 +824,7 @@ An example when there will be no empty combinations could be where $C_1$ maps in
 A pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are referred as **harmonies**. 
 
 
-## Estimation of the measured variable
+## Summarizing properties of the distribution
 
 Estimating the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. The measured variable in the considered data structure can be dicrete or continuous. The probability distribution of them could be studied by estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. The entire distribution could be estimated using different density estimation methods or summarized using empirical quantiles. Several forms of  non-parametric density estimators and quantile estimators exist in the literature, the most commonly used form ( @Silverman1986-cl,  @Jones1992-pj) are as follows:
 
@@ -938,10 +938,7 @@ where $\kappa = \int k^2(y)dy$.
 
 
 The grammar of graphics introduced a framework to incorporate underlying features for statistical graphics to construct them by relating data space to the graphic space [@Wilkinson1999-nk]. 
-The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, suggests that graphics are made up of distinct layers of grammatical elements and meaningful plots are built around appropriate aesthetic mappings. 
-<!-- seven grammatical elements in total, out of them three are essential.  -->
-
-Briefly, the layered grammar defines the components of plot as:
+The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, suggests that graphics are made up of distinct layers of grammatical elements. Briefly, the grammatical elements of any plot are as follows:
 
 - **Layers**:  made up of data, mapping, statistical transformation, geometric objects and position adjustments
 
@@ -955,7 +952,7 @@ Briefly, the layered grammar defines the components of plot as:
 
   - **Position adjustment** of elements on the plot are needed for dense data, otherwise data points might obscure one another.
  
-- **Facet**ting is a mechanism for splitting the data into subsets, then plotting each subset in a different panel. This is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different.
+- **Facet** dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different.
 
 - **Scale** controls how data is mapped to aesthetic attributes. For every aesthetic property employed in a layer, we need one scale. 
 
@@ -966,10 +963,7 @@ Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2,
 - Data: <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$
 - Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position
 - Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution
-- Geometric objects: e.g. boxplot, letter value, violin, ridge, highest density regions
-
-After the essential layers, the next layer being used is the facet which dictates how to split up our plot.
-
+- Geometric objects: examples can include boxplot, letter value, violin, ridge, highest density region plots
 - Facet:  $B_j(s)$
 
 
@@ -1005,13 +999,13 @@ After the essential layers, the next layer being used is the facet which dictate
 
 <!-- We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009-pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
 
-Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
+Hence, the ingredients for the plots are subsets of numbers (or categorical measurements), and the choice of faceting or axis alignment for the subset strata. The basic plot choice is display of density. Different plots might be appropriate depending on which features of the density we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
 
 
 <!-- Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot. -->
 
 
-## Choice of exploratory visualization tool
+## Choice of 
 
 
 <!-- Common benefits and challenges of empirical and density based visualization -->
