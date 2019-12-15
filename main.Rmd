@@ -935,21 +935,77 @@ where $\kappa = \int k^2(y)dy$.
 
 <!-- A well designed visual representation can replace cognitive calculations with simple perpetual inferences and improve speed of comprehension and decision making. However, creating a visualisation requires a number of nuanced judgements. The challenge being given a data set, the number of visual encodings and hence the space of possible visual design is extremely huge.  -->
 
-<!-- The grammar of graphics introduced a framework to incorporate underlying features for statistical graphics to construct them by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, allows us to produce graphics using the same structured thinking that is used to design analysis. Briefly, any graphics are made up of **Layers**, **Facet**,**Scale** and a  **coordinate system**. **Layers** are made up of **data**, **mapping**, **statistical transformation**, **geometric objects** and **position adjustments**. -->
 
 
-The three key components of every visualization is: data, aesthetic mappings between variables in the data and visual attributes, and at least one layer which describes how to render each observation. Layers are usually created with a geom function. Considering the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, visualizations can be defined by:
+The grammar of graphics introduced a framework to incorporate underlying features for statistical graphics to construct them by relating data space to the graphic space [@Wilkinson1999-nk]. 
+The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modification over the former, suggests that graphics are made up of distinct layers of grammatical elements and meaningful plots are built around appropriate aesthetic mappings. 
+<!-- seven grammatical elements in total, out of them three are essential.  -->
+
+Briefly, the layered grammar defines the components of plot as:
+
+- **Layers**:  made up of data, mapping, statistical transformation, geometric objects and position adjustments
+
+  - **Data**: observations made on a number of variables, typically thought of as a sample from a population distribution
+
+  - **Mappings** describing how variables are mapped to elements of the plot, such as horizontal axis or color
+
+  - **Statistical transformation** can summarize the data in many useful ways. The geometric object determines the physical representation of the data in the graph.
+
+  - **Geometric objects** control the type of plot that is created and are classified by their dimensions, for example points (0 dimension), line (1 dimension), polygons(2 dimensions) and so on.
+
+  - **Position adjustment** of elements on the plot are needed for dense data, otherwise data points might obscure one another.
+ 
+- **Facet**ting is a mechanism for splitting the data into subsets, then plotting each subset in a different panel. This is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different.
+
+- **Scale** controls how data is mapped to aesthetic attributes. For every aesthetic property employed in a layer, we need one scale. 
+
+- **A coordinate system** maps the position of objects onto the plane of the plot, and controls how the axes and grid lines are drawn. 
+
+Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ serves as the basis of visualizing the probability distribution of the measured variable, the following components of the layered grammar can be specified:
+
 - Data: <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$
-- Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position.
-- Layer: any geom that summarizes distribution
+- Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position
+- Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution
+- Geometric objects: e.g. boxplot, letter value, violin, ridge, highest density regions
 
-To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or facetting. Facetting creates tables of graphics by displaying the same graph for each subset.
+After the essential layers, the next layer being used is the facet which dictates how to split up our plot.
+
 - Facet:  $B_j(s)$
 
 
-We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009-pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization.
 
-While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
+<!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or facetting. Facetting creates tables of graphics by displaying the same graph for each subset. -->
+
+<!-- The three essential component layers are data, aesthetic mapping and the geometric objects. -->
+<!-- Data are observations made on a number of variables, typically thought of as a sample from a population distribution. Mappings describe how variables are mapped to elements of the plot, such as horizontal axis or color -->
+
+
+
+<!-- the second layer is the aesthetic mapping, which refers to the scales on to which we want to map our data -->
+<!-- The third essential layer is the geometry which decides how the plot will look. After the essential layers, the next layer being used is the facet which dictates how to split up our plot -->
+
+
+<!-- Aesthetics refers to the scales on to which we want to map our data. we create plots by layering grammarical elements on top of one another and use aesthetic maps -->
+
+
+
+<!-- The grammar of graphics establish the building blocks for creating meaningful visualizations. It -->
+<!-- This means we have a framework that allows us to communicate in a way.  -->
+
+<!-- .  allows us to produce graphics using the same structured thinking that is used to design analysis. Briefly, any graphics are made up of **Layers**, **Facet**, **Scale** and a  **coordinate system**. **Layers** are made up of **data**, **mapping**, **statistical transformation**, **geometric objects** and **position adjustments**. -->
+
+<!-- The three key components of every visualization is: data, aesthetic mappings between variables in the data and visual attributes, and at least one layer which describes how to render each observation. Layers are usually created with a geom function. Considering the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, visualizations can be defined by: -->
+<!-- - Data: <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ -->
+<!-- - Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position. -->
+<!-- - Layer: any geom that summarizes distribution -->
+
+<!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or facetting. Facetting creates tables of graphics by displaying the same graph for each subset. -->
+<!-- - Facet:  $B_j(s)$ -->
+
+
+<!-- We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009-pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
+
+Different distribution plots might be appropriate depending on which features of the distrbution we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information.
 
 
 <!-- Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot. -->
