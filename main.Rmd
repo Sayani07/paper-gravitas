@@ -973,7 +973,7 @@ Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis
 
 - Data: <$C_1$, $C_2$, $v$>
 - Aesthetic mapping: $C_1$ mapped to $x$ position and $v$ to $y$ position
-- Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution of $v(s)$
+- Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution of $v$
 - Geometric objects: Any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
 - Facet:  $C_2$
 
@@ -1010,7 +1010,7 @@ Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis
 
 <!-- We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009-pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
 
-<!-- Hence, the ingredients for the plots are subsets of numbers (or categorical measurements), and the choice of faceting or axis alignment for the subset strata. The basic plot choice is display of density. Different plots might be appropriate depending on which features of the density we are interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information. -->
+<!-- Hence, the ingredients for the plots are subsets of numbers (or categorical measurements), and the choice of faceting or axis alignment for the subset strata. The basic plot choice is display of density. Different plots might be appropriate depending on which features of the density we arae interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information. -->
 
 
 <!-- Now, due to the hierarchical arrangement of the granularities, there are certain granularities which when plotted together do not give us the layout to do exploration, for example, structurally empty combinations (clashes) are not recommended to plot together. The harmonies when plotted together can help exploration. But still the question remains that which distribution plot should be chosen to bring out the best of exploratory data analysis. This is a function of which features of the distribution we are interested to look at, how much display space is available to us and also if the number of observations are enough for that distribution plot. -->
@@ -1216,8 +1216,8 @@ VIC %>%
 
 ### Interchangeability
 
-When we consider the layers of grammars considered for our data structure <$A_i$, $B_j$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, mapping $A_i$ mapped to $x$ position and $B_j$ to facets
-suggests that levels of $C_1$, that is $A_i$'s which are placed in close proximity are to be compared against each other and each level of $B_j$ represent a group. When $A_i$ mapped to facets and $B_j$ is mapped to $x$ axis, distributions are compared across levels of $B_j$ and levels if $A_i$ start acting as a group. However, the variables used in the layers are the same, the difference in mapping emphasizes different behavior of the variables.
+When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets
+$A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group. When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$. Although the variables used in the layers are the same, the difference in mapping leads to emphasis of different behavior of the variables.
 
 
 ## Number of observations and statistical transformations
