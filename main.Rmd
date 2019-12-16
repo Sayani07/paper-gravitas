@@ -1071,7 +1071,7 @@ Each type of density display has different parameters, that need to be estimated
 
 ### Levels
 
-The levels of the two cyclic granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
+We will discuss the effect of the levels of cyclic granularities in this section. The levels of the two cyclic granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
 
 Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are chosen based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. Any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively.
 
@@ -1103,7 +1103,7 @@ The following principles are useful while choosing distribution plots given two 
 
 ### Interaction
 
-In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.
+We will discuss the effect of the interaction of cyclic granularities in this section. In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.
 
 
 For illustration, distribution of half-hourly electricity consumption of Victoria is plotted across different time granularities in each of the panel in
@@ -1214,10 +1214,9 @@ VIC %>%
 ```
 
 
-### Interchangeability
+### Mapping
 
-When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets
-$A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group. When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$. Although the variables used in the layers are the same, the difference in mapping leads to emphasis of different behavior of the variables.
+We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets $A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group. When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$. Although the variables used in the layers are the same, the difference in mapping leads to emphasis of different behavior of the variables.
 
 
 ## Number of observations and statistical transformations
