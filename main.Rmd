@@ -732,10 +732,14 @@ The representation of single order-up quasi-circular granularities using multipl
 
 <!-- How volumes of continuously collected data can be visualized to ease further decision making?  -->
 
-Effective exploration or good visualization require good data structures. Commonly, simple sequences of time value pairs $(<t_0, v_0> \dots, <t_n, v_n>)$ are the basis of analysis and visualization. It is recognized that there is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis.  Moreover, one can use calendars based on application domain that define contextual system of granularities. Data can then be consolidated for different levels of granularity enabling statistical summaries of values along granularities. Since, we are interested in detection of unknown periodic behavior of data, it makes sense to support the detection of patterns by obtaining statistical summaries across cyclic time granularities. Any attempt to encode all or many cyclic granularities at the same time to develop insights on periodicity might fail or become clumsy. Instead, the big problem is broken down into smaller pieces by focusing on two cyclic granularities at a time.
+Effective exploration or good visualization require good data structures. Commonly, simple sequences of time value pairs $(<t_0, v_0> \dots, <t_n, v_n>)$ are the basis of analysis and visualization. It is recognized that there is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis. Moreover, one can use calendars based on application domain that define contextual system of granularities. Data can then be consolidated for different levels of granularity enabling statistical summaries of values along granularities. Since, we are interested in detection of unknown periodic behavior of data, it makes sense to support the detection of patterns by obtaining statistical summaries across cyclic time granularities. Any attempt to encode all or many cyclic granularities at the same time to develop insights on periodicity might fail or become clumsy. Instead, the big problem is broken down into smaller pieces by focusing on two cyclic granularities at a time.
 
 
-A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble], where data is structured in a semantic manner with reference to observations and variables, with the time index stated explicitly. Since all cyclic granularities can be expressed in terms of the index set, we consider the data structure in (Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is extending the columns of tsibble by including the cyclic granularities.Now suppose we want to explore the measurement variable $v$ across two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. Also, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ such sets. These sets can form the basis for exploration and analysis of the measured variable across these bivariate cyclic granularities.
+A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble], where data is structured in a semantic manner with reference to observations and variables, with the time index stated explicitly. Since all cyclic granularities can be expressed in terms of the index set, we consider the data structure in (Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is a two-dimensional array extending the columns of tsibble by including the cyclic granularities. Let us consider two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ denotes the measurement variable. Data sets of the form <$C_1$, $C_2$, $v$> can then form the basis for exploration and analysis of the measured variable across bivariate cyclic granularities.
+
+
+
+<!--  These subsets can form the basis for exploration and analysis of the measured variable across these bivariate cyclic granularities. -->
 
 
 
@@ -754,7 +758,7 @@ include_graphics("Figs/data-structure-v1.png")
 
 ## Synergy of the cyclic granularities {#sec:synergy}
 
-The way cyclic granularities relate become important when we consider the data structure <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ for exploration. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
+The way cyclic granularities relate become important when we consider the data structure in \@autoref{fig:data-structure}. While considering data sets of the form $<C_1, C_2, v>$, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ data subsets. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
 
 <!-- The cyclic time granularities which are essentially categorizations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes. -->
 
@@ -965,17 +969,17 @@ The layered grammar of graphics proposed by [@Wickham2009-pk], which is a modifi
 
 <!-- - **A coordinate system** maps the position of objects onto the plane of the plot, and controls how the axes and grid lines are drawn.  -->
 
-Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
+Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
 
-- Data: <$A_i$, $B_j$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ 
-- Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position
+- Data: <$C_1$, $C_2$, $v$>
+- Aesthetic mapping: $C_1$ mapped to $x$ position and $v$ to $y$ position
 - Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution of $v(s)$
 - Geometric objects: Any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
-- Facet:  $B_j$
+- Facet:  $C_2$
 
 
 
-<!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or facetting. Facetting creates tables of graphics by displaying the same graph for each subset. -->
+<!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or faceting. Faceting creates tables of graphics by displaying the same graph for each subset. -->
 
 <!-- The three essential component layers are data, aesthetic mapping and the geometric objects. -->
 <!-- Data are observations made on a number of variables, typically thought of as a sample from a population distribution. Mappings describe how variables are mapped to elements of the plot, such as horizontal axis or color -->
@@ -986,7 +990,7 @@ Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2,
 <!-- The third essential layer is the geometry which decides how the plot will look. After the essential layers, the next layer being used is the facet which dictates how to split up our plot -->
 
 
-<!-- Aesthetics refers to the scales on to which we want to map our data. we create plots by layering grammarical elements on top of one another and use aesthetic maps -->
+<!-- Aesthetics refers to the scales on to which we want to map our data. we create plots by layering grammatical elements on top of one another and use aesthetic maps -->
 
 
 
@@ -1000,7 +1004,7 @@ Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2,
 <!-- - Aesthetic mapping: $A_i$ mapped to $x$ position and $v(s)$ to $y$ position. -->
 <!-- - Layer: any geom that summarizes distribution -->
 
-<!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or facetting. Facetting creates tables of graphics by displaying the same graph for each subset. -->
+<!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or faceting. Faceting creates tables of graphics by displaying the same graph for each subset. -->
 <!-- - Facet:  $B_j(s)$ -->
 
 
@@ -1017,7 +1021,7 @@ Drawing from the grammar of graphics, if <$A_i$, $B_j(s)$, $v(s)$> $i \in {1, 2,
 
 <!-- Common benefits and challenges of empirical and density based visualization -->
 
-Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is the one that can display densities. In Section \ref{sec:measured-variable}, it is dicussed that these densities could be estimated using Kernel density estimates or some descriptive statistics. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter and help us to focus on some specific properties of the data. Kernel density estimates provide more detailed information about the distribution but depend on smoothing parameters and hence can vary for the same data set. In practice, the densities are estimated reasonably with at least 30 observations. However, even with large sample size, choosing too large a value for bandwidth can cause the estimate to oversmooth the data. The summaries based on descriptive statistics remain free of any tuning parameters or Kernels, which is sometimes more desirable for exploration.
+Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is the one that can display densities. In Section \ref{sec:measured-variable}, it is discussed that these densities could be estimated using Kernel density estimates or some descriptive statistics. The latter do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid much clutter and help us to focus on some specific properties of the data. Kernel density estimates provide more detailed information about the distribution but depend on smoothing parameters and hence can vary for the same data set. In practice, the densities are estimated reasonably with at least 30 observations. However, even with large sample size, choosing too large a value for bandwidth can cause the estimate to oversmooth the data. The summaries based on descriptive statistics remain free of any tuning parameters or Kernels, which is sometimes more desirable for exploration.
 
 
 
@@ -1213,7 +1217,7 @@ VIC %>%
 ### Interchangeability
 
 When we consider the layers of grammars considered for our data structure <$A_i$, $B_j$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, mapping $A_i$ mapped to $x$ position and $B_j$ to facets
-suggests that levels of $A_i$'s which are placed in close proximity are to be compared against each other and each level of $B_j$ represent a group. When $A_i$ mapped to facets and $B_j$ is mapped to $x$ axis, distributions are compared across levels of $B_j$ and levels if $A_i$ start acting as a group. However, the variables used in the layers are the same, the difference in mapping emphasizes different behavior of the variables.
+suggests that levels of $C_1$, that is $A_i$'s which are placed in close proximity are to be compared against each other and each level of $B_j$ represent a group. When $A_i$ mapped to facets and $B_j$ is mapped to $x$ axis, distributions are compared across levels of $B_j$ and levels if $A_i$ start acting as a group. However, the variables used in the layers are the same, the difference in mapping emphasizes different behavior of the variables.
 
 
 ## Number of observations and statistical transformations
