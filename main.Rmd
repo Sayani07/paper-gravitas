@@ -1245,7 +1245,54 @@ Even when there are no rarely occuring events, number of observations might vary
 
 ## Smart meter data of Australia {#sec:smartmeter}
 
-Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on half-hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors. It would be interesting to explore the energy consumption distribution for these customers and gain more insights on their energy behavior which are otherwise lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the time across different granularities together can help identify different behavioral patterns and identify the extreme and regular households amongst these 50 households. 
+<!-- # how data looks -->
+Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption in `general_supply_kwh` in every half hour from February 2012 to March 2014. \ref{fig:smart-meter} shows the data structure of the available data. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns and identify the extreme and regular households. We take a random sample of 50 households to see how we can achieve that.
+
+
+```{r smart-meter, fig.cap = "Smart meter data structure"}
+
+smart_meter <- 
+  read_rds("data/sm_cust50.rds")
+```
+
+<!-- how gravitas is used to deal with systematic exploration -->
+
+**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis.
+
+
+```{r}
+library(tsibble)
+interval(smart_meter10)
+smart_meter10 %>% search_gran()
+```
+
+
+The interval of this tsibble is 30 minutes, and hence the temporal granularities range from half-hour to year. If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
+
+
+```{r}
+smart_meter10 %>% 
+  search_gran(highest_unit = "month")
+```
+
+
+Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
+
+```{r search_gran_limit2}
+
+smart_meter10 %>% search_gran(highest_unit = "month",
+                              filter_out = c("hhour", "fortnight")
+)
+```
+
+Now that we have the list of cyclic granularities to look at, we can visualize the distribution. From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. The distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots.However, harmony/clash pairs can identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives.
+
+
+
+<!-- on half-hourly energy usage and detailed information on appliance use, climate, retail and distributor product offers, and other related factors.  -->
+
+
+
 
 <!-- typical and extreme behaviors of 50 households from that trial.  -->
 
@@ -1261,6 +1308,8 @@ Smart meters provide large quantities of measurements on energy usage for househ
 <!-- In Figure \ref{fig:day-fortnight} and \ref{fig:day-fortnight-agg} , the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. -->
 
 In Figure \ref{fig:day-fortnight}, the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information that we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. 
+
+
 
 
 <!-- # ```{r day-fortnight_agg, echo = FALSE} -->
@@ -1335,35 +1384,8 @@ smart_meter10 %>%
 <!-- Figure \autoref{fig:my-hd} shows the overlay quantile plot of energy consumption of 50 households. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. Each facet represents a month and energy consumption across each hours of the day is shown inside each facet. It can be observed that the median is very close (and hence not distinctly visible) to the lower boundaries of all the other bands implying energy consumption for these households are extremely left skewed.75% of the households has distinct higher evening peaks compared to morning peaks, especially in the winter months. The top 5% households behave very differently than even the top 10% households in terms of total energy consumption across hours of the day.  -->
 
 
-**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis. 
 
 
-```{r}
-library(tsibble)
-interval(smart_meter10)
-smart_meter10 %>% search_gran()
-```
-
-
-The interval of this tsibble is 30 minutes, and hence the temporal granularities range from half-hour to year. If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
-
-
-```{r}
-smart_meter10 %>% 
-  search_gran(highest_unit = "month")
-```
-
-
-Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
-
-```{r search_gran_limit2}
-
-smart_meter10 %>% search_gran(highest_unit = "month",
-                              filter_out = c("hhour", "fortnight")
-)
-```
-
-Now that we have the list of cyclic granularities to look at, we can visualize the distribution. From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. The distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots.However, harmony/clash pairs can identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives.
 
 
 <!-- # ```{r is_harmony, echo= TRUE} -->
@@ -1702,7 +1724,7 @@ R package `gravitas`. A missing piece of the gravitas package is to enable user-
 
 # Acknowledgements {-}
 
-The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs for improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). This article was created with knitr [@knitr] and R Markdown [@rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all required materials required to reproduce this article.
+The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). This article was created with knitr [@knitr] and R Markdown [@rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article.
 
 
 # Bibliography
