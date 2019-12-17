@@ -1246,28 +1246,28 @@ Even when there are no rarely occuring events, number of observations might vary
 ## Smart meter data of Australia {#sec:smartmeter}
 
 <!-- # how data looks -->
-Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption in `general_supply_kwh` in every half hour from February 2012 to March 2014. \ref{fig:smart-meter} shows the data structure of the available data. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns and identify the extreme and regular households. We take a random sample of 50 households to see how we can achieve that.
+Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption in `general_supply_kwh` in every half hour from February 2012 to March 2014. \ref{fig:smart-meter} shows the data structure of the available data. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns and identify the extreme and regular households. We take a random sample of 50 households to see how we can achieve that. 
 
 
 ```{r smart-meter, fig.cap = "Smart meter data structure"}
 
-smart_meter <- 
+sm <- 
   read_rds("data/sm_cust50.rds")
+
+smart_meter <- sm %>% as_tsibble()
+
+smart_meter
 ```
 
 <!-- how gravitas is used to deal with systematic exploration -->
 
-**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis.
-
+**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities range from half-hour to year. If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
 
 ```{r}
-library(tsibble)
-interval(smart_meter10)
-smart_meter10 %>% search_gran()
+library(gravitas)
+smart_meter %>% search_gran()
 ```
 
-
-The interval of this tsibble is 30 minutes, and hence the temporal granularities range from half-hour to year. If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
 
 
 ```{r}
@@ -1285,7 +1285,76 @@ smart_meter10 %>% search_gran(highest_unit = "month",
 )
 ```
 
-Now that we have the list of cyclic granularities to look at, we can visualize the distribution. From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. The distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots.However, harmony/clash pairs can identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives.
+Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using \autoref{}. From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. But the distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots. However, harmony/clash pairs can be identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives. We will look at few harmony pairs and see how the proposed workflow can be utilized. 
+
+
+Figure \ref{fig:wknd-wday50} shows the quantile plot of energy consumption of 50 households. Similar quantiles for weekend and weekdays indicate that behaviors of most of these customers do not alter between weekdays and weekends or looking at all customers together balances out the fact
+
+Figure \ref{fig:my-hd} shows that the median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. Moreover, only the pink band changes significantly in winter months (May - August). The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much. Most of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that the the level of quantiles increased too in winter months (obvious because of weather conditions), the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
+
+```{r wknd-wday50, fig.cap = "Quantile plot of energy consumption of 50 households across different hours of the day faceted by weekday and weekend. The quantiles are not different for weekdays and weekends implying either the behavior balances out among these customers or most of them do not behave differently for weekdays and weekends."}
+
+smart_meter <- 
+  read_rds("data/sm_cust50.rds")
+
+smart_meter %>% 
+  prob_plot("wknd_wday",
+                            "hour_day",
+                            response = "general_supply_kwh",
+                            plot_type = "quantile",
+            symmetric = FALSE, 
+            quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) +
+  scale_y_sqrt()
+```
+
+
+
+<!-- # ```{r wknd-wday50_df} -->
+<!-- # smart_meter10 %>%  -->
+<!-- #   prob_plot("month_year", -->
+<!-- #                             "day_fortnight", -->
+<!-- #                             response = "general_supply_kwh", -->
+<!-- #                             plot_type = "quantile", -->
+<!-- #             symmetric = TRUE,  -->
+<!-- #             quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) + -->
+<!-- #   scale_y_sqrt(breaks = c(0.1, 0.25, 0.5, 1:3)) -->
+<!-- # ``` -->
+
+
+
+```{r my-hd, fig.cap="Area quantile plots of energy consumption across hours of the day faceted by months of the year. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. The median and quartile consumption increase in winter months, but extreme behavior represented by higher bands mostly stay the same across seasons. "}
+
+library(gravitas)
+library(tsibble)
+
+library(ggplot2)
+smart_meter %>%
+  prob_plot("month_year", "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99),
+    symmetric = TRUE) +
+  ggtitle("") + scale_y_sqrt(breaks = c(0.01, 0.1, 0.5, 1:3))
+```
+
+<!-- Figure \ref{fig:dw-hd} shows that on morning peaks for Saturday and Sunday are higher and occurs in a later hour of the day compared to weekdays. This is true for both top 50% and 75% of the customers. Hence, this is indicative of the fact that at least 50% of the households in this subset has traditional work days (Mon-Fri) and weekends(Sat-Sun). All the percentiles peaks up in the morning hours and then drops in the afternoon, before again peaking up in the evening.  -->
+
+
+<!-- ```{r dw-hd} -->
+
+<!-- # Hourly usage across days of the week -->
+<!-- sm_cust50 %>% -->
+<!--   prob_plot("day_week",  -->
+<!--            "hour_day", -->
+<!--            "general_supply_kwh",  -->
+<!--            plot_type = "quantile",  -->
+<!--           quantile_prob = c(0.25, 0.5, 0.75), -->
+<!--            response = "general_supply_kwh", overlay = FALSE) + -->
+<!--   ggtitle("") -->
+
+<!-- ``` -->
+
+
 
 
 
@@ -1449,73 +1518,6 @@ Now, we would like to see how these customers' behavior relate to the rest of th
 - if energy distribution is skewed towards extreme?
 
 - if the weekend and weekday behavior are different for most of these households?
-
-
-Figure \ref{fig:wknd-wday50} shows the quantile plot of energy consumption of 50 households. Similar quantiles for weekend and weekdays indicate that behaviors of most of these customers do not alter between weekdays and weekends.
-
-Figure \ref{fig:my-hd} shows that the median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. Moreover, only the pink band changes significantly in winter months (May - August). The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much. Most of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that the the level of quantiles increased too in winter months (obvious because of weather conditions), the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
-
-```{r wknd-wday50, fig.cap = "Quantile plot of energy consumption of 50 households across different hours of the day faceted by weekday and weekend. The quantiles are not different for weekdays and weekends implying either the behavior balances out among these customers or most of them do not behave differently for weekdays and weekends."}
-
-smart_meter <- 
-  read_rds("data/sm_cust50.rds")
-
-smart_meter %>% 
-  prob_plot("wknd_wday",
-                            "hour_day",
-                            response = "general_supply_kwh",
-                            plot_type = "quantile",
-            symmetric = FALSE, 
-            quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) +
-  scale_y_sqrt()
-```
-
-
-
-<!-- # ```{r wknd-wday50_df} -->
-<!-- # smart_meter10 %>%  -->
-<!-- #   prob_plot("month_year", -->
-<!-- #                             "day_fortnight", -->
-<!-- #                             response = "general_supply_kwh", -->
-<!-- #                             plot_type = "quantile", -->
-<!-- #             symmetric = TRUE,  -->
-<!-- #             quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) + -->
-<!-- #   scale_y_sqrt(breaks = c(0.1, 0.25, 0.5, 1:3)) -->
-<!-- # ``` -->
-
-
-
-```{r my-hd, fig.cap="Area quantile plots of energy consumption across hours of the day faceted by months of the year. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. The median and quartile consumption increase in winter months, but extreme behavior represented by higher bands mostly stay the same across seasons. "}
-
-library(gravitas)
-library(tsibble)
-
-library(ggplot2)
-smart_meter %>%
-  prob_plot("month_year", "hour_day",
-    response = "general_supply_kwh",
-    plot_type = "quantile",
-    quantile_prob = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99),
-    symmetric = TRUE) +
-  ggtitle("") + scale_y_sqrt(breaks = c(0.01, 0.1, 0.5, 1:3))
-```
-
-<!-- Figure \ref{fig:dw-hd} shows that on morning peaks for Saturday and Sunday are higher and occurs in a later hour of the day compared to weekdays. This is true for both top 50% and 75% of the customers. Hence, this is indicative of the fact that at least 50% of the households in this subset has traditional work days (Mon-Fri) and weekends(Sat-Sun). All the percentiles peaks up in the morning hours and then drops in the afternoon, before again peaking up in the evening.  -->
-
-
-<!-- ```{r dw-hd} -->
-
-<!-- # Hourly usage across days of the week -->
-<!-- sm_cust50 %>% -->
-<!--   prob_plot("day_week",  -->
-<!--            "hour_day", -->
-<!--            "general_supply_kwh",  -->
-<!--            plot_type = "quantile",  -->
-<!--           quantile_prob = c(0.25, 0.5, 0.75), -->
-<!--            response = "general_supply_kwh", overlay = FALSE) + -->
-<!--   ggtitle("") -->
-
-<!-- ``` -->
 
 
 This case study shows systematic exploration of energy behavior starting with two households and comparing some of their features with all 50 households. First, it helps us to find the list of granularities to look at, then shrinks the number of possible visualizations by identifying harmonies and then explored harmony pairs to gain some insights on periodic behavior of the households. 
