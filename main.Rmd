@@ -1249,6 +1249,19 @@ Even when there are no rarely occuring events, number of observations might vary
 Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption in `general_supply_kwh` in every half hour from February 2012 to March 2014. \ref{fig:smart-meter} shows the data structure of the available data. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns and identify the extreme and regular households. We take a random sample of 50 households to see how we can achieve that. 
 
 
+
+Data structure for visualization:
+
+The variable `reading_datetime` is the index, which represents the time variable. The variable `customer_id` denoting different households represent the key of the tsibble and `general_supply_kwh` is the time series variable which needs to be analyzed. Data sets of the form <C1, C2, `general_supply_kwh`> will form the basis of exploration for each key in the data set, the cyclic granularity C1 mapped to x axis and `general_supply_kwh` to y-axis with the cyclic granularity C2 as the facet. Any geometry displaying the probability distribution of `general_supply_kwh` like  boxplot, letter value, violin,
+ridge or highest density region plots can then be used to explore the data set.
+
+
+Cyclic granularities search and computation:
+
+While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively.
+
+
+
 ```{r smart-meter, fig.cap = "Smart meter data structure"}
 
 sm <- 
@@ -1261,14 +1274,22 @@ smart_meter
 
 <!-- how gravitas is used to deal with systematic exploration -->
 
-**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities range from half-hour to year. If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
+**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. 
+
+
+
+The variable 'reading_datetime` is the index, which represents the time variable. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively.
+
+
+
+These cyclic granularities are a function of the index variable and are computed based on if they are cicular (@ref:Sec), pseudo-circular (@ref:Sec) or aperiodic (@ref:Sec). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. 
 
 ```{r}
 library(gravitas)
 smart_meter %>% search_gran()
 ```
 
-
+If these options are considered too many, the most coarse temporal unit can be set to be a “month”.
 
 ```{r}
 smart_meter10 %>% 
@@ -1285,7 +1306,11 @@ smart_meter10 %>% search_gran(highest_unit = "month",
 )
 ```
 
-Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using \autoref{}. From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. But the distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots. However, harmony/clash pairs can be identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives. We will look at few harmony pairs and see how the proposed workflow can be utilized. 
+Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using \autoref{}. 
+
+From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. But the distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots. However, harmony/clash pairs can be identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives. We will look at few harmony pairs and see how the proposed workflow can be utilized. 
+
+
 
 
 Figure \ref{fig:wknd-wday50} shows the quantile plot of energy consumption of 50 households. Similar quantiles for weekend and weekdays indicate that behaviors of most of these customers do not alter between weekdays and weekends or looking at all customers together balances out the fact
