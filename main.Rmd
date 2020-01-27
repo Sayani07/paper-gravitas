@@ -1274,9 +1274,7 @@ smart_meter
 **gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively.
 
 
-
 <!-- how gravitas is used to deal with systematic exploration -->
-
 
 These cyclic granularities are a function of the index variable and are computed based on if they are cicular (Section \ref{sec:circular-gran-def}), pseudo-circular (Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def}). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. 
 
@@ -1302,11 +1300,16 @@ smart_meter10 %>% search_gran(highest_unit = "month",
 )
 ```
 
-### Screening and visualising harmonies:
 
 Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:asperiodic-gran-def}. 
 
-From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. But the distribution of energy needs to be visualized across two cyclic granularities at a time. It is equivalent to taking 2 granularities from 6, which essentially is equivalent to visualizing 30 plots. However, harmony/clash pairs can be identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives. We will look at few harmony pairs and see how the proposed workflow can be utilized. 
+### Screening and visualising harmonies:
+
+From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure <$C1$ $C2$, `general_supply_kwh`>, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from 6, which essentially is equivalent to visualizing 30 plots. However, harmony/clash pairs can be identified among those 30 pairs, to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives. 
+
+<!-- We will look at few harmony pairs and see how the proposed workflow can be utilized.  -->
+
+<!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
 
 
@@ -1320,7 +1323,7 @@ smart_meter10 %>% gran_advice("wknd_wday", "hour_day")
 ```
 
 
-Each of these 13 pairs need to be visualised to have multiple perspectives on the data. If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one `customer_id` shows a particular behavior, but this behavior is reversed when all keys are combined together. This is also intuitive because `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. For example, Figure \ref{fig:wknd-wday50} shows the quantile plot of energy consumption of a sample of 50 households. Quantiles for weekend and weekdays for these customers look exactly the same. It is not clear if the behaviors of most of these customers do not alter between weekdays and weekends or looking at all customers together balances out the behaviors. Consider another example in Figure \ref{fig:my-hd} showing the area quantile plots of 50 customers. The median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. The pink band changes significantly in winter months (May - August) implying that much of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that the the level of all quantiles increased too in winter months (increased energy usage in weather conditions), the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
+However, if the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one `customer_id` shows a particular behavior, but this behavior is reversed when all keys are combined together. This is also intuitive because `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. For example, Figure \ref{fig:wknd-wday50} shows the quantile plot of energy consumption of a sample of 50 households. Quantiles for weekend and weekdays for these customers look exactly the same. It is not clear if the behaviors of most of these customers do not alter between weekdays and weekends or looking at all customers together balances out the behaviors. Consider another example in Figure \ref{fig:my-hd} showing the area quantile plots of 50 customers. The median is very close to the lower boundaries of all the other bands implying energy consumption for these households are left skewed. The pink band changes significantly in winter months (May - August) implying that much of the behavioral changes occur in the quartiles, that too in peak hours of the day. It is to be noted here that the the level of all quantiles increased too in winter months (increased energy usage in weather conditions), the interesting part is to notice that the relationship between bands other than quartile stayed same across seasons.
 
 <!-- The median consumption or width of other bands doesn't vary much across seasons, implying extreme behavior or extreme customers does not vary across seasons much.  -->
 
@@ -1537,14 +1540,14 @@ cust1
 cust2
 ```
 
-Now, we would like to see how these customers' behavior relate to the rest of the  50 households across these two measures -  
+<!-- Now, we would like to see how these customers' behavior relate to the rest of the  50 households across these two measures -   -->
 
-- if energy distribution is skewed towards extreme?
+<!-- - if energy distribution is skewed towards extreme? -->
 
-- if the weekend and weekday behavior are different for most of these households?
+<!-- - if the weekend and weekday behavior are different for most of these households? -->
 
 
-This case study shows systematic exploration of energy behavior starting with two households and comparing some of their features with all 50 households. First, it helps us to find the list of granularities to look at, then shrinks the number of possible visualizations by identifying harmonies and then explored harmony pairs to gain some insights on periodic behavior of the households. 
+This case study shows systematic exploration of energy behavior for two random households comparing some of their features with all 50 households. First, it helps us to find the list of granularities to look at, then shrinks the number of possible visualizations by identifying harmonies and lastly visualise harmony pairs to gain some insights on periodic behavior of the households. 
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
