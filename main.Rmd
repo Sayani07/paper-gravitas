@@ -1412,7 +1412,11 @@ smart_meter %>%
 
 <!-- In Figure \ref{fig:day-fortnight} and \ref{fig:day-fortnight-agg} , the smart meter data is filtered for two customers to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. -->
 
-Since we established that looking at random samples with different demographics might confound our analysis, next the smart meter data is filtered for two customers in Figure \ref{fig:day-fortnight},to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information that we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. 
+Since we established that looking at random samples with different demographics might confound our analysis, next the smart meter data is filtered for two customers, to illustrate kinds of insights that can be drawn for the energy behavior of these two customers
+
+<!-- can be added later -->
+
+<!-- In Figure \ref{fig:day-fortnight},to illustrate what kinds of insights can be drawn for the energy behavior of these two customers. it can be seen that for most days of the fortnight, the second household has much less consumption than the first one. However, there is additional information that we can derive looking at the distribution. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics.  -->
 
 
 
@@ -1462,28 +1466,28 @@ Since we established that looking at random samples with different demographics 
 
 
 
-```{r day-fortnight, fig.cap="Letter value plot of two households across days of the fortnight. M, F, E, D and C represents the letter values of energy consumption. Regular behavior (within letter value F) is more variable for the 2nd household, whereas extreme behavior (beyond letter value F) is varying more for the first household."}
-library(lvplot)
-library(ggplot2)
-library(dplyr)
-library(tibble)
-library(gravitas)
-smart_meter10 %>%
-  filter(customer_id %in% c(10006704, 10017936)) %>% 
-  create_gran("day_fortnight") %>%
-  ggplot2::ggplot(aes(
-    x = as.factor(day_fortnight),
-    y = general_supply_kwh)) +
-  xlab("day_fortnight") +
-  geom_lv(
-    outlier.colour = "red",
-    aes(fill = ..LV..),
-    k = 5) +
-  facet_wrap(~customer_id) + 
-  scale_fill_lv() +
-  theme_bw() +
-  scale_y_sqrt() 
-```
+<!-- ```{r day-fortnight, fig.cap="Letter value plot of two households across days of the fortnight. M, F, E, D and C represents the letter values of energy consumption. Regular behavior (within letter value F) is more variable for the 2nd household, whereas extreme behavior (beyond letter value F) is varying more for the first household."} -->
+<!-- library(lvplot) -->
+<!-- library(ggplot2) -->
+<!-- library(dplyr) -->
+<!-- library(tibble) -->
+<!-- library(gravitas) -->
+<!-- smart_meter10 %>% -->
+<!--   filter(customer_id %in% c(10006704, 10017936)) %>%  -->
+<!--   create_gran("day_fortnight") %>% -->
+<!--   ggplot2::ggplot(aes( -->
+<!--     x = as.factor(day_fortnight), -->
+<!--     y = general_supply_kwh)) + -->
+<!--   xlab("day_fortnight") + -->
+<!--   geom_lv( -->
+<!--     outlier.colour = "red", -->
+<!--     aes(fill = ..LV..), -->
+<!--     k = 5) + -->
+<!--   facet_wrap(~customer_id) +  -->
+<!--   scale_fill_lv() + -->
+<!--   theme_bw() + -->
+<!--   scale_y_sqrt()  -->
+<!-- ``` -->
 
 
 <!-- Figure \autoref{fig:my-hd} shows the overlay quantile plot of energy consumption of 50 households. The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. Each facet represents a month and energy consumption across each hours of the day is shown inside each facet. It can be observed that the median is very close (and hence not distinctly visible) to the lower boundaries of all the other bands implying energy consumption for these households are extremely left skewed.75% of the households has distinct higher evening peaks compared to morning peaks, especially in the winter months. The top 5% households behave very differently than even the top 10% households in terms of total energy consumption across hours of the day.  -->
@@ -1509,9 +1513,13 @@ smart_meter10 %>%
 <!-- # ``` -->
 
 
-In \autoref{fig:bothcust} we visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across wknd_wday (facet) and hour-day (x-axis) for the same two households. For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.
+In \autoref{fig:bothcust} we visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across `wknd_wday` (facet) and `hour_day` (x-axis) for the same two households. For the first household, the shape of the distribution does not change significantly for weekdays and weekends. The distribution is roughly smooth with a morning and an evening peak. For the second household, the quantiles behave differently in peak hours. For the first few hours on weekdays, energy consumption starts at a much higher level than weekends. Consider looking at letter value plots instead of quantile plots to look at the same data in \autoref{fig:bothcust-lv}. There is additional information that we can derive looking at the distribution.
+There is bimodality in the early hours of the day, implying both low and high energy consumption is probable in the early hours of the day. Also hours from 7 to 13 seems most volatile given the shape of the violin. If we visualize the same data with reverse mapping of the cyclic granularities, then the natural tendency would be to compare weekend and weekday behavior within each hour and not across hours. For example in \autoref{fig:cust-lv}, it can be seen that median energy consumption for the early morning hours is extremely high for weekdays compared to weekends. Also, outliers are more prominent in the latter part of the day. All of these indicates that looking at different distribution plots or changing the mapping might draw lights on different aspect of the energy behavior for the same customer.
 
- For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.
+
+<!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
+
+
 
 
 ```{r bothcust_notrun}
@@ -1520,7 +1528,9 @@ cust1 <- smart_meter10 %>%
   prob_plot("wknd_wday",
                             "hour_day",
                             response = "general_supply_kwh",
-                            plot_type = "boxplot") +
+                            plot_type = "quantile",
+            symmetric = FALSE,
+            quantile_prob = c(0.25, 0.5, 0.75, 0.9)) +
   scale_y_sqrt() +
   ggtitle("Energy consumption distribution for customer id: 10006704")
 
@@ -1530,7 +1540,9 @@ cust2 <- smart_meter10 %>%
   prob_plot("wknd_wday",
                             "hour_day",
                             response = "general_supply_kwh",
-                            plot_type = "boxplot") +
+                            plot_type = "quantile",
+            symmetric = FALSE,
+             quantile_prob = c(0.25, 0.5, 0.75, 0.9)) +
   scale_y_sqrt() + 
   ggtitle("Energy consumption distribution for customer id: 10017936")
 ```
@@ -1538,6 +1550,48 @@ cust2 <- smart_meter10 %>%
 ```{r bothcust, fig.cap = "Boxplot of energy consumption across hours of the day faceted by weekday/weekend for household 1 (customer id: 10006704) and household 2 (customer id: 10017936). Median behavior for the early morning hours of household 2 is extremely high for weekends compared to weekdays, not much differenc can be observed for household 1. "}
 cust1
 cust2
+```
+
+```{r bothcust-lv, fig.cap ="towrite."}
+# 
+# smart_meter10 %>% 
+#   filter(customer_id %in% c(10006704)) %>% 
+#   prob_plot("wknd_wday",
+#                             "hour_day",
+#                             response = "general_supply_kwh",
+#                             plot_type = "violin") +
+#   scale_y_sqrt() +
+#   ggtitle("Energy consumption distribution for customer id: 10006704")
+
+smart_meter10 %>% 
+  filter(customer_id %in% c(10017936))%>% 
+  prob_plot("wknd_wday",
+                            "hour_day",
+                            response = "general_supply_kwh",
+                            plot_type = "violin") +
+  scale_y_sqrt() + ggtitle("Energy consumption distribution for customer id: 10017936")
+```
+
+```{r cust-ridge, fig.cap ="towrite something"}
+# 
+# smart_meter10 %>% 
+#   filter(customer_id %in% c(10006704)) %>% 
+#   prob_plot("wknd_wday",
+#                             "hour_day",
+#                             response = "general_supply_kwh",
+#                             plot_type = "violin") +
+#   scale_y_sqrt() +
+#   ggtitle("Energy consumption distribution for customer id: 10006704")
+
+smart_meter10 %>% 
+  filter(customer_id %in% c(10017936))%>% 
+  prob_plot("hour_day", 
+            "wknd_wday",
+            response = "general_supply_kwh",
+            plot_type = "boxplot") +
+            scale_y_sqrt() +
+            # scale_fill_brewer(palette = "Dark2")
+  ggtitle("Energy consumption distribution for customer id: 10017936")
 ```
 
 <!-- Now, we would like to see how these customers' behavior relate to the rest of the  50 households across these two measures -   -->
