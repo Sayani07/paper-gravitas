@@ -1044,7 +1044,7 @@ The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of
 
 <!-- Description and lit review of quantile plots -->
 
-Quantile plots can display any quantiles instead of quartiles in a traditional boxplot. These plots give more information than box plots and yet avoid clutter by enabling us to focus just on specific probabilities. When reviewing a boxplot, an outlier is defined as a data point that is located outside the fences (“whiskers”) of the boxplot (e.g. outside 1.5 times the interquartile range above the upper quartile and below the lower quartile). However, outliers are open to interpretation and not shown in an quantile plot.
+Quantile plots display quantiles instead of quartiles in a traditional boxplot. These plots give more information than box plots and yet avoid clutter by enabling us to focus just on specific probabilities. While in a boxplot, an outlier is defined as a data point that is located outside the fences (“whiskers”) of the boxplot (e.g. outside 1.5 times the interquartile range above the upper quartile and below the lower quartile), in quantile plots outliers are open to interpretation and not shown.
 
 <!-- Description and lit review of density plots -->
 
@@ -1071,10 +1071,9 @@ Each type of density display has different parameters, that need to be estimated
 
 ### Levels
 
-We will discuss the effect of the levels of cyclic granularities in this section. The levels of the two cyclic granularities plotted have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us. Plot choices will also vary depending on which granularity is placed on the x-axis and which one across facets. 
+We will discuss the effect of the levels of cyclic granularities in this section. Recall that cyclic granularities $C_1$ and $C_2$ are such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. $A_i$'s and $B_j$'s are referred to as the levels of $C_1$ and $C_2$ for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ respectively. The levels have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. Plot choices will also depend on the aesthetic mapping of the cyclic granularities. A potential approach can be to categorize the levels as very high/high/medium/low for each cyclic granularities and define some criteria based on usual cognitive power, display size available and the aesthetic mappings. Default values for these categorisations can be chosen based on levels of common temporal granularities like days-of-month, days-of-fortnight and days-of-week. For example, any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low.
 
-Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are chosen based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. Any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively.
-
+<!-- The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us.  -->
 
  <!-- - If levels of both the granularities are low, then any statistical distribution plot might be chosen depending on which feature of the distribution one is interested to look at.  -->
  
