@@ -1213,7 +1213,7 @@ VIC %>%
 ```
 
 
-### Interchangeability of Mapping
+### Interchangeability of mappings
 
 We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets $A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group. When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$. Although the variables used in the layers are the same, the difference in mapping leads to emphasis of different behavior of the variables.
 
@@ -1245,7 +1245,7 @@ Even when there are no rarely occuring events, number of observations might vary
 ## Smart meter data of Australia {#sec:smartmeter}
 
 <!-- # how data looks -->
-Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption in `general_supply_kwh` in every half hour from February 2012 to March 2014. \ref{fig:smart-meter} shows the data structure of the available data. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns and identify the extreme and regular households.
+Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption in `general_supply_kwh` in every half hour from February 2012 to March 2014. \ref{tab:smart-meter} shows the data structure of the available data. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns and identify the extreme and regular households.
 
 <!-- We take a random sample of 50 households to see how we can achieve that.  -->
 
@@ -1264,13 +1264,13 @@ sm <-
 
 smart_meter <- sm %>% as_tsibble()
 
-smart_meter
+smart_meter %>% kable()
 ```
 
 
 ### Cyclic granularities search and computation:
 
-**gravitas** R package [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively.
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively.
 
 
 <!-- how gravitas is used to deal with systematic exploration -->
