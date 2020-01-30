@@ -1614,10 +1614,10 @@ This case study shows systematic exploration of energy behavior for two random h
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when a inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. However, irrespective of the type of cyclic granularities, it can be interesting to visualize the periodicity of  scores/performance under similar data structure as temporal datasets.
+The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. However, irrespective of the type of cyclic granularities, it can be interesting to visualize the periodicity of  scores/performance under similar data structure as temporal datasets.
 
 
-The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 5 overs and each match has 2 innings.
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
 
 
@@ -1644,7 +1644,7 @@ The Indian Premier League (IPL) is a professional Twenty20 cricket league in Ind
 <!-- #  -->
 <!-- # ``` -->
 
-There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+
 
 
 <!-- Each team is given a two-and-a-half-minute "strategic timeout" during each innings; one must be taken by the bowling team between the ends of the 6th and 9th overs, and one by the batting team between the ends of the 13th and 16th overs. -->
@@ -1708,7 +1708,7 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
 <!-- # ``` -->
 
 
-From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that palyers are vulnerable to score through each over and make more runs in the first innings, whereas if they in the second innings they are less vulnberable as they have a target in mind. Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. To answer the question, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
+From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that palyers are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
   
 ```{r cricex, fig.cap= "Letter value plot of runs per over across overs of the inning faceted by innings of the match. No upward shift in runs in the second innings like that in the first implying teams are more vulnerable to score more in the first innings as they approach the end of the inning."}
 
@@ -1730,12 +1730,11 @@ cricket_tsibble %>%
 
 ```
 
-
 Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over? 
 
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs. We can verify this fact through Figure \ref{fig:field} which shows that the difference in runs between two subsequent overs are negative when good fielding leads to one dismissal in an over, implying good fielding in one over has indeed an impact on runs scored in the subsequent overs.
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs. We can verify this fact through Figure \ref{fig:field} which shows that the difference in run rates between two subsequent overs are negative when good fielding leads to at least one dismissal in an over, implying good fielding in one over has indeed an impact on runs scored in the subsequent overs.
 
-```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and dismissals by catch and catch and bowled. This shows good fielding in one over leads to lower runs in the subsequent overs for at least 50 percentiles of times."}
+```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over."}
 
 cricket_fielding <- cricket_season %>% 
   mutate(fielding_proxy = if_else(dismissal_kind %in% c("caught", "caught and bowled"),1,0)) %>% 
@@ -1780,7 +1779,7 @@ cricket_tsibble <- gravitas::cricket %>%
 ```
 
 
-```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), one (facet 2) and two (facet 3) dot balls per over. For all three cases, difference in runs between subsequent overs decrease.", fig.pos="ht"}
+```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), more than zero (facet 2) dot balls per over. For all quantiles, difference in runs between subsequent overs decrease with at least one dot ball in the previous over.", fig.pos="ht"}
 
 library(gravitas)
 library(tsibble)
@@ -1817,7 +1816,7 @@ cricket_tsibble_bow %>%
 ```
 
 
-In Q2 and Q3, we considered dots balls per over or catches per over as aperiodic cyclic granularities. They do not appear in the hierarchy table since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity.
+In Q2 and Q3, we considered dots balls per over or catches per over as aperiodic cyclic granularities. They do not appear in the hierarchy since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity. These are similar to holidays in temporal data which also can not be placed at a fixed order in a hierarchy table in case they are not finer than or groups into other temporal units.
 
 
 # Discussion {#sec:discussion}

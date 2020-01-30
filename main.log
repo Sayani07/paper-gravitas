@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  31 JAN 2020 10:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  31 JAN 2020 10:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -875,11 +875,11 @@ LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 109
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [28 <./figure/cricex-1.pdf>]
-<figure/field-1.pdf, id=552, 568.1225pt x 328.22626pt>
+<figure/field-1.pdf, id=552, 568.1225pt x 331.2375pt>
 File: figure/field-1.pdf Graphic file (type pdf)
 <use figure/field-1.pdf>
 Package pdftex.def Info: figure/field-1.pdf  used on input line 1099.
-(pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
+(pdftex.def)             Requested size: 469.7731pt x 273.89597pt.
 <figure/exdot-1.pdf, id=554, 568.1225pt x 328.22626pt>
 File: figure/exdot-1.pdf Graphic file (type pdf)
 <use figure/exdot-1.pdf>
@@ -931,7 +931,7 @@ live/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/
 texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/local/texlive/2019/texmf-dis
 t/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2019/texmf
 -dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (32 pages, 1375811 bytes).
+Output written on main.pdf (32 pages, 1350580 bytes).
 PDF statistics:
  743 PDF objects out of 1000 (max. 8388607)
  624 compressed objects within 7 object streams
