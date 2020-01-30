@@ -1266,8 +1266,8 @@ smart_meter <- sm %>% as_tsibble() %>% dplyr::select(customer_id,
                               reading_datetime, 
                               general_supply_kwh, 
                               everything()) %>% head()
-
-knitr::kable(smart_meter, format = "markdown")
+smart_meter
+# knitr::kable(smart_meter, format = "markdown")
 ```
 
 
@@ -1282,27 +1282,32 @@ These cyclic granularities are a function of the index variable and are computed
 
 ```{r search, echo=TRUE}
 library(gravitas)
-smart_smart_search <- smart_meter %>% search_gran()
-knitr::kable(smart_smart_search, format = "markdown")
+smart_meter %>% search_gran()
+#smart_smart_search <- smart_meter %>% search_gran()
+#knitr::kable(smart_smart_search, format = "markdown")
 ```
 
 If these options are considered too many, the most coarse temporal unit can be set to a “month”.
 
 ```{r search_limit1, echo=TRUE}
-smart_meter_limit1 <- smart_meter10 %>% 
+smart_meter10 %>% 
   search_gran(highest_unit = "month")
-knitr::kable(smart_meter_limit1, format = "markdown")
+# smart_meter_limit1 <- smart_meter10 %>% 
+#   search_gran(highest_unit = "month")
+# knitr::kable(smart_meter_limit1, format = "markdown")
 ```
 
 
 Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
 
 ```{r search_gran_limit2, echo=TRUE}
-
-smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month",
+smart_meter10 %>% search_gran(highest_unit = "month",
                               filter_out = c("hhour", "fortnight")
-)
-knitr::kable(smart_meter_limit2, format = "markdown")
+                              )
+# smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month",
+#                               filter_out = c("hhour", "fortnight")
+# )
+# knitr::kable(smart_meter_limit2, format = "markdown")
 ```
 
 
