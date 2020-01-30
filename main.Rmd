@@ -1666,32 +1666,32 @@ There are many interesting questions that can possibly be answered with such a d
 
 Q1: How run rates vary depending on if a team bats first or second?
 
-Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into the first question.
+Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question.
 
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
 
 <!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
 
 
-<!-- # ```{r runs_per-over} -->
-<!-- # library(tsibble) -->
-<!-- #  -->
-<!-- # cricket_all <-  read_csv("data-raw/deliveries_all.csv") -->
-<!-- # matches_all <- read_csv("data-raw/matches_all.csv") -->
-<!-- #  -->
-<!-- # cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id")) -->
-<!-- #                                          -->
-<!-- # cricket_per_over <- cricket_season %>%  -->
-<!-- #   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>% -->
-<!-- #   summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs))  -->
-<!-- #  -->
-<!-- # cricket_tsibble_all <- cricket_per_over %>%  -->
-<!-- #   ungroup() %>%  -->
-<!-- #   mutate(data_index = row_number()) %>%  -->
-<!-- #   as_tsibble(index = data_index) -->
-<!-- # ``` -->
-<!-- #  -->
-<!-- #  -->
+```{r runs_per-over}
+ library(tsibble)
+
+ cricket_all <-  read_csv("data-raw/deliveries_all.csv")
+ matches_all <- read_csv("data-raw/matches_all.csv")
+
+ cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id"))
+
+ cricket_per_over <- cricket_season %>%
+   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
+   summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs))
+
+ cricket_tsibble_all <- cricket_per_over %>%
+   ungroup() %>%
+   mutate(data_index = row_number()) %>%
+   as_tsibble(index = data_index)
+```
+#
+#
 <!-- # ```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons. There is no pattern on increase or decrease of runs across overs for seasons."} -->
 <!-- #   cricket_tsibble_all %>%  -->
 <!-- #   prob_plot("over",  -->
@@ -1708,7 +1708,7 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
 <!-- # ``` -->
 
 
-From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability of runs also increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
+From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that palyers are vulnerable to score through each over and make more runs in the first innings, whereas if they in the second innings they are less vulnberable as they have a target in mind. Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. To answer the question, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
   
 ```{r cricex, fig.cap= "Letter value plot of runs per over across overs of the inning faceted by innings of the match. No upward shift in runs in the second innings like that in the first implying teams are more vulnerable to score more in the first innings as they approach the end of the inning."}
 
@@ -1724,7 +1724,12 @@ cricket_tsibble %>%
             "over",
   response = "runs_per_over",
   hierarchy_model,
-  plot_type = "lv")  + ggtitle("")
+  plot_type = "lv")  + ggtitle("") +
+  scale_fill_brewer(palette = "Dark2")
+
+
+
+
 ```
 
 
@@ -1751,11 +1756,12 @@ cricket_tsibble_fld %>% gran_obs("over", "fielding_wckts")
 
 
 cricket_tsibble_fld %>% 
-  filter(fielding_wckts %in% c(0,1)) %>% 
-  prob_plot( "fielding_wckts","over",
+  mutate(field = if_else(fielding_wckts==0, "no wickets", ">0 wickets")) %>% 
+  #filter(fielding_wckts %in% c(0,1)) %>% 
+  prob_plot( "field","over",
                                hierarchy_model,
                                response = "diff_run_rate",
-                               plot_type = "quantile",
+                               plot_type = "lv",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
            overlay = TRUE)  + ggtitle("")
 
@@ -1786,10 +1792,10 @@ cricket_bowling <- cricket_season %>%
   mutate(dot_ball_proxy = if_else(total_runs==0,1,0),
          wicket_proxy = if_else(is.na(dismissal_kind),0,1)) %>% 
   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-  summarise(dot_balls = sum(dot_ball_proxy),
-            wickets = sum(wicket_proxy), 
-            total_runs = sum(total_runs)) %>%
-            mutate(diff_run_rate = c(0,diff(total_runs)))
+  summarise(runs_per_over = sum(total_runs),
+            run_rate = sum(total_runs)/length(total_runs),
+            dot_balls = sum(dot_ball_proxy)) %>% 
+            mutate(diff_run_rate = c(0,diff(run_rate)))
 
 
 cricket_tsibble_bow <- cricket_bowling %>% 
@@ -1798,9 +1804,11 @@ cricket_tsibble_bow <- cricket_bowling %>%
   as_tsibble(index = data_index)
 
 
+
 cricket_tsibble_bow %>%
-  filter(dot_balls %in% c(0, 1, 2)) %>%
-  prob_plot("dot_balls",
+  mutate(dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls")) %>% 
+  #filter(dot_balls %in% c(0, 1, 2)) %>%
+  prob_plot("dot",
             "over",
             hierarchy_model,
             response = "diff_run_rate",
