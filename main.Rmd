@@ -1614,8 +1614,13 @@ This case study shows systematic exploration of energy behavior for two random h
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The application is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season can consist of several matches. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016), each of which has 6 balls in an over and 2 innings in a match.
-s
+The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized in other applications. Although there is no conventional time component in cricket, each ball can be thought to represent a basic unit of time as the game progresses forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season can consist of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples include ball of the over, over of the innings, ball of the innings. Although these cyclic granularities are circular by design of the hierarchy, there might be cases where these are aperiodic. As an example, in most cases an over will consist of 6 balls with some exceptions of in case of a wide ball or if the innings finish before the over finishes. Irrespective of the type of cyclic granularities, it can be interesting to visualize the periodic behavior of scores/performance under similar data structure as temporal datasets.
+
+
+
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016), each of which has 6 balls in an over and 2 innings in a match.
+
+
 
 
 <!-- the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. -->
