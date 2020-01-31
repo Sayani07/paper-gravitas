@@ -1556,12 +1556,12 @@ cust2 <- smart_meter10 %>%
   ggtitle("Energy consumption distribution for customer id: 10017936")
 ```
 
-```{r bothcust, fig.cap = "Boxplot of energy consumption across hours of the day faceted by weekday/weekend for household 1 (customer id: 10006704) and household 2 (customer id: 10017936). Median behavior for the early morning hours of household 2 is extremely high for weekends compared to weekdays, not much differenc can be observed for household 1. "}
+```{r bothcust, fig.cap = "Quantile plots of energy consumption across hours of the day faceted by weekday/weekend for household 1 (customer id: 10006704) and household 2 (customer id: 10017936). Median behavior for the early morning hours of household 2 is extremely high for weekends compared to weekdays, not much differenc can be observed for household 1. "}
 cust1
 cust2
 ```
 
-```{r bothcust-lv, fig.cap ="towrite."}
+```{r bothcust-lv, fig.cap ="Violin plots of energy consumption across hours of the day faceted by weekday/weekend for household 2 (customer id: 10017936). Early morning hours are bimodal implying both high and low consumption are probable. Volatility is high from 7 to 13 hours as evident from the narrow violins."}
 # 
 # smart_meter10 %>% 
 #   filter(customer_id %in% c(10006704)) %>% 
@@ -1581,7 +1581,7 @@ smart_meter10 %>%
   scale_y_sqrt() + ggtitle("Energy consumption distribution for customer id: 10017936")
 ```
 
-```{r cust-ridge, fig.cap ="towrite something"}
+```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for household 2 (customer id: 10017936). Median behavior for the early morning hours of household 2 is extremely high for weekends compared to weekdays."}
 # 
 # smart_meter10 %>% 
 #   filter(customer_id %in% c(10006704)) %>% 
