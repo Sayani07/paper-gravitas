@@ -1614,11 +1614,22 @@ This case study shows systematic exploration of energy behavior for two random h
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. However, irrespective of the type of cyclic granularities, it can be interesting to visualize the periodicity of  scores/performance under similar data structure as temporal datasets.
+The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset.
 
 
-The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. The hierarchy table would look like the following:
 
+```{r hierarchy2}
+ library(gravitas)
+ library(tibble)
+ hierarchy_model <- tibble::tibble(
+   G = c("over", "inning", "match", "season"),
+   C = c("over-of-inning", "inning-of-match", "match-of-season",1),
+   P = c(20, 2, "aperiodic", 1))
+ knitr::kable(hierarchy_model, format = "markdown")
+```
+
+There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
 
 <!-- the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. -->
@@ -1629,20 +1640,6 @@ The Indian Premier League (IPL) is a professional Twenty20 cricket league in Ind
 <!--                                   convert_fct = c(6, 20, 2, 1)) -->
 <!-- knitr::kable(hierarchy_model, caption = " A hierarchy table for T20 cricket") -->
 <!-- ``` -->
-
-
-<!-- The hierarchy table would look like the following: -->
-
-<!-- # ```{r hierarchy2} -->
-<!-- # library(gravitas) -->
-<!-- # library(tibble) -->
-<!-- # hierarchy_model <- tibble::tibble( -->
-<!-- #   G = c("over", "inning", "match", "season"), -->
-<!-- #   C = c("over-of-inning", "inning-of-match", "match-of-season",1), -->
-<!-- #   P = c(20, 2, "aperiodic", 1)) -->
-<!-- # knitr::kable(hierarchy_model, format = "markdown") -->
-<!-- #  -->
-<!-- # ``` -->
 
 
 
@@ -1664,10 +1661,12 @@ The Indian Premier League (IPL) is a professional Twenty20 cricket league in Ind
 
 <!-- First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperidic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions: -->
 
-Q1: How run rates vary depending on if a team bats first or second?
+Q1: How total runs vary depending on if a team bats first or second?
 
-Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question.
+Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular cyclic granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circulargran} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
 
+
+<!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
 
 <!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
@@ -1682,8 +1681,14 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
  cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id"))
 
  cricket_per_over <- cricket_season %>%
-   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-   summarise(runs_per_over = sum(total_runs), run_rate = sum(total_runs)/length(total_runs))
+   group_by(season,
+            match_id,
+            batting_team,
+            bowling_team,
+            inning,
+            over) %>%
+   summarise(runs_per_over = sum(total_runs),
+             run_rate = sum(total_runs)/length(total_runs))
 
  cricket_tsibble_all <- cricket_per_over %>%
    ungroup() %>%
@@ -1708,7 +1713,7 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
 <!-- # ``` -->
 
 
-From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that palyers are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
+
   
 ```{r cricex, fig.cap= "Letter value plot of runs per over across overs of the inning faceted by innings of the match. No upward shift in runs in the second innings like that in the first implying teams are more vulnerable to score more in the first innings as they approach the end of the inning."}
 
@@ -1716,6 +1721,22 @@ library(tsibble)
 cricket_tsibble <- cricket %>%
   mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
+
+hierarchy_model <- tibble::tibble(
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1)
+)
+
+# cricket_tsibble %>%
+#   filter(batting_team %in% c("Mumbai Indians",
+#                              "Chennai Super Kings"))%>%
+#   create_gran("inning_match", hierarchy_model) %>% create_gran("over_inning", hierarchy_model)
+
+cricket_tsibble %>%
+  filter(batting_team %in% c("Mumbai Indians",
+                             "Chennai Super Kings"))%>%
+  gran_advice("inning", 
+            "over")
 
 cricket_tsibble %>%
   filter(batting_team %in% c("Mumbai Indians",
@@ -1727,6 +1748,11 @@ cricket_tsibble %>%
   plot_type = "lv")  + ggtitle("") +
   scale_fill_brewer(palette = "Dark2")
 
+cricket_tsibble %>%
+  filter(batting_team %in% c("Mumbai Indians",
+                             "Chennai Super Kings"))%>%
+  gran_advice("inning", 
+            "over")
 
 ```
 
@@ -1736,32 +1762,43 @@ For establishing that the fielder fielded well in a particular over, we can see 
 
 ```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over."}
 
-cricket_fielding <- cricket_season %>% 
-  mutate(fielding_proxy = if_else(dismissal_kind %in% c("caught", "caught and bowled"),1,0)) %>% 
-  group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
+cricket_dot_field <- cricket_season %>% 
+  mutate(fielding_proxy = if_else(dismissal_kind %in% 
+                                    c("caught", "caught and bowled"),1,0),
+         dot_ball_proxy = if_else(total_runs==0,1,0),
+         wicket_proxy = if_else(is.na(dismissal_kind),0,1)) %>% 
+  group_by(season,
+           match_id,
+           batting_team,
+           bowling_team, 
+           inning,
+           over) %>%
   summarise(runs_per_over = sum(total_runs),
             run_rate = sum(total_runs)/length(total_runs),
-            fielding_wckts = sum(fielding_proxy)) %>%
+            fielding_wckts = sum(fielding_proxy),
+            dot_balls = sum(dot_ball_proxy)) %>%
             mutate(diff_run_rate = c(0,diff(run_rate)))
 
-cricket_tsibble_fld <- cricket_fielding %>% 
+cricket_tsibble <- cricket_dot_field %>% 
   ungroup() %>% 
   mutate(data_index = row_number()) %>% 
   as_tsibble(index = data_index)
 
-cricket_tsibble_fld %>% gran_obs("over", "fielding_wckts")
+cricket_tsibble %>% gran_obs("over", "fielding_wckts")
 
 
-cricket_tsibble_fld %>% 
-  mutate(field = if_else(fielding_wckts==0, "no wickets", ">0 wickets")) %>% 
+cricket_data_ts <- cricket_tsibble %>% 
+  mutate(field = if_else(fielding_wckts==0, "no wickets", ">0 wickets"),
+         dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls")) 
+
+
   #filter(fielding_wckts %in% c(0,1)) %>% 
-  prob_plot( "field","over",
+  cricket_data_ts %>% prob_plot( "over","field",
                                hierarchy_model,
                                response = "diff_run_rate",
-                               plot_type = "boxplot",
+                               plot_type = "violin",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
            overlay = TRUE)  + ggtitle("")
-
 ```
 
 
@@ -1772,38 +1809,48 @@ Q3: Are runs set to reduce in the next over for dot balls in the previous over?
 
 A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? From figure \ref{fig:exdot} shows the quantile plot of runs across overs for none, one or two dot balls per over in the facets. Each of the quantiles decrease across facets. With two dot balls per over, at least 50% of the times, run rates decrease in the subsequent over as observed through the negative values for different quantiles.
 
-```{r crickread, ech0=FALSE}
-cricket_tsibble <- gravitas::cricket %>%
-  mutate(data_index = row_number()) %>%
-  as_tsibble(index = data_index)
-```
+<!-- # ```{r crickread, ech0=FALSE} -->
+<!-- # cricket_tsibble <- gravitas::cricket %>% -->
+<!-- #   mutate(data_index = row_number()) %>% -->
+<!-- #   as_tsibble(index = data_index) -->
+<!-- # ``` -->
 
 
 ```{r exdot, fig.cap="10th, 20th, 30th, 40th and 50th quantiles of runs per over are drawn  across overs of the innings with no (facet 1), more than zero (facet 2) dot balls per over. For all quantiles, difference in runs between subsequent overs decrease with at least one dot ball in the previous over.", fig.pos="ht"}
 
-library(gravitas)
-library(tsibble)
+# library(gravitas)
+# library(tsibble)
+# 
+# 
+# cricket_bowling <- cricket_season %>% 
+#   mutate(dot_ball_proxy = if_else(total_runs==0,1,0),
+#          wicket_proxy = if_else(is.na(dismissal_kind),0,1)) %>% 
+#   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
+#   summarise(runs_per_over = sum(total_runs),
+#             run_rate = sum(total_runs)/length(total_runs),
+#             dot_balls = sum(dot_ball_proxy)) %>% 
+#             mutate(diff_run_rate = c(0,diff(run_rate)))
+# 
+# 
+# cricket_tsibble_bow <- cricket_bowling %>% 
+#   ungroup() %>% 
+#   mutate(data_index = row_number()) %>% 
+#   as_tsibble(index = data_index)
+# 
+
+# cricket_tsibble_bow %>%
+#   mutate(dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls")) %>% 
+#   #filter(dot_balls %in% c(0, 1, 2)) %>%
+#   prob_plot("dot",
+#             "over",
+#             hierarchy_model,
+#             response = "diff_run_rate",
+#             plot_type = "quantile",
+#             quantile_prob = c(0.1, 0.2, 0.3, 0.4, 0.5),
+#             symmetric = FALSE)  + ggtitle("")
 
 
-cricket_bowling <- cricket_season %>% 
-  mutate(dot_ball_proxy = if_else(total_runs==0,1,0),
-         wicket_proxy = if_else(is.na(dismissal_kind),0,1)) %>% 
-  group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-  summarise(runs_per_over = sum(total_runs),
-            run_rate = sum(total_runs)/length(total_runs),
-            dot_balls = sum(dot_ball_proxy)) %>% 
-            mutate(diff_run_rate = c(0,diff(run_rate)))
-
-
-cricket_tsibble_bow <- cricket_bowling %>% 
-  ungroup() %>% 
-  mutate(data_index = row_number()) %>% 
-  as_tsibble(index = data_index)
-
-
-
-cricket_tsibble_bow %>%
-  mutate(dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls")) %>% 
+cricket_data_ts %>% 
   #filter(dot_balls %in% c(0, 1, 2)) %>%
   prob_plot("dot",
             "over",
@@ -1812,9 +1859,7 @@ cricket_tsibble_bow %>%
             plot_type = "quantile",
             quantile_prob = c(0.1, 0.2, 0.3, 0.4, 0.5),
             symmetric = FALSE)  + ggtitle("")
-
 ```
-
 
 In Q2 and Q3, we considered dots balls per over or catches per over as aperiodic cyclic granularities. They do not appear in the hierarchy since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity. These are similar to holidays in temporal data which also can not be placed at a fixed order in a hierarchy table in case they are not finer than or groups into other temporal units.
 
