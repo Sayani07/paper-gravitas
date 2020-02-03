@@ -1309,7 +1309,7 @@ smart_meter10 %>% search_gran(highest_unit = "month",
 <!-- # ) -->
 <!-- # knitr::kable(smart_meter_limit2, format = "markdown") -->
 
-Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:asperiodic-gran-def}. 
+Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}. 
 
 ### Screening and visualising harmonies:
 
@@ -1318,7 +1318,7 @@ From the search list, we found six cyclic granularities for which we would like 
 <!-- We will look at few harmony pairs and see how the proposed workflow can be utilized.  -->
 
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
-s
+
 
 
 ```{r harmony, echo=TRUE}
@@ -1676,7 +1676,7 @@ There are many interesting questions that can possibly be answered with such a d
 
 Q1: How total runs vary depending on if a team bats first or second?
 
-Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular cyclic granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circulargran} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
+Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular cyclic granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
 
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
@@ -1708,8 +1708,7 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
    mutate(data_index = row_number()) %>%
    as_tsibble(index = data_index)
 ```
-#
-#
+
 <!-- # ```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons. There is no pattern on increase or decrease of runs across overs for seasons."} -->
 <!-- #   cricket_tsibble_all %>%  -->
 <!-- #   prob_plot("over",  -->
@@ -1761,11 +1760,11 @@ cricket_tsibble %>%
   plot_type = "lv")  + ggtitle("") +
   scale_fill_brewer(palette = "Dark2")
 
-cricket_tsibble %>%
-  filter(batting_team %in% c("Mumbai Indians",
-                             "Chennai Super Kings"))%>%
-  gran_advice("inning", 
-            "over")
+# cricket_tsibble %>%
+#   filter(batting_team %in% c("Mumbai Indians",
+#                              "Chennai Super Kings"))%>%
+#   gran_advice("inning", 
+#             "over")
 
 ```
 
