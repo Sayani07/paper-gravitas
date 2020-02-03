@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  31 JAN 2020 11:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.7.4)  3 FEB 2020 20:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -811,87 +811,72 @@ Underfull \hbox (badness 10000) in paragraph at lines 818--819
 
 [18] [19 <./figure/allFig-1.pdf> <./figure/allFig-2.pdf> <./figure/allFig-3.pdf
 > <./figure/allFig-4.pdf> <./figure/allFig-5.pdf> <./figure/allFig-6.pdf>]
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 849.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 856.
 
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-
-LaTeX Warning: Reference `tab:smart-meter' on page 20 undefined on input line 8
-49.
-
-[20]
+) [20]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 881.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 886.
 
 LaTeX Warning: Reference `sec:asperiodic-gran-def' on page 21 undefined on inpu
-t line 956.
+t line 937.
 
 [21]
-<figure/wknd-wday50-1.pdf, id=445, 568.1225pt x 346.29375pt>
-File: figure/wknd-wday50-1.pdf Graphic file (type pdf)
-<use figure/wknd-wday50-1.pdf>
-Package pdftex.def Info: figure/wknd-wday50-1.pdf  used on input line 1001.
-(pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
-<figure/my-hd-1.pdf, id=446, 568.1225pt x 333.245pt>
-File: figure/my-hd-1.pdf Graphic file (type pdf)
-<use figure/my-hd-1.pdf>
-Package pdftex.def Info: figure/my-hd-1.pdf  used on input line 1010.
-(pdftex.def)             Requested size: 469.7731pt x 275.55594pt.
-[22] [23 <./figure/wknd-wday50-1.pdf>] [24 <./figure/my-hd-1.pdf>]
 
-LaTeX Warning: Reference `fig:cust-lv' on page 25 undefined on input line 1020.
+LaTeX Warning: Reference `fig:cust-lv' on page 22 undefined on input line 978.
 
-
-<figure/bothcust-1.pdf, id=482, 568.1225pt x 346.29375pt>
+[22]
+<figure/bothcust-1.pdf, id=452, 568.1225pt x 351.3125pt>
 File: figure/bothcust-1.pdf Graphic file (type pdf)
 <use figure/bothcust-1.pdf>
-Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 1024.
-(pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
-<figure/bothcust-2.pdf, id=483, 568.1225pt x 346.29375pt>
-File: figure/bothcust-2.pdf Graphic file (type pdf)
-<use figure/bothcust-2.pdf>
-Package pdftex.def Info: figure/bothcust-2.pdf  used on input line 1024.
-(pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
-<figure/bothcust-lv-1.pdf, id=484, 568.1225pt x 351.3125pt>
+Package pdftex.def Info: figure/bothcust-1.pdf  used on input line 1018.
+(pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
+<figure/bothcust-lv-1.pdf, id=453, 568.1225pt x 351.3125pt>
 File: figure/bothcust-lv-1.pdf Graphic file (type pdf)
 <use figure/bothcust-lv-1.pdf>
-Package pdftex.def Info: figure/bothcust-lv-1.pdf  used on input line 1033.
+Package pdftex.def Info: figure/bothcust-lv-1.pdf  used on input line 1027.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/cust-ridge-1.pdf, id=485, 568.1225pt x 351.3125pt>
+<figure/cust-ridge-1.pdf, id=454, 568.1225pt x 351.3125pt>
 File: figure/cust-ridge-1.pdf Graphic file (type pdf)
 <use figure/cust-ridge-1.pdf>
-Package pdftex.def Info: figure/cust-ridge-1.pdf  used on input line 1042.
+Package pdftex.def Info: figure/cust-ridge-1.pdf  used on input line 1036.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-[25] [26 <./figure/bothcust-1.pdf> <./figure/bothcust-2.pdf>] [27 <./figure/bot
-hcust-lv-1.pdf>] [28 <./figure/cust-ridge-1.pdf>]
-<figure/cricex-1.pdf, id=538, 566.115pt x 328.22626pt>
-File: figure/cricex-1.pdf Graphic file (type pdf)
-<use figure/cricex-1.pdf>
-Package pdftex.def Info: figure/cricex-1.pdf  used on input line 1072.
-(pdftex.def)             Requested size: 469.76303pt x 272.36261pt.
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 109
-3.
+[23 <./figure/bothcust-1.pdf>] [24 <./figure/bothcust-lv-1.pdf>] [25 <./figure/
+cust-ridge-1.pdf>]
+
+LaTeX Warning: Reference `sec:circulargran' on page 26 undefined on input line 
+1070.
+
+[26]
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 111
+2.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [29 <./figure/cricex-1.pdf>]
-<figure/field-1.pdf, id=556, 568.1225pt x 331.2375pt>
+) [27]
+<figure/cricex-1.pdf, id=509, 566.115pt x 328.22626pt>
+File: figure/cricex-1.pdf Graphic file (type pdf)
+<use figure/cricex-1.pdf>
+Package pdftex.def Info: figure/cricex-1.pdf  used on input line 1152.
+(pdftex.def)             Requested size: 469.76303pt x 272.36261pt.
+[28 <./figure/cricex-1.pdf>]
+<figure/field-1.pdf, id=522, 568.1225pt x 331.2375pt>
 File: figure/field-1.pdf Graphic file (type pdf)
 <use figure/field-1.pdf>
-Package pdftex.def Info: figure/field-1.pdf  used on input line 1097.
+Package pdftex.def Info: figure/field-1.pdf  used on input line 1177.
 (pdftex.def)             Requested size: 469.7731pt x 273.89597pt.
-<figure/exdot-1.pdf, id=558, 568.1225pt x 328.22626pt>
+<figure/exdot-1.pdf, id=524, 568.1225pt x 328.22626pt>
 File: figure/exdot-1.pdf Graphic file (type pdf)
 <use figure/exdot-1.pdf>
-Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1110.
+Package pdftex.def Info: figure/exdot-1.pdf  used on input line 1190.
 (pdftex.def)             Requested size: 469.7731pt x 271.40602pt.
-[30 <./figure/field-1.pdf>] [31 <./figure/exdot-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1207.
-[32] [33]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1207.
+[29 <./figure/field-1.pdf>] [30 <./figure/exdot-1.pdf>] [31]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1287.
+[32]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1287.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1207.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1207.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1287.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1287.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: C6F602FBF16E9F6F32925CB41E3217D1;4236.
@@ -900,13 +885,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 13612 strings out of 492616
- 200618 string characters out of 6129482
- 316886 words of memory out of 5000000
- 16959 multiletter control sequences out of 15000+600000
- 62653 words of font info for 141 fonts, out of 8000000 for 9000
+ 13594 strings out of 492616
+ 200137 string characters out of 6129482
+ 316580 words of memory out of 5000000
+ 16944 multiletter control sequences out of 15000+600000
+ 62334 words of font info for 140 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,17n,38p,1813b,456s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 35i,17n,38p,1813b,457s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
 /texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2019/
 texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2019/texmf-dist/fon
@@ -928,13 +913,12 @@ ic/lm/lmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy
 5.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr
 /local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/tex
 live/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/
-texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/local/texlive/2019/texmf-dis
-t/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2019/texmf
--dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (33 pages, 1351181 bytes).
+texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2
+019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (32 pages, 1484681 bytes).
 PDF statistics:
- 747 PDF objects out of 1000 (max. 8388607)
- 627 compressed objects within 7 object streams
- 186 named destinations out of 1000 (max. 500000)
- 12602 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 714 PDF objects out of 1000 (max. 8388607)
+ 605 compressed objects within 7 object streams
+ 184 named destinations out of 1000 (max. 500000)
+ 12587 words of extra memory for PDF output out of 14400 (max. 10000000)
 
