@@ -404,13 +404,16 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 \end{equation}
 
 
-**Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, from definition \ref{def:periodical} the following holds true:
+**Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then the following holds true:
 
 - $B \trianglelefteq G'$
 - there exist $R', P' \epsilon Z_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$
-- number of granules of $B$ in each granule of $G'$ is not a constant
 
-Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R)^{th}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
+from definition \ref{def:periodical}
+
+and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping)
+
+Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R')^{th}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
           
 
 ```{r quasi-circular-example, echo=FALSE,out.width = "100%",fig.cap="Relating quasi-circular granularities and bottom linear granularity "}
@@ -475,7 +478,7 @@ Aperiodic cyclic granularities are defined using aperiodic linear granularities.
 \begin{equation*}
 M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
-and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$.
+and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. 
 
 \begin{definition}\label{aperiodic}
 (aperiodic cyclic granularity): An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
@@ -488,7 +491,7 @@ A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \
 \end{equation}
 where, 
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{j=1}^{n}M_{j}$ and index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
+$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$ and index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
 \end{definition}
 
 
@@ -496,7 +499,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 **Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and $A_{B, M}$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.
 
 
-**Discussion**: The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event. 
+**Discussion**: Here, $M_1$ can be an aperiodic linear granularity denoting block leaves during Christmas, $M_2$ can be the one denoting Easter, $M_n$ can be Labour day and M can be conceived as the aperiodic linear granularity denoting any holidays. The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event. 
 
 
 
