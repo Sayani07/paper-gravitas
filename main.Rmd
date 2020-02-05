@@ -385,9 +385,8 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 \begin{split}
 Q_{B,G'}(8) & = L(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) ,\quad since \quad 8 \in T_{3} \\
   & = L(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
-  & = L(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\
   & = L(8 - \vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert - \vert T_{2 \mod 2}\vert) \\
-  & = L(8 - 2*\vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert) \\
+  & = L(8 - 2*\vert T_{0}\vert - \vert T_{1}\vert) \\
   & = L(8 - 2*2 - 3) \\
   & = L(1) \\
 \end{split}
