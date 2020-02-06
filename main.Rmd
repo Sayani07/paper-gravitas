@@ -567,10 +567,10 @@ Circular single-order-up granularities can be used recursively to obtain multipl
 
 \begin{equation} \label{eq:eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_(l+1),G_m)}(z))) \\  
+C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\  
   & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
-  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
-  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z) - 1) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
+  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
+  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
   &\vdots\\
   & = L(\sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z)))\\
 \end{split}
