@@ -562,7 +562,7 @@ Examples of multiple-order-up  granularities can be kin-of-tun or kin-of-baktun 
 
 ### All circular single order-up granularities {#sec:all-circular}
 
-Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of each circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can however be chosen arbitrarily, depending on the context.
+Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of the individual circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can however be chosen arbitrarily, depending on the context.
 
 
 \begin{equation} \label{eq:eq7}
@@ -576,7 +576,7 @@ C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\
 \end{split}
 \end{equation}
 
-*Example:* Let us use the equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar.
+*Example:* Let us use Equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar.
 
 \begin{equation} \label{eq8}
 \begin{split}
@@ -601,12 +601,12 @@ Let us revisit Gregorian calendar for addressing this case. Suppose we have a hi
 |  month    	|month-of-year     |  12            |
 |  year   	  | 1                |	1             |
 
-There can be three scenarios for obtaining multiple-order-granularities here:
+There can be three scenarios for obtaining multiple-order-granularities here:  
 - cyclic granularities relating two linear granularities whose orders are less than day  
 - cyclic granularities relating two linear granularities whose orders are more than month  
 - granularities relating two linear granularities with order at most day and another with order at least month  
 
-The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. Let us consider the computation of $C_{hour, month}(z)$ for $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$.
+The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$.
 
 
 \begin{equation} \label{eq:hour-month}
@@ -624,18 +624,42 @@ C_{day, year}(z) & = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\ver
 
 where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
+Clearly, the computation of multiple order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$ for computation of $\vert T_w \vert$.
 
-Clearly, the computation of multiple order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$. To keep it simple, we include only the case where there is just one single order-up quasi-circular granularity in the hierarchy table and any multiple order-up quasi-circular granularity need to be expressed with single order-up circular granularities and a quasi-circular granularity, that is not necessarily single order-up.
+Generally speaking, to keep it simple, we consider the case of only one quasi-circular single order-up granularity in the hierarchy. Any multiple order-up quasi-circular granularity can then be considered to be a function of some circular (single or multiple order-up) and a quasi-circular single order-up granularity. 
 
-\begin{equation} \label{eq:multifromsingle-quasi}
+<!-- Both of them can be circular or quasi-circular or it can be each of both. In case they are both quasi-circular or one circular and the other quasi-circular, we need to adjust the formula -  -->
+
+For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, two different approaches need to be employed for computing multiple order-up granularities from single order-up ones.
+
+- Case when $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
+
+\begin{equation} \label{eq:multifromsingle-quasi1}
 \begin{split}
-C_{G_l,G_m}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z)-1)) \\ 
-& = L(\sum_{i=0}^{m' - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z))) + P(l, m')(C_{G_{m'},G_{m}}(z))\\
+C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\ 
 \end{split}
 \end{equation}
 
-where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping.
+- Case when  $C_{l,m'}(z)$  is quasi-circular and $C_{m',m}(z)$ is circular
 
+\begin{equation} \label{eq:multifromsingle-quasi2}
+\begin{split}
+C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{w} \vert))\\
+\end{split}
+\end{equation}
+
+where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+
+<!-- \begin{equation} \label{eq:multifromsingle-quasi} -->
+<!-- \begin{split} -->
+<!-- C_{G_l,G_m}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\  -->
+<!-- & = L(\sum_{i=0}^{m' - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z))) + P(l, m')(C_{G_{m'},G_{m}}(z))\\ -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+
+<!-- where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping. -->
+
+If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z)$ are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
 
 <!-- The aperiodic granularity $C_{day, quarter}(z))$ in \autoref{eq:hour-month} can be broken further. -->
 
