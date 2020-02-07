@@ -29,9 +29,13 @@ abstract: |
 
    Visualizing data across granularities which are either single-order-up or multiple-order-up or periodic/aperiodic helps us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. This work provides tools for creating granularities and exploring the associated time series within the tidy workflow, so that probability distributions can be examined using the range of graphics available in ggplot2 [@Wickham2009-pk]. 
 bibliography: [bibliography.bib]
+preamble: >
+  \usepackage{mathtools}
+  \usepackage{amssymb} 
+  \usepackage{Booktabs}
 output:
   bookdown::pdf_book:
-    #base_format: rticles::asa_article
+    base_format: rticles::asa_article
     fig_height: 5
     fig_width: 8
     fig_caption: yes
@@ -181,7 +185,7 @@ for each index i, there exists an index j such that $G(i) \subset H(j)$.
 
 \begin{definition}\label{def:groupsinto}
 (groups into): A linear granularity G groups into a linear granularity H, denoted
-$G \trianglelefteq H,$
+$G \trianglelefteq H$,
 if for each index j there exists a (possibly infinite) subset S of the integers such
 that
 \begin{equation}
@@ -198,7 +202,7 @@ knitr::include_graphics("Figs/groupsandfiner.png")
 
 \begin{definition}\label{def:periodical}
 (groups periodically): A granularity H is periodical with respect to a granularity G if
-(1) $G \trianglelefteq H,$ and
+(1) $G \trianglelefteq H$, and
 (2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
 that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
 $H (i + R) = \bigcup_{j \in S} G(j + P)$.
@@ -214,7 +218,7 @@ $H (0), . . . , H (R - 1)$, respectively, then the description of an arbitrary g
 
 \begin{definition}\label{def:quasi}
 (groups quasi-periodically): A granularity H is quasi-periodical with respect to a granularity G if
-(1) $$G \trianglelefteq H,$$, and
+(1) $G \trianglelefteq H$, and
 (2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
 integers R,P, where R is less than the minimum of the number of granules of H
 between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
@@ -659,7 +663,7 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 
 <!-- where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping. -->
 
-If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z)$ are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
+If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z) are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
 
 <!-- The aperiodic granularity $C_{day, quarter}(z))$ in \autoref{eq:hour-month} can be broken further. -->
 
