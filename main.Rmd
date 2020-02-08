@@ -1707,7 +1707,7 @@ There are many interesting questions that can possibly be answered with such a d
 
 Q1: How total runs vary depending on if a team bats first or second?
 
-Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular cyclic granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
+Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different startegies when it comes to batting in the first or second innings.
 
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
@@ -1801,9 +1801,11 @@ cricket_tsibble %>%
 
 Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over? 
 
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs. We can verify this fact through Figure \ref{fig:field} which shows that the difference in run rates between two subsequent overs are negative when good fielding leads to at least one dismissal in an over, implying good fielding in one over has indeed an impact on runs scored in the subsequent overs.
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. Figure \ref{fig:field} shows that at least one dismissal in an over leads to a lower median and less volatility in the distribution of difference in run rates.
 
-```{r field, fig.cap = "Distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over.", warning=FALSE}
+<!-- Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs.  -->
+
+```{r field, fig.cap = "Violin plots with an overlaid boxplot showing distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over.", warning=FALSE}
 
 cricket_dot_field <- cricket_season %>% 
   mutate(fielding_proxy = if_else(dismissal_kind %in% 
@@ -1841,7 +1843,7 @@ cricket_data_ts <- cricket_tsibble %>%
                                response = "diff_run_rate",
                                plot_type = "violin",
                                quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-           overlay = TRUE)  + ggtitle("")
+           overlay = TRUE)  + ggtitle("") + geom_boxplot(width = 0.5)
 ```
 
 
@@ -1850,7 +1852,10 @@ cricket_data_ts <- cricket_tsibble %>%
 
 Q3: Are runs set to reduce in the next over for dot balls in the previous over?
 
-A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? From figure \ref{fig:exdot} shows the quantile plot of runs across overs for none, one or two dot balls per over in the facets. Each of the quantiles decrease across facets. With two dot balls per over, at least 50% of the times, run rates decrease in the subsequent over as observed through the negative values for different quantiles.
+A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? Figure \ref{fig:exdot} shows the quantile plot of runs across overs for at least one dot ball per over (facet 1) or no dot balls per over (facet 2).
+With at least one dot balls per over, the distribution of difference in run rates as observed through the quantiles plotted have shifted downwards. This implies that run rates are likely to decrease in the subsequent over as a result of dot balls in the previous over.
+
+<!-- Each of the quantiles decrease across facets. With two dot balls per over, at least 50% of the times, run rates decrease in the subsequent over as observed through the negative values for different quantiles. -->
 
 <!-- # ```{r crickread, ech0=FALSE} -->
 <!-- # cricket_tsibble <- gravitas::cricket %>% -->
@@ -1904,8 +1909,10 @@ cricket_data_ts %>%
             symmetric = FALSE)  + ggtitle("")
 ```
 
-In Q2 and Q3, we considered dots balls per over or catches per over as aperiodic cyclic granularities. They do not appear in the hierarchy since we can not compute these granularities as a function of circular or quasi-circular granularities. Also, their order in the hierarchy table is not clear as they are essentially obtained from some aperiodic linear granularity. These are similar to holidays in temporal data which also can not be placed at a fixed order in a hierarchy table in case they are not finer than or groups into other temporal units.
+In Q2 and Q3, dots balls per over or catches per over are considered as aperiodic cyclic granularities with dot balls or catches as aperiodic linear granularities. These aperiodic linear granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data. While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.
 
+
+<!-- For example, in the temporal case, aperiodic cyclic granularity "Easter" is computed based on which all time indices correspond to the event "Easter". Similarly, for aperiodic cyclic granularity "dot balls per over" is computed based on which all balls correspond to the event "dot balls". -->
 
 # Discussion {#sec:discussion}
 
