@@ -1,5 +1,9 @@
 ---
-title: Exploring probability distributions for bivariate temporal granularities
+title: Visualizing probability distributions across bivariate cyclic temporal granularities
+
+# to produce blinded version set to 1
+blinded: 0
+
 authors:
 - name: Sayani Gupta
   affiliation: Department of Econometrics and Business Statistics, Monash University
@@ -18,6 +22,7 @@ keywords:
 - data visualization
 - statistical distributions
 - time granularities
+- calendar algebra
 - periodicties
 - grammar of graphics
 - R
