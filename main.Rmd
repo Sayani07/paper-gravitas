@@ -335,11 +335,11 @@ In general, any circular granularity relating two linear granularity, none of wh
 \begin{center}
 \begin{tabular}{lr@{~}lr@{~}r}
 \toprule
-minute-of-Hour: & $C_1$ & $= L_1(z \mod 60)$ & $P_1 =$&$60$ \\
-minute-of-Day: & $C_2$ & $= L_2(z \mod 60*24)$ & $P_2=$&$`r 60*24`$\\
-hour-of-Day: & $C_3$ & $= L_3(\lfloor z/60\rfloor\mod 24)$  & $P_3 =$&$24$ \\
-hour-of-Week: & $C_4$ & $= L_4(\lfloor z/60\rfloor\mod 24*7)$  & $P_4=$&$`r 24*7`$\\
-day-of-Week: & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$ & $P_5=$&$7$\\
+minute-of-hour: & $C_1$ & $= L_1(z \mod 60)$ & $P_1 =$&$60$ \\
+minute-of-day: & $C_2$ & $= L_2(z \mod 60*24)$ & $P_2=$&$`r 60*24`$\\
+hour-of-day: & $C_3$ & $= L_3(\lfloor z/60\rfloor\mod 24)$  & $P_3 =$&$24$ \\
+hour-of-week: & $C_4$ & $= L_4(\lfloor z/60\rfloor\mod 24*7)$  & $P_4=$&$`r 24*7`$\\
+day-of-week: & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$ & $P_5=$&$7$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -358,10 +358,10 @@ A **quasi-circular** granularity can not be defined using modular arithmetic sin
 \begin{tabular}{lr@{~}lr@{~}r}
 \toprule
 
-Day-of-Month: & $Q_1$ && $P_1 = 31, 30, 29, 28$\\
-Hour-of-Month: & $Q_2$ && $P_2 = 24*31, 24*30, 24*29, 24*28$\\
-Day-of-Year: & $Q_3$ && $P_3 = 366, 365$\\
-Week-of-Month: & $Q_4$ && $P_4 = 5, 4$\\ 
+day-of-month: & $Q_1$ && $P_1 = 31, 30, 29, 28$\\
+hour-of-month: & $Q_2$ && $P_2 = 24*31, 24*30, 24*29, 24*28$\\
+day-of-year: & $Q_3$ && $P_3 = 366, 365$\\
+week-of-month: & $Q_4$ && $P_4 = 5, 4$\\ 
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1102,7 +1102,7 @@ Each type of density display has different parameters, that need to be estimated
 
 ### Levels
 
-We will discuss the effect of the levels of cyclic granularities in this section. Recall that cyclic granularities $C_1$ and $C_2$ are such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. $A_i$'s and $B_j$'s are referred to as the levels of $C_1$ and $C_2$ for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ respectively. The levels have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. Plot choices will also depend on the aesthetic mapping of the cyclic granularities. A potential approach can be to categorize the levels as very high/high/medium/low for each cyclic granularities and define some criteria based on usual cognitive power, display size available and the aesthetic mappings. Default values for these categorisations can be chosen based on levels of common temporal granularities like days-of-month, days-of-fortnight and days-of-week. For example, any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low.
+We will discuss the effect of the levels of cyclic granularities in this section. Recall that cyclic granularities $C_1$ and $C_2$ are such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. $A_i$'s and $B_j$'s are referred to as the levels of $C_1$ and $C_2$ for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ respectively. The levels have an impact on the choice of plots since space and resolution might become a problem if the number of levels are too high. A potential approach can be to categorize the levels as very high/high/medium/low for each cyclic granularities and define some criteria based on usual cognitive power, display size available and the aesthetic mappings. Default values for these categorisations can be chosen based on levels of common temporal granularities like days-of-month, days-of-fortnight and days-of-week. For example, any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low.
 
 <!-- The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us.  -->
 
@@ -1145,7 +1145,7 @@ Clearly, in \autoref{fig:allFig}, we observe that some choices of cyclic time gr
 We redefine harmony and clashes as follows: harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. As a result, we should avoid plotting clashes as they hinder the exploratory process by having missing combinations of time granularities in each panel.
 
 
-```{r allFig, fig.height=5.5, out.width="50%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Various probability distribution plots of electricity consumption data of Victoria from 2012 to 2014. (a) Letter value plot by DoM and MoY, (b) Decile plot by HoD and DoW (c) Box plot by DoY and DoM, (d) Violin plot of DoM and WoM, (e) Ridge plot by WoM and WoY, (f) Decile plot by DoY and MoY. Only plots (a) and (b) show harmonised time variables.", fig.show = 'hold'}
+```{r allFig, fig.height=5.5, out.width="50%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Various probability distribution plots of electricity consumption data of Victoria from 2012 to 2014. (a) Letter value plot by day-of-month and month-of-year (b) Decile plot by hour-of-day and day-of-week (c) Box plot by day-of-year and day-of-month, (d) Violin plot of day-of-month and week-of-month, (e) Ridge plot by week-of-month and week-of-year, (f) Decile plot by day-of-year and month-of-year. Only plots (a) and (b) show harmonised time variables.", fig.show = 'hold'}
 
 # change all of these to gravitas function
 library(gravitas)
