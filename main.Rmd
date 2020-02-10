@@ -614,9 +614,9 @@ Let us revisit Gregorian calendar for addressing this case. Suppose we have a hi
 |  year   	  | 1                |	1             |
 
 There can be three scenarios for obtaining multiple-order-granularities here:  
-- cyclic granularities relating two linear granularities whose orders are less than day  
-- cyclic granularities relating two linear granularities whose orders are more than month  
-- granularities relating two linear granularities with order at most day and another with order at least month  
+ - cyclic granularities relating two linear granularities whose orders are less than day  
+ - cyclic granularities relating two linear granularities whose orders are more than month  
+ - granularities relating two linear granularities with order at most day and another with order at least month  
 
 The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$.
 
@@ -796,7 +796,7 @@ include_graphics("Figs/data-structure-v1.png")
 
 ## Synergy of the cyclic granularities {#sec:synergy}
 
-The way cyclic granularities relate become important when we consider the data structure in \@autoref{fig:data-structure}. While considering data sets of the form $<C_1, C_2, v>$, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ data subsets. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
+The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). While considering data sets of the form $<C_1, C_2, v>$, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ data subsets. We will discuss few cases, where one or more of these $nm$ sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
 
 <!-- The cyclic time granularities which are essentially categorizations of time are discrete variable, mapped as a factor since they have an inherent order. Since two cyclic granularities are mapped to the the fixed and conditioned variable, the way in which they are related becomes important in the data structure. To define a general framework, we define harmony and clashes. -->
 
@@ -1665,10 +1665,12 @@ This case study shows systematic exploration of energy behavior for a random hou
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset.
+The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. 
+
+<!-- However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. -->
 
 
-The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. The hierarchy table would look like the following:
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like the following:
 
 ```{r hierarchy2}
  library(gravitas)
@@ -1680,7 +1682,7 @@ The Indian Premier League (IPL) is a professional Twenty20 cricket league in Ind
  knitr::kable(hierarchy_model, format = "markdown")
 ```
 
-There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. We will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
 
 <!-- the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. -->
@@ -1723,29 +1725,6 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
 <!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
 
 
-```{r runs_per-over}
- library(tsibble)
-
- cricket_all <-  read_csv("data-raw/deliveries_all.csv")
- matches_all <- read_csv("data-raw/matches_all.csv")
-
- cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id"))
-
- cricket_per_over <- cricket_season %>%
-   group_by(season,
-            match_id,
-            batting_team,
-            bowling_team,
-            inning,
-            over) %>%
-   summarise(runs_per_over = sum(total_runs),
-             run_rate = sum(total_runs)/length(total_runs))
-
- cricket_tsibble_all <- cricket_per_over %>%
-   ungroup() %>%
-   mutate(data_index = row_number()) %>%
-   as_tsibble(index = data_index)
-```
 
 <!-- # ```{r seas-over-inning, fig.cap = "Quantile plot of runs per over across overs of different seasons. There is no pattern on increase or decrease of runs across overs for seasons."} -->
 <!-- #   cricket_tsibble_all %>%  -->
@@ -1777,17 +1756,6 @@ hierarchy_model <- tibble::tibble(
   convert_fct = c(1, 20, 2, 1)
 )
 
-# cricket_tsibble %>%
-#   filter(batting_team %in% c("Mumbai Indians",
-#                              "Chennai Super Kings"))%>%
-#   create_gran("inning_match", hierarchy_model) %>% create_gran("over_inning", hierarchy_model)
-
-cricket_tsibble %>%
-  filter(batting_team %in% c("Mumbai Indians",
-                             "Chennai Super Kings"))%>%
-  gran_advice("inning", 
-            "over")
-
 cricket_tsibble %>%
   filter(batting_team %in% c("Mumbai Indians",
                              "Chennai Super Kings"))%>%
@@ -1798,12 +1766,6 @@ cricket_tsibble %>%
   plot_type = "lv")  + ggtitle("") +
   scale_fill_brewer(palette = "Dark2")
 
-# cricket_tsibble %>%
-#   filter(batting_team %in% c("Mumbai Indians",
-#                              "Chennai Super Kings"))%>%
-#   gran_advice("inning", 
-#             "over")
-
 ```
 
 Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over? 
@@ -1812,7 +1774,34 @@ For establishing that the fielder fielded well in a particular over, we can see 
 
 <!-- Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs.  -->
 
-```{r field, fig.cap = "Violin plots with an overlaid boxplot showing distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over.", warning=FALSE}
+<!-- fetching raw data since dot and fielding information not available in dismissal type not available in cricket data gravitas -->
+
+```{r runs_per-over}
+ library(tsibble)
+
+ cricket_all <-  read_csv("data-raw/deliveries_all.csv")
+ matches_all <- read_csv("data-raw/matches_all.csv")
+
+ cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id"))
+
+ # cricket_per_over <- cricket_season %>%
+ #   group_by(season,
+ #            match_id,
+ #            batting_team,
+ #            bowling_team,
+ #            inning,
+ #            over) %>%
+ #   summarise(runs_per_over = sum(total_runs),
+ #             run_rate = sum(total_runs)/length(total_runs))
+ # 
+ # cricket_tsibble_all <- cricket_per_over %>%
+ #   ungroup() %>%
+ #   mutate(data_index = row_number()) %>%
+ #   as_tsibble(index = data_index)
+```
+
+
+```{r}
 
 cricket_dot_field <- cricket_season %>% 
   mutate(fielding_proxy = if_else(dismissal_kind %in% 
@@ -1836,16 +1825,24 @@ cricket_tsibble <- cricket_dot_field %>%
   mutate(data_index = row_number()) %>% 
   as_tsibble(index = data_index)
 
-cricket_tsibble %>% gran_obs("over", "fielding_wckts")
-
-
-cricket_data_ts <- cricket_tsibble %>% 
+cricket_data<- cricket_tsibble %>% 
   mutate(field = if_else(fielding_wckts==0, "no wickets", ">0 wickets"),
          dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls")) 
+```
+
+
+```{r echo = TRUE}
+cricket_data %>% gran_obs("field", "over")
+cricket_data %>% gran_obs("dot", "over")
+```
+
+```{r field,  fig.cap = "Violin plots with an overlaid boxplot showing distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over.", warning=FALSE}
+
+
 
 
   #filter(fielding_wckts %in% c(0,1)) %>% 
-  cricket_data_ts %>% prob_plot( "over","field",
+  cricket_data %>% prob_plot("over","field",
                                hierarchy_model,
                                response = "diff_run_rate",
                                plot_type = "violin",
@@ -1905,7 +1902,7 @@ With at least one dot balls per over, the distribution of difference in run rate
 #             symmetric = FALSE)  + ggtitle("")
 
 
-cricket_data_ts %>% 
+cricket_data %>% 
   #filter(dot_balls %in% c(0, 1, 2)) %>%
   prob_plot("dot",
             "over",

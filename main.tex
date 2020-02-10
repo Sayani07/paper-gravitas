@@ -499,7 +499,7 @@ The cyclic calendar algebra consists of broadly two kinds of operations:\\
 
 The hierarchical structure of time creates a natural nested ordering which can produce \textbf{single-order-up} or \textbf{multiple-order-up} granularities. We shall use the notion of a hierarchy table and order to define them.
 
-\textbf{Hierarchy table} Let \(H_n: (G, C, P)\) be a hierarchy model containing n linear granularities. \(G_{l}\) represents the linear granularity of order l and \(P(l,m)\) represents the period length of \(G_{l}\) with respect to \(G_{m}\) and \(C_{G(l),G(m)}\) represents the cyclic granularity that relates linear granularity of order l and m, \(\forall l,m \in n, l<m\).
+\textbf{Hierarchy table} Let \(H_n: (G, C, P)\) be a hierarchy model containing n linear granularities. \(G_{l}\) represents the linear granularity of order l and \(P(l,m)\) represents the period length of \(G_{l}\) with respect to \(G_{m}\) and \(C_{G(l),G(m)}\) represents the cyclic granularity that relates linear granularity of order l and m, \(\forall l,m \in {1, 2, \dots,n}\) and \(l<m\).
 
 \textbf{Order} of a linear granularity can be comprehended as the level of graininess associated with a linear granularity. For example, if we consider two linear granularities \(G\) and \(H\), such that \(G\) is finer than or groups into \(H\), then \(H\) is of higher order than \(G\). In any hierarchy table, linear granularities are arranged from lowest to highest order of linear granularities.
 
@@ -548,12 +548,12 @@ Circular single-order-up granularities can be used recursively to obtain multipl
 
 \begin{equation} \label{eq:eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\  
-  & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
-  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
-  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
+C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\  
+  & =   L(C_{(G_l,G_{l+1}}(z) + P(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + P(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
+  & =  L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + P(l, l+1)P(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
+  & =  L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + P(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
   &\vdots\\
-  & = L(\sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z)))\\
+  & = L(\sum_{i=0}^{m - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z)))\\
 \end{split}
 \end{equation}
 
@@ -562,7 +562,9 @@ C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\
 \begin{equation} \label{eq8}
 \begin{split}
 C_{uinal, baktun}(z) & = L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C_{uinal, katun}C_{katun, baktun}(z)) \\
-              & = L(\lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
+              & = L(\lfloor z/20\rfloor \mod 18  +
+              20*\lfloor z/20*18\rfloor \mod 20 +
+              20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
 \end{split}
 \end{equation}
 
@@ -638,7 +640,7 @@ C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert
 
 where, \(T_w\) is such that \(G_{m'}(w) = \bigcup_{z \in T_w}G_{l}\) and \(\vert T_w \vert\) is the cardinality of set \(T_w\).
 
-If \(C_{G_{l},G_{m'}}(z)\) or \$C\_\{G\_\{l\},G\_\{m'\}\}(z) are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
+If \(C_{G_{l},G_{m'}}(z)\) or \(C_{G_{l},G_{m'}}(z)\) are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
 
 \hypertarget{sec:multiple-to-single}{%
 \subsection{Multiple-to-single}\label{sec:multiple-to-single}}
@@ -684,7 +686,7 @@ A recent tidy data structure to support exploration and modeling of temporal dat
 \hypertarget{sec:synergy}{%
 \subsection{Synergy of the cyclic granularities}\label{sec:synergy}}
 
-The way cyclic granularities relate become important when we consider the data structure in @autoref\{fig:data-structure\}. While considering data sets of the form \(<C_1, C_2, v>\), let \(S_{ij}\) be the set of index set such that for all \(s \in S_{ij}\), \(C_1(s) = A_i\) and \(C_2(s) = B_j\). Data subsets like \textless{}\(A_i\), \(B_j\), \(v(s)\)\textgreater{} can be obtained for all \(i \in {1, 2, \dots, n}\) and \(j \in {1, 2, \dots, m}\) which will lead to \(nm\) data subsets. We will discuss few cases, where one or more of these \(nm\) sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
+The way cyclic granularities relate become important when we consider the data structure in Figure \ref{fig:data-structure}. While considering data sets of the form \(<C_1, C_2, v>\), let \(S_{ij}\) be the set of index set such that for all \(s \in S_{ij}\), \(C_1(s) = A_i\) and \(C_2(s) = B_j\). Data subsets like \textless{}\(A_i\), \(B_j\), \(v(s)\)\textgreater{} can be obtained for all \(i \in {1, 2, \dots, n}\) and \(j \in {1, 2, \dots, m}\) which will lead to \(nm\) data subsets. We will discuss few cases, where one or more of these \(nm\) sets will be empty, which will essentially mean that the measured variable can not be explored for all combinations of the categories/levels of the cyclic granularities. To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
 
 Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
 These are called ``structurally'' empty combinations. Let us take a specific example, where \(C_1\) maps index set to day-of-month and \(C_2\) maps index set to week-of-month. Here \(C_1\) can have 31 levels/categories while \(C_2\) can have 5 categories. There will be \(31\times 5=155\) sets \(S_{ij}\) corresponding to the possible combinations of day-of-month and week-of-month. Many of these are empty. For example \(S_{1,5}\), \(S_{21,2}\), etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
@@ -1042,9 +1044,9 @@ This case study shows systematic exploration of energy behavior for a random hou
 \hypertarget{sec:cricket}{%
 \subsection{T20 cricket data of Indian Premiere League}\label{sec:cricket}}
 
-The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others. However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a non-temporal dataset similar to any temporal dataset.
+The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others.
 
-The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from \href{https://www.kaggle.com/josephgpinto/ipl-data-analysis/data}{Kaggle}. The \texttt{cricket} data set in the \texttt{gravitas} package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. The hierarchy table would look like the following:
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from \href{https://www.kaggle.com/josephgpinto/ipl-data-analysis/data}{Kaggle}. The \texttt{cricket} data set in the \texttt{gravitas} package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like the following:
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
@@ -1058,47 +1060,11 @@ season & 1 & 1\tabularnewline
 \bottomrule
 \end{longtable}
 
-There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. We will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
 
 Q1: How total runs vary depending on if a team bats first or second?
 
 Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular granularities ``over-of-inning'' and ``inning-of-match'' can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
-
-\begin{verbatim}
-#> The chosen granularities are harmonies 
-#>  
-#> Recommended plots are: violin lv quantile boxplot 
-#>  
-#> Number of observations are homogenous across facets 
-#>  
-#> Number of observations are homogenous within facets 
-#>  
-#> Cross tabulation of granularities : 
-#>  
-#> # A tibble: 20 x 3
-#>    over    `1`   `2`
-#>    <fct> <dbl> <dbl>
-#>  1 1        65    44
-#>  2 2        65    44
-#>  3 3        65    44
-#>  4 4        65    44
-#>  5 5        65    44
-#>  6 6        65    44
-#>  7 7        65    44
-#>  8 8        65    44
-#>  9 9        65    44
-#> 10 10       65    44
-#> 11 11       65    44
-#> 12 12       65    44
-#> 13 13       65    44
-#> 14 14       65    44
-#> 15 15       65    44
-#> 16 16       65    44
-#> 17 17       65    44
-#> 18 18       65    44
-#> 19 19       65    44
-#> 20 20       65    44
-\end{verbatim}
 
 \begin{figure}
 
@@ -1113,16 +1079,68 @@ Q2: Is runs per over set to reduce in subsequent over if fielding is good in the
 
 For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. Figure \ref{fig:field} shows that at least one dismissal in an over leads to a lower median and less volatility in the distribution of difference in run rates.
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cricket_data }\OperatorTok{%>%}\StringTok{ }\KeywordTok{gran_obs}\NormalTok{(}\StringTok{"field"}\NormalTok{, }\StringTok{"over"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
-#> # A tibble: 4 x 21
-#>   fielding_wckts   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
-#>   <fct>          <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 0               1039   997   972   978   962   957  1002  1012   993   984
-#> 2 1                120   145   171   165   180   181   138   124   140   153
-#> 3 2                  5    10     8     8     9    10     6    10     8     4
-#> 4 3                  0     0     0     0     0     0     0     0     0     0
-#> # … with 10 more variables: `11` <dbl>, `12` <dbl>, `13` <dbl>, `14` <dbl>,
-#> #   `15` <dbl>, `16` <dbl>, `17` <dbl>, `18` <dbl>, `19` <dbl>, `20` <dbl>
+#> # A tibble: 20 x 3
+#>    over  `>0 wickets` `no wickets`
+#>    <fct>        <dbl>        <dbl>
+#>  1 1              125         1039
+#>  2 2              155          997
+#>  3 3              179          972
+#>  4 4              173          978
+#>  5 5              189          962
+#>  6 6              191          957
+#>  7 7              144         1002
+#>  8 8              134         1012
+#>  9 9              148          993
+#> 10 10             157          984
+#> 11 11             173          962
+#> 12 12             177          951
+#> 13 13             169          954
+#> 14 14             205          913
+#> 15 15             208          892
+#> 16 16             219          865
+#> 17 17             231          833
+#> 18 18             291          743
+#> 19 19             287          695
+#> 20 20             306          572
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cricket_data }\OperatorTok{%>%}\StringTok{ }\KeywordTok{gran_obs}\NormalTok{(}\StringTok{"dot"}\NormalTok{, }\StringTok{"over"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+#> # A tibble: 20 x 3
+#>    over  `>0 dot balls` `no dot balls`
+#>    <fct>          <dbl>          <dbl>
+#>  1 1               1146             18
+#>  2 2               1140             12
+#>  3 3               1111             40
+#>  4 4               1112             39
+#>  5 5               1099             52
+#>  6 6               1099             49
+#>  7 7               1057             89
+#>  8 8               1026            120
+#>  9 9               1027            114
+#> 10 10              1010            131
+#> 11 11               992            143
+#> 12 12               971            157
+#> 13 13               970            153
+#> 14 14               957            161
+#> 15 15               935            165
+#> 16 16               904            180
+#> 17 17               881            183
+#> 18 18               852            182
+#> 19 19               788            194
+#> 20 20               683            195
 \end{verbatim}
 
 \begin{figure}
