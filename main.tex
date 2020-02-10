@@ -1077,7 +1077,7 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best
 
 Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over?
 
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. Figure \ref{fig:field} shows that at least one dismissal in an over leads to a lower median and less volatility in the distribution of difference in run rates.
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. Figure \ref{fig:field} shows that at least one dismissal in a previous over leads to a lower median and less spread in the distribution of run rates of the subsequent over.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1149,7 +1149,7 @@ For establishing that the fielder fielded well in a particular over, we can see 
 
 }
 
-\caption{Violin plots with an overlaid boxplot showing distribution of lagged run rate across overs of the innings and wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also run rates are much less volatile in case there are at least one wicket in the previous over.}\label{fig:field}
+\caption{Violin plots with an overlaid boxplot showing distribution of run rate across overs of the innings and (lagged) wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also distribution of run rates has less spread in case there is at least one wicket in the previous over.}\label{fig:field}
 \end{figure}
 
 Q3: Are runs set to reduce in the next over for dot balls in the previous over?
