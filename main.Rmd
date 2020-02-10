@@ -533,7 +533,7 @@ The cyclic calendar algebra consists of broadly two kinds of operations:
 The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
 
 
-**Hierarchy table** Let $H_n: (G, C, P)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $P(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the cyclic granularity that relates linear granularity of order l and m, $\forall l,m \in n, l<m$.  
+**Hierarchy table** Let $H_n: (G, C, P)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $P(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the cyclic granularity that relates linear granularity of order l and m, $\forall l,m \in {1, 2, \dots,n}$ and $l<m$.  
 
 **Order** of a linear granularity can be comprehended as the level of graininess associated with a linear granularity. For example, if we consider two linear granularities $G$ and $H$, such that $G$ is finer than or groups into $H$, then $H$ is of higher order than $G$. In any hierarchy table, linear granularities are arranged from lowest to highest order of linear granularities.  
 
@@ -577,12 +577,12 @@ Circular single-order-up granularities can be used recursively to obtain multipl
 
 \begin{equation} \label{eq:eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\  
-  & =   L(C_{(G_l,G_{l+1}}(z) + k(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + k(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
-  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + k(l, l+1)k(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
-  & =  L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + k(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
+C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\  
+  & =   L(C_{(G_l,G_{l+1}}(z) + P(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + P(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
+  & =  L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + P(l, l+1)P(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
+  & =  L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + P(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
   &\vdots\\
-  & = L(\sum_{i=0}^{m - l - 1} k(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z)))\\
+  & = L(\sum_{i=0}^{m - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z)))\\
 \end{split}
 \end{equation}
 
@@ -591,7 +591,9 @@ C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + k(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\
 \begin{equation} \label{eq8}
 \begin{split}
 C_{uinal, baktun}(z) & = L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C_{uinal, katun}C_{katun, baktun}(z)) \\
-              & = L(\lfloor z/20\rfloor \mod 18  + 20*\lfloor z/20*18\rfloor \mod 20 + 20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
+              & = L(\lfloor z/20\rfloor \mod 18  +
+              20*\lfloor z/20*18\rfloor \mod 20 +
+              20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
 \end{split}
 \end{equation}
 
@@ -669,7 +671,7 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 
 <!-- where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping. -->
 
-If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z) are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
+If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z)$ are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
 
 <!-- The aperiodic granularity $C_{day, quarter}(z))$ in \autoref{eq:hour-month} can be broken further. -->
 
