@@ -384,7 +384,7 @@ Q_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert), \quad z \in T_k
 
 where
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, $P'$ and $R'$ denote the period of the grouping $(B, G')$ and the number of granules of $G'$ in each of these periods, ${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (\lceil P'/R' \rceil-1)\}$, $T_w$ are the sets of indices of $B$s describing $G'(w)$ such that  $G'(w) = \bigcup_{z \in T_w}B(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, $P'$ and $R'$ denote the period of the grouping $(B, G')$ and the number of granules of $G'$ in each of these periods, ${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (\lceil P'/R' \rceil-1)\}$, $T_w$ are the sets of indices of $B$ describing $G'(w)$ such that  $G'(w) = \bigcup_{z \in T_w}B(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{definition}
 
 
@@ -426,7 +426,7 @@ and,  number of granules of $B$ in each granule of $G'$ is not a constant (irreg
 Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R')^{th}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
           
 
-```{r quasi-circular-example, echo=FALSE,out.width = "100%",fig.cap="Relating quasi-circular granularities and bottom linear granularity "}
+```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="Quasi-circular granularities $Q(B, G')$ and $Q(B, H')$ relating bottom granularity $B$ and linear granularities $G'$ and $H'$ respectively."}
 knitr::include_graphics("Figs/quasi-circular-example.png")
 ```
 
@@ -482,13 +482,13 @@ for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}
 
 ## Aperiodic {#sec:aperiodic-gran-def}
 
-Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} can be infinite for aperiodic granularities. 
+Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no finite (or reasonably small) period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities. 
 
-Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ (that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity). Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that
+Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$, that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that
 \begin{equation*}
 M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
-and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. 
+and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity.
 
 \begin{definition}\label{aperiodic}
 (aperiodic cyclic granularity): An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
@@ -501,7 +501,7 @@ A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \
 \end{equation}
 where, 
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$ and index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
+$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$.
 \end{definition}
 
 
@@ -516,7 +516,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
 
-```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Relating aperiodic granularity and bottom linear granularity "}
+```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Aperiodic cyclic granularity $A(B, M1)$ relating aperiodic linear granularity $M1$ and bottom granularity $B$"}
 knitr::include_graphics("Figs/aperiodic-example.png")
 ```
 

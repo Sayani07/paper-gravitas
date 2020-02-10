@@ -390,7 +390,7 @@ Q_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert), \quad z \in T_k
 
 where
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, $P'$ and $R'$ denote the period of the grouping $(B, G')$ and the number of granules of $G'$ in each of these periods, ${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (\lceil P'/R' \rceil-1)\}$, $T_w$ are the sets of indices of $B$s describing $G'(w)$ such that  $G'(w) = \bigcup_{z \in T_w}B(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, $P'$ and $R'$ denote the period of the grouping $(B, G')$ and the number of granules of $G'$ in each of these periods, ${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (\lceil P'/R' \rceil-1)\}$, $T_w$ are the sets of indices of $B$ describing $G'(w)$ such that  $G'(w) = \bigcup_{z \in T_w}B(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{definition}
 
 \textbf{Example}: Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box. Two linear granularities \(G' = Alter^{2}_{(1,-1)}(BG, Group_3(B))\) and \(H' = Alter^{2}_{(1,-2)}(BG, Group_7(B))\) are considered. This implies that \(G'\) is made up by shrinking every 1st granule of \(Group_3(B)\) by \(1\) granule and \(H'\) is made up of shrinking every 1st granule of \(Group_3(B)\) by \(2\) granules. Number of granules of \(G'\) and \(H'\) in each period of \(B\) is 2 but the number of granules of \(B\) in each of those granules are different. \(Q_{B, G'}\) and \(Q_{B, H'}\) are repetitive categorization of time, similar to circular granularities, except that the number of granules of \(B\) is not necessarily the same across different granules of \(G'\) or \(H'\). For \(G'\), \(T_0 = \{0,1\}\) and \(T_1 = \{2, 3, 4\}\). For \(H'\), \(T_0 = \{0, 1, 2, 3, 4, 5, 6\}\) and \(T_1 = \{7, 8, 9, 10, 11\}\), then we will have \autoref{eq:eq4} and \autoref{eq:circular-gran}.
@@ -439,7 +439,7 @@ Here \(w \mod R'\) represents the index that must be shifted to obtain \(G'(w)\)
 
 }
 
-\caption{Relating quasi-circular granularities and bottom linear granularity }\label{fig:quasi-circular-example}
+\caption{Quasi-circular granularities $Q(B, G')$ and $Q(B, H')$ relating bottom granularity $B$ and linear granularities $G'$ and $H'$ respectively.}\label{fig:quasi-circular-example}
 \end{figure}
 
 It can be noted here that if a linear granularity \(G'\) is quasi-periodic (Definition \autoref{def:quasi}) with respect to \(B\), then \autoref{eq:quasi} can be modified as follows to account for exceptions \(E = [e_{begin}, e_{end}]\) (by Definition \autoref{def:quasi}).
@@ -453,13 +453,13 @@ for \(z \in T_k\) and \(e_k\) is the number of exceptions in \(\bigcup\limits_{w
 \hypertarget{sec:aperiodic-gran-def}{%
 \subsection{Aperiodic}\label{sec:aperiodic-gran-def}}
 
-Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible \(P_i\) from \autoref{tab:quasi} can be infinite for aperiodic granularities.
+Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no finite (or reasonably small) period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible \(P_i\) from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities.
 
-Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities \(M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\) (that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity). Further assume that \(B \trianglelefteq M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\). Then according to \autoref{def:groupsinto}, for each index \(j\) there exists a (possibly infinite) subset \(T_{\{i_j\}}\) of the integers such that
+Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities \(M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\), that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that \(B \trianglelefteq M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\). Then according to \autoref{def:groupsinto}, for each index \(j\) there exists a (possibly infinite) subset \(T_{\{i_j\}}\) of the integers such that
 \begin{equation*}
 M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
-and suppose \(M = \bigcup_{i=1}^{n}M_{i}\) is formed by collecting the granules of \(\{M_1, M_2, \dots, M_n\}\).
+and suppose \(M = \bigcup_{i=1}^{n}M_{i}\) is formed by collecting the granules of \(\{M_1, M_2, \dots, M_n\}\). Here, index \({\{i_j\}}\) stands for the \(j^{th}\) granule of the \(i^{th}\) linear aperiodic granularity.
 
 \begin{definition}\label{aperiodic}
 (aperiodic cyclic granularity): An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
@@ -472,7 +472,7 @@ A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \
 \end{equation}
 where, 
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$ and index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity considered.
+$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$.
 \end{definition}
 
 \textbf{Example}: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity \(M_1\) and \(M_2\). Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and \(A_{B, M}\) consists of three categories, \(L(1)\) corresponding to the first aperiodic event \(M_1\), \(L(2)\) corresponding to aperiodic event \(M_2\) and the \(L(0)\) corresponding to no event/aperiodic linear granularity.
@@ -485,7 +485,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 
 }
 
-\caption{Relating aperiodic granularity and bottom linear granularity }\label{fig:aperiodic-example}
+\caption{Aperiodic cyclic granularity $A(B, M1)$ relating aperiodic linear granularity $M1$ and bottom granularity $B$}\label{fig:aperiodic-example}
 \end{figure}
 
 \hypertarget{sec:cyclic-calendar}{%
