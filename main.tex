@@ -22,7 +22,7 @@
 \addtolength{\topmargin}{-.8in}%
 
 %% load any required packages here
-\usepackage{mathtools} \usepackage{amssymb}  \usepackage{booktabs} \usepackage{longtable}
+\usepackage{mathtools,amssymb,booktabs,longtable,todonotes}
 
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -66,6 +66,7 @@
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
 
+
 \begin{document}
 
 
@@ -77,10 +78,10 @@
 
 \if0\blind
 {
-  \title{\bf Visualizing probability distributions across bivariate cyclic temporal granularities}
+  \title{\bf Visualizing probability distributions across bivariate nonlinear temporal granularities}
 
   \author{
-        Sayani Gupta \\
+        Sayani Gupta \thanks{Email: \href{mailto:Sayani.Gupta@monash.edu}{\nolinkurl{Sayani.Gupta@monash.edu}}} \\
     Department of Econometrics and Business Statistics, Monash University\\
      and \\     Rob J Hyndman \\
     Department of Econometrics and Business Statistics, Monash University\\
@@ -98,18 +99,18 @@
   \bigskip
   \bigskip
   \begin{center}
-    {\LARGE\bf Visualizing probability distributions across bivariate cyclic temporal granularities}
+    {\LARGE\bf Visualizing probability distributions across bivariate nonlinear temporal granularities}
   \end{center}
   \medskip
 } \fi
 
 \bigskip
 \begin{abstract}
-Recent advances in technology greatly facilitates recording and storing data at much finer temporal scales than was previously possible. As the frequency of time-oriented data increases, the number of questions about the observed variable that need to be addressed by visual representation also increases. We propose some new tools to explore this type of data, which deconstruct time in many different ways. There are several classes of time deconstructions including linear and cyclic time granularities. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. Cyclic time granularities can be circular such as hour of the day, and day of the week, quasi-circular such as day of the month and aperiodic such as public or school holidays.
+Recent advances in technology greatly facilitates recording and storing data at much finer temporal scales than was previously possible. As the frequency of time-oriented data increases, the number of questions about the observed variable that can be addressed by visual representation also increases. We propose some new tools to explore this type of data, which deconstruct time in many different ways. There are several classes of time deconstructions including linear and nonlinear time granularities. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. Nonlinear time granularities can be circular such as hour of the day, and day of the week, quasi-circular such as day of the month, and aperiodic such as public or school holidays.
 
 The hierarchical structure of linear granularities creates a natural nested ordering resulting in single-order-up and multiple-order-up granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up.
 
-Visualizing data across granularities which are either single-order-up or multiple-order-up or periodic/aperiodic helps us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. This work provides tools for creating granularities and exploring the associated time series within the tidy workflow, so that probability distributions can be examined using the range of graphics available in ggplot2 \citep{Wickham2009pk}.
+Visualizing data across granularities which are either single-order-up or multiple-order-up or periodic/aperiodic helps us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. This work provides tools for creating granularities and exploring the associated time series within a tidy workflow, so that probability distributions can be examined using the range of graphics available in ggplot2 \citep{Wickham2009pk}.
 \end{abstract}
 
 \noindent%
@@ -122,60 +123,65 @@ Visualizing data across granularities which are either single-order-up or multip
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales like monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption is collected every half an hour, while energy supply is collected every minute and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales like days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities \citep{aigner2011visualization}.
-It is important to be able to navigate through all of these temporal granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA \citep{Tukey1977-jx} which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to iteratively explore all possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming.
+Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales such as monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption may be collected every half an hour, energy supply may be collected every minute, and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales such as days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities \citep{aigner2011visualization}.
 
-Calendar-based graphics \citep{wang2018calendar} are useful in visualizing patterns in the weekly and monthly structure well and are capable of checking the weekends or special days. Any sub-daily resolution temporal data can also be displayed using this type of faceting \citep{Wickham2009pk} with days of the week, month of the year and another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week, month-of-year ways of deconstructing time. There can be several classes of time deconstructions, viz. based on the arrangement (linear vs.~cyclic) or hierarchical order of the calendar. Linear time granularities respect the linear progression of time such as hours, days, weeks and months. One of the first attempts of characterizing these granularities occur in \citet{Bettini1998-ed}. The definitions and rules defined are inadequate to reflect periodicities in time. Hence, there is a need to define cyclic time granularities in a different approach, which can be useful in visualizing periodic behavior. Cyclic time granularities can be circular, quasi-circular or aperiodic. Examples of circular can be hour of the day, day of the week, that of quasi-circular can be day of the month and examples of aperiodic granularities can be public or school holidays. Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities like second of the minute or multiple-order-up granularities like second of the hour. lubridate \citep{G_Grolemund2011-vm} creates easy access and manipulation of common date-time objects. But most accessor functions are limited to single-order-up granularities.
+It is important to be able to navigate through all of these temporal granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA \citep{Tukey1977-jx} which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to iteratively explore many possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming.
 
-The motivation for this work comes from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates (see \citet{2012-la}) of usage across households, total kWh used each half hour by state, for example, because energy companies need to understand maximum loads that they will have to plan ahead to accommodate. But studying overall energy use hides the distributions of usage at finer scales, and making it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data can be benefited from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem which relates to any data that needs to be analyzed for different periodicities.
+Calendar-based graphics \citep{wang2018calendar} are useful in visualizing patterns in the weekly and monthly structure, and are helpful when checking for the effects of weekends or special days. Any temporal data at sub-daily resolution can also be displayed using this type of faceting \citep{Wickham2009pk} with days of the week, month of the year, or another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week or month-of-year deconstructions. There can be many different time deconstructions, based on the calendar or on categorizations of time granularities.
 
-This work provides tools for systematically exploring bivariate granularities within the tidy workflow through the following:
+Linear time granularities respect the linear progression of time such as hours, days, weeks and months, and non-repeating. One of the first attempts to characterize these granularities is due to \citet{Bettini1998-ed}. However, the definitions and rules defined are inadequate for describing nonlinear or repeating granularities. Hence, there is a need to define some new nonlinear time granularities, that can be useful in visualizations. Nonlinear time granularities can be circular, quasi-circular or aperiodic. Examples of circular granularities are hour of the day and day of the week; an examples of a quasi-circular granularty is day of the month; examples of aperiodic granularities are public holidays and school holidays.
+
+Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities such as second of the minute, or multiple-order-up granularities such as second of the hour. The lubridate package \citep{G_Grolemund2011-vm} provides tools to access and manipulate common date-time objects. But most of its accessor functions are limited to single-order-up granularities.
+
+The motivation for this work stems from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates \citep[see][]{2012-la} of usage across households, such as half-hourly total usage by state, because energy companies need to plan for maximum loads on the network. But studying overall energy use hides the distributions of usage at finer scales, and makes it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data will benefit from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem that is relevant to any temporal data observed more than once per year.
+
+This work provides tools for systematically exploring bivariate granularities within the tidy workflow. In particular, we
 
 \begin{itemize}
+\tightlist
 \item
-  Formal characterization of cyclic granularities
+  provide a formal characterization of nonlinear granularities;
 \item
-  Facilitate manipulation of single and multiple order-up time granularities through cyclic calendar algebra
+  facilitate manipulation of single- and multiple-order-up time granularities through cyclic calendar algebra;
 \item
-  Checking feasibility of creating plots or drawing inferences for any two cyclic granularities
+  develop an approach to check the feasibility of creating plots or drawing inferences for any two nonlinear granularities;
 \item
-  Recommend prospective probability distributions for exploring distributions of univariate dependent variable across pair of granularities
+  recommend prospective probability distributions for exploring distributions of a univariate dependent variable across pair of granularities.
 \end{itemize}
 
-The remainder of the paper is organized as follows: Section \ref{sec:linear-time} details the background of linear granularities in depth and briefly explain calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring distribution of the associated time series across pair of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
+The remainder of the paper is organized as follows: Section \ref{sec:linear-time} provide some background material on linear granularities and introduces calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different nonlinear time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces calendar algebra for computing nonlinear time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring the conditional distributions of the associated time series across pairs of nonlinear time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
 \hypertarget{sec:linear-time}{%
 \section{Linear time granularities}\label{sec:linear-time}}
 
-Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities \citep{aigner2011visualization}. Time granularities are \textbf{linear} if they respect the linear progression of time. Examples include hours, days, weeks and months.
+Discrete abstraction of time such as hours, days, weeks and months can be thought of as linear ``time granularities'' \citep{aigner2011visualization}. Time granularities are \textbf{linear} if they respect the linear progression of time.
 
 \hypertarget{definitions-and-relationships}{%
 \subsection{Definitions and relationships}\label{definitions-and-relationships}}
 
-There has been several attempts to provide the framework for formally characterizing time-granularities. One of the first attempts occur in \citet{Bettini1998-ed} with the help of the following definitions:
+There have been several attempts to provide a framework for formally characterizing time granularities. One of the first attempts was provided by \citet{Bettini1998-ed} who proposed following definitions:
 
 \newtheorem{definition}{Definition}
 
-\begin{definition}\label{def:definition}
-(time domain): A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
+\begin{definition}[Time domain]\label{def:definition}
+A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
 \end{definition}
 
-A time domain can be \textbf{discrete} (if there is unique predecessor and successor for every element except for the first and last one in the time domain), or it can be \textbf{dense} (if it is an infinite set). A time domain is assumed to be discrete for the purpose of our discussion.
+We will assume the time domain is \emph{discrete}; i.e., there is unique predecessor and successor for every element in the time domain except for the first and last.
 
-\begin{definition}\label{def:linear}
-(linear granularity): A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
+\begin{definition}[Linear granularity]\label{def:linear}
+A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
 
   (1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
-than all elements of $G(j)$, and  
-  (2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.  
+than all elements of $G(j)$; and
+  (2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.
 \end{definition}
 
-\begin{definition}\label{def:granule}
-(granule) Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
+\begin{definition}[Granule]\label{def:granule}
+Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
 \end{definition}
 
-\textbf{Discussion:} The first condition in Definition \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order.
-\autoref{fig:linear-time} shows the implication of this condition. It shows the linear granularities hours, days, weeks, months and years, each of which are unidirectional in nature and arranged from past to future. If we consider the chronon (see \citet{aigner2011visualization}) as hourly, the time domain with T hours will have \(\lfloor T/24\rfloor\) days, \(\lfloor T/(24*7)\rfloor\) weeks and so on. Each granule of the linear granularities shown are represented through a box.
+The first condition in Definition \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} illustrates the linear time granularites hours, days, weeks, months and years, each of which are non-repeating in nature and arranged from past to future. If we consider the chronon \citep[see][]{aigner2011visualization} as hourly, the time domain with \(T\) hours will have \(\lfloor T/24\rfloor\) days, \(\lfloor T/(24*7)\rfloor\) weeks and so on.
 
 \begin{figure}
 
@@ -183,29 +189,26 @@ than all elements of $G(j)$, and
 
 }
 
-\caption{The time domain distributed as linear granularities}\label{fig:linear-time}
+\caption{The time domain distributed as linear granularities.}\label{fig:linear-time}
 \end{figure}
 
-\citep{Bettini1998-ed} talks about the relationships of linear time granularities and structure of a calendar and also relates them to the notion of periodicity in time.
+\citet{Bettini1998-ed} discusses the relationships between linear time granularities, the structure of a calendar, and periodicities in time.
 
-\begin{definition}\label{def:finerthan}
-(finer than): A linear granularity G is finer than a  linear granularity H, denoted $G \preceq H$, if
-for each index i, there exists an index j such that $G(i) \subset H(j)$.
+\begin{definition}[Finer than]\label{def:finerthan}
+A linear granularity $G$ is finer than a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that $G(i) \subset H(j)$.
 \end{definition}
 
 .
 
-\begin{definition}\label{def:groupsinto}
-(groups into): A linear granularity G groups into a linear granularity H, denoted
-$G \trianglelefteq H$,
-if for each index j there exists a (possibly infinite) subset S of the integers such
-that
-\begin{equation}
-H(j) = \bigcup_{i \in S}G(i)
-\end{equation}
+\begin{definition}[Groups into]\label{def:groupsinto}
+A linear granularity $G$ groups into a linear granularity $H$, denoted
+$G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) subset $S$ of the integers such that
+\[
+  H(j) = \bigcup_{i \in S}G(i).
+\]
 \end{definition}
 
-\textbf{Discussion:} \(G \trianglelefteq H\) if each granule H(j) is the union of some granules of G. \(G \preceq H\) if every granule in G is a subset of some granule in H. In \autoref{fig:groups-finer}, both \(day \trianglelefteq week\) and \(day \preceq week\) hold true. However, weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays. Consider another example where \(day \trianglelefteq month\). This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions, .
+These definitions are illustrated in \autoref{fig:groups-finer}, where both day \(\trianglelefteq\) week, and day \(\preceq\) week, hold true. However, weekends are finer than weeks but do not group into weeks. And weekends neither groups into or is finer than public holidays. Consider another example where day \(\trianglelefteq\) month. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions.
 
 \begin{figure}
 
@@ -216,99 +219,96 @@ H(j) = \bigcup_{i \in S}G(i)
 \caption{Illustrations of groups into and finer than relationships. Weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays}\label{fig:groups-finer}
 \end{figure}
 
-\begin{definition}\label{def:periodical}
-(groups periodically): A granularity H is periodical with respect to a granularity G if
-(1) $G \trianglelefteq H$, and
-(2) there exist $R,P \epsilon Z+$, where R is less than the number of granules of H, such
-that for all $i \epsilon Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then
-$H (i + R) = \bigcup_{j \in S} G(j + P)$.
+\begin{definition}[Groups periodically]\label{def:periodical}
+A granularity $H$ is periodical with respect to a granularity $G$ if:
+(1) $G \trianglelefteq H$; and
+(2) there exist $R$, $P \in Z+$, where $R$ is less than the number of granules of $H$, such that for all $i \in Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
 
-\textbf{Discussion:} A granularity H which is periodical with respect to G is specified by:
-(i) the R sets of indexes of G, \({S_0,...,S_{R-1}}\) describing the granules of H within one period;
-(ii) the value of P;
-(iii) the indexes of first and last granules in H, if their value is not infinite.
-Then, if \({S_0,...,S_{R-1}}\) are the sets of indexes of G describing
-\(H (0), . . . , H (R - 1)\), respectively, then the description of an arbitrary granule H(j) is given by: \(\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)\). Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way \citep{Bettini2000-vy}.
+A granularity \(H\) which is periodical with respect to \(G\) is specified by:
+(i) the \(R\) sets of indexes of \(G\), \({S_0,\dots,S_{R-1}}\) describing the granules of \(H\) within one period;
+(ii) the value of \(P\);
+(iii) the indexes of first and last granules in \(H\), if their value is not infinite.
+Then, if \({S_0,\dots,S_{R-1}}\) are the sets of indexes of \(G\) describing
+\(H(0), \dots, H(R - 1)\), respectively, then the description of an arbitrary granule \(H(j)\) is given by \(\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)\). Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way \citep{Bettini2000-vy}.
 
-\begin{definition}\label{def:quasi}
-(groups quasi-periodically): A granularity H is quasi-periodical with respect to a granularity G if
-(1) $G \trianglelefteq H$, and
-(2) there exist a set of intervals E1,...,Ez (the granularity exceptions) and positive
-integers R,P, where R is less than the minimum of the number of granules of H
-between any 2 exceptions, such that for all $i \epsilon Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where E is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P )$.
+\todo[inline]{Give an example}
+
+\begin{definition}[Groups quasi-periodically]\label{def:quasi}
+A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
+(1) $G \trianglelefteq H$; and
+(2) there exist a set of intervals $E_1,\dots,E_z$ (the granularity exceptions) and positive integers $R$, $P$, where $R$ is less than the minimum of the number of granules of $H$ between any two exceptions, such that for all $i \in Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where $E$ is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P)$.
 \end{definition}
 
-\textbf{Discussion:} Intuitively, the definition requires that all granules of H within the span of time between two exceptions have the same periodical behavior, characterized by \(R\) and \(P\).
+Intuitively, the definition requires that all granules of \(H\) within the span of time between two exceptions have the same periodical behavior, characterized by \(R\) and \(P\).
 
-\begin{definition}\label{def:B}
-(bottom granularity): Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set. 
+\todo[inline]{Give an example}
+
+\begin{definition}[Bottom granularity]\label{def:B}
+Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set.
 \end{definition}
 
-\textbf{Discussion:} Given the set of all granularities defined over the time domain \((Z; <)\), and the granularity relationship \(\trianglelefteq\) (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to \(\trianglelefteq\).
+\todo[inline]{What is g-rel?}
+
+Given the set of all granularities defined over the time domain \((Z; <)\), and the granularity relationship \(\trianglelefteq\) (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to \(\trianglelefteq\).
 
 \hypertarget{computation-through-calendar-algebra}{%
 \subsection{Computation through calendar algebra}\label{computation-through-calendar-algebra}}
 
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra \citep{Ning2002-tf}. It is assumed that there exists a ``bottom'' granularity and calendar algebra operations are designed to generate
-new granularities from the bottom one or recursively, from those already generated.
-The calendar algebra consists of two kinds of operations: grouping-oriented and
-granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. Example can be to consider a calendar with only two linear granularities ``minute'' and ``hour'' and ``hour'' is generated by grouping every \(60\) ``minutes''. The granule-oriented operations do not change the granules of a granularity, but rather make choices of which granules should remain in the new granularity. For example, one can choose to look at the granularity ``Monday'' and hence select only ``Monday'' from linear granularity ``day''.
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra \citep{Ning2002-tf}. It is assumed that there exists a ``bottom'' granularity and calendar algebra operations are designed to generate new granularities recursively from the bottom up. The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: ``minute'' and ``hour'', where ``hour'' is generated by grouping every \(60\) ``minutes''. The granule-oriented operations do not change the granules of a granularity, but rather make choices of which granules should remain in the new granularity. For example, one can choose to look at the granularity ``Monday'' and hence select only ``Monday'' from linear granularity ``day''.
 
-Some relevant grouping oriented operations are discussed, which will be used in Section \ref{sec:cyclic-gran} to define circular and aperiodic granularities.
+Some relevant grouping-oriented operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} to define circular and aperiodic granularities.
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{The grouping operation} : Let \(G1\) be a full-integer labeled granularity, and \(m\) a positive integer. The grouping operation \(Group_m(G)\) generates a new granularity \(G2\), by partitioning the granules of \(G\) into m-granule groups and making each group a granule of the resulting granularity.
-  More precisely, \(G2 = Group_m(G1)\) is the full-integer labeled granularity such that for
-  each integer \(i\), \(G2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G1(j)\).
+  \textbf{The grouping operation}: Let \(G_1\) be a full-integer labeled granularity, and \(m\) a positive integer. The grouping operation Group\(_m(G)\) generates a new granularity \(G_2\), by partitioning the granules of \(G_1\) into \(m\)-granule groups and making each group a granule of the resulting granularity. More precisely, \(G_2 = \text{Group}_m(G_1)\) is the full-integer labeled granularity such that for each integer \(i\),
+  \[G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).\]
 \end{itemize}
 
-\textbf{Examples} :
+\todo[inline]{What does "full-integer" mean?}
+
+For example:
+\begin{align*}
+  \text{minute} &= \text{Group}_{60}(\text{second});\\
+  \text{hour}   &= \text{Group}_{60}(\text{minute});\\
+  \text{day}    &= \text{Group}_{24}(\text{hour});\\
+  \text{week}   &= \text{Group}_{7}(\text{day});
+\end{align*}
+
+where \(\text{second}(1)\) would start a minute and likewise.
+
+\todo[inline]{What does this last phrase mean?}
 
 \begin{itemize}
 \tightlist
 \item
-  \(minute = Group_{60}(second)\)
-\item
-  \(hour = Group_{60}(minute)\),
-\item
-  \(day = Group_{24}(hour)\),
-\item
-  \(week = Group_{7}(day)\),
+  \textbf{The altering-tick operation} : Let \(G_1\), \(G_2\) be full-integer labeled granularities, and \(l\), \(k\), \(m\) integers, where \(G_2\) partitions \(G_1\), and \(1 \leq l \leq m\). The altering-tick operation \(\text{Alter}^{m}_{l,k} (G_2, G_1)\) generates a new full-integer labeled granularity by periodically expanding or shrinking granules of \(G_1\) in terms of granules of \(G_2\). The altering-tick operation modifies the granules of \(G_1\) so that the \(l\)th granule of each group has \(|k|\) additional (or fewer when \(k < 0\)) granules of \(G_2\).
 \end{itemize}
 
-where, second(1) would start a minute and likewise.
+For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.
+\begin{align*}
+\text{pseudomonth} = &\text{Alter}^{12}_{11,-1}(\text{day}, \\
+  &~~\text{Alter}^{12}_{9,-1}(\text{day}, \\
+  &~~~~\text{Alter}^{12}_{6,-1}(\text{day}, \\
+  &~~~~~~\text{Alter}^{12}_{4,-1)}(\text{day}, \\
+  &~~~~~~~~\text{Alter}^{12}_{(2,-3)}(\text{day}, \\
+  &~~~~~~~~~~\text{Group}_{31}(\text{day})))))),
+\end{align*}
+where the granularity pseudomonth is generated by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days \citep{Ning2002-tf}.
 
-\begin{itemize}
-\tightlist
-\item
-  \textbf{The altering-tick operation} : Let G1, G2 be full-integer labeled granularities, and \(l\), \(k\), \(m\) integers, where G2 partitions G1, and \(1 \leq l \leq m\). The altering-tick operation \(Alter^{m}_{l,k} (G2, G1)\) generates a new full-integer labeled granularity by periodically expanding or shrinking granules of G1 in terms of granules of G2. The altering-tick operation modifies the granules of G1 so that the \(l\)th granule of each group has \(|k|\) additional (or fewer when k \textless{} 0) granules of G2.
-\end{itemize}
+\todo[inline]{Why is this called a ``pseudomonth''?}
 
-\textbf{Example} :
-
-\begin{equation*}
-\begin{split}
-pseudomonth = Alter^{12}_{11,-1}(day, Alter^{12}_{9,-1}(day, \\
-  Alter^{12}_{6,-1}(day, Alter^{12}_{4,-1)}(day, \\
-  Alter^{12}_{(2,-3)}(day, Group_{31}(day))))))
-\end{split}
-\end{equation*}
-
-, where the granularity pseudomonth is generated by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days. \citep{Ning2002-tf}
-
-For more variations of grouping operations and granule oriented operations, the readers are recommended to see \citet{Ning2002-tf}.
+For more variations of grouping operations and granule oriented operations, see \citet{Ning2002-tf}.
 
 \hypertarget{sec:cyclic-gran}{%
-\section{Cyclic time granularities}\label{sec:cyclic-gran}}
+\section{Nonlinear time granularities}\label{sec:cyclic-gran}}
 
-We propose a formalism of cyclic time granularities through the tsibble \citep{wang2019tsibble} framework of organizing temporal data. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and key is a set of variables that define observational units over time. In a tsibble each observation should be uniquely identified by index and key.
+We propose a formalism of nonlinear time granularities through the tsibble \citep{wang2019tsibble} framework of organizing temporal data. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and key is a set of variables that define observational units over time. In a tsibble each observation should be uniquely identified by index and key.
 
-A time domain, as defined by \citet{Bettini1998-ed}, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble. Lining up with the the assumption in \citet{Bettini2000-vy}, that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists. In a cyclic organization of time, the domain is composed of a set of recurring time values, where any time value can be preceded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also succeeds Wednesday). Hence intuitively, cyclic granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
+A time domain, as defined by \citet{Bettini1998-ed}, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble. Lining up with the the assumption in \citet{Bettini2000-vy}, that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists. In a cyclic organization of time, the domain is composed of a set of recurring time values, where any time value can be preceded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also succeeds Wednesday). Hence intuitively, nonlinear granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
 
-Cyclic time granularities which accommodate for periodicities can be constructed by relating two linear granularities. The mappings between these linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might have days ranging from 28 to 31. To elaborate more, mappings will be regular if, for example, linear granularities are formed by grouping operation. Grouping operations combine fixed granules of a linear granularity to form a new granule of the resulting linear granularity. However, if granularities are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of the root granularity. Cyclic time granularities are referred to as \textbf{circular} if mappings between linear time granularities are regular and \textbf{quasi-circular} if the same is irregular. Examples of common circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month. The formalism would differ for circular and quasi-circular granularities although both accommodate for periodicities in data.
+Nonlinear time granularities which accommodate for periodicities can be constructed by relating two linear granularities. The mappings between these linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might have days ranging from 28 to 31. To elaborate more, mappings will be regular if, for example, linear granularities are formed by grouping operation. Grouping operations combine fixed granules of a linear granularity to form a new granule of the resulting linear granularity. However, if granularities are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of the root granularity. Nonlinear time granularities are referred to as \textbf{circular} if mappings between linear time granularities are regular and \textbf{quasi-circular} if the same is irregular. Examples of common circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month. The formalism would differ for circular and quasi-circular granularities although both accommodate for periodicities in data.
 
 \hypertarget{sec:circular-gran-def}{%
 \subsection{Circular}\label{sec:circular-gran-def}}
@@ -323,7 +323,7 @@ C_{B, G}(z) & = {L}(z\mod P(B, G)) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 \end{equation}
 where
 z denotes the index set,
-B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping, 
+B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping,
 $P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$,
 and ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$.
 
@@ -373,7 +373,7 @@ A \textbf{quasi-circular} granularity can not be defined using modular arithmeti
 day-of-month: & $Q_1$ && $P_1 = 31, 30, 29, 28$\\
 hour-of-month: & $Q_2$ && $P_2 = 24*31, 24*30, 24*29, 24*28$\\
 day-of-year: & $Q_3$ && $P_3 = 366, 365$\\
-week-of-month: & $Q_4$ && $P_4 = 5, 4$\\ 
+week-of-month: & $Q_4$ && $P_4 = 5, 4$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -424,7 +424,7 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 \item
   \(B \trianglelefteq G'\)
 \item
-  there exist \(R', P' \epsilon Z_+\) such that if \(G'(w) = \bigcup_{z \in T_w}B(z)\) then \[G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)\]
+  there exist \(R'\), \(P' \in Z_+\) such that if \(G'(w) = \bigcup_{z \in T_w}B(z)\) then \[G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)\]
 \end{itemize}
 
 from definition \ref{def:periodical}
@@ -455,22 +455,21 @@ for \(z \in T_k\) and \(e_k\) is the number of exceptions in \(\bigcup\limits_{w
 
 Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no finite (or reasonably small) period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible \(P_i\) from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities.
 
-Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities \(M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\), that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that \(B \trianglelefteq M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\). Then according to \autoref{def:groupsinto}, for each index \(j\) there exists a (possibly infinite) subset \(T_{\{i_j\}}\) of the integers such that
+Aperiodic nonlinear granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities \(M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\), that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that \(B \trianglelefteq M_i\) \(\forall \{i\in{1, 2, \dots, n\}}\). Then according to \autoref{def:groupsinto}, for each index \(j\) there exists a (possibly infinite) subset \(T_{\{i_j\}}\) of the integers such that
 \begin{equation*}
 M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
 and suppose \(M = \bigcup_{i=1}^{n}M_{i}\) is formed by collecting the granules of \(\{M_1, M_2, \dots, M_n\}\). Here, index \({\{i_j\}}\) stands for the \(j^{th}\) granule of the \(i^{th}\) linear aperiodic granularity.
 
-\begin{definition}\label{aperiodic}
-(aperiodic cyclic granularity): An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
-
+\begin{definition}[Aperiodic nonlinear granularity]\label{aperiodic}
+An aperiodic nonlinear granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
 \begin{equation}\label{eq:aperiodic}
 \begin{split}
 A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \dots, n}\\
      & = L(0), \quad otherwise
-\end{split}     
+\end{split}
 \end{equation}
-where, 
+where,
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
 $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}(j)$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$.
 \end{definition}
@@ -485,16 +484,16 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 
 }
 
-\caption{Aperiodic cyclic granularity $A(B, M1)$ relating aperiodic linear granularity $M1$ and bottom granularity $B$}\label{fig:aperiodic-example}
+\caption{Aperiodic nonlinear granularity $A(B, M1)$ relating aperiodic linear granularity $M1$ and bottom granularity $B$}\label{fig:aperiodic-example}
 \end{figure}
 
 \hypertarget{sec:cyclic-calendar}{%
 \section{Cyclic calendar algebra}\label{sec:cyclic-calendar}}
 
-In \autoref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the framework of linear granularities defined in \citet{Bettini1998-ed}. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in \citet{Ning2002-tf}, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as ``cyclic calendar algebra''.
+In \autoref{sec:cyclic-gran}, we discussed how we can define nonlinear granularities by extending the framework of linear granularities defined in \citet{Bettini1998-ed}. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in \citet{Ning2002-tf}, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as ``cyclic calendar algebra''.
 
-The cyclic calendar algebra consists of broadly two kinds of operations:\\
-(1) \textbf{single-to-multiple:} representation of multiple-order-up cyclic granularities from single order-up cyclic granularities\\
+The cyclic calendar algebra consists of broadly two kinds of operations:
+(1) \textbf{single-to-multiple:} representation of multiple-order-up cyclic granularities from single order-up cyclic granularities
 (2) \textbf{multiple-to-single:} representation of single-order-up cyclic granularities from multiple order-up cyclic granularities
 
 The hierarchical structure of time creates a natural nested ordering which can produce \textbf{single-order-up} or \textbf{multiple-order-up} granularities. We shall use the notion of a hierarchy table and order to define them.
@@ -548,7 +547,7 @@ Circular single-order-up granularities can be used recursively to obtain multipl
 
 \begin{equation} \label{eq:eq7}
 \begin{split}
-C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\  
+C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\
   & =   L(C_{(G_l,G_{l+1}}(z) + P(l, l+1)[ C_{G_{l+1},G_{l+2}}(z) + P(l+1, l+2)( C_{G_{l+2}, G_m}(z))) \\
   & =  L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + P(l, l+1)P(l+1, l+2)(C_{G_{l+2}, G_{m}}))\\
   & =  L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{G_{l+1},G_{l+2}}(z)) + P(l, l+2)(C_{G_{l+2},G_{l+m}}(z)))\\
@@ -586,9 +585,9 @@ year & 1 & 1\tabularnewline
 \bottomrule
 \end{longtable}
 
-There can be three scenarios for obtaining multiple-order-granularities here:\\
-- cyclic granularities relating two linear granularities whose orders are less than day\\
-- cyclic granularities relating two linear granularities whose orders are more than month\\
+There can be three scenarios for obtaining multiple-order-granularities here:
+- cyclic granularities relating two linear granularities whose orders are less than day
+- cyclic granularities relating two linear granularities whose orders are more than month
 - granularities relating two linear granularities with order at most day and another with order at least month
 
 The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. Let us consider the computation of \(C_{hour, month}(z)\) for a \(z\) such that \(C_{hour, day}(z) = 12\), \(C_{day, month}(z) = 20\) and \(C_{month, year}(z) = 9\).
@@ -622,7 +621,7 @@ For example, with \(C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))\), two different a
 
 \begin{equation} \label{eq:multifromsingle-quasi1}
 \begin{split}
-C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\ 
+C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\
 \end{split}
 \end{equation}
 
@@ -658,7 +657,7 @@ C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod k(m_
 
 \begin{equation} \label{eq10}
 \begin{split}
-C_{tun, katun}(z) =  L(\lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20) 
+C_{tun, katun}(z) =  L(\lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20)
 \end{split}
 \end{equation}
 
@@ -867,7 +866,7 @@ The data structure for a sample of 50 households from that trial is as follows:
 #>  8 10006414    2012-02-10 11:30:00              0.055
 #>  9 10006414    2012-02-10 12:00:00              0.055
 #> 10 10006414    2012-02-10 12:30:00              0.252
-#> # … with 1,450,222 more rows
+#> # ... with 1,450,222 more rows
 \end{verbatim}
 
 The variable \texttt{reading\_datetime} is the index of the tsibble and represents the time variable. The variable \texttt{customer\_id} denoting different households represent the key of the tsibble and \texttt{general\_supply\_kwh} is the time series variable which needs to be analyzed. Data sets of the form \textless{}\(C1\), \(C2\), \texttt{general\_supply\_kwh}\textgreater{} will form the basis of exploration for each key in the data set, where the cyclic granularity \(C1\) would be mapped to \(x\) axis and \texttt{general\_supply\_kwh} to \(y\) axis with the cyclic granularity \(C2\) mapped to facet. Any geometry displaying the probability distribution of \texttt{general\_supply\_kwh} like boxplot, letter value, violin,
@@ -906,7 +905,7 @@ If these options are considered too many, the most coarse temporal unit can be s
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{smart_meter10 }\OperatorTok{%>%}\StringTok{ }
+\NormalTok{smart_meter10 }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{search_gran}\NormalTok{(}\DataTypeTok{highest_unit =} \StringTok{"month"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -938,7 +937,7 @@ Now that we have a list of cyclic granularities to look at, we should be able to
 \hypertarget{screening-and-visualizing-harmonies}{%
 \subsubsection{Screening and visualizing harmonies:}\label{screening-and-visualizing-harmonies}}
 
-From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure \textless{}\(C1\) \(C2\), \texttt{general\_supply\_kwh}\textgreater{}, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from 6, which essentially is equivalent to having 30 data subsets for visualisation. However, harmony/clash pairs can be identified among those 30 possibilities to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives.
+From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure \textless{}\(C1\) \(C2\), \texttt{general\_supply\_kwh}\textgreater, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from 6, which essentially is equivalent to having 30 data subsets for visualisation. However, harmony/clash pairs can be identified among those 30 possibilities to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -976,8 +975,8 @@ There is bimodality in the early hours of the day, implying both low and high en
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{smart_meter10 }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{filter}\NormalTok{(customer_id }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{10017936}\NormalTok{))}\OperatorTok{%>%}\StringTok{ }
+\NormalTok{smart_meter10 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(customer_id }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{10017936}\NormalTok{))}\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{gran_advice}\NormalTok{(}\StringTok{"wknd_wday"}\NormalTok{,}
                             \StringTok{"hour_day"}\NormalTok{)}
 \end{Highlighting}
@@ -1007,7 +1006,7 @@ There is bimodality in the early hours of the day, implying both low and high en
 #>  8 7            908     366
 #>  9 8            908     366
 #> 10 9            908     366
-#> # … with 14 more rows
+#> # ... with 14 more rows
 \end{verbatim}
 
 \begin{figure}
