@@ -35,10 +35,7 @@ abstract: |
    Visualizing data across granularities which are either single-order-up or multiple-order-up or periodic/aperiodic helps us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. This work provides tools for creating granularities and exploring the associated time series within a tidy workflow, so that probability distributions can be examined using the range of graphics available in ggplot2 [@Wickham2009pk].
 bibliography: [bibliography.bib]
 preamble: >
-  \usepackage{mathtools}
-  \usepackage{amssymb}
-  \usepackage{booktabs}
-  \usepackage{longtable}
+  \usepackage{mathtools,amssymb,booktabs,longtable,todonotes}
 output:
   bookdown::pdf_book:
     base_format: rticles::asa_article
