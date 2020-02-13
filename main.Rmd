@@ -216,9 +216,11 @@ A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
 
 Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
 
-```{r quasi-group-periodicial, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."}
+```{r quasi-group-periodicial, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups quasi-periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."}
 knitr::include_graphics("Figs/quasi_groups_periodically.png")
 ```
+
+**Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodicial} and \autoref{fig:quasi-group-periodicial} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodicial} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.
 
 
 \begin{definition}[Bottom granularity]\label{def:B}
