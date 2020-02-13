@@ -87,7 +87,7 @@ It is important to be able to navigate through all of these temporal granulariti
 
 Calendar-based graphics [@wang2018calendar] are useful in visualizing patterns in the weekly and monthly structure, and are helpful when checking for the effects of weekends or special days. Any temporal data at sub-daily resolution can also be displayed using this type of faceting [@Wickham2009pk] with days of the week, month of the year, or another sub-daily deconstruction of time. But calendar effects are not restricted to conventional day-of-week or month-of-year deconstructions. There can be many different time deconstructions, based on the calendar or on categorizations of time granularities.
 
-Linear time granularities respect the linear progression of time such as hours, days, weeks and months, and non-repeating. One of the first attempts to characterize these granularities is due to @Bettini1998-ed. However, the definitions and rules defined are inadequate for describing nonlinear or repeating granularities. Hence, there is a need to define some new nonlinear time granularities, that can be useful in visualizations. Nonlinear time granularities can be circular, quasi-circular or aperiodic. Examples of circular granularities are hour of the day and day of the week; an examples of a quasi-circular granularty is day of the month; examples of aperiodic granularities are public holidays and school holidays.
+Linear time granularities respect the linear progression of time such as hours, days, weeks and months, and non-repeating. One of the first attempts to characterize these granularities is due to @Bettini1998-ed. However, the definitions and rules defined are inadequate for describing nonlinear or repeating granularities. Hence, there is a need to define some new nonlinear time granularities, that can be useful in visualizations. Nonlinear time granularities can be circular, quasi-circular or aperiodic. Examples of circular granularities are hour of the day and day of the week; an examples of a quasi-circular granularity is day of the month; examples of aperiodic granularities are public holidays and school holidays.
 
 Time deconstructions can also be based on the hierarchical structure of time. For example, hours are nested within days, days within weeks, weeks within months, and so on. Hence, it is possible to construct single-order-up granularities such as second of the minute, or multiple-order-up granularities such as second of the hour. The lubridate package [@G_Grolemund2011-vm] provides tools to access and manipulate common date-time objects. But most of its accessor functions are limited to single-order-up granularities.
 
@@ -203,7 +203,7 @@ A granularity $H$ which is periodical with respect to $G$ is specified by:
 Then, if ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
 $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
-```{r group-periodicial, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."}
+```{r group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."}
 knitr::include_graphics("Figs/groups_periodically.png")
 ```
 
@@ -216,11 +216,11 @@ A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
 
 Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
 
-```{r quasi-group-periodicial, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups quasi-periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."}
+```{r quasi-group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups quasi-periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."}
 knitr::include_graphics("Figs/quasi_groups_periodically.png")
 ```
 
-**Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodicial} and \autoref{fig:quasi-group-periodicial} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodicial} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.
+**Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.
 
 
 \begin{definition}[Bottom granularity]\label{def:B}
@@ -243,9 +243,9 @@ Some relevant grouping-oriented operations are discussed below; these will be us
 - **The grouping operation**: Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
 
-\todo[inline]{What does "full-integer" mean? It might be the case that we don not always
+\todo[inline]{What does "full-integer" mean? It might be the case that we do not always
 have integers as the label sets of granularities. A full-integer labeled granularities are defined in definition 2 since labels coincide with indices. These labels can be an
-arbitrary subset of (possibly noncontiguous) integers and could be used to identify granules. The author has introduced the definition of "labeled granularity" in @Ning2002-tf which could be added after definition of linear granularity to clarify this. }
+arbitrary subset of (possibly non contiguous) integers and could be used to identify granules. The author has introduced the definition of "labeled granularity" in @Ning2002-tf which could be added after definition of linear granularity to clarify this. }
 
 For example:
 \begin{align*}
