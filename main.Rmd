@@ -203,7 +203,10 @@ A granularity $H$ which is periodical with respect to $G$ is specified by:
 Then, if ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
 $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
-\todo[inline]{Give an example}
+```{r group-periodicial, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."}
+knitr::include_graphics("Figs/groups_periodically.png")
+```
+
 
 \begin{definition}[Groups quasi-periodically]\label{def:quasi}
 A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
@@ -213,7 +216,10 @@ A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
 
 Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
 
-\todo[inline]{Give an example}
+```{r quasi-group-periodicial, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."}
+knitr::include_graphics("Figs/quasi_groups_periodically.png")
+```
+
 
 \begin{definition}[Bottom granularity]\label{def:B}
 Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set.
