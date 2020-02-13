@@ -7,7 +7,7 @@ blinded: 0
 authors:
 - name: Sayani Gupta
   affiliation: Department of Econometrics and Business Statistics, Monash University
-  email: Sayani.Gupta@monash.edu
+  thanks: "Email: Sayani.Gupta@monash.edu"
 
 - name: Rob J Hyndman
   affiliation: Department of Econometrics and Business Statistics, Monash University
@@ -46,6 +46,7 @@ output:
     fig_width: 8
     fig_caption: yes
     dev: "pdf"
+    keep_tex: yes
 ---
 
 ```{r initial, echo = FALSE, cache = FALSE, include = FALSE}
