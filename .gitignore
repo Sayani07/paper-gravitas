@@ -4,3 +4,6 @@
 .Ruserdata
 .data-raw
 .data
+cache/*
+main.log
+main.tex
