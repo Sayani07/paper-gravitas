@@ -204,9 +204,9 @@ A granularity $H$ which is periodical with respect to $G$ is specified by:
 Then, if ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
 $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
 
-```{r group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."}
-knitr::include_graphics("Figs/groups_periodically.png")
-```
+<!-- # ```{r group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."} -->
+<!-- # knitr::include_graphics("Figs/groups_periodically.png") -->
+<!-- # ``` -->
 
 
 \begin{definition}[Groups quasi-periodically]\label{def:quasi}
@@ -217,12 +217,14 @@ A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
 
 Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
 
-```{r quasi-group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups quasi-periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."}
-knitr::include_graphics("Figs/quasi_groups_periodically.png")
-```
+<!-- # ```{r quasi-group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups quasi-periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."} -->
+<!-- # knitr::include_graphics("Figs/quasi_groups_periodically.png") -->
+<!-- # ``` -->
 
-**Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.
+<!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
+
+**Example**: Consider the Gregorian calendar without leap year and all their exceptions. Then each month is a grouping of the same number of days over years. So the period is $P = 365$ and number of granules of "months" in each period is given by $R=12$. Thus, we could say days groups periodically into months. Now consider the Gregorian calendar with leap years but none of their exceptions. In such a case, if we consider every February $29^{th}$ as exceptions, we will still have each month as a grouping of the same number of days over years. In that case, we may say days groups quasi-periodically into months. The value of $P$ and $R$ would be 365 and 12 respectively while $E_i$'s would be the time domain corresponding to $29^{th}$ February of any year.
 
 \begin{definition}[Bottom granularity]\label{def:B}
 Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set.
