@@ -36,6 +36,7 @@ abstract: |
 bibliography: [bibliography.bib]
 preamble: >
   \usepackage{mathtools,amssymb,booktabs,longtable,todonotes}
+  \def\mod{~\text{mod}~}
 output:
   bookdown::pdf_book:
     base_format: rticles::asa_article
@@ -283,19 +284,18 @@ For more variations of grouping operations and granule oriented operations, see 
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
 
-We propose a formalism of nonlinear time granularities through the tsibble [@wang2019tsibble] framework of organizing temporal data. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and key is a set of variables that define observational units over time. In a tsibble each observation should be uniquely identified by index and key.
+We propose a formalism of nonlinear time granularities through the tsibble [@wang2019tsibble] framework of organizing temporal data. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. In a tsibble, each observation (row) should be uniquely identified by index and key.
 
-A time domain, as defined by @Bettini1998-ed, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble. Lining up with the the assumption in @Bettini2000-vy, that all linear granularities can be generated from the bottom granularity by calendar algebraic operations, we assume that a bottom granularity exists. In a cyclic organization of time, the domain is composed of a set of recurring time values, where any time value can be preceded and succeeded by another time value (for e.g Monday comes before Wednesday but Monday also succeeds Wednesday). Hence intuitively, nonlinear granularities are additional abstractions of time which are not linear and hence the index order of linear granularities needs to be manipulated so that it leads to repetitive categorization of time.
+A time domain, as defined by @Bettini1998-ed, is essentially a mapping of the index set to the time index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the time index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble. Consistent with the assumption of @Bettini2000-vy, all linear granularities can be generated from the bottom granularity by calendar algebraic operations.
 
-Nonlinear time granularities which accommodate for periodicities can be constructed by relating two linear granularities. The mappings between these linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours, where 60 minutes always add up to 1 hour. On contrary, an irregular mapping exists between days and months, since one might have days ranging from 28 to 31. To elaborate more, mappings will be regular if, for example, linear granularities are formed by grouping operation. Grouping operations combine fixed granules of a linear granularity to form a new granule of the resulting linear granularity. However, if granularities are formed by the altering-tick operation, for example, granules of the resulting granularity is composed of different number of granules of the root granularity. Nonlinear time granularities are referred to as **circular** if mappings between linear time granularities are regular and **quasi-circular** if the same is irregular. Examples of common circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month. The formalism would differ for circular and quasi-circular granularities although both accommodate for periodicities in data.
+Nonlinear time granularities with periodicities can be constructed by relating two linear granularities. The mappings between these linear granularities can be regular or irregular. For example, a regular mapping exists between minutes and hours (where 60 minutes always add up to 1 hour), while an irregular mapping exists between days and months (as the number of days per month ranges from 28 to 31). Mappings will be regular if linear granularities are formed by a grouping operation, but granularities formed by the altering-tick operation will be irregular. Nonlinear time granularities are referred to as **circular** if mappings between linear time granularities are regular and **quasi-circular** if the mapping is irregular. Examples of common circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month.
 
 <!--sub:How to relate linear granularities to tsibble and manipulation of indices required for circular and quasi-circular granularities -->
 
 ## Circular {#sec:circular-gran-def}
 
-\begin{definition}\label{def:circular}
-(circular granularity): A circular granularity $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
-
+\begin{definition}[Circular granularity]\label{def:circular}
+A circular granularity $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
 \begin{equation} \label{eq:circular-gran}
 \begin{split}
 C_{B, G}(z) & = {L}(z\mod P(B, G)) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
@@ -306,12 +306,19 @@ z denotes the index set,
 B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping,
 $P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$,
 and ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$.
-
 \end{definition}
 
-**Example**:  Example showing circular granularity relating two linear granularities "day" and "week" is visually depicted in a series of slots in the \autoref{fig:circular-dow}. Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set. The bottom granularity, represented by the index of the tsibble considered is "day". "day" and "week" are two linear granularities with $P =  7$. The circular granularity $C_{day, week}$ representing day-of-week will thus consist of pattern {L(0), L(1), L(2), L(3), L(4), L(5), L(6)} which repeats itself after each period length.
+\autoref{fig:circular-dow} depicts the circular granularity "day of the week", constructed from two linear granularities "day" (the bottom granularity) and "week". The granules that overlap share elements from the underlying time domain. In this example, $P=7$, and the circular granularity $C_{\text{day}, \text{week}}$ representing day-of-week consists of the repeated pattern $\{L(0), L(1), L(2),$ $L(3), L(4), L(5), L(6)\}$.
 
-**Discussion**: Note that each circular granularity can use different label mappings. In general, the set of labels will be a set of strings that is more descriptive than the index and used to identify a categorization of the circular granularity. However, the labels can coincide with indexes in which case integers are directly used to refer to categorizations of the circular granularity. Hence, the label mapping $L$ in \autoref{fig:circular-dow} can be defined as $L: ({0,1,2, \dots, 6}) \longmapsto\ ({Sun, Mon, \dots, Sat)}$ or $L: \{0,1,2, \dots, 6\} \longmapsto\ \{Sunday, Monday, \dots, Saturday\}$ or $L: \{0,1,2, \dots, 6\} \longmapsto\ \{0, 1, \dots, 6\}$ depending on the context.
+Each circular granularity can use descriptive label mappings, or be simply labelled using the index. The label mapping $L$ in \autoref{fig:circular-dow} can be defined as
+$$
+  L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sun}, \text{Mon}, \dots, \text{Sat}\}
+$$
+or
+$$
+  L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sunday}, \text{Monday}, \dots, \text{Saturday}\}
+$$
+for example.
 
 <!-- # ```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "} -->
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
@@ -323,7 +330,7 @@ knitr::include_graphics("Figs/circular-dow.png")
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
 
-In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as $C_{(G, H)}(z) = L(\lfloor z/P(B,G) \rfloor\mod P(G,H))$, where linear granularity H is periodic with respect to linear granularity G with regular mapping such that the number of granules of G in each granule of H is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity and $L_i$ is the associated label mapping. It is possible that none of the two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the index set. The bottom granularity is assumed to be minutes.
+In general, any circular granularity relating two linear granularity, none of which are bottom granularity can be expressed as $C_{(G, H)}(z) = L(\lfloor z/P(B,G) \rfloor\mod P(G,H))$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping such that the number of granules of $G$ in each granule of $H$ is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity and $L_i$ is the associated label mapping. It is possible that none of the two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the index set. The bottom granularity is assumed to be minutes.
 
 \begin{table}[ht]
 \begin{center}
@@ -400,13 +407,13 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 **Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then the following holds true:
 
 - $B \trianglelefteq G'$
-- there exist $R'$, $P' \in Z_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$
+- there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$
 
 from definition \ref{def:periodical}
 
 and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping)
 
-Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{th}$ and $(w+R')^{th}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{th}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
+Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
 
 ```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="Quasi-circular granularities $Q(B, G')$ and $Q(B, H')$ relating bottom granularity $B$ and linear granularities $G'$ and $H'$ respectively."}
 knitr::include_graphics("Figs/quasi-circular-example.png")
@@ -464,7 +471,7 @@ Aperiodic nonlinear granularities are defined using aperiodic linear granulariti
 \begin{equation*}
 M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
 \end{equation*}
-and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{th}$ granule of the $i^{th}$ linear aperiodic granularity.
+and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
 
 \begin{definition}[Aperiodic nonlinear granularity]\label{aperiodic}
 An aperiodic nonlinear granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
@@ -959,7 +966,7 @@ We will discuss few conventional and recent ways to plot distributions using bot
 
 ### Descriptive statistics based displays
 
-Most commonly used displays include the box plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. These displays are based on descriptive statistics, for example, $([n/2] + 1)/2^{th}$ and $(n + 1 - ([n/2] + 1)/2)^{th}$ order statistics are taken as estimates of the quartiles. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of it's variations are helpful to get an idea of the distribution at a glance. However, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
+Most commonly used displays include the box plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. These displays are based on descriptive statistics, for example, $([n/2] + 1)/2^{\text{th}}$ and $(n + 1 - ([n/2] + 1)/2)^{\text{th}}$ order statistics are taken as estimates of the quartiles. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of it's variations are helpful to get an idea of the distribution at a glance. However, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
 
 <!-- Description and lit review of letter-value plots -->
 The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. These are particularly useful for large data sets. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown, leading to overload of information in one plot.
