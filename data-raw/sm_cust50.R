@@ -32,4 +32,4 @@ sm_cust50 <- smart_meter_data %>%
   ungroup() %>%
   dplyr::select(-calendar_key)
 
-save(sm_cust50, file = "data/sm_cust50.RData", compress = "xz")
+save(sm_cust50, file = "data/sm_cust50.rds", compress = "xz")
