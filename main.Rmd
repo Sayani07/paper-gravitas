@@ -560,12 +560,13 @@ C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\
 
 \begin{equation} \label{eq8}
 \begin{split}
-C_{uinal, baktun}(z) & = L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C_{uinal, katun}C_{katun, baktun}(z)) \\
-              & = L(\lfloor z/20\rfloor \mod 18  +
-              20*\lfloor z/20*18\rfloor \mod 20 +
-              20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
+C_{uinal, baktun}(z)  = & L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C_{uinal, katun}C_{katun, baktun}(z)) \\
+               = & L(\lfloor z/20\rfloor \mod 18  \\
+               &~~~ + 20*\lfloor z/20*18\rfloor \mod 20  \\
+               &~~~ + 20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
 \end{split}
 \end{equation}
+
 
 ### Circular or quasi-circular single order-up granularities
 
@@ -1158,8 +1159,7 @@ The data structure for a sample of 50 households from that trial is as follows:
 <!-- We take a random sample of 50 households to see how we can achieve that.  -->
 
 ```{r smart-meter, fig.cap = "Smart meter data structure"}
-sm <-
-  read_rds("data/sm_cust50.rds")
+sm <- read_rds("data/sm_cust50.rds")
 
 smart_meter <- sm %>% as_tsibble() %>% dplyr::select(customer_id,
                               reading_datetime,
