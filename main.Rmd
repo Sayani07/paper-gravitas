@@ -194,7 +194,7 @@ knitr::include_graphics("Figs/groupsandfiner.png")
 \begin{definition}[Groups periodically]\label{def:periodical}
 A granularity $H$ is periodical with respect to a granularity $G$ if:
 (1) $G \trianglelefteq H$; and
-(2) there exist $R$, $P \in Z+$, where $R$ is less than the number of granules of $H$, such that for all $i \in Z$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
+(2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
 
 A granularity $H$ which is periodical with respect to $G$ is specified by:
@@ -212,7 +212,7 @@ $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary gran
 \begin{definition}[Groups quasi-periodically]\label{def:quasi}
 A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
 (1) $G \trianglelefteq H$; and
-(2) there exist a set of intervals $E_1,\dots,E_z$ (the granularity exceptions) and positive integers $R$, $P$, where $R$ is less than the minimum of the number of granules of $H$ between any two exceptions, such that for all $i \in Z$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where $E$ is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P)$.
+(2) there exist a set of intervals $E_1,\dots,E_z$ (the granularity exceptions) and positive integers $R$, $P$, where $R$ is less than the minimum of the number of granules of $H$ between any two exceptions, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where $E$ is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P)$.
 \end{definition}
 
 Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
@@ -223,33 +223,37 @@ Intuitively, the definition requires that all granules of $H$ within the span of
 
 <!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
-**Example**:  Consider the Gregorian calendar without leap year and all their exceptions. Then each month is a grouping of the same number of days over years. So the period is $P = 365$ and number of granules of "months" in each period is given by $R=12$. Thus, we could say days groups periodically into months. Now consider the Gregorian calendar with leap years but none of their exceptions. In such a case, if we consider every February $29^{th}$ as exceptions, we will still have each month as a grouping of the same number of days over years. In that case, we may say days groups quasi-periodically into months. The value of $P$ and $R$ would be 365 and 12 respectively while $E_i$'s would be the time domain corresponding to $29^{th}$ February of any year.
+Consider the Gregorian calendar without leap years. Then each month is a grouping of the same number of days each year. The period is $P = 365$ and the number of granules of "months" in each period is given by $R=12$. Thus, we could say days groups periodically into months. Now consider the Gregorian calendar with leap years, so that days group quasi-periodically into months. The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s would be the time domain corresponding to $29^{\text{th}}$ February of any year.
 
 \begin{definition}[Bottom granularity]\label{def:B}
 Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set.
 \end{definition}
 
-Here, g-rel could be any relationship defined between granularities like "groups into", "finer than" or "groups periodically". Given the set of all granularities defined over the time domain $(Z; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$.
+Here, g-rel could be any relationship defined between granularities like "groups into", "finer than" or "groups periodically". Given the set of all granularities defined over the time domain $(\mathbb{Z}; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$.
 
 <!-- Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations. -->
 
 ## Computation through calendar algebra
 
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and calendar algebra operations are designed to generate new granularities recursively from the bottom up. The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: "minute" and "hour", where "hour" is generated by grouping every $60$ "minutes". The granule-oriented operations do not change the granules of a granularity, but rather make choices of which granules should remain in the new granularity. For example, one can choose to look at the granularity "Monday" and hence select only "Monday" from linear granularity "day".
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and calendar algebra operations are designed to generate new granularities recursively from the bottom up. The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: "minute" and "hour", where "hour" is generated by grouping every $60$ "minutes". The granule-oriented operations do not change the granules of a granularity, but rather select which granules should remain in the new granularity. For example, one can define the granularity "Monday" and hence select only Mondays from linear granularity "day".
 
 
 <!-- It might be the case that we do not always have integers as the label sets of granularities.  -->
 
 <!-- \begin{definition}[Labelled granularity]\label{def:labelgran} -->
 
-The notion of labeled granularity is introduced in @Bettini2000-qk to simplify the calendar algebra. A labeled granularity is a pair $(\L, G)$, where $L$ is a subset of the integers, and $G$ is a mapping from $L$ to the subsets of the time domain such that (1) if $i<j$ , where $i$ and $j$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then each element in $G(i)$ is less than all the elements of $G(j)$, and (2) if $i<k<j$ , where $i$, $j$ , and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty. $L$ is called the label set of $G$. When $L$ is exactly the integers, the granularities are called full-integer labeled granularity like the one defined in Definition \ref{def:linear}. However, the set $L$ of labels can be an arbitrary subset of (possibly non contiguous) integers and could be used to identify granules. Some calendar operations will only work on full-integer labeled granularities, while others could be implemented using more flexible labelings. 
+The notion of a labeled granularity is introduced in @Bettini2000-qk to simplify the calendar algebra. A labeled granularity is a pair $(L, G)$, where $L$ is a subset of the integers, and $G$ is a mapping from $L$ to the subsets of the time domain such that:
+
+  1. if $i<j$ , where $i$ and $j$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then each element in $G(i)$ is less than all the elements of $G(j)$; and
+  2. if $i<k<j$ , where $i$, $j$, and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.
+
+$L$ is called the label set of $G$. When $L$ is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. However, the set $L$ of labels can be an arbitrary subset of (possibly non contiguous) integers and could be used to identify granules. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.
 
 Some relevant grouping-oriented operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} to define circular and aperiodic granularities.
 
-- **The grouping operation**: Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
+The grouping operation:
+: Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
-
-
 For example:
 \begin{align*}
   \text{minute} &= \text{Group}_{60}(\text{second});\\
@@ -257,14 +261,12 @@ For example:
   \text{day}    &= \text{Group}_{24}(\text{hour});\\
   \text{week}   &= \text{Group}_{7}(\text{day});
 \end{align*}
-
 where $\text{second}(1)$ should coincide with $\text{minute}(1)$ and likewise. Otherwise, repeated operations of grouping might result in a granule of "resultant" granularity "day" or "week", which is different from a time-stamped "day" or "week".
 
+The altering-tick operation:
+: Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, where $G_2$ partitions $G_1$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of $G_1$ in terms of granules of $G_2$. The altering-tick operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each group has $k$ additional granules of $G_2$.
 
-- **The altering-tick operation** : Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, where $G_2$ partitions $G_1$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of $G_1$ in terms of granules of $G_2$. The altering-tick operation modifies the granules of $G_1$ so that the $l$th granule of each group has $|k|$ additional (or fewer when $k < 0$) granules of $G_2$.
-
-For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.
-Let us consider a granularity "pseudomonth" which computes months only for non-leap years.
+For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.  Let us consider a granularity "pseudomonth" which computes months only for non-leap years.
 \begin{align*}
 \text{pseudomonth} = &\text{Alter}^{12}_{11,-1}(\text{day}, \\
   &~~\text{Alter}^{12}_{9,-1}(\text{day}, \\
