@@ -3,13 +3,16 @@ library(tsibble)
 library(gravitas)
 library(readr)
 
+# steps for obtaining raw data
+# Raw data obtained from Electricity Use Interval Reading of Smart-Grid Smart-City Customer Trial Data available in https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/distribution/dist-dga-b71eb954-196a-4901-82fd-69b17f88521e/details?q=smart%20meter 
+# file name:CD_INTERVAL_READING_ALL_NO_QUOTES.csv
+# Download the file using the link: http://datagovau.s3-ap-southeast-2.amazonaws.com/CDINTERVALREADINGALLNOQUOTES.csv.7z
+# save it in data-raw folder and run this code to obtain sm_cust50.rds
 
-# Data obtained from Electricity Use Interval Reading of Smart-Grid Smart-City Customer Trial Data available in ["https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/distribution/dist-dga-b71eb954-196a-4901-82fd-69b17f88521e/details?q=smart%20meter"].
+smart_meter_data_raw <- read_csv("data-raw/CD_INTERVAL_READING_ALL_NO_QUOTES.csv", n_max = 3e6)
 
-download.file("http://datagovau.s3-ap-southeast-2.amazonaws.com/CDINTERVALREADINGALLNOQUOTES.csv.7z", destfile ="data-raw/sm_raw.csv")
 
-smart_meter_data_raw <- read_csv("data-raw/sm_raw.csv", n_max = 3e6)
-
+set.seed(12345)
 sm_cust <- smart_meter_data_raw %>% 
   distinct(CUSTOMER_ID) %>%
   .$CUSTOMER_ID %>% 
