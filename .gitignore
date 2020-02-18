@@ -8,3 +8,4 @@
 cache/*
 main.log
 main.tex
+data-raw/CD_INTERVAL_READING_ALL_NO_QUOTES.csv
