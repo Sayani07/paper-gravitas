@@ -174,9 +174,10 @@ knitr::include_graphics("Figs/linear-arr.png")
 
 @Bettini1998-ed discusses the relationships between linear time granularities, the structure of a calendar, and periodicities in time.
 
-\begin{definition}[Finer than]\label{def:finerthan}
-A linear granularity $G$ is finer than a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that $G(i) \subset H(j)$.
-\end{definition}.
+<!-- CONTENT CUT -->
+<!-- \begin{definition}[Finer than]\label{def:finerthan} -->
+<!-- A linear granularity $G$ is finer than a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that $G(i) \subset H(j)$. -->
+<!-- \end{definition}. -->
 
 \begin{definition}[Groups into]\label{def:groupsinto}
 A linear granularity $G$ groups into a linear granularity $H$, denoted
@@ -186,11 +187,16 @@ $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) 
 \]
 \end{definition}
 
-These definitions are illustrated in \autoref{fig:groups-finer}, where both day $\trianglelefteq$ week, and day $\preceq$ week, hold true. However, weekends are finer than weeks but do not group into weeks. And weekends neither groups into or is finer than public holidays. Consider another example where day $\trianglelefteq$ month. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions.
+<!-- CONTENT CUT -->
+<!-- These definitions are illustrated in \autoref{fig:groups-finer}, where both day $\trianglelefteq$ week, and day $\preceq$ week, hold true. However, weekends are finer than weeks but do not group into weeks. And weekends neither groups into or is finer than public holidays. Consider another example where day $\trianglelefteq$ month. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions. -->
 
-```{r groups-finer, echo=FALSE, out.width = "100%", fig.cap="Illustrations of groups into and finer than relationships. Weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays"}
-knitr::include_graphics("Figs/groupsandfiner.png")
-```
+For example, day $\trianglelefteq$ week since every granule of "week" is the union of some set of granules of "day". Consider another example where day $\trianglelefteq$ month. This relationship however is incomplete without its association to periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions.
+
+
+<!-- CONTENT CUT -->
+<!-- # ```{r groups-finer, echo=FALSE, out.width = "100%", fig.cap="Illustrations of groups into and finer than relationships. Weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays"} -->
+<!-- knitr::include_graphics("Figs/groupsandfiner.png") -->
+<!-- ``` -->
 
 \begin{definition}[Groups periodically]\label{def:periodical}
 A granularity $H$ is periodical with respect to a granularity $G$ if:
@@ -198,25 +204,28 @@ A granularity $H$ is periodical with respect to a granularity $G$ if:
 (2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
 
-A granularity $H$ which is periodical with respect to $G$ is specified by:
-(i) the $R$ sets of indexes of $G$, ${S_0,\dots,S_{R-1}}$ describing the granules of $H$ within one period;
-(ii) the value of $P$;
-(iii) the indexes of first and last granules in $H$, if their value is not infinite.
-Then, if ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
-$H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy].
+<!-- CONTENT CUT -->
+<!-- A granularity $H$ which is periodical with respect to $G$ is specified by: -->
+<!-- (i) the $R$ sets of indexes of $G$, ${S_0,\dots,S_{R-1}}$ describing the granules of $H$ within one period; -->
+<!-- (ii) the value of $P$; -->
+<!-- (iii) the indexes of first and last granules in $H$, if their value is not infinite. -->
+
+
+If ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
+$H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy]. These are called quasi-periodic relationships. Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
+
 
 <!-- # ```{r group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."} -->
 <!-- # knitr::include_graphics("Figs/groups_periodically.png") -->
 <!-- # ``` -->
 
+<!-- CONTENT CUT -->
+<!-- \begin{definition}[Groups quasi-periodically]\label{def:quasi} -->
+<!-- A granularity $H$ is quasi-periodical with respect to a granularity $G$ if: -->
+<!-- (1) $G \trianglelefteq H$; and -->
+<!-- (2) there exist a set of intervals $E_1,\dots,E_z$ (the granularity exceptions) and positive integers $R$, $P$, where $R$ is less than the minimum of the number of granules of $H$ between any two exceptions, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where $E$ is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P)$. -->
+<!-- \end{definition} -->
 
-\begin{definition}[Groups quasi-periodically]\label{def:quasi}
-A granularity $H$ is quasi-periodical with respect to a granularity $G$ if:
-(1) $G \trianglelefteq H$; and
-(2) there exist a set of intervals $E_1,\dots,E_z$ (the granularity exceptions) and positive integers $R$, $P$, where $R$ is less than the minimum of the number of granules of $H$ between any two exceptions, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{k \in [0,k]} G(j_r)$  and $H (i + R) \neq \phi$ and $i + R < min(E)$, where $E$ is the closest existing exception after $H (i)^2$, then $H (i + R) = \bigcup_{k \in [0,k]} G(j_r + P)$.
-\end{definition}
-
-Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
 
 <!-- # ```{r quasi-group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups quasi-periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$ with $E1$ as the exception."} -->
 <!-- # knitr::include_graphics("Figs/quasi_groups_periodically.png") -->
@@ -224,59 +233,63 @@ Intuitively, the definition requires that all granules of $H$ within the span of
 
 <!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
-Consider the Gregorian calendar without leap years. Then each month is a grouping of the same number of days each year. The period is $P = 365$ and the number of granules of "months" in each period is given by $R=12$. Thus, we could say days groups periodically into months. Now consider the Gregorian calendar with leap years, so that days group quasi-periodically into months. The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s would be the time domain corresponding to $29^{\text{th}}$ February of any year.
+For example, in a Gregorian calendar without leap years each month is a grouping of the same number of days each year. The period is $P = 365$ and the number of granules of "months" in each period is given by $R=12$. Thus, we could say days group periodically into months. In a Gregorian calendar with leap years, days group quasi-periodically into months. The value of $P$ and $R$ would still be 365 and 12 respectively, while the <!--$E_i$s--> exceptions would be the time domain corresponding to $29^{\text{th}}$ February of any year.
 
-\begin{definition}[Bottom granularity]\label{def:B}
-Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set.
-\end{definition}
 
-Here, g-rel could be any relationship defined between granularities like "groups into", "finer than" or "groups periodically". Given the set of all granularities defined over the time domain $(\mathbb{Z}; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$.
+<!-- CONTENT CUT -->
+<!-- \begin{definition}[Bottom granularity]\label{def:B} -->
+<!-- Given a granularity order relationship g-rel and a set of granularities having the same time domain, a granularity B in the set is a bottom granularity with respect to g-rel, if B g-rel H for each granularity H in the set. -->
+<!-- \end{definition} -->
 
-<!-- Most practical problems seem to require only a granularity system containing a set of time granularities which are all periodical (or quasi-periodical) with respect to a basic granularity. The assumption is there should be one bottom granularity and all the other granularities are generated from the bottom granularity by calendar algebraic operations. -->
+<!-- Here, g-rel could be any relationship defined between granularities as defined in @Bettini1998-ed. Given the set of all granularities defined over the time domain $(\mathbb{Z}; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. -->
+
+
+A discrete time model often uses a fixed smallest granularity also known as _*bottom granularity_* (@Bettini1998-ed) so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _*chronons*_ (@Jensen1998-qn). Chronons may be grouped into granules and a linear granularity is a non-overlapping mapping of 
+granules to subsets of the time domain (see @Dyreson2000-mr). A system of multiple granularities in lattice structures is referred to as a calendar.
+
 
 ## Computation through calendar algebra
 
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and calendar algebra operations are designed to generate new granularities recursively from the bottom up. The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: "minute" and "hour", where "hour" is generated by grouping every $60$ "minutes". The granule-oriented operations do not change the granules of a granularity, but rather select which granules should remain in the new granularity. For example, one can define the granularity "Monday" and hence select only Mondays from linear granularity "day".
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a “bottom” granularity and calendar algebra operations are designed to generate new granularities recursively from the bottom up. 
 
-
-<!-- It might be the case that we do not always have integers as the label sets of granularities.  -->
+<!-- CONTENT CUT -->
+<!-- The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: "minute" and "hour", where "hour" is generated by grouping every $60$ "minutes". -->
+<!-- The granule-oriented operations do not change the granules of a granularity, but rather select which granules should remain in the new granularity. For example, one can define the granularity "Monday" and hence select only Mondays from linear granularity "day". --> 
 
 <!-- \begin{definition}[Labelled granularity]\label{def:labelgran} -->
 
-The notion of a labeled granularity is introduced in @Bettini2000-qk to simplify the calendar algebra. A labeled granularity is a pair $(L, G)$, where $L$ is a subset of the integers, and $G$ is a mapping from $L$ to the subsets of the time domain such that:
+In addition to the integer index, each granule could be associated with a textual representation which is called the label. The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.
 
-  1. if $i<j$ , where $i$ and $j$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then each element in $G(i)$ is less than all the elements of $G(j)$; and
-  2. if $i<k<j$ , where $i$, $j$, and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.
+<!-- CONTENT CUT -->
+<!-- The notion of a labeled granularity is introduced in @Bettini2000-qk to simplify the calendar algebra. A labeled granularity is a pair $(L, G)$, where the label set $L$ is a subset of the integers instead of the set of integers and -->
+<!-- follows the conditions (1) and (2) in \ref{def:linear} where $i$, $j$, and $k$ are in $L$. When the label set $L$ is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}.<!-- However, the set $L$ of labels can be an arbitrary subset of (possibly non contiguous) integers and could be used to identify granules.-->  -->
 
-$L$ is called the label set of $G$. When $L$ is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. However, the set $L$ of labels can be an arbitrary subset of (possibly non contiguous) integers and could be used to identify granules. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.
 
-Some relevant grouping-oriented operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} to define circular and aperiodic granularities.
+<!-- $G$ is a mapping from $L$ to the subsets of the time domain such that: -->
+
+<!--   1. if $i<j$ , where $i$ and $j$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then each element in $G(i)$ is less than all the elements of $G(j)$; and -->
+<!--   2. if $i<k<j$ , where $i$, $j$, and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty. -->
+
+Some relevant calendar algebra operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} to define circular and aperiodic granularities.
 
 The grouping operation:
 : Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
-For example:
-\begin{align*}
-  \text{minute} &= \text{Group}_{60}(\text{second});\\
-  \text{hour}   &= \text{Group}_{60}(\text{minute});\\
-  \text{day}    &= \text{Group}_{24}(\text{hour});\\
-  \text{week}   &= \text{Group}_{7}(\text{day});
-\end{align*}
-where $\text{second}(1)$ should coincide with $\text{minute}(1)$ and likewise. Otherwise, repeated operations of grouping might result in a granule of "resultant" granularity "day" or "week", which is different from a time-stamped "day" or "week".
+Example: $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$
+
+<!-- CONTENT CUT -->
+<!-- where $\text{second}(1)$ should coincide with $\text{minute}(1)$ and likewise. Otherwise, repeated operations of grouping might result in a granule of "resultant" granularity "day" or "week", which is different from a time-stamped "day" or "week". -->
 
 The altering-tick operation:
 : Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, where $G_2$ partitions $G_1$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of $G_1$ in terms of granules of $G_2$. The altering-tick operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each group has $k$ additional granules of $G_2$.
 
-For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.  Let us consider a granularity "pseudomonth" which computes months only for non-leap years.
+For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.  Let us consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days [@Ning2002-tf].
+
 \begin{align*}
-\text{pseudomonth} = &\text{Alter}^{12}_{11,-1}(\text{day}, \\
-  &~~\text{Alter}^{12}_{9,-1}(\text{day}, \\
-  &~~~~\text{Alter}^{12}_{6,-1}(\text{day}, \\
-  &~~~~~~\text{Alter}^{12}_{4,-1)}(\text{day}, \\
-  &~~~~~~~~\text{Alter}^{12}_{(2,-3)}(\text{day}, \\
-  &~~~~~~~~~~\text{Group}_{31}(\text{day})))))),
+\text{pseudomonth} = &\text{Alter}^{12}_{11,-1}(\text{day}, \text{Alter}^{12}_{9,-1}(\text{day}, \\
+  &~~\text{Alter}^{12}_{6,-1}(\text{day}, \text{Alter}^{12}_{4,-1)}(\text{day}, \\
+  &~~~\text{Alter}^{12}_{(2,-3)}(\text{day}, \text{Group}_{31}(\text{day})))))),
 \end{align*}
-where the granularity pseudomonth is generated by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days [@Ning2002-tf].
 
 For more variations of grouping operations and granule oriented operations, see @Ning2002-tf.
 
@@ -330,7 +343,7 @@ knitr::include_graphics("Figs/circular-dow.png")
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
 
-In general, any circular granularity relating two linear granularity, none of which are bottom granularity\todo{Why not?} can be expressed as $C_{(G, H)}(z) = L(\lfloor z/P(B,G) \rfloor\mod P(G,H))$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping such that the number of granules of $G$ in each granule of $H$ is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity and $L_i$ is the associated label mapping. It is possible that none of the two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the index set. The bottom granularity is assumed to be minutes.
+In general, any circular granularity relating two linear granularity can be expressed as $C_{(G, H)}(z) = L(\lfloor z/P(B,G) \rfloor\mod P(G,H))$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping such that the number of granules of $G$ in each granule of $H$ is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity and $L_i$ is the associated label mapping. It is possible that none of the two linear granularities are bottom granularities. But the representation of the resultant circular granularity will be a function of the index set. The bottom granularity is assumed to be minutes.
 
 \begin{table}[ht]
 \begin{center}
@@ -783,15 +796,15 @@ The way cyclic granularities relate become important when we consider the data s
 <!-- Now, many situations can lead to some of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty. -->
 
 Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
-These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ maps index set to day-of-month and $C_2$ maps index set to week-of-month. Here $C_1$ can have 31 levels/categories while $C_2$ can have 5 categories. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of day-of-month and week-of-month. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
+These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ be day-of-month and $C_2$ be week-of-month. Here $C_1$ can have 31 levels/categories while $C_2$ can have 5 categories. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of day-of-month and week-of-month. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc.This is also intuitive since the first day of the month can never correspond to fifth week of the month. These are structurally empty sets in that it is impossible for them to have any observations.
 
 <!--  In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. -->
 
-Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be day-of-week and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can have 7 levels while $C_2$ can have 2 levels. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of day-of-week and WorkingDay/NonWorkingDay. While potentially all of these can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these combinations will probably have very few observations. For example, there are few if any public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
+Secondly, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Again, let us consider a specific example to illustrate this. Let $C_1$ be day-of-week and $C_2$ be WorkingDay/NonWorkingDay. Here $C_1$ can have 7 levels while $C_2$ can have 2 levels. So there are 14 sets $S_{ij}$ corresponding to the possible combinations of $C_1$ and $C_2$. While potentially all of these can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these combinations will probably have very few observations. For example, there are few (if any) public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
 
 <!-- However, this is different from the first example because these are not structurally empty. Also, the graphic may still be useful if we want to look at whether the interaction of $C_1$ and $C_2$ affects the distribution we are plotting. -->
 
-Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ maps index set to Business-days, which are days from Monday to Friday except holidays and $C_2$ is day-of-month. Then the days denoting weekends in a month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
+Thirdly, empty combinations can be a result of how granularities are constructed. Let $C_1$ be Business-days, which are days from Monday to Friday except holidays and $C_2$ is day-of-month. Then the days denoting weekends in a month would not correspond to any Business days and would have missing observations due to the way the granularities are constructed. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. Hence, they are referred to as "build-based" empty combinations.
 
 An example when there will be no empty combinations could be where $C_1$ maps index set to day-of-week and $C_2$ maps index set to month-of-year. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of day-of-week and month-of-year. All of these are non-empty because every day-of-week can occur in every month.
 
@@ -801,7 +814,7 @@ A pair of cyclic granularities which lead to structurally, event-driven or build
 
 <!-- Moreover, the measured variable in the considered data structure can be dicrete or continuous. -->
 
-Summarizing properties of the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. With huge amount of data being available, mean, median or any one summary statistic might not be enough to understand the different properties of the measured variable. Instead the distribution could be summarized using some summary statistics together, each of which can highlight different properties of the data. Tukey's five number summary, letter values or quantiles can serve as examples of distributional summaries. Another way of summarizing could be estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. Several forms of  non-parametric density estimators and quantile estimators exist in the literature, the most commonly used form ( @Silverman1986-cl,  @Jones1992-pj) are as follows:
+Summarizing properties of the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. With huge amount of data being available, mean, median or any one summary statistic might not be enough to understand the different properties of the measured variable. Instead the distribution could be summarized using some summary statistics together, each of which can highlight different properties of the data. Tukey's five number summary, letter values or quantiles can serve as examples of distributional summaries. Another way of summarizing could be estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. Several forms of  non-parametric density estimators <!--and quantile estimators--> exist in the literature, the most commonly used form in @Silverman1986-cl<!--,  @Jones1992-pj)--> is as follows:
 
 <!-- The most commonly used density estimation method is the kernel density estimator.  -->
 
@@ -811,41 +824,30 @@ If we assume that $X_1, X_2, \dots, X_n \sim F$ are independent and identically 
 \hat{f(x)} = (1/nh)\sum_{i=1}^{n} K(x-X_i)/h
 \end{equation}
 
-where $h$ is the smoothing parameter or the bandwidth. The sample quantile estimator  $\hat{q(u)}$ with Kernel $K$ is given by:
+where $h$ is the smoothing parameter or the bandwidth. The MSE of the estimator is given by:
 
-<!-- $Q$, $(q \equiv  Q')$, which is the quantile density function -->
-<!-- $ Q_{n} (u) = \sum_{i=1}^ n X_{(i)} I((i-1)/n <u \leq i/n)$\\ -->
-<!--             $= X_(1) + \sum_{i=1}^ n (X_{(i)} - X_{(i-1)}) I((i-1)/n < u)$ -->
-
-<!-- and most widely used definition of sample quantile is given in  by: -->
-
-<!-- $$\hat{Q_{i}(p)} = (l - \gamma)X_{(j)} + \gamma X_{(j + 1)}$$ where,  $(j - m)/n \leq p < (j - m + 1)/n$,  -->
-<!-- for some $m \in R$ and $0 < \gamma < 1$.  $\hat{Qi(p)}$ is the ith sample quantile  -->
-
-\begin{equation}
-\hat{q(u)} = \sum_{i=2}^{n}(X_{(i)} - X_{(i-1)})K(u - (i-1)/n)) - X_{(n)}K(u-1) + X_{(1)}K(u)
-\end{equation}
-
-where $Q(u)= F^{-1}(u) = inf({x: F(x) >u)}$, $0<u< 1$ and  $q \equiv  Q'$.
-
- <!-- Both pdf and pmf are concerned with point probabilities of the random variable. Suppose we have observations which are realizations of univariate random variables, $X_1, X_2, \dots, X_n \sim F$, where $F$ denotes an unknown cumulative distribution function and $X_1, X_2, \dots, X_n$ are i.i.d. -->
-
-<!-- Instead of assuming a parametric model for the distribution (e.g. a Normal distribution with unknown expectation and variance), a non-parametric estimation assumes that the density exists and is suitably smooth (e.g. differentiable). It is then possible to estimate the u2nknown density function f(·). -->
-
-<!-- The histogram is the oldest and most popular density estimator method. The form of the histogram depends very much on the tuning parameters class width and origin. The naive estimator was introduced by Fix and Hodges (1951) and first discussed by Rosenblatt(1956). Whittle (1958) formulated the general weight function class of estimators, while the orthogonal series estimator was introduced by Cencov (1962). The nearest neighbor estimate considered by Loftsgaarden and Quesenbury (1965), while the variable Kernel method is due to Brieman, Meisel and Purcell (1977). There are quite a few other approaches to density estimation than the kernel estimators, but the fixed bandwidth kernel estimators are used predominantly because of their simplicity. -->
-
-<!-- The inverse $Q = F^{-1}$, which is the quantile function can be defined as $Q(u)= F^{-1}(u) = inf({x: F(x) >u)}$, $0<u< 1$.  -->
-
-The MSE of the estimators are given as follows:
 
 \begin{equation}\label{eq:MSE}
 \begin{split}
 MSE(\hat{q(u)}) & = (1/4)h^4(q''(u))^2 \sigma_k^4 + (1/nh)q^2(u) \kappa \\
-MSE(\hat{f(x)}) & = (1/4)h^4(f''(x))^2 \sigma_k^4 + (1/nh)f(x) \kappa
 \end{split}
 \end{equation}
 
 where $\kappa = \int k^2(y)dy$.
+
+
+<!-- CONTENT CUT -->
+<!-- The sample quantile estimator  $\hat{q(u)}$ with Kernel $K$ is given by: -->
+
+
+
+<!-- \begin{equation} -->
+<!-- \hat{q(u)} = \sum_{i=2}^{n}(X_{(i)} - X_{(i-1)})K(u - (i-1)/n)) - X_{(n)}K(u-1) + X_{(1)}K(u) -->
+<!-- \end{equation} -->
+
+<!-- where $Q(u)= F^{-1}(u) = inf({x: F(x) >u)}$, $0<u< 1$ and  $q \equiv  Q'$. -->
+<!-- MSE(\hat{f(x)}) & = (1/4)h^4(f''(x))^2 \sigma_k^4 + (1/nh)f(x) \kappa -->
+
 
 <!-- other non parametric quantile estimators proposed e.g., Harrell and Davis 1982; Sheather and Marron 1990). Also sample quantiles can be of the form that are not defined for all p including hinges, letter values (Hoaglin 1983) and related methods (Freund and Perles 1987). -->
 
@@ -954,23 +956,25 @@ Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis
 
 <!-- Common benefits and challenges of empirical and density based visualization -->
 
-Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is the one that can display densities. In Section \ref{sec:measured-variable}, it is discussed that these densities could be estimated using Kernel density estimates or some descriptive statistics. Kernel density estimates provide more detailed information about the distribution but depend on smoothing parameters and hence can vary for the same data set. The descriptive statistics based methods do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid clutter and help us to focus on some specific properties of the data. Also, the summaries based on descriptive statistics remain free of any tuning parameters or Kernels, which is sometimes more desirable for exploration.
-
-<!--  However, even with large sample size, choosing too large a value for bandwidth can cause the estimate to oversmooth the data. -->
-
+Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is the one that can display densities. In Section \ref{sec:measured-variable}, it is discussed that these densities could be estimated using Kernel density estimates or some descriptive statistics.
 We will discuss few conventional and recent ways to plot distributions using both of these methods.
 
-<!-- Non-parametric density based plots can show the entire distribution, unlike discretizing and showing only parts of it. These displays depend on the specific estimation procedure (e.g., kernel density estimate)  -->
+<!-- CONTENT CUT -->
+<!-- Kernel density estimates provide more detailed information about the distribution but depend on smoothing parameters and hence can vary for the same data set. The descriptive statistics based methods do not allow us to see the shape, skewness, nature of the tail or multi-modality with so much clarity as the former. However, they avoid clutter and help us to focus on some specific properties of the data. Also, the summaries based on descriptive statistics remain free of any tuning parameters or Kernels, which is sometimes more desirable for exploration. -->
+
+
+
+
 
 <!--  Furthermore, these methods are subject to the same sample size restrictions and challenges that apply to any density estimation.  -->
 <!-- The probabilities displayed are based on actual data, which is aligned to principles that governed Tukey’s original boxplot. They can be useful in spotting multimodality, however, they might become obscuring with too many categories and information on the entire distribution can add to cognitive load. Also, the probabilities in density plot are estimated through kernel density estimation and thus makes assumptions when selecting kernel or bandwidth. As a result, the plot shows smooth summaries based on the assumptions and not only on actual observations. -->
 
 ### Descriptive statistics based displays
 
-Most commonly used displays include the box plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers. These displays are based on descriptive statistics, for example, $([n/2] + 1)/2^{\text{th}}$ and $(n + 1 - ([n/2] + 1)/2)^{\text{th}}$ order statistics are taken as estimates of the quartiles. Due to wide spread popularity and simplicity in implementation, a number of variations are proposed to the original one which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of it's variations are helpful to get an idea of the distribution at a glance. However, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data set since number of outliers is proportional to the number of observations.
+Most commonly used displays include the box plots [@Tukey1977-jx] which convey statistical features such as the median, quartile boundaries, hinges, whiskers and extreme outliers.<!--These displays are based on descriptive statistics, for example, $([n/2] + 1)/2^{\text{th}}$ and $(n + 1 - ([n/2] + 1)/2)^{\text{th}}$ order statistics are taken as estimates of the quartiles.--> Due to wide spread popularity and simplicity in implementation, a number of variations are proposed which provides alternate definitions of quantiles, whiskers, fences and outliers. Notched box plots [@Mcgill1978-hg] has box widths proportional to the number of points in the group and display confidence interval around medians aims to overcome some drawbacks of box plots.<!-- Challenge of boxplot --> The standard box plot and all of it's variations are helpful to get an idea of the distribution at a glance. However, for data less than 1000 observations, detailed estimates of tail behavior beyond the quartiles are not trustworthy. Also, the number of outliers is large for larger data sets.
 
 <!-- Description and lit review of letter-value plots -->
-The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail. These are particularly useful for large data sets. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown, leading to overload of information in one plot.
+The letter-value box plot [@Hofmann2017-sg] was designed to adjust for number of outliers proportional to the data size and display more reliable estimates of tail and are particularly useful for large data sets. “outliers” in letter value plots are those observations beyond the most extreme letter value. The letter values are shown till the depths where the letter values are reliable estimates of their corresponding quantiles and hence might lead to a lot of letter values being shown, leading to overload of information in one plot.
 
 <!-- Description and lit review of quantile plots -->
 
@@ -982,7 +986,7 @@ Quantile plots display quantiles instead of quartiles in a traditional boxplot. 
 
 ### Kernel density based displays
 
-Traditional ways to visualize kernel densities include violin plots [@Hintze1998-zi]. The shape of the violin represents the density estimate of the variable. The more data points in a specific range, the larger the violin is for that range. Adding two density plots gives a symmetric plot which makes it easier to see the magnitude of the density and compare across categories, enabling easier detection of clusters or bumps within a distribution.
+Traditional ways to visualize kernel densities include violin plots [@Hintze1998-zi]. The shape of the violin represents the density estimate of the variable. The more data points in a specific range, the larger the violin is for that range. Adding two density plots gives a symmetric plot which makes it easier to see the magnitude of the density and compare across categories, enabling easier detection of clusters or bumps within a distribution. It becomes less useful when there are too many levels or categories to display.
 
 The summary plot [@Potter2010-qc] combines a minimal box plot with glyphs representing the first five moments (mean, standard deviation, skewness, kurtosis and tailings), and a sectioned density plot crossed with a violin plot and an overlay of a reference distribution. This suffers from the same problem as boxplots or violin plot, as it is combination of those two.
 
@@ -1049,19 +1053,21 @@ VIC <- vic_elec
 VIC %>%
   create_gran("month_year") %>%
   filter(month_year %in% c("Jan", "Mar", "July", "Dec")) %>%
-  prob_plot("month_year","day_week",
-            response = "Demand",
-            plot_type = "lv") +
+  prob_plot("month_year", "day_week",
+    response = "Demand",
+    plot_type = "lv"
+  ) +
   ylab("Electricity Demand [KWh]") +
   ggtitle("(a) Letter value plot")
 
 VIC %>%
   create_gran("day_week") %>%
   filter(day_week %in% c("Mon", "Tue", "Sat", "Sun")) %>%
-  prob_plot("day_week","hour_day",
-            response = "Demand",
-            plot_type = "quantile",
-            symmetric = FALSE) +
+  prob_plot("day_week", "hour_day",
+    response = "Demand",
+    plot_type = "quantile",
+    symmetric = FALSE
+  ) +
   ylab("Electricity Demand [KWh]") +
   ggtitle("(b) Decile plot")
 
@@ -1069,55 +1075,68 @@ VIC %>%
   create_gran("day_month") %>%
   filter(day_month %in% c(1, 15, 29, 31)) %>%
   prob_plot("day_month",
-                "day_year",
-                response = "Demand",
-                plot_type = "boxplot")+
+    "day_year",
+    response = "Demand",
+    plot_type = "boxplot"
+  ) +
   ylab("Electricity Demand [KWh]") +
   scale_x_discrete(breaks = seq(0, 366, 60)) +
-  theme(legend.position = "bottom",
-        strip.text = element_text(size = 7, margin = margin())) +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 7, margin = margin())
+  ) +
   ggtitle("(c) Box plot")
 
 VIC %>%
-    create_gran("week_month") %>%
+  create_gran("week_month") %>%
   filter(week_month %in% c(1, 2, 4)) %>%
-   prob_plot("week_month",
-                "day_month",
-                response = "Demand",
-                plot_type = "violin", alpha = 0.3) + ylab("") +
+  prob_plot("week_month",
+    "day_month",
+    response = "Demand",
+    plot_type = "violin", alpha = 0.3
+  ) + ylab("") +
   xlab("Days of the Month") +
   theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks = seq(0, 31, 5)) +
   scale_y_continuous(breaks = seq(2000, 9000, 2000)) +
   ggtitle("(d) Violin plot")
 
-VIC %>%  create_gran("week_month") %>%
+VIC %>%
+  create_gran("week_month") %>%
   create_gran("week_year") %>%
-  filter(week_month%in% c(1, 2, 5), week_year %in% c(1:20)) %>%
+  filter(week_month %in% c(1, 2, 5), week_year %in% c(1:20)) %>%
   prob_plot("week_year",
-            "week_month",
-            response = "Demand",
-            plot_type = "ridge")  +
+    "week_month",
+    response = "Demand",
+    plot_type = "ridge"
+  ) +
   xlab("Electricity Demand [KWh]") +
   ylab("Weeks of the Year") +
   scale_x_continuous(breaks = seq(2000, 10000, 3000)) +
-  theme(legend.position = "bottom",
-        strip.text = element_text(size = 7, margin = margin())) +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 7, margin = margin())
+  ) +
   ggtitle("(e) Ridge plot")
 
 VIC %>%
   create_gran("month_year") %>%
   filter(month_year %in% c("Jan", "Jul", "Nov")) %>%
-   prob_plot("month_year",
-            "day_year",
-            response = "Demand",
-            plot_type = "quantile",
-            quantile_prob = seq(0.1, 0.9, 0.1),
-            symmetric = FALSE) +
-   #scale_x_discrete(breaks = seq(1, 336, 60)) +
-   ylab("") +
-   xlab("Day of the Year") + theme(legend.position = "none",
-                                   strip.text = element_text(size = 7,
-                                                             margin = margin())) +
+  prob_plot("month_year",
+    "day_year",
+    response = "Demand",
+    plot_type = "quantile",
+    quantile_prob = seq(0.1, 0.9, 0.1),
+    symmetric = FALSE
+  ) +
+  # scale_x_discrete(breaks = seq(1, 336, 60)) +
+  ylab("") +
+  xlab("Day of the Year") + theme(
+    legend.position = "none",
+    strip.text = element_text(
+      size = 7,
+      margin = margin()
+    )
+  ) +
   ggtitle("(f) Decile plot")
 
 # VIC_moy_doy %>% ggplot(aes(x = yday, y = Value, col = as.factor(Quantile), group = yday)) + geom_line() + facet_wrap(~Indx_Month) + scale_x_continuous(breaks = seq(1, 336, 60)) + ylab("") + xlab("Day of the Year") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
@@ -1150,7 +1169,7 @@ Even when there are no rarely occuring events, number of observations might vary
 ## Smart meter data of Australia {#sec:smartmeter}
 
 <!-- # how data looks -->
-Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns.
+Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns.
 <!-- and identify the extreme and regular households. -->
 
 ### Data structure for visualization:
@@ -1159,12 +1178,16 @@ The data structure for a sample of 50 households from that trial is as follows:
 <!-- We take a random sample of 50 households to see how we can achieve that.  -->
 
 ```{r smart-meter, fig.cap = "Smart meter data structure"}
-sm <- read_rds("data/sm_cust50.rds")
+load("data/sm_cust50.Rdata")
 
-smart_meter <- sm %>% as_tsibble() %>% dplyr::select(customer_id,
-                              reading_datetime,
-                              general_supply_kwh)
-smart_meter
+smart_meter <- sm_cust50 %>%
+  as_tsibble() %>%
+  dplyr::select(
+    customer_id,
+    reading_datetime,
+    general_supply_kwh
+  )
+smart_meter %>% head(n = 5)
 ```
 
 The variable `reading_datetime` is the index of the tsibble and represents the time variable. The variable `customer_id` denoting different households represent the key of the tsibble and `general_supply_kwh` is the time series variable which needs to be analyzed. Data sets of the form <$C1$, $C2$, `general_supply_kwh`> will form the basis of exploration for each key in the data set, where the cyclic granularity $C1$ would be mapped to $x$ axis and `general_supply_kwh` to $y$ axis with the cyclic granularity $C2$ mapped to facet. Any geometry displaying the probability distribution of `general_supply_kwh` like  boxplot, letter value, violin,
@@ -1200,9 +1223,10 @@ smart_meter10 %>%
 Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
 
 ```{r search_gran_limit2, echo=TRUE}
-smart_meter10 %>% search_gran(highest_unit = "month",
-                              filter_out = c("hhour", "fortnight")
-                              )
+smart_meter10 %>% search_gran(
+  highest_unit = "month",
+  filter_out = c("hhour", "fortnight")
+)
 ```
 
 <!-- # smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month", -->
@@ -1402,16 +1426,18 @@ There is bimodality in the early hours of the day, implying both low and high en
 
 ```{r granadvice, echo = TRUE, warning=FALSE, message=FALSE}
 smart_meter10 %>%
-  filter(customer_id %in% c(10017936))%>%
-  gran_advice("wknd_wday",
-                            "hour_day")
+  filter(customer_id %in% c(10017936)) %>%
+  gran_advice(
+    "wknd_wday",
+    "hour_day"
+  )
 ```
 
 ```{r bothcust, fig.cap = "Area quantile plot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936 displays the smoothed energy consumption curve for the entire day. The customer typically consumes more in the morning hours following which their consumption is low till late afternoon hours. Median consumption for the early morning hours starts higher and continue to remain high for longer during weekdays compared to weekdend."}
 
 # plot for only customer is shown
 # cust1 <- smart_meter10 %>%
-#filter(customer_id %in% c(10006704)) %>%
+# filter(customer_id %in% c(10006704)) %>%
 #   prob_plot("wknd_wday",
 #                             "hour_day",
 #                             response = "general_supply_kwh",
@@ -1421,13 +1447,14 @@ smart_meter10 %>%
 #   scale_y_sqrt() +
 #   ggtitle("Energy consumption distribution for customer id: 10006704")
 cust2 <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936))%>%
+  filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
-                            "hour_day",
-                            response = "general_supply_kwh",
-                            plot_type = "quantile",
-            symmetric = TRUE,
-             quantile_prob = c(0.01,0.1, 0.25, 0.5, 0.75, 0.9, 0.99)) +
+    "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    symmetric = TRUE,
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
   scale_y_sqrt()
 cust2
 ```
@@ -1444,11 +1471,12 @@ cust2
 #   ggtitle("Energy consumption distribution for customer id: 10006704")
 
 smart_meter10 %>%
-  filter(customer_id %in% c(10017936))%>%
+  filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
-                            "hour_day",
-                            response = "general_supply_kwh",
-                            plot_type = "violin") +
+    "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "violin"
+  ) +
   scale_y_sqrt()
 ```
 
@@ -1464,14 +1492,14 @@ smart_meter10 %>%
 #   ggtitle("Energy consumption distribution for customer id: 10006704")
 
 smart_meter10 %>%
-  filter(customer_id %in% c(10017936))%>%
+  filter(customer_id %in% c(10017936)) %>%
   prob_plot("hour_day",
-            "wknd_wday",
-            response = "general_supply_kwh",
-            plot_type = "boxplot") +
-            scale_y_sqrt()
-            # scale_fill_brewer(palette = "Dark2")
-
+    "wknd_wday",
+    response = "general_supply_kwh",
+    plot_type = "boxplot"
+  ) +
+  scale_y_sqrt()
+# scale_fill_brewer(palette = "Dark2")
 ```
 
 <!-- Now, we would like to see how these customers' behavior relate to the rest of the  50 households across these two measures -   -->
@@ -1497,13 +1525,14 @@ The method is not only restricted to temporal data. We provide an example of cri
 The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like the following:
 
 ```{r hierarchy2}
- library(gravitas)
- library(tibble)
- hierarchy_model <- tibble::tibble(
-   G = c("over", "inning", "match", "season"),
-   C = c("over-of-inning", "inning-of-match", "match-of-season",1),
-   P = c(20, 2, "aperiodic", 1))
- knitr::kable(hierarchy_model, format = "markdown")
+library(gravitas)
+library(tibble)
+hierarchy_model <- tibble::tibble(
+  G = c("over", "inning", "match", "season"),
+  C = c("over-of-inning", "inning-of-match", "match-of-season", 1),
+  P = c(20, 2, "aperiodic", 1)
+)
+knitr::kable(hierarchy_model, format = "markdown")
 ```
 
 However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. We will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
@@ -1569,15 +1598,17 @@ hierarchy_model <- tibble::tibble(
 )
 
 cricket_tsibble %>%
-  filter(batting_team %in% c("Mumbai Indians",
-                             "Chennai Super Kings"))%>%
+  filter(batting_team %in% c(
+    "Mumbai Indians",
+    "Chennai Super Kings"
+  )) %>%
   prob_plot("inning",
-            "over",
-  response = "runs_per_over",
-  hierarchy_model,
-  plot_type = "lv")  + ggtitle("") +
+    "over",
+    response = "runs_per_over",
+    hierarchy_model,
+    plot_type = "lv"
+  ) + ggtitle("") +
   scale_fill_brewer(palette = "Dark2")
-
 ```
 
 Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over?
@@ -1589,73 +1620,83 @@ For establishing that the fielder fielded well in a particular over, we can see 
 <!-- fetching raw data since dot and fielding information not available in dismissal type not available in cricket data gravitas. Also `cricket` is aggregated across overs -->
 
 ```{r runs_per-over}
- library(tsibble)
+library(tsibble)
 
- cricket_all <-  read_csv("data-raw/deliveries_all.csv")
- matches_all <- read_csv("data-raw/matches_all.csv")
+cricket_all <- read_csv("data-raw/deliveries_all.csv")
+matches_all <- read_csv("data-raw/matches_all.csv")
 
- cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" ="id"))
+cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" = "id"))
 
- # cricket_per_over <- cricket_season %>%
- #   group_by(season,
- #            match_id,
- #            batting_team,
- #            bowling_team,
- #            inning,
- #            over) %>%
- #   summarise(runs_per_over = sum(total_runs),
- #             run_rate = sum(total_runs)/length(total_runs))
- #
- # cricket_tsibble_all <- cricket_per_over %>%
- #   ungroup() %>%
- #   mutate(data_index = row_number()) %>%
- #   as_tsibble(index = data_index)
+# cricket_per_over <- cricket_season %>%
+#   group_by(season,
+#            match_id,
+#            batting_team,
+#            bowling_team,
+#            inning,
+#            over) %>%
+#   summarise(runs_per_over = sum(total_runs),
+#             run_rate = sum(total_runs)/length(total_runs))
+#
+# cricket_tsibble_all <- cricket_per_over %>%
+#   ungroup() %>%
+#   mutate(data_index = row_number()) %>%
+#   as_tsibble(index = data_index)
 ```
 
 ```{r}
 
 cricket_dot_field <- cricket_season %>%
-  mutate(fielding_proxy = if_else(dismissal_kind %in%
-                                    c("caught", "caught and bowled"),1,0),
-         dot_ball_proxy = if_else(total_runs==0,1,0),
-         wicket_proxy = if_else(is.na(dismissal_kind),0,1)) %>%
-  group_by(season,
-           match_id,
-           batting_team,
-           bowling_team,
-           inning,
-           over) %>%
-  summarise(runs_per_over = sum(total_runs),
-            run_rate = sum(total_runs)/length(total_runs),
-            fielding_wckts = sum(fielding_proxy),
-            dot_balls = sum(dot_ball_proxy)) %>%
-            mutate(diff_run_rate = c(0,diff(run_rate)))
+  mutate(
+    fielding_proxy = if_else(dismissal_kind %in%
+      c("caught", "caught and bowled"), 1, 0),
+    dot_ball_proxy = if_else(total_runs == 0, 1, 0),
+    wicket_proxy = if_else(is.na(dismissal_kind), 0, 1)
+  ) %>%
+  group_by(
+    season,
+    match_id,
+    batting_team,
+    bowling_team,
+    inning,
+    over
+  ) %>%
+  summarise(
+    runs_per_over = sum(total_runs),
+    run_rate = sum(total_runs) / length(total_runs),
+    fielding_wckts = sum(fielding_proxy),
+    dot_balls = sum(dot_ball_proxy)
+  ) %>%
+  mutate(diff_run_rate = c(0, diff(run_rate)))
 
 cricket_tsibble <- cricket_dot_field %>%
   ungroup() %>%
   mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
 
-cricket_data<- cricket_tsibble %>%
-  mutate(field = if_else(fielding_wckts==0, "no wickets", ">0 wickets"),
-         dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls"),
-         lag_field =  lag(field),
-         lag_dot = lag(dot)) %>% filter(lag_field!=0, lag_dot!=0)
+cricket_data <- cricket_tsibble %>%
+  mutate(
+    field = if_else(fielding_wckts == 0, "no wickets", ">0 wickets"),
+    dot = if_else(dot_balls == 0, "no dot balls", ">0 dot balls"),
+    lag_field = lag(field),
+    lag_dot = lag(dot)
+  ) %>%
+  filter(lag_field != 0, lag_dot != 0)
 ```
 
-```{r echo = TRUE}
+```{r echo = FALSE, eval = FALSE}
 cricket_data %>% gran_obs("field", "over")
 cricket_data %>% gran_obs("dot", "over")
 ```
 
 ```{r field,  fig.cap = "Violin plots with an overlaid boxplot showing distribution of run rate across overs of the innings and (lagged) wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also distribution of run rates has less spread in case there is at least one wicket in the previous over.", warning=FALSE}
 
-  #filter(fielding_wckts %in% c(0,1)) %>%
-  cricket_data %>% prob_plot("over","lag_field",
-                               hierarchy_model,
-                               response = "run_rate",
-                               plot_type = "violin",
-                               quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))  + ggtitle("") + geom_boxplot(width = 0.5)
+# filter(fielding_wckts %in% c(0,1)) %>%
+cricket_data %>% prob_plot("over", "lag_field",
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "violin",
+  quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+) + ggtitle("") + geom_boxplot(width = 0.5)
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
@@ -1707,14 +1748,15 @@ With at least one dot balls per over, the distribution of run rates in facet 1 i
 #             symmetric = FALSE)  + ggtitle("")
 
 cricket_data %>%
-  #filter(dot_balls %in% c(0, 1, 2)) %>%
+  # filter(dot_balls %in% c(0, 1, 2)) %>%
   prob_plot("lag_dot",
-            "over",
-            hierarchy_model,
-            response = "run_rate",
-            plot_type = "quantile",
-            quantile_prob = c(0.25, 0.5, 0.75),
-            symmetric = FALSE)  + ggtitle("")
+    "over",
+    hierarchy_model,
+    response = "run_rate",
+    plot_type = "quantile",
+    quantile_prob = c(0.25, 0.5, 0.75),
+    symmetric = FALSE
+  ) + ggtitle("")
 ```
 
 In Q2 and Q3, dots balls per over or catches per over are considered as aperiodic cyclic granularities with dot balls or catches as aperiodic linear granularities. These aperiodic linear granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data. While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.
@@ -1735,6 +1777,5 @@ The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/n
 # Bibliography
 
 ```{r write-bib, eval = FALSE}
-write_bib(c("dplyr", "tidyr", "tsibble", "magrittr","rlang", "gravitas"), file = "rpkgs.bib")
+write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas"), file = "rpkgs.bib")
 ```
-
