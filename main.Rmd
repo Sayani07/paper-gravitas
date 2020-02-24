@@ -417,17 +417,7 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 \end{split}
 \end{equation}
 
-**Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from definition \ref{def:periodical})
-
-<!-- - $B \trianglelefteq G'$ -->
-
-- 
-
-
-
-<!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->
-
-Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
+**Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from definition \ref{def:periodical})<!-- - $B \trianglelefteq G'$ --> <!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
 
 ```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="Quasi-circular granularities $Q(B, G')$ and $Q(B, H')$ relating bottom granularity $B$ and linear granularities $G'$ and $H'$ respectively."}
 knitr::include_graphics("Figs/quasi-circular-example.png")
@@ -476,15 +466,12 @@ A_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert - \sum_{u=0}^{e_k
 \end{equation}
 
 for $z \in T_k$ and $e_k$ is the number of exceptions in $\bigcup\limits_{w = 0}^{k} T_w$ and $E_{u} = [e_{begin}(u), e_{end}(u)]$.
+
 ## Aperiodic {#sec:aperiodic-gran-def}
 
 Periodic and Quasi-periodic behavior can be defined by a repeating pattern, except for a finite number of granules that can be seen as discontinuity points in the granularity in case of quasi-periodic behavior. Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no finite (or reasonably small) period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. U.S labour day is the first Monday in September and U.S. Memorial Day is the last day in May. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduling event that might cover the first and third Monday of the month between June and October, except for state holidays. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities.
 
-Aperiodic nonlinear granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$, that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to \autoref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that
-\begin{equation*}
-M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)
-\end{equation*}
-and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
+Aperiodic nonlinear granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$, that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity. Further assume that $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to Definition \ref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$ and suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
 
 \begin{definition}[Aperiodic nonlinear granularity]\label{aperiodic}
 An aperiodic nonlinear granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
@@ -516,29 +503,20 @@ knitr::include_graphics("Figs/aperiodic-example.png")
 In \autoref{sec:cyclic-gran}, we discussed how we can define nonlinear granularities by extending the framework of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as "cyclic calendar algebra".
 
 The cyclic calendar algebra consists of broadly two kinds of operations:
-(1) **single-to-multiple:** representation of multiple-order-up cyclic granularities from single order-up cyclic granularities
-(2) **multiple-to-single:** representation of single-order-up cyclic granularities from multiple order-up cyclic granularities
+(1) **single-to-multiple:** and (2) **multiple-to-single:** which entails the representation of multiple-order-up cyclic granularities from single order-up cyclic granularities and vice versa. The hierarchical structure of time creates a natural nested ordering which can produce _single-order-up_ or _multiple-order-up_ granularities. We shall use the notion of a hierarchy table and order to define them.
 
-The hierarchical structure of time creates a natural nested ordering which can produce **single-order-up** or **multiple-order-up** granularities. We shall use the notion of a hierarchy table and order to define them.
-
-**Hierarchy table** Let $H_n: (G, C, P)$ be a hierarchy model containing n linear granularities. $G_{l}$ represents the linear granularity of order l and $P(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the cyclic granularity that relates linear granularity of order l and m, $\forall l,m \in {1, 2, \dots,n}$ and $l<m$.
+**Hierarchy table** Let $H_n: (G, C, P)$ be a hierarchy table containing $n$ linear granularities. $G_{l}$ represents the linear granularity of order l and $P(l,m)$ represents the period length of $G_{l}$ with respect to $G_{m}$ and $C_{G(l),G(m)}$ represents the cyclic granularity that relates linear granularity of order l and m, $\forall l,m \in {1, 2, \dots,n}$ and $l<m$.
 
 **Order** of a linear granularity can be comprehended as the level of graininess associated with a linear granularity. For example, if we consider two linear granularities $G$ and $H$, such that $G$ is finer than or groups into $H$, then $H$ is of higher order than $G$. In any hierarchy table, linear granularities are arranged from lowest to highest order of linear granularities.
 
-We refer to granularities which are nested within multiple levels of the hierarchy table as multiple-order-up granularities and those concerning a single level as single-order-up granularities.
+We refer to granularities which are nested within multiple levels of the hierarchy table as _multiple-order-up_ granularities and those concerning a single level as _single-order-up_ granularities.
 
 <!-- Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities and the other granularities are subsequently more "coarse" than the earlier one. -->
 
 <!-- If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided. -->
 
 <!-- some discussions on primary units of calendar -->
-**Example:** So far we have used example of cyclic granularities from Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. All calendars fall under three types - solar, lunar or lunisolar/solilunar but the day is the basic unit of time underlying all calendars [@Reingold2001-kf]. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured as follows:
-
- - 1 kin = 1 day
- - 1 uinal = 20 kin
- - 1 tun  = 18 uinal
- - 1 katun = 20 tun
- - 1 baktun = 20 katun
+**Example:** So far we have used example of cyclic granularities from Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. <!--All calendars fall under three types - solar, lunar or lunisolar/solilunar-->. The day is the basic unit of time underlying most calendars [@Reingold2001-kf]. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy table can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal; 1 katun = 20 tun and 1 baktun = 20 katun
 
 Thus, the hierarchy table for the Mayan calendar would look like the following:
 
@@ -569,13 +547,12 @@ C_{(G_l,G_m)}(z) & = L(C_{G_l,G_{l+1}}(z) + P(l, l+1)(C_{(G_{l+1},G_m)}(z))) \\
 \end{split}
 \end{equation}
 
-*Example:* Let us use Equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar.
+**Example:** Let us use Equation \ref{eq:eq7} to compute the multiple-order-up granularity uinal_katun for Mayan calendar.
 
 \begin{equation} \label{eq8}
 \begin{split}
 C_{uinal, baktun}(z)  = & L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + C_{uinal, katun}C_{katun, baktun}(z)) \\
-               = & L(\lfloor z/20\rfloor \mod 18  \\
-               &~~~ + 20*\lfloor z/20*18\rfloor \mod 20  \\
+               = & L(\lfloor z/20\rfloor \mod 18 + 20*\lfloor z/20*18\rfloor \mod 20  \\
                &~~~ + 20*18*20\lfloor z/20*18*20\rfloor \mod 20) \\
 \end{split}
 \end{equation}
@@ -596,36 +573,17 @@ Let us revisit Gregorian calendar for addressing this case. Suppose we have a hi
 |  year   	  | 1                |	1             |
 
 There can be three scenarios for obtaining multiple-order-granularities here:
- - cyclic granularities relating two linear granularities whose orders are less than day
- - cyclic granularities relating two linear granularities whose orders are more than month
- - granularities relating two linear granularities with order at most day and another with order at least month
+ - cyclic granularities relating two linear granularities whose orders are less than day  
+ - cyclic granularities relating two linear granularities whose orders are more than month  
+ - granularities relating two linear granularities with order at most day and another with order at least month  
 
-The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$.
+The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year.
 
-\begin{equation} \label{eq:hour-month}
-\begin{split}
-C_{hour, month}(z) & = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))\\
-& = L(12 + 24*20)\\
-\end{split}
-\end{equation}
+Generally speaking, to keep it simple, we consider the case of only one quasi-circular single order-up granularity in the hierarchy table. Any multiple order-up quasi-circular granularity $C_{l, m}(z)$ can then be considered to be a function of two single order-up granularities $C_{l,m'}(z)$ and $C_{m',m}(z)$. Two different approaches need to be employed for the follwing cases: 
 
-\begin{equation} \label{eq:day-year}
-\begin{split}
-C_{day, year}(z) & = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert))\\
-\end{split}
-\end{equation}
 
-where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
-
-Clearly, the computation of multiple order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$ for computation of $\vert T_w \vert$.
-
-Generally speaking, to keep it simple, we consider the case of only one quasi-circular single order-up granularity in the hierarchy. Any multiple order-up quasi-circular granularity can then be considered to be a function of some circular (single or multiple order-up) and a quasi-circular single order-up granularity.
-
-<!-- Both of them can be circular or quasi-circular or it can be each of both. In case they are both quasi-circular or one circular and the other quasi-circular, we need to adjust the formula -  -->
-
-For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, two different approaches need to be employed for computing multiple order-up granularities from single order-up ones.
-
-- Case when $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
+<!-- For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, -->
+- $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
 
 \begin{equation} \label{eq:multifromsingle-quasi1}
 \begin{split}
@@ -633,7 +591,7 @@ C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\
 \end{split}
 \end{equation}
 
-- Case when  $C_{l,m'}(z)$  is quasi-circular and $C_{m',m}(z)$ is circular
+- $C_{l,m'}(z)$ is quasi-circular and $C_{m',m}(z)$ is circular
 
 \begin{equation} \label{eq:multifromsingle-quasi2}
 \begin{split}
@@ -642,6 +600,18 @@ C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert
 \end{equation}
 
 where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+
+<!-- Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$. -->
+
+
+**Example:** Let us use Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2} to compute the multiple-order-up granularity hour_month and day_year for the Gregorian calendar considered.
+
+ - $C_{hour, month}(z) = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))$  
+ - $C_{day, year}(z) = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert))$, where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$.
+
+<!-- CONTENT CUT -->
+<!-- Clearly, the computation of multiple order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$ for computation of $\vert T_w \vert$. -->
+<!-- If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z)$ are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}. -->
 
 <!-- \begin{equation} \label{eq:multifromsingle-quasi} -->
 <!-- \begin{split} -->
@@ -652,7 +622,7 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 
 <!-- where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping. -->
 
-If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z)$ are multiple order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}.
+
 
 <!-- The aperiodic granularity $C_{day, quarter}(z))$ in \autoref{eq:hour-month} can be broken further. -->
 
