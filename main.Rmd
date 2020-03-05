@@ -772,8 +772,7 @@ The way cyclic granularities relate become important when we consider the data s
 
 <!-- Now, many situations can lead to some of these sets being empty. Let us discuss the following cases, where one or more of these sets can be empty. -->
 
-Firstly, empty combinations can arise due to the structure of the calendar or hierarchy.
-These are "structurally" empty combinations in that it is impossible for them to have any value of the measured variable. Let us take a specific example, where $C_1$ be day-of-month with 31 levels and $C_2$ be week-of-month with 5 levels. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to the possible combinations of day-of-month and week-of-month. Many of these are empty. For example $S_{1,5}$, $S_{21,2}$, etc. This is also intuitive since the first day of the month can never correspond to fifth week of the month.
+Firstly, empty combinations can arise due to the structure of the calendar or hierarchy. These are called "structurally" empty combinations. Let us take a specific example, where $C_1$ be day-of-month with 31 levels and $C_2$ be week-of-month with 5 levels. There will be $31\times 5=155$ sets $S_{ij}$ corresponding to possible combinations of $C_1$ and $C_2$. Many of these like $S_{1,5}$, $S_{21,2}$ are empty. This is also intuitive since the first day of the month can never correspond to fifth week of the month.
 
 <!--  In fact, most of these 155 sets will be empty, making the combination of $C_1$ and $C_2$ in a graph unhelpful. -->
 
@@ -781,9 +780,9 @@ Secondly, empty combinations can turn up due to differences in event location or
 
 <!-- However, this is different from the first example because these are not structurally empty. Also, the graphic may still be useful if we want to look at whether the interaction of $C_1$ and $C_2$ affects the distribution we are plotting. -->
 
-Thirdly, empty combinations can be a result of how granularities are constructed. These are called "build-based" empty combinations. Let $C_1$ be Business-days, which are days from Monday to Friday except holidays and $C_2$ is day-of-month. Then the days denoting weekends in a month would not correspond to any Business days. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. 
+Thirdly, empty combinations can be a result of how granularities are constructed. These are called "build-based" empty combinations. Let $C_1$ be Business-days, which are days from Monday to Friday except holidays and $C_2$ be day-of-month. Then the days denoting weekends in a month would not correspond to any Business days. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. 
 
-An example when there will be no empty combinations could be where $C_1$ and $C_2$ maps index set to day-of-week and month-of-year respectively. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$ corresponding to the possible combinations of day-of-week and month-of-year. All of these are non-empty because every day-of-week can occur in every month.
+An example when there will be no empty combinations could be where $C_1$ and $C_2$ maps index set to day-of-week and month-of-year respectively. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$. All of these are non-empty because every day-of-week can occur in every month.
 
 A pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are referred as **harmonies**.
 
@@ -1389,14 +1388,6 @@ There is bimodality in the early hours of the day, implying both low and high en
 
 <!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
 
-```{r granadvice, echo = TRUE, warning=FALSE, message=FALSE}
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  gran_advice(
-    "wknd_wday",
-    "hour_day"
-  )
-```
 
 ```{r bothcust, fig.cap = "Area quantile plot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936 displays the smoothed energy consumption curve for the entire day. The customer typically consumes more in the morning hours following which their consumption is low till late afternoon hours. Median consumption for the early morning hours starts higher and continue to remain high for longer during weekdays compared to weekdend."}
 
@@ -1660,81 +1651,34 @@ cricket_data %>% prob_plot("over", "lag_field",
   hierarchy_model,
   response = "run_rate",
   plot_type = "violin",
-) + ggtitle("") + geom_boxplot(width = 0.5, aes(colour = lag_field)) + ylim(0,4.5) +
-      theme(
-      axis.text = element_text(size = 24),
-      strip.text = element_text(size = 24),
-      axis.title = element_text(size = 24),
-      legend.title = element_text(size = 24),
-      legend.text = element_text(size = 24),
-      legend.position = "bottom",
-      plot.title =  element_text(size = 24)
-    )
+) + ggtitle("") + geom_boxplot(width = 0.5, aes(colour = lag_field)) + ylim(0,4.5)
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
 
-Q3: Are runs set to reduce in the next over for dot balls in the previous over?
+<!-- Q3: Are runs set to reduce in the next over for dot balls in the previous over? -->
 
-A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? Figure \ref{fig:exdot} shows the quantile plot of runs across overs for at least one dot ball per over (facet 1) or no dot balls per over (facet 2).
-With at least one dot balls per over, the distribution of run rates in facet 1 increase slower compared to that in facet 2. This implies that run rates are likely to decrease in the subsequent over as a result of dot balls in the previous over.
+<!-- A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? Figure \ref{fig:exdot} shows the quantile plot of runs across overs for at least one dot ball per over (facet 1) or no dot balls per over (facet 2). -->
+<!-- With at least one dot balls per over, the distribution of run rates in facet 1 increase slower compared to that in facet 2. This implies that run rates are likely to decrease in the subsequent over as a result of dot balls in the previous over. -->
 
-<!-- Each of the quantiles decrease across facets. With two dot balls per over, at least 50% of the times, run rates decrease in the subsequent over as observed through the negative values for different quantiles. -->
 
-<!-- # ```{r crickread, ech0=FALSE} -->
-<!-- # cricket_tsibble <- gravitas::cricket %>% -->
-<!-- #   mutate(data_index = row_number()) %>% -->
-<!-- #   as_tsibble(index = data_index) -->
-<!-- # ``` -->
+<!-- ```{r exdot, fig.cap="25th, 50th, 75th quantiles of runs per over are drawn  across overs of the innings with no (facet 2), more than zero (facet 1) dot balls per over. For all quantiles, run rates mostly increase at a higher rate in facet 2 compared to facet 1 implying run rates decrease with at least one dot ball in the previous over.", fig.pos="ht"} -->
 
-```{r exdot, fig.cap="25th, 50th, 75th quantiles of runs per over are drawn  across overs of the innings with no (facet 2), more than zero (facet 1) dot balls per over. For all quantiles, run rates mostly increase at a higher rate in facet 2 compared to facet 1 implying run rates decrease with at least one dot ball in the previous over.", fig.pos="ht"}
 
-# library(gravitas)
-# library(tsibble)
-#
-#
-# cricket_bowling <- cricket_season %>%
-#   mutate(dot_ball_proxy = if_else(total_runs==0,1,0),
-#          wicket_proxy = if_else(is.na(dismissal_kind),0,1)) %>%
-#   group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-#   summarise(runs_per_over = sum(total_runs),
-#             run_rate = sum(total_runs)/length(total_runs),
-#             dot_balls = sum(dot_ball_proxy)) %>%
-#             mutate(diff_run_rate = c(0,diff(run_rate)))
-#
-#
-# cricket_tsibble_bow <- cricket_bowling %>%
-#   ungroup() %>%
-#   mutate(data_index = row_number()) %>%
-#   as_tsibble(index = data_index)
-#
+<!-- cricket_data %>% -->
+<!--   # filter(dot_balls %in% c(0, 1, 2)) %>% -->
+<!--   prob_plot("lag_dot", -->
+<!--     "over", -->
+<!--     hierarchy_model, -->
+<!--     response = "run_rate", -->
+<!--     plot_type = "quantile", -->
+<!--     quantile_prob = c(0.25, 0.5, 0.75), -->
+<!--     symmetric = FALSE -->
+<!--   ) + ggtitle("") -->
+<!-- ``` -->
 
-# cricket_tsibble_bow %>%
-#   mutate(dot = if_else(dot_balls==0,"no dot balls", ">0 dot balls")) %>%
-#   #filter(dot_balls %in% c(0, 1, 2)) %>%
-#   prob_plot("dot",
-#             "over",
-#             hierarchy_model,
-#             response = "diff_run_rate",
-#             plot_type = "quantile",
-#             quantile_prob = c(0.1, 0.2, 0.3, 0.4, 0.5),
-#             symmetric = FALSE)  + ggtitle("")
+In Q2, wickets per over are considered as aperiodic cyclic granularities with dot balls or catches as aperiodic linear granularities. These aperiodic linear granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data. While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.
 
-cricket_data %>%
-  # filter(dot_balls %in% c(0, 1, 2)) %>%
-  prob_plot("lag_dot",
-    "over",
-    hierarchy_model,
-    response = "run_rate",
-    plot_type = "quantile",
-    quantile_prob = c(0.25, 0.5, 0.75),
-    symmetric = FALSE
-  ) + ggtitle("")
-```
-
-In Q2 and Q3, dots balls per over or catches per over are considered as aperiodic cyclic granularities with dot balls or catches as aperiodic linear granularities. These aperiodic linear granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data. While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.
-
-<!-- For example, in the temporal case, aperiodic cyclic granularity "Easter" is computed based on which all time indices correspond to the event "Easter". Similarly, for aperiodic cyclic granularity "dot balls per over" is computed based on which all balls correspond to the event "dot balls". -->
 
 # Discussion {#sec:discussion}
 
@@ -1747,8 +1691,22 @@ R package `gravitas`. A missing piece of the gravitas package is to enable user-
 
 The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). This article was created with knitr [@knitr] and R Markdown [@rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article.
 
+# Appendix
+
+```{r granadvice, echo = TRUE, warning=FALSE, message=FALSE}
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  gran_advice(
+    "wknd_wday",
+    "hour_day"
+  )
+```
+
+
+
 # Bibliography
 
 ```{r write-bib, eval = FALSE}
 write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas"), file = "rpkgs.bib")
 ```
+
