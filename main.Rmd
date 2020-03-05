@@ -290,7 +290,7 @@ For example, due to the uneven length of months, we need to use the altering-tic
 
 For more variations of calendar algebra operations, see @Ning2002-tf.
 
-# cyclic time granularities {#sec:cyclic-gran}
+# Cyclic time granularities {#sec:cyclic-gran}
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
 
@@ -604,7 +604,7 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 <!-- Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$. -->
 
 
-**Example:** Let us use Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2} to compute the multiple-order-up granularity hour_month and day_year for the Gregorian calendar considered.
+**Example:** Let us use Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2} to compute the multiple-order-up granularity hour-of-month and day-of-year for the Gregorian calendar considered.
 
  - $C_{hour, month}(z) = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))$  
  - $C_{day, year}(z) = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert))$, where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$.
@@ -1035,7 +1035,7 @@ VIC %>%
 #   ) +
 #   ylab("Electricity Demand [KWh]") +
 #   ggtitle("(b) Decile plot")
-# 
+#
 # VIC %>%
 #   create_gran("day_month") %>%
 #   filter(day_month %in% c(1, 15, 29, 31)) %>%
@@ -1051,7 +1051,7 @@ VIC %>%
 #     strip.text = element_text(size = 7, margin = margin())
 #   ) +
 #   ggtitle("(c) Box plot")
-# 
+#
 # VIC %>%
 #   create_gran("week_month") %>%
 #   filter(week_month %in% c(1, 2, 4)) %>%
@@ -1064,7 +1064,7 @@ VIC %>%
 #   theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks = seq(0, 31, 5)) +
 #   scale_y_continuous(breaks = seq(2000, 9000, 2000)) +
 #   ggtitle("(d) Violin plot")
-# 
+#
 # VIC %>%
 #   create_gran("week_month") %>%
 #   create_gran("week_year") %>%
@@ -1123,9 +1123,7 @@ Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ ca
 
 ### Unevenly distributed events
 
-Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators (see \autoref{eq:MSE})
-
-<!--  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$--> is a function of the sample size $n$. -->
+Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators (see \autoref{eq:MSE}) <!--  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$--> is a function of the sample size $n$.
 
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
 
@@ -1166,28 +1164,27 @@ R package **gravitas** [@R-gravitas] is used to facilitate the systematic explor
 
 <!-- how gravitas is used to deal with systematic exploration -->
 
-These cyclic granularities are a function of the index variable and are computed based on if they are circular (Section \ref{sec:circular-gran-def}), pseudo-circular (Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def}). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year.
+These cyclic granularities are a function of the index variable and are computed based on if they are circular (Section \ref{sec:circular-gran-def}), pseudo-circular (Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def}). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year.
 
-```{r search, echo=TRUE}
+```{r search, echo=FALSE}
 library(gravitas)
-smart_meter %>% search_gran()
+smart_meter %>% search_gran(filter_out = c("semester", "quarter"))
 ```
 
 <!-- #smart_smart_search <- smart_meter %>% search_gran() -->
 <!-- #knitr::kable(smart_smart_search, format = "markdown") -->
 
-If these options are considered too many, the most coarse temporal unit can be set to a “month”.
+If these options are considered too many, the most coarse temporal unit can be set to a “month”. Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
 
-```{r search_limit1, echo=TRUE}
-smart_meter10 %>%
-  search_gran(highest_unit = "month")
-```
+<!-- CONTENT CUT -->
+<!-- # ```{r search_limit1, echo=TRUE} -->
+<!-- # smart_meter10 %>% -->
+<!-- #   search_gran(highest_unit = "month") -->
+<!-- # ``` -->
 
 <!-- # smart_meter_limit1 <- smart_meter10 %>%  -->
 <!-- #   search_gran(highest_unit = "month") -->
 <!-- # knitr::kable(smart_meter_limit1, format = "markdown") -->
-
-Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
 
 ```{r search_gran_limit2, echo=TRUE}
 smart_meter10 %>% search_gran(
@@ -1654,7 +1651,7 @@ cricket_data %>% prob_plot("over", "lag_field",
   hierarchy_model,
   response = "run_rate",
   plot_type = "violin",
-) + ggtitle("") + geom_boxplot(width = 0.5, aes(colour = lag_field)) + ylim(0,4.5)
+) + ggtitle("") + geom_boxplot(width = 0.5, aes(colour = lag_field)) + ylim(0, 4.5)
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
@@ -1694,17 +1691,37 @@ R package `gravitas`. A missing piece of the gravitas package is to enable user-
 
 The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). This article was created with knitr [@knitr] and R Markdown [@rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article.
 
-# Appendix
+<!-- # Appendix -->
 
-```{r granadvice, echo = TRUE, warning=FALSE, message=FALSE}
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  gran_advice(
-    "wknd_wday",
-    "hour_day"
-  )
-```
+<!-- ```{r granadvice, echo = TRUE, warning=FALSE, message=FALSE} -->
+<!-- smart_meter10 %>% -->
+<!--   filter(customer_id %in% c(10017936)) %>% -->
+<!--   gran_advice( -->
+<!--     "wknd_wday", -->
+<!--     "hour_day" -->
+<!--   ) -->
+<!-- ``` -->
 
+<!-- Q3: Are runs set to reduce in the next over for dot balls in the previous over? -->
+
+<!-- A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. Run rate of an over should ideally decrease if the number of dot balls increase. However, what is the effect of dot balls on runs scored in the subsequent over. Will players  batsman likely to go for big shots because they couldn't score good runs in the previous over? Or they should play consistently and avoid scoring high? Figure \ref{fig:exdot} shows the quantile plot of runs across overs for at least one dot ball per over (facet 1) or no dot balls per over (facet 2). -->
+<!-- With at least one dot balls per over, the distribution of run rates in facet 1 increase slower compared to that in facet 2. This implies that run rates are likely to decrease in the subsequent over as a result of dot balls in the previous over. -->
+
+
+<!-- ```{r exdot, fig.cap="25th, 50th, 75th quantiles of runs per over are drawn  across overs of the innings with no (facet 2), more than zero (facet 1) dot balls per over. For all quantiles, run rates mostly increase at a higher rate in facet 2 compared to facet 1 implying run rates decrease with at least one dot ball in the previous over.", fig.pos="ht"} -->
+
+
+<!-- cricket_data %>% -->
+<!--   # filter(dot_balls %in% c(0, 1, 2)) %>% -->
+<!--   prob_plot("lag_dot", -->
+<!--     "over", -->
+<!--     hierarchy_model, -->
+<!--     response = "run_rate", -->
+<!--     plot_type = "quantile", -->
+<!--     quantile_prob = c(0.25, 0.5, 0.75), -->
+<!--     symmetric = FALSE -->
+<!--   ) + ggtitle("") -->
+<!-- ``` -->
 
 
 # Bibliography
@@ -1712,4 +1729,3 @@ smart_meter10 %>%
 ```{r write-bib, eval = FALSE}
 write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas"), file = "rpkgs.bib")
 ```
-
