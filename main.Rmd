@@ -58,6 +58,7 @@ library(ggridges)
 library(tsibble)
 library(gravitas)
 library(tsibble)
+library(ggpubr)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -786,22 +787,27 @@ An example when there will be no empty combinations could be where $C_1$ and $C_
 
 A pair of cyclic granularities which lead to structurally, event-driven or build-based empty-combinations are referred to as to as **clashes**. And the ones that do not lead to any missing combinations are referred as **harmonies**.
 
-## Summarizing the distribution of a measured variable {#sec:measured-variable}
+Summarizing properties of the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. However, we should have the consider the effect of number of observations on the summarization. Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
 
-<!-- Moreover, the measured variable in the considered data structure can be dicrete or continuous. -->
 
-Summarizing properties of the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. Tukey's five number summary, letter values or quantiles can serve as examples of distributional summaries. Another way of summarizing could be estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. Several forms of non-parametric density estimators <!--and quantile estimators--> exist in the literature, the most commonly used form in @Silverman1986-cl<!--,  @Jones1992-pj)--> is as follows:
 
-<!-- The most commonly used density estimation method is the kernel density estimator.  -->
 
-If we assume that $X_1, X_2, \dots, X_n \sim F$ are independent and identically distributed observations from an univariate distribution with probability density/mass function $f(.)$, <!--and $X_{(1)},\dots X_{(n)}$ denote the order statistics of $X_1, X_2, \dots, X_n$,--> the Kernel density estimator $\hat{f(x)}$ with Kernel $K$ is defined by $\hat{f(x)} = (1/nh)\sum_{i=1}^{n} K(x-X_i)/h$, where $h$ is the smoothing parameter or the bandwidth. The MSE of the estimator is given by:
-\begin{equation}\label{eq:MSE}
-\begin{split}
-MSE(\hat{f(x)}) & = (1/4)h^4(f''(x))^2 \sigma_k^4 + (1/nh)f(x) \kappa
-\end{split}
-\end{equation}
+<!-- ## Summarizing the distribution of a measured variable {#sec:measured-variable} -->
 
-where $\kappa = \int k^2(y)dy$.
+<!-- <!-- Moreover, the measured variable in the considered data structure can be dicrete or continuous. --> 
+
+<!-- Summarizing properties of the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. Tukey's five number summary, letter values or quantiles can serve as examples of distributional summaries. Another way of summarizing could be estimating the probability density function (continuous) or probability mass function (dicrete). The approach can be parametric or non-parametric. A non-parametric approach makes less rigid assumptions about the distribution of the observed data making the data speak more for itself. These resonate more with the notion of EDA which advocates exploring data for patterns and relationships without requiring prior hypotheses. Several forms of non-parametric density estimators and quantile estimators exist in the literature, the most commonly used form in @Silverman1986-cl<!--,  @Jones1992-pj)is as follows:--> 
+
+<!-- <!-- The most commonly used density estimation method is the kernel density estimator.  --> 
+
+<!-- If we assume that $X_1, X_2, \dots, X_n \sim F$ are independent and identically distributed observations from an univariate distribution with probability density/mass function $f(.)$, <!--and $X_{(1)},\dots X_{(n)}$ denote the order statistics of $X_1, X_2, \dots, X_n$,the Kernel density estimator $\hat{f(x)}$ with Kernel $K$ is defined by $\hat{f(x)} = (1/nh)\sum_{i=1}^{n} K(x-X_i)/h$, where $h$ is the smoothing parameter or the bandwidth. The MSE of the estimator is given by: 
+<!-- \begin{equation}\label{eq:MSE} -->
+<!-- \begin{split} -->
+<!-- MSE(\hat{f(x)}) & = (1/4)h^4(f''(x))^2 \sigma_k^4 + (1/nh)f(x) \kappa -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+
+<!-- where $\kappa = \int k^2(y)dy$. -->
 
 
 <!-- CONTENT CUT -->
@@ -1389,7 +1395,7 @@ There is bimodality in the early hours of the day, implying both low and high en
 <!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
 
 
-```{r bothcust, fig.cap = "Area quantile plot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936 displays the smoothed energy consumption curve for the entire day. The customer typically consumes more in the morning hours following which their consumption is low till late afternoon hours. Median consumption for the early morning hours starts higher and continue to remain high for longer during weekdays compared to weekdend."}
+```{r bothcust, fig.cap = "(a) Area quantile and (b) violin plot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. Plot (a) shows that the customer typically consumes more in the morning hours following which their consumption is low till late afternoon hours. Median consumption for the early morning hours starts higher and continue to remain high for longer during weekdays compared to weekdend. Plot (b) shows early morning hours are bimodal implying both high and low consumptions are probable. Bimodality can be caused by difference in behavior across different seasons. Volatility is highest from 7 to 13 hours as evident from the narrow violins."}
 
 # plot for only customer is shown
 # cust1 <- smart_meter10 %>%
@@ -1402,7 +1408,7 @@ There is bimodality in the early hours of the day, implying both low and high en
 #             quantile_prob = c(0.25, 0.5, 0.75, 0.9))
 #   scale_y_sqrt() +
 #   ggtitle("Energy consumption distribution for customer id: 10006704")
-cust2 <- smart_meter10 %>%
+cust2_quantile <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
     "hour_day",
@@ -1412,10 +1418,6 @@ cust2 <- smart_meter10 %>%
     quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
   ) +
   scale_y_sqrt()
-cust2
-```
-
-```{r bothcust-lv, fig.cap ="Violin plots of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. Early morning hours are bimodal implying both high and low consumptions are probable. Bimodality can be caused by difference in behavior across different seasons. Volatility is highest from 7 to 13 hours as evident from the narrow violins."}
 #
 # smart_meter10 %>%
 #   filter(customer_id %in% c(10006704)) %>%
@@ -1426,7 +1428,7 @@ cust2
 #   scale_y_sqrt() +
 #   ggtitle("Energy consumption distribution for customer id: 10006704")
 
-smart_meter10 %>%
+cust2_violin <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
     "hour_day",
@@ -1434,6 +1436,8 @@ smart_meter10 %>%
     plot_type = "violin"
   ) +
   scale_y_sqrt()
+
+ggarrange(cust2_quantile, cust2_violin, nrow = 2)
 ```
 
 ```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. The change in mapping of the cyclic granularities leads to easier comparison within weekdays and weekends for each hour. Median consumption till 6am is higher for weekends compared to weekdays although the quartiles look similar. Outliers appear more during the end of the day implying more uncertain behavior in latter hours of the day compared to early morning hours."}
