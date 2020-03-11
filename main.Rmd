@@ -214,7 +214,10 @@ A granularity $H$ is periodical with respect to a granularity $G$ if:
 
 
 If ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
-$H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy]. These are called quasi-periodic relationships. Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$.
+$H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy]. These are called quasi-periodic relationships.
+
+<!-- CONTENT CUT -->
+<!-- Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$. -->
 
 
 <!-- # ```{r group-periodical, echo=FALSE, out.width = "100%", fig.cap="Linear granularity $B$ groups periodically into linear granularity $G$ with $P = 5$ and $R = 2$, alternating between combining 2 and 3 granules of $B$."} -->
@@ -235,7 +238,7 @@ $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary gran
 
 <!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
-For example, in a Gregorian calendar without leap years each month is a grouping of the same number of days each year. The period is $P = 365$ and the number of granules of "months" in each period is given by $R=12$. Thus, we could say days group periodically into months. In a Gregorian calendar with leap years, days group quasi-periodically into months. The value of $P$ and $R$ would still be 365 and 12 respectively, while the <!--$E_i$s--> exceptions would be the time domain corresponding to $29^{\text{th}}$ February of any year.
+For example, in a Gregorian calendar without leap years we could say days group periodically into months with the period $P = 365$ and the number of granules of "months" in each period given by $R=12$. In a Gregorian calendar with leap years, days group quasi-periodically into months with the <!--The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s--> exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
 
 
 <!-- CONTENT CUT -->
@@ -251,7 +254,7 @@ A discrete time model often uses a fixed smallest granularity also known as _bot
 
 ## Computation through calendar algebra
 
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a *_bottom granularity_* and calendar algebra operations are designed to generate new granularities recursively from the bottom up. Some relevant calendar algebra operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} for illustrations in circular and aperiodic granularities.
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a _bottom granularity_ and calendar algebra operations are designed to generate new granularities recursively from the bottom up. Some relevant calendar algebra operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} for illustrations in circular and aperiodic cyclic granularities.
 
 
 <!-- CONTENT CUT -->
@@ -281,7 +284,7 @@ Example: $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \tex
 The altering-tick operation:
 : Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, where $G_2$ partitions $G_1$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of $G_1$ in terms of granules of $G_2$. The altering-tick operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each group has $k$ additional granules of $G_2$.
 
-For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.  Let us consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days [@Ning2002-tf].
+For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days.  Let us consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April, June, September and November by 1 day, and shrink February by 3 days [@Ning2002-tf].
 
 \begin{align*}
 \text{pseudomonth} = &\text{Alter}^{12}_{11,-1}(\text{day}, \text{Alter}^{12}_{9,-1}(\text{day}, \\
