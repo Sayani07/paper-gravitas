@@ -572,27 +572,15 @@ C_{uinal, baktun}(z)  = & L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + 
 
 ### Circular or quasi-circular single order-up granularities
 
-Let us revisit Gregorian calendar for addressing this case. Suppose we have a hierarchy table using some linear granularties from Gregorian calendar. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. The single-order-up granularity day-of-month is quasi-circular. <!--Any single-order-up granularities which are formed by linear granularities below days are circular. Similarly, all single-order-up granularities which are formed using linear granularities with orders higher than months are also circular.-->
+<!-- CONTENT CUT -->
+<!-- There can be three scenarios for obtaining multiple-order-granularities here:   -->
+<!--  - cyclic granularities relating two linear granularities whose orders are less than day   -->
+<!--  - cyclic granularities relating two linear granularities whose orders are more than month   -->
+<!--  - granularities relating two linear granularities with order at most day and another with order at least month -->
 
-<!-- Hence, any calendar categorization which includes one linear granularity with orders at most as days and another one with orders at least as months will be aperiodic in nature. However, it is very much possible for a calendar categorization consisting of two linear granularities higher in order than month to be periodic.For example, the categorization month_quarter would be periodic since each quarter always consists of three months. -->
+<!-- The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. -->
 
-|  G	        |C                 |P
-|------------	|------------------|----------------|
-|  minute     |minute-of-hour    |  60            |
-|  hour    	  |hour-of-day       |  24  	        |
-|  day      	|day-of-month      |quasi-circular  |
-|  month    	|month-of-year     |  12            |
-|  year   	  | 1                |	1             |
-
-There can be three scenarios for obtaining multiple-order-granularities here:  
- - cyclic granularities relating two linear granularities whose orders are less than day  
- - cyclic granularities relating two linear granularities whose orders are more than month  
- - granularities relating two linear granularities with order at most day and another with order at least month
-
-The multiple order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year.
-
-To keep it simple, we consider the case of only one quasi-circular single order-up granularity in the hierarchy table. Any multiple order-up quasi-circular granularity $C_{l, m}(z)$ can then be considered to be a function of two single order-up granularities $C_{l,m'}(z)$ and $C_{m',m}(z)$. Two different approaches need to be employed for the following cases: 
-
+We consider the case of only one quasi-circular single order-up granularity in the hierarchy table. Any multiple order-up quasi-circular granularity $C_{l, m}(z)$ can then be considered to be a function of two single order-up granularities $C_{l,m'}(z)$ and $C_{m',m}(z)$. Two different approaches need to be employed for the following cases: 
 
 <!-- For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, -->
 - $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
@@ -614,7 +602,19 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 <!-- Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$. -->
 
 
-**Example:** Let us use Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2} to compute the multiple-order-up granularity hour-of-month and day-of-year for the Gregorian calendar considered.
+**Example:** Let us revisit Gregorian calendar for addressing this case. Suppose we have a hierarchy using linear granularties from Gregorian calendar. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular. 
+
+|  G	        |C                 |P
+|------------	|------------------|----------------|
+|  minute     |minute-of-hour    |  60            |
+|  hour    	  |hour-of-day       |  24  	        |
+|  day      	|day-of-month      |quasi-circular  |
+|  month    	|month-of-year     |  12            |
+|  year   	  | 1                |	1             |
+
+Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have: 
+
+<!-- to compute the multiple-order-up granularity hour-of-month and day-of-year for the Gregorian calendar considered. -->
 
  - $C_{hour, month}(z) = L(C_{hour, day}(z) + P(hour, day)*C_{day, month}(z))$  
  - $C_{day, year}(z) = L(C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert))$, where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$.
