@@ -83,7 +83,7 @@ knitr::opts_knit$set(root.dir = here::here())
 
 Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales such as monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption may be collected every half an hour, energy supply may be collected every minute, and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales such as days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities [@aigner2011visualization].
 
-It is important to be able to navigate through all of these temporal granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to iteratively explore many possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming.
+It is important to be able to navigate through all of these time granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to iteratively explore many possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming.
 
 <!-- # existing ways and challenges -->
 
@@ -117,6 +117,10 @@ This work provides tools for systematically exploring bivariate granularities wi
 <!-- Pairs of granularities can be categorized as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
 
 The remainder of the paper is organized as follows: Section \ref{sec:linear-time} provide some background material on linear granularities and introduces calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring the conditional distributions of the associated time series across pairs of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
+
+The ideas presented in this article have been implemented in the open-source R [@R-language] package gravitas [@R-gravitas], available from CRAN. More details about the package 
+can be found on the package website https://sayani07.github.io/gravitas/. This article was created with knitr [@knitr, @R-knitr] and R Markdown [@rmarkdown, @R-rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article and the code is also available online
+in the supplemental materials.
 
 # Linear time granularities {#sec:linear-time}
 
@@ -1143,11 +1147,11 @@ ridge or highest density region plots can then be used to explore the data set.-
 
 ### Cyclic granularities search and computation:
 
-R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. These cyclic granularities are a function of the index variable and are computed based on if they are circular (Section \ref{sec:circular-gran-def}), pseudo-circular (Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def}). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. The cyclic granularities which could be considered are "hhour_hour", "hhour_day", "hhour_week",  "hhour_fortnight",  "hhour_month", "hhour_year", "hour_day", "hour_week", "hour_fortnight", "hour_month", "hour_year", "day_week", "day_fortnight",  "day_month" , "day_year", "week_fortnight",  "week_month", "week_year" , "fortnight_month", "fortnight_month" and  "month_year". These options are too many and hence the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour or fortnight could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}.
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def})-->, pseudo-circular <!--(Section \ref{sec:quasi-circular-gran-def})--> or aperiodic <!--(Section \ref{sec:aperiodic-gran-def})-->. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. The cyclic granularities which could be considered are "hhour_hour", "hhour_day", "hhour_week",  "hhour_month", "hhour_year", "hour_day", "hour_week", "hour_month", "hour_year", "day_week", "day_month" , "day_year",  "week_month", "week_year" and  "month_year". These options are too many and hence the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}.
 
-```{r search, echo=FALSE, eval=FALSE}
+```{r search, echo=FALSE, eval = FALSE}
 library(gravitas)
-smart_meter %>% search_gran(filter_out = c("semester", "quarter"))
+smart_meter %>% search_gran(filter_out = c("semester", "quarter", "fortnight"))
 ```
 
 <!-- #smart_smart_search <- smart_meter %>% search_gran() -->
@@ -1177,7 +1181,7 @@ smart_meter10 %>% search_gran(
 <!-- # ) -->
 <!-- # knitr::kable(smart_meter_limit2, format = "markdown") -->
 
-Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}.
+<!-- Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}. -->
 
 ### Screening and visualizing harmonies:
 
@@ -1495,7 +1499,7 @@ However, even if the situation is not periodic and a similar hierarchy can not b
 
 Q1: How total runs vary depending on if a team bats first or second?
 
-Mumbai Indians (MI) and Chennai Super kings (CSK) are considered one of the best teams in IPL with multiple winning titles and always appearing in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble. From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
+Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
@@ -1545,7 +1549,8 @@ cricket_tsibble %>%
 
 Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over?
 
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. Figure \ref{fig:field} shows that at least one dismissal in a previous over leads to a lower median and less spread in the distribution of run rates of the subsequent over.
+For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. <!--If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. 
+Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. --> Dismissals in previous over can lead to a batsman being either defensive or play more vulnerable. Figure \ref{fig:field} shows that no dismissals in the previous over will lead to a higher median and quartile spread of run rates compared to the case when there has been at least one dismissals.
 
 <!-- Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs.  -->
 
@@ -1620,14 +1625,19 @@ cricket_data %>% gran_obs("field", "over")
 cricket_data %>% gran_obs("dot", "over")
 ```
 
-```{r field,  fig.cap = "Violin plots with an overlaid boxplot showing distribution of run rate across overs of the innings and (lagged) wickets dismissed due to fielding. This shows good fielding in previous over leads to lower run rate in the subsequent over. Also distribution of run rates has less spread in case there is at least one wicket in the previous over.", warning=FALSE}
+```{r field,  fig.cap = "Box plots showing distribution of run rate across overs of the innings and (lagged) wickets dismissed due to fielding. This shows at least one wicket in the previous over leads to downward shift of median run rate and quartile spread in the subsequent over for most overs.", warning = FALSE}
 
 # filter(fielding_wckts %in% c(0,1)) %>%
-cricket_data %>% prob_plot("over", "lag_field",
+cricket_data %>%
+  filter(over!=1) %>% 
+  prob_plot("over", "lag_field",
   hierarchy_model,
   response = "run_rate",
-  plot_type = "violin",
-) + ggtitle("") + geom_boxplot(width = 0.5, aes(colour = lag_field)) + ylim(0, 4.5)
+  plot_type = "boxplot",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)
+) + ggtitle("") + scale_y_log10()
+#+ geom_boxplot(width = 0.5, aes(colour = lag_field)) 
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
@@ -1655,7 +1665,6 @@ cricket_data %>% prob_plot("over", "lag_field",
 
 In Q2, wickets per over are considered as aperiodic cyclic granularities with dot balls or catches as aperiodic linear granularities. These aperiodic linear granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data. While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.
 
-
 # Discussion {#sec:discussion}
 
 Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and thereby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
@@ -1665,7 +1674,7 @@ R package `gravitas`. A missing piece of the gravitas package is to enable user-
 
 # Acknowledgements {-}
 
-The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). This article was created with knitr [@knitr, @R-knitr] and R Markdown [@rmarkdown, @R-rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article.
+The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). 
 
 <!-- # Appendix -->
 
