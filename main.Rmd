@@ -38,9 +38,8 @@ preamble: >
   \setlength {\marginparwidth }{2cm}
   \usepackage{mathtools,amssymb,booktabs,longtable,todonotes}
   \def\mod{~\text{mod}~}
-output:
-  bookdown::pdf_book:
-    base_format: rticles::asa_article
+output: 
+  rticles::asa_article:
     fig_height: 5
     fig_width: 8
     fig_caption: yes
@@ -589,7 +588,6 @@ To keep it simple, we consider the case of only one quasi-circular single order-
 
 <!-- For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, -->
 - $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
-
 \begin{equation} \label{eq:multifromsingle-quasi1}
 \begin{split}
 C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\
@@ -597,7 +595,6 @@ C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\
 \end{equation}
 
 - $C_{l,m'}(z)$ is quasi-circular and $C_{m',m}(z)$ is circular
-
 \begin{equation} \label{eq:multifromsingle-quasi2}
 \begin{split}
 C_{G_l,G_{l+2}}(z) & = L(C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{w} \vert))\\
@@ -1120,12 +1117,12 @@ Even when there are no rarely occuring events, number of observations might vary
 ## Smart meter data of Australia {#sec:smartmeter}
 
 <!-- # how data looks -->
-Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units. The idea here is to show how looking at the energy consumption across different cyclic granularities together can help identify different behavioral patterns.
+Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. <!--It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units.-->The idea here is to show how to look at the energy consumption across different cyclic granularities in a systematic way to identify different behavioral patterns.
 <!-- and identify the extreme and regular households. -->
 
 ### Data structure for visualization:
 
-The data structure for a sample of 50 households from that trial is as follows:
+The data structure for a sample of 50 households from that trial is depicted in \ where the variable `reading_datetime`, `customer_id` and `general_supply_kwh` denote the index, key and measured variable of the tsibble.
 <!-- We take a random sample of 50 households to see how we can achieve that.  -->
 
 ```{r smart-meter, fig.cap = "Smart meter data structure"}
@@ -1138,21 +1135,17 @@ smart_meter <- sm_cust50 %>%
     reading_datetime,
     general_supply_kwh
   )
-smart_meter %>% head(n = 5)
+smart_meter %>% head(n = 5) %>% knitr::kable()
 ```
 
-The variable `reading_datetime` is the index of the tsibble and represents the time variable. The variable `customer_id` denoting different households represent the key of the tsibble and `general_supply_kwh` is the time series variable which needs to be analyzed. Data sets of the form <$C1$, $C2$, `general_supply_kwh`> will form the basis of exploration for each key in the data set, where the cyclic granularity $C1$ would be mapped to $x$ axis and `general_supply_kwh` to $y$ axis with the cyclic granularity $C2$ mapped to facet. Any geometry displaying the probability distribution of `general_supply_kwh` like  boxplot, letter value, violin,
-ridge or highest density region plots can then be used to explore the data set.
+<!--of the tsibble and represents the time variable. The variable  denoting different households represent the key of the tsibble and  is the time series variable which needs to be analyzed.Data sets of the form <$C1$, $C2$, `general_supply_kwh`> will form the basis of exploration for each key in the data set, where the cyclic granularity $C1$ would be mapped to $x$ axis and `general_supply_kwh` to $y$ axis with the cyclic granularity $C2$ mapped to facet. Any geometry displaying the probability distribution of `general_supply_kwh` like  boxplot, letter value, violin,
+ridge or highest density region plots can then be used to explore the data set.-->
 
 ### Cyclic granularities search and computation:
 
-R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively.
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. These cyclic granularities are a function of the index variable and are computed based on if they are circular (Section \ref{sec:circular-gran-def}), pseudo-circular (Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def}). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. The cyclic granularities which could be considered are "hhour_hour", "hhour_day", "hhour_week",  "hhour_fortnight",  "hhour_month", "hhour_year", "hour_day", "hour_week", "hour_fortnight", "hour_month", "hour_year", "day_week", "day_fortnight",  "day_month" , "day_year", "week_fortnight",  "week_month", "week_year" , "fortnight_month", "fortnight_month" and  "month_year". These options are too many and hence the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour or fortnight could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}.
 
-<!-- how gravitas is used to deal with systematic exploration -->
-
-These cyclic granularities are a function of the index variable and are computed based on if they are circular (Section \ref{sec:circular-gran-def}), pseudo-circular (Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def}). If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year.
-
-```{r search, echo=FALSE}
+```{r search, echo=FALSE, eval=FALSE}
 library(gravitas)
 smart_meter %>% search_gran(filter_out = c("semester", "quarter"))
 ```
@@ -1160,7 +1153,7 @@ smart_meter %>% search_gran(filter_out = c("semester", "quarter"))
 <!-- #smart_smart_search <- smart_meter %>% search_gran() -->
 <!-- #knitr::kable(smart_smart_search, format = "markdown") -->
 
-If these options are considered too many, the most coarse temporal unit can be set to a “month”. Also, some intermediate temporal units that might not be pertinent to the analysis can be removed from the list of cyclic granularities we want to look at.
+
 
 <!-- CONTENT CUT -->
 <!-- # ```{r search_limit1, echo=TRUE} -->
@@ -1172,11 +1165,11 @@ If these options are considered too many, the most coarse temporal unit can be s
 <!-- #   search_gran(highest_unit = "month") -->
 <!-- # knitr::kable(smart_meter_limit1, format = "markdown") -->
 
-```{r search_gran_limit2, echo=TRUE}
+```{r search_gran_limit2, echo=FALSE, eval = FALSE}
 smart_meter10 %>% search_gran(
   highest_unit = "month",
   filter_out = c("hhour", "fortnight")
-)
+)%>% knitr::kable(format = "markdown")
 ```
 
 <!-- # smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month", -->
@@ -1194,11 +1187,11 @@ From the search list, we found six cyclic granularities for which we would like 
 
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
-```{r harmony, echo=TRUE}
+```{r harmony, echo=FALSE}
 smart_meter10 %>% harmony(
   ugran = "month",
   filter_out = c("hhour", "fortnight")
-)
+) %>% knitr::kable(format = "markdown")
 ```
 
 <!-- # smart_meter10 %>% gran_advice("wknd_wday", "hour_day") -->
@@ -1369,8 +1362,7 @@ smart_meter10 %>% harmony(
 In \autoref{fig:bothcust}, the distribution of energy consumption is plotted across the harmony pair (wknd_wday, hour_day) through an area quantile plot.
 The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. The first facet represents the weekday behavior while the second one displays the weekend behavior and energy consumption across each hours of the day is shown inside each facet. The energy consumption is extremely skewed with 1st, 10th and 25th percentile lying very close whereas 75th, 90th and 99th lying further away from each other.This is common across both weekdays and weekends. For the first few hours on weekdays, median energy consumption starts and continues to be higher for longer as compared to weekends.
 
-Consider looking at letter value plots instead of quantile plots to look at the same data in \autoref{fig:bothcust-lv}. There is additional information that we can derive looking at the distribution.
-There is bimodality in the early hours of the day, implying both low and high energy consumption is probable in the early hours of the day both for weekdays and weekends. Also hours from 7 to 13 look most volatile. If we visualize the same data with reverse mapping of the cyclic granularities, then the natural tendency would be to compare weekend and weekday behavior within each hour and not across hours. For example in \autoref{fig:bothcust-lv}, it can be seen that median energy consumption for the early morning hours is extremely high for weekdays compared to weekends. Also, outliers are more prominent in the latter part of the day. All of these indicates that looking at different distribution plots or changing the mapping might shed lights on different aspect of the energy behavior for the same customer.
+Consider looking at violin plots instead of quantile plots to look at the same data in \autoref{fig:bothcust-lv}. There is additional information that we can derive looking at the distribution. There is bimodality in the early hours of the day, implying both low and high energy consumption is probable in the early hours of the day both for weekdays and weekends. Also hours from 7 to 13 look most volatile. If we visualize the same data with reverse mapping of the cyclic granularities, then the natural tendency would be to compare weekend and weekday behavior within each hour and not across hours. For example in \autoref{fig:bothcust-lv}, it can be seen that median energy consumption for the early morning hours is extremely high for weekdays compared to weekends. Also, outliers are more prominent in the latter part of the day. All of these indicates that looking at different distribution plots or changing the mapping might shed lights on different aspect of the energy behavior for the same customer.
 
 <!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
 
@@ -1448,7 +1440,7 @@ smart_meter10 %>%
 
 <!-- - if the weekend and weekday behavior are different for most of these households? -->
 
-If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one `customer_id` shows a particular behavior, but this behavior is reversed when all keys are combined together. This is also intuitive because `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. A strategy for analyzing multiple keys together could be to first screen some basis time series or demographic features and then look at their energy behavior. This is beyond the scope of the current work.
+If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one `customer_id` shows a particular behavior, but this behavior is reversed when all keys are combined together. This is also intuitive because heterogenous `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. A strategy for analyzing multiple keys together could be to first screen some basis time series or demographic features and then look at their energy behavior. This is beyond the scope of the current work.
 
 <!-- For the purpose of this paper, the smart meter data is filtered for two customers to illustrate kinds of insights that can be drawn after proceeding with the systematic exploration. -->
 
