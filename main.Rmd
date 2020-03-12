@@ -722,7 +722,7 @@ Effective exploration or good visualization require good data structures. It is 
 <!--Since, we are interested in detection of unknown periodic behavior of data, it makes sense to support the detection of patterns by obtaining statistical summaries across cyclic time granularities.--> 
 <!-- Any attempt to encode all or many cyclic granularities at the same time to develop insights on periodicity might fail or become clumsy. Instead, the big problem is broken down into smaller pieces by focusing on two cyclic granularities at a time. -->
 
-## Data structure for exploring two cyclic granularities
+## Data structure for exploring two cyclic granularities {#sec:twocylcic}
 
 A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble], where data is structured in a semantic manner with reference to observations and variables, with the time index stated explicitly. Since all cyclic granularities can be expressed in terms of the index set, we consider the data structure in (Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is a two-dimensional array extending the columns of tsibble by including the cyclic granularities. Let us consider two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ denotes the measurement variable. Data sets of the form <$C_1$, $C_2$, $v$> can then form the basis for exploration and analysis of the measured variable across bivariate cyclic granularities. 
 
@@ -738,7 +738,7 @@ A recent tidy data structure to support exploration and modeling of temporal dat
 include_graphics("Figs/data-structure-v1.png")
 ```
 
-## Harmonies and Clashes {#sec:synergy}
+### Harmonies and Clashes {#sec:synergy}
 
 The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). While considering data sets of the form $<C_1, C_2, v>$, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets for each combination of levels ($A_i$, $B_j$) like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ data subsets. 
 Now, some situations can lead to some of these sets being empty. We will discuss few cases, where one or more of these $nm$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities. <!--The implication of these empty sets on visualization will be discussed in Section \ref{sec:vis-interaction}. -->
@@ -771,6 +771,9 @@ Secondly, empty combinations can turn up due to differences in event location or
 Thirdly, empty combinations can be a result of how granularities are constructed. These are called "build-based" empty combinations. Let $C_1$ be Business-days, which are days from Monday to Friday except holidays and $C_2$ be day-of-month. Then the days denoting weekends in a month would not correspond to any Business days. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularity does. 
 
 An example when there will be no empty combinations could be where $C_1$ and $C_2$ maps index set to day-of-week and month-of-year respectively. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
+
+
+### Summarize distribution of measurements {#sec:summarize-measured}
 
 Summarizing properties of the distribution of the measured variable can give valuable indication of features like central tendency, skewness, multimodality, tail behavior or variation. However, we should have the consider the effect of number of observations on the summarization even for harmonies. Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
 
@@ -940,7 +943,7 @@ Choice of plots are dictated by the statistical transformations and geometric ob
 
 <!-- <!-- Description and lit review of density plots --> 
 
-<!-- <!-- The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density.  --> -->
+<!-- <!-- The vase plot [@Benjamini1988-io, 1988] was a major revision from the concept of box plots where the width of box at each point is proportional to estimated density.  --> 
 
 <!-- ### Kernel density based displays -->
 
@@ -1111,17 +1114,18 @@ We will discuss the effect of the mapping of cyclic granularities in this sectio
 
 ## Number of observations and statistical transformations
 
-Even with harmonies, visualizing distributions can be misleading if statistical transformations are performed on rarely occuring categories or unevenly distributed events.
+Even with harmonies, visualizing distributions can be misleading if statistical transformations are performed on rarely occuring categories (\ref{sec:summarize-measured}) or unevenly distributed events.
 
-### Rarely occuring events
+<!-- CONTENT CUT -->
+<!-- ### Rarely occuring events -->
 
-Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
+<!-- Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem. -->
 
 <!-- The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations. -->
 
 ### Unevenly distributed events
 
-Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators (see \autoref{eq:MSE}) <!--  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$--> is a function of the sample size $n$.
+Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators. <!-- (see \autoref{eq:MSE})  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$is a function of the sample size $n$.--> 
 
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
 
@@ -1455,7 +1459,7 @@ smart_meter10 %>%
 
 <!-- - if the weekend and weekday behavior are different for most of these households? -->
 
-If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one `customer_id` shows a particular behavior, but this behavior is reversed when all keys are combined together. This is also intuitive because heterogenous `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. A strategy for analyzing multiple keys together could be to first screen some basis time series or demographic features and then look at their energy behavior. This is beyond the scope of the current work.
+If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one `customer_id` shows a particular behavior, but this behavior is reversed when all keys are combined together. This is also intuitive because heterogenous `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. A strategy for analyzing multiple keys together could be to first group them basis time series or demographic features and then look at their energy behavior. This is beyond the scope of the current work.
 
 <!-- For the purpose of this paper, the smart meter data is filtered for two customers to illustrate kinds of insights that can be drawn after proceeding with the systematic exploration. -->
 
@@ -1482,7 +1486,7 @@ hierarchy_model <- tibble::tibble(
 knitr::kable(hierarchy_model, format = "markdown")
 ```
 
-However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. We will explore a few and understand how the proposed approach in the paper can help answer some of the questions.
+However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. <!--We will explore a few interesting questions and understand how the proposed approach in the paper can help answer some of the questions.-->
 
 <!-- the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. -->
 
@@ -1510,7 +1514,7 @@ However, even if the situation is not periodic and a similar hierarchy can not b
 
 Q1: How total runs vary depending on if a team bats first or second?
 
-Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs in the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
+Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs as they approach towards the end of the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
@@ -1674,14 +1678,16 @@ cricket_data %>%
 <!--   ) + ggtitle("") -->
 <!-- ``` -->
 
-In Q2, wickets per over are considered as aperiodic cyclic granularities with dot balls or catches as aperiodic linear granularities. These aperiodic linear granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data. While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.
+In Q2, wickets per over are considered as aperiodic cyclic granularities with wickets as aperiodic linear granularities. These granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data.
+<!-- CONTENT CUT -->
+<!--While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.-->
 
 # Discussion {#sec:discussion}
 
 Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and thereby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
 
-The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
-R package `gravitas`. A missing piece of the gravitas package is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first.  A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
+<!--The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
+R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
 
 # Acknowledgements {-}
 
