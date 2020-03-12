@@ -302,7 +302,6 @@ Linear time granularities are computed through an algebraic representation for t
 <!-- \end{align*} -->
 
 
-
 # Cyclic time granularities {#sec:cyclic-gran}
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
@@ -851,7 +850,11 @@ Summarizing properties of the distribution of the measured variable can give val
 
 <!-- A well designed visual representation can replace cognitive calculations with simple perpetual inferences and improve speed of comprehension and decision making. However, creating a visualization requires a number of nuanced judgements. The challenge being given a data set, the number of visual encodings and hence the space of possible visual design is extremely huge.  -->
 
-The grammar of graphics introduced a framework to construct statistical graphics by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by [@Wickham2009pk], which is an alternate and modified parametrization of the grammar suggests that graphics are made up of distinct layers of grammatical elements. There are seven grammatical elements in total, out of which data, aesthetics and geometries are essential elements. Data are observations made on a number of variables, typically thought of as a sample from a population distribution. Aesthetic mapping describes how variables are mapped to elements of the plot, such as horizontal axis or color. Geometries determine the physical representation of the data in the plot. The remaining grammatical elements of a graphic namely facets, statistics, coordinates and themes are optional and contains detail of the plot. Facets dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different.
+The grammar of graphics introduced a framework to construct statistical graphics by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by [@Wickham2009pk], which is an alternate and modified parametrization of the grammar suggests that graphics are made up of distinct layers of grammatical elements. Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
+
+
+<!-- CONTENT CUT -->
+<!-- There are seven grammatical elements in total, out of which data, aesthetics and geometries are essential elements. Data are observations made on a number of variables, typically thought of as a sample from a population distribution. Aesthetic mapping describes how variables are mapped to elements of the plot, such as horizontal axis or color. Geometries determine the physical representation of the data in the plot. The remaining grammatical elements of a graphic namely facets, statistics, coordinates and themes are optional and contains detail of the plot. Facets dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different. -->
 
 <!-- Briefly, the grammatical elements of any plot are as follows: -->
 
@@ -873,13 +876,12 @@ The grammar of graphics introduced a framework to construct statistical graphics
 
 <!-- - **A coordinate system** maps the position of objects onto the plane of the plot, and controls how the axes and grid lines are drawn.  -->
 
-Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
 
 - Data: <$C_1$, $C_2$, $v$>
-- Aesthetic mapping: $C_1$ mapped to $x$ position and $v$ to $y$ position
-- Statistical transformation: Any descriptive or smoothing statistics that summarizes distribution of $v$
-- Geometric objects: Any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
-- Facet:  $C_2$
+- Aesthetic mapping (mapping of variables to elements of the plot): $C_1$ mapped to $x$ position and $v$ to $y$ position
+- Statistical transformation (summarize data): Any descriptive or smoothing statistics that summarizes distribution of $v$
+- Geometric objects (physical representation of the data): Any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
+- Facet (split plots):  $C_2$
 
 <!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or faceting. Faceting creates tables of graphics by displaying the same graph for each subset. -->
 
@@ -964,15 +966,19 @@ We will discuss the effect of the levels of cyclic granularities on the choice o
 
  <!-- - If levels of both the granularities are low, then any statistical distribution plot might be chosen depending on which feature of the distribution one is interested to look at.  -->
 
-The following principles are useful while choosing distribution plots given two temporal granularities:
+<!-- CONTENT CUT -->
+<!-- The following principles are useful while choosing distribution plots given two temporal granularities: -->
 
-  - If levels of both granularity plotted are low/medium, then any distribution plots might be chosen depending on which feature of the distribution needs focus.
+<!--   - If levels of both granularity plotted are low/medium, then any distribution plots might be chosen depending on which feature of the distribution needs focus. -->
 
- - If level of the granularity plotted across x-axis is more than medium, ridge plots should be avoided to escape overlap of categories.
+<!--  - If level of the granularity plotted across x-axis is more than medium, ridge plots should be avoided to escape overlap of categories. -->
 
-  - If level of the granularity plotted across x-axis is more than or equal to high, quantile plots are preferred.
+<!--   - If level of the granularity plotted across x-axis is more than or equal to high, quantile plots are preferred. -->
 
-  - If levels of any granularity plotted are more than medium, quantile based methods of visualizing distribution is preferred as they use less space by design than most density based methods.
+<!--   - If levels of any granularity plotted are more than medium, quantile based methods of visualizing distribution is preferred as they use less space by design than most density based methods. -->
+
+
+
 
 <!-- Let us consider case by case and see which plots are better suitable in which scenarios. -->
 
