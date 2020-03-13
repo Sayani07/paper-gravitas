@@ -119,10 +119,6 @@ This work provides tools for systematically exploring bivariate granularities wi
 
 The remainder of the paper is organized as follows: Section \ref{sec:linear-time} provide some background material on linear granularities and introduces calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring the conditional distributions of the associated time series across pairs of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
-The ideas presented in this article have been implemented in the open-source R [@R-language] package gravitas [@R-gravitas], available from CRAN. More details about the package 
-can be found on the package website https://sayani07.github.io/gravitas/. This article was created with knitr [@knitr, @R-knitr] and R Markdown [@rmarkdown, @R-rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article and the code is also available online
-in the supplemental materials.
-
 # Linear time granularities {#sec:linear-time}
 
 <!-- general calendar categorization -->
@@ -258,10 +254,11 @@ A discrete time model often uses a fixed smallest granularity also known as _bot
 
 ## Computation through calendar algebra
 
-Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a _bottom granularity_ and calendar algebra operations are designed to generate new granularities recursively from the bottom up. Some relevant calendar algebra operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} for illustrations in circular and aperiodic cyclic granularities. For a coarser granularity $G_2$ and a finer one $G_1$, a _grouping operation_ partitions some granules of $G_1$  to form a granule of $G_2$. For example, $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$. The _altering-tick operation_ generates new full-integer labeled granularity by periodically expanding or shrinking granules of $G_2$ in terms of granules of $G_1$. For example, <!--due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can --> consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April, June, September and November by 1 day, and shrink February by 3 days [@Ning2002-tf]. For more variations of calendar algebra operations, see @Ning2002-tf.
+Linear time granularities are computed through an algebraic representation for time granularities, which is referred to as calendar algebra [@Ning2002-tf]. It is assumed that there exists a _bottom granularity_ and calendar algebra operations are designed to generate new granularities recursively from the bottom up. Some relevant calendar algebra operations are discussed below; these will be used in Section \ref{sec:cyclic-gran} for illustrations in circular and aperiodic cyclic granularities.
 
 
-
+<!-- CONTENT CUT -->
+<!-- For a coarser granularity $G_2$ and a finer one $G_1$, a _grouping operation_ partitions some granules of $G_1$  to form a granule of $G_2$. For example, $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$. The _altering-tick operation_ generates new full-integer labeled granularity by periodically expanding or shrinking granules of $G_2$ in terms of granules of $G_1$. For example, <!--due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April, June, September and November by 1 day, and shrink February by 3 days [@Ning2002-tf]. For more variations of calendar algebra operations, see @Ning2002-tf. -->
 
 <!-- CONTENT CUT -->
 <!-- The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: "minute" and "hour", where "hour" is generated by grouping every $60$ "minutes". -->
@@ -279,20 +276,18 @@ Linear time granularities are computed through an algebraic representation for t
 <!--   1. if $i<j$ , where $i$ and $j$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then each element in $G(i)$ is less than all the elements of $G(j)$; and -->
 <!--   2. if $i<k<j$ , where $i$, $j$, and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty. -->
 
-<!-- CONTENT CUT -->
-<!-- The grouping operation: -->
-<!-- : Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$, -->
-<!-- $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$ -->
-<!-- Example: $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$ -->
+The grouping operation:
+: Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
+$$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
+Example: $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$
 
 <!-- CONTENT CUT -->
 <!-- where $\text{second}(1)$ should coincide with $\text{minute}(1)$ and likewise. Otherwise, repeated operations of grouping might result in a granule of "resultant" granularity "day" or "week", which is different from a time-stamped "day" or "week". -->
 
-<!-- CONTENT CUT -->
-<!-- The altering-tick operation: -->
-<!-- : Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, where $G_2$ partitions $G_1$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of $G_1$ in terms of granules of $G_2$. The altering-tick operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each group has $k$ additional granules of $G_2$. -->
+The altering-tick operation:
+: Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, where $G_2$ partitions $G_1$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ generates a new full-integer labeled granularity by periodically expanding or shrinking granules of $G_1$ in terms of granules of $G_2$. The altering-tick operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each group has $k$ additional granules of $G_2$.
 
-<!-- For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days [@Ning2002-tf]. For more variations of calendar algebra operations, see @Ning2002-tf. -->
+For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April (4), June (6), September (9) and November (11) by 1 day, and shrink February (2) by 3 days [@Ning2002-tf]. For more variations of calendar algebra operations, see @Ning2002-tf.
 
 <!-- CONTENT CUT -->
 <!-- \begin{align*} -->
@@ -1636,7 +1631,7 @@ cricket_dot_field <- cricket_season %>%
   ) %>%
   summarise(
     runs_per_over = sum(total_runs),
-    run_rate = sum(total_runs) / length(total_runs),
+    run_rate = sum(total_runs)*6 / length(total_runs),
     fielding_wckts = sum(fielding_proxy),
     dot_balls = sum(dot_ball_proxy)
   ) %>%
@@ -1673,7 +1668,7 @@ cricket_data %>%
   plot_type = "boxplot",
   symmetric = FALSE,
  quantile_prob = c(0.25, 0.5, 0.75)
-) + ggtitle("") + scale_y_log10()
+) + ggtitle("") 
 #+ geom_boxplot(width = 0.5, aes(colour = lag_field)) 
 ```
 
@@ -1711,9 +1706,15 @@ Exploratory data analysis is iteratively finding and summarizing patterns. With 
 <!--The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
 R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
 
+# Software implementation {#sec:software}
+
+The ideas presented in this article have been implemented in the open-source R [@R-language] package gravitas [@R-gravitas], available from CRAN.
+
 # Acknowledgements {-}
 
-The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). 
+The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). More details about the package 
+can be found on the package website https://sayani07.github.io/gravitas/. This article was created with knitr [@knitr, @R-knitr] and R Markdown [@rmarkdown, @R-rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article and the code is also available online
+in the supplemental materials.
 
 <!-- # Appendix -->
 
