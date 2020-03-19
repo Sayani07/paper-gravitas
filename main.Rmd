@@ -32,7 +32,8 @@ abstract: |
 
   The hierarchical structure of linear granularities creates a natural nested ordering resulting in single-order-up and multiple-order-up granularities. For example, hour of the week and second of the hour are both multiple-order-up, while hour of the day and second of the minute are single-order-up.
 
-   Visualizing data across granularities which are either single-order-up or multiple-order-up or periodic/aperiodic helps us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. This work provides tools for creating granularities and exploring the associated time series within a tidy workflow, so that probability distributions can be examined using the range of graphics available in ggplot2 [@Wickham2009pk].
+   Visualizing data across granularities which are either single-order-up or multiple-order-up or periodic/aperiodic helps us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. This work provides tools for creating granularities and exploring the associated time series within a tidy workflow, so that probability distributions can be examined using the range of graphics available in ggplot2 [@Wickham2009pk]. The ideas presented in this article have been implemented in the open source R package gravitas. R code and data are available in the supplementary materials.
+   
 bibliography: [bibliography.bib]
 preamble: >
   \setlength {\marginparwidth }{2cm}
@@ -1162,32 +1163,36 @@ Smart meters provide large quantities of measurements on energy usage for househ
 
 ### Data structure for visualization:
 
-The data structure for a sample of 50 households from that trial is depicted in \ where the variable `reading_datetime`, `customer_id` and `general_supply_kwh` denote the index, key and measured variable of the tsibble.
+The data structure for a sample of 50 households from that trial is depicted in \autoref{tab:smart-data} where the variable `reading_datetime`, `customer_id` and `general_supply_kwh` denote the index, key and measured variable of the tsibble.
 <!-- We take a random sample of 50 households to see how we can achieve that.  -->
 
-```{r smart-meter, fig.cap = "Smart meter data structure"}
+```{r smart-data}
 load("data/sm_cust50.Rdata")
 
-smart_meter <- sm_cust50 %>%
+smart_data <- smart_meter <- sm_cust50 %>%
   as_tsibble() %>%
   dplyr::select(
     customer_id,
     reading_datetime,
     general_supply_kwh
-  )
-smart_meter %>% head(n = 5) %>% knitr::kable()
+  ) %>% head(n = 5)
+
+  knitr::kable(smart_data,
+               caption = "Smart meter data structure with electricity demand for 50 households from SGSC project for every 30 minutes from 2012 to 2014.")
 ```
+
 
 <!--of the tsibble and represents the time variable. The variable  denoting different households represent the key of the tsibble and  is the time series variable which needs to be analyzed.Data sets of the form <$C1$, $C2$, `general_supply_kwh`> will form the basis of exploration for each key in the data set, where the cyclic granularity $C1$ would be mapped to $x$ axis and `general_supply_kwh` to $y$ axis with the cyclic granularity $C2$ mapped to facet. Any geometry displaying the probability distribution of `general_supply_kwh` like  boxplot, letter value, violin,
 ridge or highest density region plots can then be used to explore the data set.-->
 
 ### Cyclic granularities search and computation:
 
-R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def})-->, pseudo-circular <!--(Section \ref{sec:quasi-circular-gran-def})--> or aperiodic <!--(Section \ref{sec:aperiodic-gran-def})-->. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. The cyclic granularities which could be considered are "hhour_hour", "hhour_day", "hhour_week",  "hhour_month", "hhour_year", "hour_day", "hour_week", "hour_month", "hour_year", "day_week", "day_month" , "day_year",  "week_month", "week_year" and  "month_year". These options are too many and hence the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}.
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def})-->, quasi-circular. <!--(Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})--> If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. The cyclic granularities which could be considered are hhour_hour, hhour_day, hhour_week, hhour_month, hhour_year, hour_day, hour_week, hour_month, hour_year, day_week, day_month, day_year, week_month, week_year and month_year. These options are too many and hence the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} or \ref{sec:cyclic-calendar}.
 
 ```{r search, echo=FALSE, eval = FALSE}
 library(gravitas)
-smart_meter %>% search_gran(filter_out = c("semester", "quarter", "fortnight"))
+smart_meter %>%
+  search_gran(filter_out = c("semester", "quarter", "fortnight"))
 ```
 
 <!-- #smart_smart_search <- smart_meter %>% search_gran() -->
@@ -1219,19 +1224,25 @@ smart_meter10 %>% search_gran(
 
 <!-- Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} and \ref{sec:aperiodic-gran-def}. -->
 
-### Screening and visualizing harmonies:
+### Screening and visualizing harmonies
 
-From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure <$C1$ $C2$, `general_supply_kwh`>, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from 6, which essentially is equivalent to having 30 data subsets for visualization. However, harmony/clash pairs can be identified among those 30 possibilities to determine feasibility of plotting any pairs together. We are left with 13 harmonies pair, each of which can be plotted together to look at the energy behavior from different perspectives.
+From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure <$C1$ $C2$, `general_supply_kwh`>, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from 6, which essentially is equivalent to having 30 data subsets for visualization. However, harmony/clash pairs can be identified among those 30 possibilities to determine feasibility of plotting any pairs together. \autoref{tab:harmony-tab} shows 13 harmonies pairs, each of which can be plotted together to look at the energy behavior from different perspectives.
 
 <!-- We will look at few harmony pairs and see how the proposed workflow can be utilized.  -->
 
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
-```{r harmony, echo=FALSE}
-smart_meter10 %>% harmony(
-  ugran = "month",
-  filter_out = c("hhour", "fortnight")
-) %>% knitr::kable(format = "markdown")
+```{r harmony-tab, echo=FALSE}
+smart_harmony <- smart_meter10 %>% 
+  harmony(ugran = "month",
+          filter_out = c("hhour", "fortnight"))%>%
+  rename(`facet variable` = facet_variable,
+         `x-axis variable` = x_variable,
+         `Levels of facet variable` = facet_levels,
+         `Levels of x-axis variable` = x_levels)
+
+  knitr::kable(smart_harmony,
+                caption = "Harmonies with two cyclic granularity one placed on the facet and the other on x-axis with the corresponding levels. Out of 30 possible combinations of cyclic granularities that could be plotted only 13 are harmonies.")
 ```
 
 <!-- # smart_meter10 %>% gran_advice("wknd_wday", "hour_day") -->
@@ -1710,10 +1721,6 @@ Exploratory data analysis is iteratively finding and summarizing patterns. With 
 <!--The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
 R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
 
-# Software implementation {#sec:software}
-
-The ideas presented in this article have been implemented in the open-source R [@R-language] package gravitas [@R-gravitas], available from CRAN.
-
 # Acknowledgements {-}
 
 The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). More details about the package 
@@ -1752,6 +1759,13 @@ in the supplemental materials.
 <!--   ) + ggtitle("") -->
 <!-- ``` -->
 
+# Supplemental Materials
+
+**Data and scripts:** Datasets and R code to reproduce all figures in this article (main.Rmd).
+
+**R-package:** The ideas presented in this article have been implemented in the open-source R [@R-language] package gravitas [@R-gravitas], available from CRAN. The R-package facilitates manipulation of single and multiple-order-up time granularities through cyclic calendar algebra, check feasibility of creating plots or drawing inferences for any two cyclic granularities by providing list of harmonies and recommend prospective probability distributions through factors described in the article. Version 0.1.2 of the package was used for the results presented in the article and is available from Github (https://github.com/Sayani07/gravitas).
+
+**R-packages:** Each of the R packages used in this article are available online (URLs are provided in the bibliography).
 
 # Bibliography
 
