@@ -742,11 +742,11 @@ include_graphics("Figs/data-structure-v1.png")
 The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). While considering data sets of the form $<C_1, C_2, v>$, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets for each combination of levels ($A_i$, $B_j$) like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ data subsets. 
 Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $nm$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities. <!--The implication of these empty sets on visualization will be discussed in Section \ref{sec:vis-interaction}. -->
 
-\begin{definition}[Clash]\label{def:definition}
+\begin{definition}[Clash]\label{def:harmony}
 A pair of cyclic granularities which contains structurally, event-driven or build-based empty combinations of its categories.
 \end{definition}
 
-\begin{definition}[Harmony]\label{def:definition}
+\begin{definition}[Harmony]\label{def:clash}
 A pair of cyclic granularities that do not contain any missing combinations of its categories.
 \end{definition}
 
@@ -1410,15 +1410,15 @@ smart_harmony <- smart_meter10 %>%
 
 <!-- Boxplot of energy consumption is shown across `wknd_wday` (facet) and `hour_day` (x-axis) for the same two households. For the first household, the shape of the distribution does not change significantly for weekdays and weekends. The distribution is roughly smooth with a morning and an evening peak. -->
 
-In \autoref{fig:bothcust}, the distribution of energy consumption is plotted across the harmony pair (wknd_wday, hour_day) through an area quantile plot.
+In \autoref{fig:bothcust} (b), the distribution of energy consumption is plotted across the harmony pair (wknd_wday, hour_day) through an area quantile plot.
 The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. The first facet represents the weekday behavior while the second one displays the weekend behavior and energy consumption across each hours of the day is shown inside each facet. The energy consumption is extremely skewed with 1st, 10th and 25th percentile lying very close whereas 75th, 90th and 99th lying further away from each other.This is common across both weekdays and weekends. For the first few hours on weekdays, median energy consumption starts and continues to be higher for longer as compared to weekends.
 
-Consider looking at violin plots instead of quantile plots to look at the same data in \autoref{fig:bothcust-lv}. There is additional information that we can derive looking at the distribution. There is bimodality in the early hours of the day, implying both low and high energy consumption is probable in the early hours of the day both for weekdays and weekends. Also hours from 7 to 13 look most volatile. If we visualize the same data with reverse mapping of the cyclic granularities, then the natural tendency would be to compare weekend and weekday behavior within each hour and not across hours. For example in \autoref{fig:bothcust-lv}, it can be seen that median energy consumption for the early morning hours is extremely high for weekdays compared to weekends. Also, outliers are more prominent in the latter part of the day. All of these indicates that looking at different distribution plots or changing the mapping might shed lights on different aspect of the energy behavior for the same customer.
+Consider looking at violin plots instead of quantile plots to look at the same data in \autoref{fig:bothcust}(c). There is additional information that we can derive looking at the distribution. There is bimodality in the early hours of the day, implying both low and high energy consumption is probable in the early hours of the day both for weekdays and weekends. Also hours from 7 to 13 look most volatile. If we visualize the same data with reverse mapping of the cyclic granularities, then the natural tendency would be to compare weekend and weekday behavior within each hour and not across hours. For example in \autoref{fig:bothcust}(a), it can be seen that median energy consumption for the early morning hours is extremely high for weekdays compared to weekends. Also, outliers are more prominent in the latter part of the day. All of these indicates that looking at different distribution plots or changing the mapping might shed lights on different aspect of the energy behavior for the same customer.
 
 <!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
 
 
-```{r bothcust, fig.cap = "(a) Area quantile and (b) violin plot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. Plot (a) shows that the customer typically consumes more in the morning hours following which their consumption is low till late afternoon hours. Median consumption for the early morning hours starts higher and continue to remain high for longer during weekdays compared to weekdend. Plot (b) shows early morning hours are bimodal implying both high and low consumptions are probable. Bimodality can be caused by difference in behavior across different seasons. Volatility is highest from 7 to 13 hours as evident from the narrow violins."}
+```{r bothcust, fig.cap = "(a) Area quantile and (b) violin plot and (c) box plot of energy consumption for customer id: 10017936. Plot (a) helps to compare different hours of the day within weekdays and weekends. Plot (b) shows early morning hours are bimodal implying both high and low consumptions are probable due to different seasons. Plot (c) shows the effect of change in mapping which leads to easier comparison between weekdays and weekends for each hour."}
 
 # plot for only customer is shown
 # cust1 <- smart_meter10 %>%
@@ -1440,7 +1440,8 @@ cust2_quantile <- smart_meter10 %>%
     symmetric = TRUE,
     quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
   ) +
-  scale_y_sqrt()
+  scale_y_sqrt() +
+  ggtitle(" (b) Area quantile plot faceted by weekend-weekday")  + ylab("Electricity Demand [KWh]")
 #
 # smart_meter10 %>%
 #   filter(customer_id %in% c(10006704)) %>%
@@ -1458,21 +1459,8 @@ cust2_violin <- smart_meter10 %>%
     response = "general_supply_kwh",
     plot_type = "violin"
   ) +
-  scale_y_sqrt()
-
-ggarrange(cust2_quantile, cust2_violin, nrow = 2)
-```
-
-```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. The change in mapping of the cyclic granularities leads to easier comparison within weekdays and weekends for each hour. Median consumption till 6am is higher for weekends compared to weekdays although the quartiles look similar. Outliers appear more during the end of the day implying more uncertain behavior in latter hours of the day compared to early morning hours."}
-#
-# smart_meter10 %>%
-#   filter(customer_id %in% c(10006704)) %>%
-#   prob_plot("wknd_wday",
-#                             "hour_day",
-#                             response = "general_supply_kwh",
-#                             plot_type = "violin") +
-#   scale_y_sqrt() +
-#   ggtitle("Energy consumption distribution for customer id: 10006704")
+  scale_y_sqrt()+
+  ggtitle(" (c) Violin plot faceted by weekend-weekday") + ylab("")
 
 smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
@@ -1481,9 +1469,23 @@ smart_meter10 %>%
     response = "general_supply_kwh",
     plot_type = "boxplot"
   ) +
-  scale_y_sqrt()
-# scale_fill_brewer(palette = "Dark2")
+  scale_y_sqrt()+
+  ggtitle(" (a) Box plot faceted by hour-of-day")  + ylab("Electricity Demand [KWh]")
+
+ggarrange(cust2_quantile, cust2_violin, nrow = 2)
 ```
+
+<!-- # ```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. The change in mapping of the cyclic granularities leads to easier comparison within weekdays and weekends for each hour. Median consumption till 6am is higher for weekends compared to weekdays although the quartiles look similar. Outliers appear more during the end of the day implying more uncertain behavior in latter hours of the day compared to early morning hours."} -->
+<!-- #  -->
+<!-- # smart_meter10 %>% -->
+<!-- #   filter(customer_id %in% c(10017936)) %>% -->
+<!-- #   prob_plot("hour_day", -->
+<!-- #     "wknd_wday", -->
+<!-- #     response = "general_supply_kwh", -->
+<!-- #     plot_type = "boxplot" -->
+<!-- #   ) + -->
+<!-- #   scale_y_sqrt() -->
+<!-- # ``` -->
 
 <!-- Now, we would like to see how these customers' behavior relate to the rest of the  50 households across these two measures -   -->
 
@@ -1505,17 +1507,18 @@ The method is not only restricted to temporal data. We provide an example of cri
 
 <!-- However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. -->
 
-The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like the following:
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like \autoref{tab:hierarchy-cric}.
 
-```{r hierarchy2}
+```{r hierarchy-cric}
 library(gravitas)
 library(tibble)
 hierarchy_model <- tibble::tibble(
   G = c("over", "inning", "match", "season"),
   C = c("over-of-inning", "inning-of-match", "match-of-season", 1),
-  P = c(20, 2, "aperiodic", 1)
+  K = c(20, 2, "k(match, season)", 1)
 )
-knitr::kable(hierarchy_model, format = "markdown")
+knitr::kable(hierarchy_model,
+             caption = "Hierarchy table for cricket where each over is nested within innings, innings is nested within match and so on. Cyclic granularity over-of-inning, inning-of-match are assumed to be circular which means each inning will have 20 overs and each match has 2 innings and  match-of-season is assumed to be quasi-periodic. ")
 ```
 
 However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. <!--We will explore a few interesting questions and understand how the proposed approach in the paper can help answer some of the questions.-->
@@ -1544,9 +1547,7 @@ However, even if the situation is not periodic and a similar hierarchy can not b
 
 <!-- First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperidic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions: -->
 
-Q1: How total runs vary depending on if a team bats first or second?
-
-Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs as they approach towards the end of the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
+First, it would be interesting to see if the distribution of total runs vary depending on if a team bats first or second? Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs as they approach towards the end of the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
@@ -1568,7 +1569,16 @@ Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the 
 <!-- #             panel.grid.major.y = element_blank()) + scale_x_discrete(breaks = seq(2008, 2016, 3)) -->
 <!-- # ``` -->
 
-```{r cricex, fig.cap= "Letter value plot of runs per over across overs of the inning faceted by innings of the match. No upward shift in runs in the second innings like that in the first implying teams are more vulnerable to score more in the first innings as they approach the end of the inning.", warning=FALSE, message = FALSE}
+
+
+Another interesting question could be if runs per over set to reduce in subsequent over if fielding is good in the previous over? For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. <!--If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. 
+Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. --> Dismissals in previous over can lead to a batsman being either defensive or play more vulnerable. Figure \ref{fig:field} shows that no dismissals in the previous over will lead to a higher median and quartile spread of run rates compared to the case when there has been at least one dismissals.
+
+<!-- Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs.  -->
+
+<!-- fetching raw data since dot and fielding information not available in dismissal type not available in cricket data gravitas. Also `cricket` is aggregated across overs -->
+
+```{r cricex, fig.cap= "(a) Letter value plot shows that there is no upward shift in runs in the second innings like that in the first implying teams are vulnerable to score more in the first innings as they approach the end of the inning. (b) Box plot shows at least one wicket in the previous over leads to downward shift of median run rate and quartile spread in the subsequent over for most overs.", warning=FALSE, message = FALSE, out.width = "90%"}
 
 library(tsibble)
 cricket_tsibble <- cricket %>%
@@ -1590,20 +1600,11 @@ cricket_tsibble %>%
     response = "runs_per_over",
     hierarchy_model,
     plot_type = "lv"
-  ) + ggtitle("") +
-  scale_fill_brewer(palette = "Dark2")
-```
+  ) + 
+  scale_fill_brewer(palette = "Dark2") + 
+  ggtitle("(a) Runs per over across over faceted by inning") +
+  theme(legend.position = "right")
 
-Q2: Is runs per over set to reduce in subsequent over if fielding is good in the previous over?
-
-For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. <!--If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. 
-Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. --> Dismissals in previous over can lead to a batsman being either defensive or play more vulnerable. Figure \ref{fig:field} shows that no dismissals in the previous over will lead to a higher median and quartile spread of run rates compared to the case when there has been at least one dismissals.
-
-<!-- Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs.  -->
-
-<!-- fetching raw data since dot and fielding information not available in dismissal type not available in cricket data gravitas. Also `cricket` is aggregated across overs -->
-
-```{r runs_per-over}
 library(tsibble)
 
 cricket_all <- read_csv("data-raw/deliveries_all.csv")
@@ -1625,9 +1626,6 @@ cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" = "id
 #   ungroup() %>%
 #   mutate(data_index = row_number()) %>%
 #   as_tsibble(index = data_index)
-```
-
-```{r}
 
 cricket_dot_field <- cricket_season %>%
   mutate(
@@ -1659,23 +1657,18 @@ cricket_tsibble <- cricket_dot_field %>%
 
 cricket_data <- cricket_tsibble %>%
   mutate(
-    field = if_else(fielding_wckts == 0, "no wickets", ">0 wickets"),
+    field = if_else(fielding_wckts == 0, "0 wicket", ">0 wickets"),
     dot = if_else(dot_balls == 0, "no dot balls", ">0 dot balls"),
     lag_field = lag(field),
     lag_dot = lag(dot)
   ) %>%
   filter(lag_field != 0, lag_dot != 0)
-```
 
-```{r echo = FALSE, eval = FALSE}
-cricket_data %>% gran_obs("field", "over")
-cricket_data %>% gran_obs("dot", "over")
-```
-
-```{r field,  fig.cap = "Box plots showing distribution of run rate across overs of the innings and (lagged) wickets dismissed due to fielding. This shows at least one wicket in the previous over leads to downward shift of median run rate and quartile spread in the subsequent over for most overs.", warning = FALSE}
+cricket_data$lag_field <- factor(cricket_data$field, levels = c("0 wicket", ">0 wickets"))
 
 # filter(fielding_wckts %in% c(0,1)) %>%
-cricket_data %>%
+# 
+ cricket_data %>%
   filter(over!=1) %>% 
   prob_plot("over", "lag_field",
   hierarchy_model,
@@ -1683,8 +1676,10 @@ cricket_data %>%
   plot_type = "boxplot",
   symmetric = FALSE,
  quantile_prob = c(0.25, 0.5, 0.75)
-) + ggtitle("") 
-#+ geom_boxplot(width = 0.5, aes(colour = lag_field)) 
+) + ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + 
+  #ylab("runs per over")  +
+  xlab("Number of wickets in previous over")
+# + geom_boxplot(width = 0.5, aes(colour = lag_field)) 
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
@@ -1710,7 +1705,7 @@ cricket_data %>%
 <!--   ) + ggtitle("") -->
 <!-- ``` -->
 
-In Q2, wickets per over are considered as aperiodic cyclic granularities with wickets as aperiodic linear granularities. These granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data.
+Wickets per over are considered as aperiodic cyclic granularities with wickets as aperiodic linear granularities. These granularities do not appear in the hierarchy table since it is difficult to position them in a hierarchy. These are similar to holidays or special events in temporal data.
 <!-- CONTENT CUT -->
 <!--While any special event that corresponds to a time domain can be treated as an aperiodic linear granularity in a temporal case, dot balls or wickets that corresponds to certain balls (index) could be treated as aperiodic events in cricket.-->
 
@@ -1761,7 +1756,7 @@ in the supplemental materials.
 
 # Supplemental Materials
 
-**Data and scripts:** Datasets and R code to reproduce all figures in this article (main.Rmd).
+**Data and scripts:** Data sets and R codes to reproduce all figures in this article (main.Rmd).
 
 **R-package:** The ideas presented in this article have been implemented in the open-source R [@R-language] package gravitas [@R-gravitas], available from CRAN. The R-package facilitates manipulation of single and multiple-order-up time granularities through cyclic calendar algebra, check feasibility of creating plots or drawing inferences for any two cyclic granularities by providing list of harmonies and recommend prospective probability distributions through factors described in the article. Version 0.1.2 of the package was used for the results presented in the article and is available from Github (https://github.com/Sayani07/gravitas).
 
