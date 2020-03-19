@@ -363,6 +363,23 @@ day-of-week: & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$ & $P_5=$&$7$\\
 \label{tab:definitions}
 \end{table}
 
+
+<!-- # ```{r tab-mayan} -->
+<!-- # table_mayan <- tibble(`Circular granularity` = c("minute-of-hour","minute-of-day", -->
+<!-- #                                                  "hour-of-day","hour-of-week", "day-of-week"), -->
+<!-- #                       Expression = c($L_1(z \mod 60)$, L_2(z \mod 60*24), L_3(\lfloor z/60\rfloor\mod 24)$,  L_4(\lfloor z/60\rfloor\mod 24*7)$, L_5(\lfloor z/24*60\rfloor \mod 7)$)) -->
+<!-- #                                                   -->
+<!-- #                                                   -->
+<!-- #                       C = c("kin-of-uinal","uinal-of-tun"," tun-of-katun", "katun-of-baktun", 1), -->
+<!-- #                       K = c(20, 18, 20, 20, 1))  -->
+<!-- # kable(table_mayan,  -->
+<!-- #       format = "latex", -->
+<!-- #       caption = "Hierarchy table for Mayan calendar. $G$ and $C$ represent the linear and single order-up cyclic granularities respectively. All cyclic granularities are circular with $K$ as the period length.") -->
+<!-- # ``` -->
+
+
+
+
 ## Quasi-circular {#sec:quasi-circular-gran-def}
 
 A **quasi-circular** granularity can not be defined using modular arithmetic since they are formed using two linear granularities with irregular mapping. However, they are still formed with linear granularities, one of which "groups periodically into" the other. \autoref{tab:quasi} shows some example of quasi-circular granularities ($Q_i$) with ($P_i$) denoting the plausible choices of number of granules of the finer granularity inside each granule of the coarser one.
@@ -536,6 +553,7 @@ table_mayan <- tibble(G = c("kin", "uinal", "tun", "katun", "baktun"),
                       C = c("kin-of-uinal","uinal-of-tun"," tun-of-katun", "katun-of-baktun", 1),
                       K = c(20, 18, 20, 20, 1)) 
 kable(table_mayan, 
+      format = "latex",
       caption = "Hierarchy table for Mayan calendar. $G$ and $C$ represent the linear and single order-up cyclic granularities respectively. All cyclic granularities are circular with $K$ as the period length.")
 ```
 
@@ -604,15 +622,17 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 <!-- Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$. -->
 
 
-**Example:** <!--Let us revisit Gregorian calendar for addressing this case.--> Suppose we have a hierarchy using linear granularties from Gregorian calendar. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular. 
+**Example:** <!--Let us revisit Gregorian calendar for addressing this case.--> Suppose we have a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular. 
 
-|  G	        |C                 |K
-|------------	|------------------|----------------|
-|  minute     |minute-of-hour    |  60            |
-|  hour    	  |hour-of-day       |  24  	        |
-|  day      	|day-of-month      | k(day, month)  |
-|  month    	|month-of-year     |  12            |
-|  year   	  | 1                |	1             |
+```{r tab-gregorian}
+table_greg <- tibble(G = c("minute", "hour", "day", "month", "year"),
+                      C = c("minute-of-hour","hour-of-day","day-of-month", "month-of-year", 1),
+                     K = c(20, 18,"k(day, month)", 20, 1))
+
+kable(table_greg, 
+      caption = "Illustrative hierarchy table for Gregorian calendar. $G$ and $C$ represent the linear and single order-up cyclic granularities respectively. All these cyclic granularities are circular with $K$ as the period length except for day-of-month which is quasi-circular.")
+```
+
 
 Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have: 
 
@@ -733,7 +753,7 @@ Effective exploration or good visualization require good data structures. It is 
 
 <!-- These are based on conditioning the values taken on by one or more of the variables in a data set. This means creating same plots using data subsets corresponding to each level of the conditioned variable. This is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data. -->
 
-```{r data-structure, fig.cap = "The data structure for exploring periodicities in data by including two cyclic granularities in the tsibble structure", fig.pos="htb"}
+```{r data-structure, fig.cap = "The data structure for exploring periodicities in data by including two cyclic granularities in the tsibble structure with index, key and measured variables.", fig.pos="htb"}
 include_graphics("Figs/data-structure-v1.png")
 ```
 
@@ -1214,7 +1234,7 @@ smart_meter %>%
 smart_meter10 %>% search_gran(
   highest_unit = "month",
   filter_out = c("hhour", "fortnight")
-)%>% knitr::kable(format = "markdown")
+)%>% knitr::kable()
 ```
 
 <!-- # smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month", -->
@@ -1418,7 +1438,7 @@ Consider looking at violin plots instead of quantile plots to look at the same d
 <!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
 
 
-```{r bothcust, fig.cap = "(a) Area quantile and (b) violin plot and (c) box plot of energy consumption for customer id: 10017936. Plot (a) helps to compare different hours of the day within weekdays and weekends. Plot (b) shows early morning hours are bimodal implying both high and low consumptions are probable due to different seasons. Plot (c) shows the effect of change in mapping which leads to easier comparison between weekdays and weekends for each hour."}
+```{r bothcust, fig.cap = "(a) Area quantile and (b) violin plot and (c) box plot of energy consumption for customer id: 10017936. Plot (a) helps to compare different hours of the day within weekdays and weekends. Plot (b) shows early morning hours are bimodal implying both high and low consumptions are probable due to different seasons. Plot (c) shows the effect of change in mapping which leads to easier comparison between weekdays and weekends for each hour.", out.width="90%"}
 
 # plot for only customer is shown
 # cust1 <- smart_meter10 %>%
@@ -1547,7 +1567,7 @@ However, even if the situation is not periodic and a similar hierarchy can not b
 
 <!-- First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperidic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions: -->
 
-First, it would be interesting to see if the distribution of total runs vary depending on if a team bats first or second? Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}, it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs as they approach towards the end of the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
+First, it would be interesting to see if the distribution of total runs vary depending on if a team bats first or second? Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}(a), it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs as they approach towards the end of the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
@@ -1572,7 +1592,7 @@ First, it would be interesting to see if the distribution of total runs vary dep
 
 
 Another interesting question could be if runs per over set to reduce in subsequent over if fielding is good in the previous over? For establishing that the fielder fielded well in a particular over, we can see how many catches and run outs were made in that particular over. <!--If a batsman is bowled out, it does not necessarily signify good fielding. So we only include number of catches and run out in an over as a measure of good fielding. 
-Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. --> Dismissals in previous over can lead to a batsman being either defensive or play more vulnerable. Figure \ref{fig:field} shows that no dismissals in the previous over will lead to a higher median and quartile spread of run rates compared to the case when there has been at least one dismissals.
+Difference in runs across overs are likely to be negative if good fielding has an impact on the runs scored in the subsequent overs. --> Dismissals in previous over can lead to a batsman being either defensive or play more vulnerable. Figure \ref{fig:cricex}(b) shows that no dismissals in the previous over will lead to a higher median and quartile spread of run rates compared to the case when there has been at least one dismissals.
 
 <!-- Difference in runs across over should be negative if good fielding has an impact on the runs scored in the subsequent overs.  -->
 
