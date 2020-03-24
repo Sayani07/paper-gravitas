@@ -218,7 +218,7 @@ A granularity $H$ is {\bf periodical} with respect to a granularity $G$ if:
 
 
 If ${S_0,\dots,S_{R-1}}$ are the sets of indexes of $G$ describing
-$H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way [@Bettini2000-vy]. These are called quasi-periodic relationships.
+$H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary granule $H(j)$ is given by $\bigcup_{i \in S_j \mod R}G(P*\lfloor j/R \rfloor + i)$. Also, granularities can be periodical with respect to other granularities, except for a finite number of spans of time where they behave in an anomalous way, called **quasi-periodic** relationships by @Bettini2000-vy.
 
 <!-- CONTENT CUT -->
 <!-- Intuitively, the definition requires that all granules of $H$ within the span of time between two exceptions have the same periodical behavior, characterized by $R$ and $P$. -->
@@ -242,7 +242,7 @@ $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary gran
 
 <!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
-For example, in a Gregorian calendar without leap years we could say days group periodically into months with the period $P = 365$ and the number of granules of "months" in each period given by $R=12$. In a Gregorian calendar with leap years, days group quasi-periodically into months with the <!--The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s--> exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
+\noindent For example, in a Gregorian calendar without leap years we could say days group periodically into months with the period $P = 365$ and the number of granules of "months" in each period given by $R=12$. In a Gregorian calendar with leap years, days group quasi-periodically into months with the <!--The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s--> exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
 
 
 <!-- CONTENT CUT -->
@@ -252,7 +252,7 @@ For example, in a Gregorian calendar without leap years we could say days group 
 
 <!-- Here, g-rel could be any relationship defined between granularities as defined in @Bettini1998-ed. Given the set of all granularities defined over the time domain $(\mathbb{Z}; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. -->
 
-A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed _bottom granularity_.  <!--so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _chronons_ (@Jensen1998-qn). Chronons may be grouped into granules of a bottom granularity and --> Granules in bottom granularity or any finer granularity may be aggregated in some manner to form larger granules belonging to a coarser granularity. A system of multiple granularities in lattice structures is referred to as a _calendar_ by @Dyreson2000-mr.
+A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**.  <!--so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _chronons_ (@Jensen1998-qn). Chronons may be grouped into granules of a bottom granularity and --> Granules in bottom granularity or any finer granularity may be aggregated in some manner to form larger granules belonging to a coarser granularity. A system of multiple granularities in lattice structures is referred to as a **calendar** by @Dyreson2000-mr.
 
 
 ## Computation through calendar algebra
