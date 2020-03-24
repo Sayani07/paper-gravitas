@@ -124,15 +124,15 @@ The remainder of the paper is organized as follows: Section \ref{sec:linear-time
 <!-- general calendar categorization -->
 <!-- Often we partition time into months, weeks or days to relate it to data. Such discrete abstractions of time can be thought of as time granularities [@aigner2011visualization]. Examples of time abstractions may also include day-of-week, time-of-day, week-of-year, day-of-month, month-of-year, working day/non-working day, etc which are useful to represent different periodicities in the data. Classes of time abstractions may be based on arrangement or hierarchical order of time, discussed in further details in \autoref{sec:arrangement} and \autoref{sec:order}. -->
 
-Discrete abstraction of time such as weeks, months or holidays can be thought of as "time granularities". Time granularities are **linear** if they respect the linear progression of time.
+Discrete abstraction of time such as weeks, months or holidays can be thought of as "time granularities". Time granularities are **linear** if they respect the linear progression of time. There have been several attempts to provide a framework for formally characterizing time granularities, including @Bettini1998-ed which forms the basis of the work described here.
 
-## Definitions and relationships
+## Definitions
 
 <!-- Arrangement: Linear vs. Circular vs. aperiodic {#sec:arrangement} -->
 
 <!-- The arrangement of the time domain can result in deconstructing time in linear, circular or aperiodic (nearly circular) ways.  -->
 
-There have been several attempts to provide a framework for formally characterizing time granularities. One of the first attempts was provided by @Bettini1998-ed who proposed following definitions:
+<!-- There have been several attempts to provide a framework for formally characterizing time granularities. One of the first attempts was provided by @Bettini1998-ed who proposed following definitions:-->
 
 <!-- <!-- Representation with tsibble -->
 <!-- Suppose we have a tsibble with a time index in one column and keys and variables in other columns. A time domain, as defined by [@Bettini1998-ed], is essentially a mapping of row numbers (the index set) to the time index. A linear granularity is a mapping of row numbers to subsets of the time domain. For example, if the time index is days, then a linear granularity might be weeks, months or years. -->
@@ -149,46 +149,48 @@ There have been several attempts to provide a framework for formally characteriz
 
 \newtheorem{definition}{Definition}
 
-\begin{definition}[Time domain]\label{def:definition}
-A time domain is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
+\begin{definition}\label{def:definition}
+A {\bf time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$. 
 \end{definition}
 
-We will assume the time domain is *discrete*; i.e., there is unique predecessor and successor for every element in the time domain except for the first and last.
+The time domain is assumed to be *discrete*, and there is unique predecessor and successor for every element in the time domain except for the first and last.
 
-\begin{definition}[Linear granularity]\label{def:linear}
-A linear granularity is a mapping $G$ from the integers (the index set) to subsets of the time domain such that:
+\begin{definition}\label{def:index set}
+There is a unique {\bf index set}, $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$, which map the time instants to a set of positive integers. Often, this is thought of as $t=1, \dots, T$.
+\end{definition}
 
+\begin{definition}\label{def:linear}
+A {\bf linear granularity} is a mapping $G$ from the integers (the index set, $Z$) to subsets of the time domain such that:
   (1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less
 than all elements of $G(j)$; and
   (2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.
+Each non-empty subset $G(i)$ is called a {\bf granule}.
 \end{definition}
 
-\begin{definition}[Granule]\label{def:granule}
-Each non-empty subset $G(i)$ is called a granule, where $i$ is one of the indexes and $G$ is a linear granularity.
-\end{definition}
+\noindent This implies that the granules in a linear granularity are non-overlapping, continuous and ordering is maintained. The indexing for each granule can also be associated with textual representation, called the label.<!--The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.-->
 
-The first condition in Definition \ref{def:linear} implies that the granules in a linear granularity are non-overlapping and their index order is same as time order. \autoref{fig:linear-time} illustrates the linear time granularites hours, days, weeks, months and years, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.
+
+\autoref{fig:linear-time} illustrates the linear time granularities.<!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.--> 
 
 ```{r linear-time, echo=FALSE, out.width = "100%", fig.cap="The time domain distributed as linear granularities hours, days, weeks and months. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating."}
 knitr::include_graphics("Figs/linear-arr.png")
 ```
-In addition to the integer index, each granule could be associated with a textual representation which is called the label.<!--The label can be mapped to index for input and the index can later be mapped to this label for output.--> When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}.<!-- Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.-->
 
-@Bettini1998-ed discusses the relationships between linear time granularities, periodicities in time, and the structure of a calendar.
 
-\begin{definition}[Finer than]\label{def:finerthan}
-A linear granularity $G$ is finer than a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that
-\[
-G(i) \subset H(j).
-\]
+## Relativities
+
+<!--@Bettini1998-ed discusses the relationships between linear time granularities, periodicities in time, and the structure of a calendar.-->
+
+Properties of pairs of granularities fall into various categories. 
+
+\begin{definition}\label{def:finerthan}
+A linear granularity $G$ is {\bf finer than} a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that
+$G(i) \subset H(j).$
 \end{definition}.
 
-\begin{definition}[Groups into]\label{def:groupsinto}
-A linear granularity $G$ groups into a linear granularity $H$, denoted
-$G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) subset $S$ of the integers such that
-\[
-  H(j) = \bigcup_{i \in S}G(i).
-\]
+\begin{definition}\label{def:groupsinto}
+A linear granularity $G$ {\bf groups into} a linear granularity $H$, denoted
+$G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) subset $S$ of the integers such that $H(j) = \bigcup_{i \in S}G(i).$
 \end{definition}
 
 <!-- CONTENT CUT -->
@@ -202,8 +204,8 @@ For example, $day \trianglelefteq week$ and $day \preceq week$ since every granu
 <!-- knitr::include_graphics("Figs/groupsandfiner.png") -->
 <!-- ``` -->
 
-\begin{definition}[Groups periodically]\label{def:periodical}
-A granularity $H$ is periodical with respect to a granularity $G$ if:
+\begin{definition}\label{def:periodical}
+A granularity $H$ is {\bf periodical} with respect to a granularity $G$ if:
 (1) $G \trianglelefteq H$; and
 (2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
@@ -250,7 +252,7 @@ For example, in a Gregorian calendar without leap years we could say days group 
 
 <!-- Here, g-rel could be any relationship defined between granularities as defined in @Bettini1998-ed. Given the set of all granularities defined over the time domain $(\mathbb{Z}; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. -->
 
-A discrete time model often uses a fixed smallest linear granularity also known as _bottom granularity_ (@Bettini1998-ed) <!--so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _chronons_ (@Jensen1998-qn). Chronons may be grouped into granules of a bottom granularity and --> Granules in bottom granularity or any finer granularity may be aggregated in some manner to form larger granules belonging to a coarser granularity. A system of multiple granularities in lattice structures is referred to as a _calendar_ (see @Dyreson2000-mr).
+A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed _bottom granularity_.  <!--so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _chronons_ (@Jensen1998-qn). Chronons may be grouped into granules of a bottom granularity and --> Granules in bottom granularity or any finer granularity may be aggregated in some manner to form larger granules belonging to a coarser granularity. A system of multiple granularities in lattice structures is referred to as a _calendar_ by @Dyreson2000-mr.
 
 
 ## Computation through calendar algebra
