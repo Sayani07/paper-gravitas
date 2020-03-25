@@ -59,6 +59,8 @@ library(tsibble)
 library(gravitas)
 library(tsibble)
 library(ggpubr)
+library(xtable)
+library(kableExtra)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -556,16 +558,19 @@ We refer to granularities which are nested within multiple levels of the hierarc
 <!-- If linear granularities are not provided or bottom granularity is not known, any circular granularities of hierarchy order m can be computed, provided the circular granularities till hierarchy order (m-1) are provided. -->
 
 <!-- some discussions on primary units of calendar -->
-**Example:** So far we have used example of cyclic granularities from Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. <!--All calendars fall under three types - solar, lunar or lunisolar/solilunar-->The day is the basic unit of time underlying most calendars [@Reingold2001-kf]. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy table can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal; 1 katun = 20 tun and 1 baktun = 20 katun. \autoref{tab:tab-mayan} represents the the hierarchy table for the Mayan calendar.
+**Example:** So far we have used example of cyclic granularities from Gregorian calendar as it is the most widely used calendar. But it is far from being the only one. <!--All calendars fall under three types - solar, lunar or lunisolar/solilunar-->The day is the basic unit of time underlying most calendars [@Reingold2001-kf]. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds". Nevertheless, for any calendar a hierarchy table can be defined. For example, in Mayan calendar, one day was referred to as 1 kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal; 1 katun = 20 tun and 1 baktun = 20 katun. \autoref{tab:tab-mayan} represents the hierarchy table for the Mayan calendar.
 
 ```{r tab-mayan}
-table_mayan <- tibble(G = c("kin", "uinal", "tun", "katun", "baktun"),
-                      C = c("kin-of-uinal","uinal-of-tun"," tun-of-katun", "katun-of-baktun", 1),
-                      K = c(20, 18, 20, 20, 1)) 
+table_mayan <- tibble(`linear (G)` = c("kin", "uinal", "tun", "katun", "baktun"),
+                      `single-order-up cyclic (C)` = c("kin-of-uinal","uinal-of-tun"," tun-of-katun", "katun-of-baktun", 1),
+                       `period length/conversion operator (K)`= c(20, 18, 20, 20, 1)) 
 kable(table_mayan, 
       format = "latex",
       booktabs = TRUE,
-      caption = "Hierarchy table for Mayan calendar. $G$ and $C$ represent the linear and single order-up cyclic granularities respectively. All cyclic granularities are circular with $K$ as the period length.")
+      align = "c",
+      caption = "Hierarchy table for Mayan calendar with all circular single-order-up granularities.")
+  #row_spec(0, bold = TRUE) %>% 
+  #row_spec(1:(nrow(table_mayan)-1), hline_after = T) %>% kable_styling(latex_options = "striped")
 ```
 
 
@@ -636,15 +641,19 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 **Example:** <!--Let us revisit Gregorian calendar for addressing this case.--> Suppose we have a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular. 
 
 ```{r tab-gregorian}
-table_greg <- tibble(G = c("minute", "hour", "day", "month", "year"),
-                      C = c("minute-of-hour","hour-of-day","day-of-month", "month-of-year", 1),
-                     K = c(20, 18,"k(day, month)", 20, 1))
+table_greg <- tibble(`linear (G)` = c("minute", "hour", "day", "month", "year"),
+                      `single-order-up cyclic (C)` = c("minute-of-hour","hour-of-day","day-of-month", "month-of-year", 1),
+                     `period length/conversion operator (K)` = c(20, 18,"k(day, month)", 20, 1))
 
 kable(table_greg, 
       format = "latex",
       booktabs = TRUE,
-      caption = "Illustrative hierarchy table for Gregorian calendar. $G$ and $C$ represent the linear and single order-up cyclic granularities respectively. All these cyclic granularities are circular with $K$ as the period length except for day-of-month which is quasi-circular.")
+      caption = "Illustrative hierarchy table for Gregorian calendar with both circular and quasi-circular single-order-up granularities.") %>% 
+  #row_spec(0, bold = TRUE) %>%
+   kable_styling()
 ```
+
+
 
 
 Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have: 
@@ -1150,30 +1159,31 @@ Even when there are no rarely occuring events, number of observations might vary
 
 <!-- # how data looks -->
 Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. <!--It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units.-->The idea here is to show how to look at the energy consumption across different cyclic granularities in a systematic way to identify different behavioral patterns.
+
 <!-- and identify the extreme and regular households. -->
 
-### Data structure for visualization:
+<!-- ### Data structure for visualization: -->
 
-The data structure for a sample of 50 households from that trial is depicted in \autoref{tab:smart-data} where the variable `reading_datetime`, `customer_id` and `general_supply_kwh` denote the index, key and measured variable of the tsibble.
-<!-- We take a random sample of 50 households to see how we can achieve that.  -->
+<!-- The data structure for a sample of 50 households from that trial is depicted in \autoref{tab:smart-data} where the variable `reading_datetime`, `customer_id` and `general_supply_kwh` denote the index, key and measured variable of the tsibble. -->
+<!-- <!-- We take a random sample of 50 households to see how we can achieve that.  -->
+
 
 ```{r smart-data}
-load("data/sm_cust50.Rdata")
-
-smart_data <- smart_meter <- sm_cust50 %>%
-  as_tsibble() %>%
-  dplyr::select(
-    customer_id,
-    reading_datetime,
-    general_supply_kwh
-  ) %>% head(n = 5)
-
-  knitr::kable(smart_data,
-               format = "latex",
-               booktabs = TRUE,
-               caption = "Smart meter data structure with electricity demand for 50 households from SGSC project for every 30 minutes from 2012 to 2014.")
+# load("data/sm_cust50.Rdata")
+# 
+# smart_data <- smart_meter <- sm_cust50 %>%
+#   as_tsibble() %>%
+#   dplyr::select(
+#     customer_id,
+#     reading_datetime,
+#     general_supply_kwh
+#   ) %>% head(n = 5)
+# 
+#   knitr::kable(smart_data,
+#                format = "latex",
+#                booktabs = TRUE,
+#                caption = "Smart meter data structure with electricity demand for 50 households from SGSC project for every 30 minutes from 2012 to 2014.")
 ```
-
 
 <!--of the tsibble and represents the time variable. The variable  denoting different households represent the key of the tsibble and  is the time series variable which needs to be analyzed.Data sets of the form <$C1$, $C2$, `general_supply_kwh`> will form the basis of exploration for each key in the data set, where the cyclic granularity $C1$ would be mapped to $x$ axis and `general_supply_kwh` to $y$ axis with the cyclic granularity $C2$ mapped to facet. Any geometry displaying the probability distribution of `general_supply_kwh` like  boxplot, letter value, violin,
 ridge or highest density region plots can then be used to explore the data set.-->
@@ -1208,8 +1218,14 @@ smart_meter10 %>% search_gran(
   highest_unit = "month",
   filter_out = c("hhour", "fortnight"))%>%
   knitr::kable(format = "latex",
-      booktabs = TRUE)
+      booktabs = TRUE) %>%
+  #row_spec(0, bold = TRUE)%>%
+  kable_styling()
 ```
+
+
+
+
 
 <!-- # smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month", -->
 <!-- #                               filter_out = c("hhour", "fortnight") -->
@@ -1238,8 +1254,17 @@ smart_harmony <- smart_meter10 %>%
   knitr::kable(smart_harmony,
                format = "latex",
                booktabs = TRUE,
-                caption = "Harmonies with two cyclic granularity one placed on the facet and the other on x-axis with the corresponding levels. Out of 30 possible combinations of cyclic granularities that could be plotted only 13 are harmonies.")
+                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis.") %>% 
+    #row_spec(0, bold = TRUE) %>% 
+    kable_styling() %>% 
+     add_footnote("NOTE: Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs.",
+                  notation="none")
 ```
+
+
+
+
+
 
 <!-- # smart_meter10 %>% gran_advice("wknd_wday", "hour_day") -->
 
@@ -1509,15 +1534,18 @@ The Indian Premier League (IPL) is a professional Twenty20 cricket league in Ind
 library(gravitas)
 library(tibble)
 hierarchy_model <- tibble::tibble(
-  G = c("over", "inning", "match", "season"),
-  C = c("over-of-inning", "inning-of-match", "match-of-season", 1),
-  K = c(20, 2, "k(match, season)", 1)
+  `linear (G)` = c("over", "inning", "match", "season"),
+  `single-order-up cyclic (C)` = c("over-of-inning", "inning-of-match", "match-of-season", 1),
+  `period length/conversion operator (K)` = c(20, 2, "k(match, season)", 1)
 )
 knitr::kable(hierarchy_model,
              format = "latex",
              booktabs = TRUE,
-             caption = "Hierarchy table for cricket where each over is nested within innings, innings is nested within match and so on. Cyclic granularity over-of-inning, inning-of-match are assumed to be circular which means each inning will have 20 overs and each match has 2 innings and  match-of-season is assumed to be quasi-periodic. ")
+             caption = "Hierarchy table for cricket with each over is nested within innings, innings nested within match and match within season.") %>% 
+  #row_spec(0, bold = TRUE)%>%
+  kable_styling()
 ```
+
 
 However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. <!--We will explore a few interesting questions and understand how the proposed approach in the paper can help answer some of the questions.-->
 
