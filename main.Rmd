@@ -1030,6 +1030,7 @@ If there are levels of cyclic granularities plotted across x-axis which are not 
 
 <!--In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.--> 
 
+
 <!---\autoref{fig:allFig} (c) shows box plot  across days of the year by the 1st, 15th, 29th and 31st days of the month. \autoref{fig:allFig} (d) showing violin plot across days of the month faceted by week of the month. \autoref{fig:allFig} (e), variations across week of the year conditional on week of the month can be observed through a ridge plot and \autoref{fig:allFig}(b) shows decile plots across day of the year and month of the year.---> 
 
 <!-- Clearly, in \autoref{fig:allFig}, we observe that  -->
