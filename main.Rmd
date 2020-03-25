@@ -779,7 +779,7 @@ Effective exploration or good visualization require good data structures. It is 
 include_graphics("Figs/data-structure-v1.png")
 ```
 
-### Harmonies and Clashes {#sec:synergy}
+## Harmonies and Clashes {#sec:synergy}
 
 The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). While considering data sets of the form $<C_1, C_2, v>$, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets for each combination of levels ($A_i$, $B_j$) like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$  which will lead to $nm$ data subsets. 
 Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $nm$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities. <!--The implication of these empty sets on visualization will be discussed in Section \ref{sec:vis-interaction}. -->
@@ -814,7 +814,7 @@ Thirdly, empty combinations can be a result of how granularities are constructed
 An example when there will be no empty combinations could be where $C_1$ and $C_2$ maps index set to day-of-week and month-of-year respectively. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
 
 
-### Summarizing the measured variable {#sec:summarize-measured}
+## Summarizing the measured variable {#sec:summarize-measured}
 
 Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity correspond to multiple values of the measured variable. This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. But that approach  hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of these multiple observations across cyclic granularities using some summary statistics, each of which can highlight different features of the data or through probability densities could be a potential way to compare and contrast periocities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.--> 
 
