@@ -1028,7 +1028,7 @@ We will discuss the effect of the levels of cyclic granularities on the choice o
 
 If there are levels of cyclic granularities plotted across x-axis which are not spanned by levels of cyclic granularities plotted across facets or vice versa, we will have empty sets leading to potential ineffective graphs. We hypothesize that the synergy of these cyclic granularities are thus playing a role while deciding if the resulting plot would be a good candidate for exploratory analysis. Harmonies are pairs of granularities that do not contain empty combinations and thus aid exploratory data analysis, and clashes are pairs that do not aid the process of exploratory analysis because they contain empty combinations. As a result, we should avoid plotting clashes.
 
-<!--In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.--> For illustration, distribution of half-hourly electricity consumption of Victoria is plotted across different time granularities in each of the panel in \autoref{fig:allFig}. \autoref{fig:allFig} (a) shows the letter value plot across days of the month faceted by months like January, March and December. This plot works because every day-of-week can occur in every month-of-year.
+<!--In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.--> For illustration, distribution of half-hourly electricity consumption is plotted across different time granularities in each of the panel in \autoref{fig:allFig}. \autoref{fig:allFig} (a) shows the letter value plot across days of the month faceted by months like January, March and December. This plot works because every day-of-week can occur in every month-of-year.
 
 <!---\autoref{fig:allFig} (c) shows box plot  across days of the year by the 1st, 15th, 29th and 31st days of the month. \autoref{fig:allFig} (d) showing violin plot across days of the month faceted by week of the month. \autoref{fig:allFig} (e), variations across week of the year conditional on week of the month can be observed through a ridge plot and \autoref{fig:allFig}(b) shows decile plots across day of the year and month of the year.---> 
 
@@ -1039,130 +1039,87 @@ If there are levels of cyclic granularities plotted across x-axis which are not 
 
 <!---as they hinder the exploratory process by having missing combinations of time granularities in each panel.--->
 
-```{r allFig, fig.height=5.5, out.width="50%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Letter value plot of electricity consumption data of Victoria from 2012 to 2014 (a) across day-of-week faceted by month-of-year and (b) across month-of-year faceted by day-of-week. Plots (a) and (b) both show harmonies since each month consists of all days of the week and every days of the week can occur in every month. However, Plot (a) helps comparison of different days of the week within each month and Plot (b) facilitates comparing months of the year for different days of the week.", fig.show = 'hold'}
+```{r allFig, out.width="100%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Letter value plot of electricity consumption data (a) across month-of-year faceted by quarter-of-year, (b) across weekday/weekend faceted by quarter-of-year and (c) across quarter-of-year faceted by weekday/weekend. Plots (b) and (c) both show harmonies since each quarter consists of both weekdays and weekends. Conversely, weekend and weekday can occur in every quarter. Plot (b) helps to compare weekends and weekdays for each quarter. It can be seen that for every quarter weeekend and weekday consumption are fairly similar except for the second quarter where the letter value D and E behave differently, whereas, Plot (c) helps to compare quarters within weekdays and weekends. For example, the quartile spread of consumption shrinks/lowers from first to fourth quarter, whereas this pattern is not true for weekends. Plot (a) shows a clash since all quarters do not correspond to all months of the year. ", fig.show = 'hold'}
 
-library(gravitas)
-library(tsibbledata)
-library(dplyr)
-library(ggplot2)
+load("data/sm_cust50.rds")
+cust50 <- sm_cust50 %>%  distinct(customer_id)
 
-par(mfrow = c(1, 2))
+VIC <- sm_cust50 %>% 
+  filter(customer_id==cust50$customer_id[2])
 
-VIC <- vic_elec
-
-VIC %>%
-  create_gran("month_year") %>%
-  filter(month_year %in% c("Jan", "Mar", "Dec")) %>% 
-  create_gran("day_week") %>%
-  filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
-  prob_plot("month_year", "day_week",
-    response = "Demand",
-    plot_type = "lv"
-  ) +
-  ylab("Electricity Demand [KWh]") +
-  xlab("day-of-week") + 
-  ggtitle("(a) Letter value plot with month-of-year facet")
-
-# VIC %>%
-#   create_gran("day_week") %>%
-#   filter(day_week %in% c("Mon", "Tue", "Sat", "Sun")) %>%
-#   prob_plot("day_week", "hour_day",
-#     response = "Demand",
-#     plot_type = "quantile",
-#     symmetric = FALSE
-#   ) +
-#   ylab("Electricity Demand [KWh]") +
-#   ggtitle("(b) Decile plot")
-#
-# VIC %>%
-#   create_gran("day_month") %>%
-#   filter(day_month %in% c(1, 15, 29, 31)) %>%
-#   prob_plot("day_month",
-#     "day_year",
-#     response = "Demand",
-#     plot_type = "boxplot"
-#   ) +
-#   ylab("Electricity Demand [KWh]") +
-#   scale_x_discrete(breaks = seq(0, 366, 60)) +
-#   theme(
-#     legend.position = "bottom",
-#     strip.text = element_text(size = 7, margin = margin())
-#   ) +
-#   ggtitle("(c) Box plot")
-#
-# VIC %>%
-#   create_gran("week_month") %>%
-#   filter(week_month %in% c(1, 2, 4)) %>%
-#   prob_plot("week_month",
-#     "day_month",
-#     response = "Demand",
-#     plot_type = "violin", alpha = 0.3
-#   ) + ylab("") +
-#   xlab("Days of the Month") +
-#   theme(legend.position = "bottom", strip.text = element_text(size = 7, margin = margin())) + scale_x_discrete(breaks = seq(0, 31, 5)) +
-#   scale_y_continuous(breaks = seq(2000, 9000, 2000)) +
-#   ggtitle("(d) Violin plot")
-#
-# VIC %>%
-#   create_gran("week_month") %>%
-#   create_gran("week_year") %>%
-#   filter(week_month %in% c(1, 2, 5), week_year %in% c(1:20)) %>%
-#   prob_plot("week_year",
-#     "week_month",
-#     response = "Demand",
-#     plot_type = "ridge"
-#   ) +
-#   xlab("Electricity Demand [KWh]") +
-#   ylab("Weeks of the Year") +
-#   scale_x_continuous(breaks = seq(2000, 10000, 3000)) +
-#   theme(
-#     legend.position = "bottom",
-#     strip.text = element_text(size = 7, margin = margin())
-#   ) +
-#   ggtitle("(e) Ridge plot")
-
-# VIC %>%
-#   create_gran("month_year") %>%
-#   filter(month_year %in% c("Jan", "Jul", "Nov")) %>%
-#   prob_plot("month_year",
-#     "day_year",
-#     response = "Demand",
-#     plot_type = "quantile",
-#     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-#     symmetric = FALSE
-#   ) +
-#   # scale_x_discrete(breaks = seq(1, 336, 60)) +
-#   ylab("") +
-#   xlab("Day of the Year") + theme(
-#     legend.position = "bottom",
-#     strip.text = element_text(
-#       size = 7,
-#       margin = margin()
-#     )
-#   ) +
-#   ggtitle("(b) Decile plot")
-
-
-
-VIC %>%
-  create_gran("month_year") %>%
-  filter(month_year %in% c("Jan", "Mar", "Dec")) %>% 
-  create_gran("day_week") %>%
-  filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
-  prob_plot("day_week",
-    "month_year",
-    response = "Demand",
-    plot_type = "lv"
+scene1 <-  VIC %>%
+  #create_gran("quarter_year") %>%
+  #filter(month_year %in% c("Jan", "Mar", "Dec")) %>% 
+  #create_gran("day_week") %>%
+  #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
+  prob_plot("quarter_year", "wknd_wday",
+            response = "general_supply_kwh",
+            plot_type = "lv",
+            symmetric = FALSE
   ) +
   ylab("") +
-  xlab("month-of-year") +
-  ggtitle("(b) Letter value plot with day-of-week facet")
+  xlab("weekend/weekday") +
+  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10()
 
 
 
-# VIC_moy_doy %>% ggplot(aes(x = yday, y = Value, col = as.factor(Quantile), group = yday)) + geom_line() + facet_wrap(~Indx_Month) + scale_x_continuous(breaks = seq(1, 336, 60)) + ylab("") + xlab("Day of the Year") + theme(legend.position = "none", strip.text = element_text(size = 7, margin = margin())) + ggtitle("(f) Decile plot")
+scene2 <- VIC %>%
+  #create_gran("month_year") %>%
+  #filter(month_year %in% c("Jan", "Mar", "Dec")) %>% 
+  #create_gran("day_week") %>%
+  #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
+  prob_plot("wknd_wday",
+            "quarter_year",
+            response = "general_supply_kwh",
+            plot_type = "lv",
+            symmetric = FALSE
+  ) +
+  ylab("") +
+    xlab("quarter-of-year")  +
+  scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10()
+
+
+
+# VIC %>%
+#   #create_gran("month_year") %>%
+#   #filter(month_year %in% c("Jan", "Mar", "Dec")) %>% 
+#   #create_gran("day_week") %>%
+#   #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
+#   prob_plot("month_year",
+#             "day_month",
+#             response = "general_supply_kwh",
+#             plot_type = "lv",
+#             symmetric = FALSE
+#   ) +
+#   ylab("") +
+#   xlab("day_month")  + 
+#   ggtitle("(d) Letter value plot across days of months & months") 
+ 
+
+scene3 <- VIC %>%
+  #create_gran("month_year") %>%
+  #filter(month_year %in% c("Jan", "Mar", "Dec")) %>% 
+  #create_gran("day_week") %>%
+  #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
+  prob_plot("quarter_year",
+            "month_year",
+            response = "general_supply_kwh",
+            plot_type = "lv",
+            symmetric = FALSE
+  ) +
+  ylab("") +
+  xlab("months") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()
+
+gg_fig <- ggarrange(scene3, 
+          ggarrange(scene1, scene2, ncol = 2, labels = c("(b)", "(c)")),
+          nrow = 2, labels = "(a)")
+          #label.y = "Electricity Demand [KWh]"\
+
+
+ggpubr::annotate_figure(gg_fig,
+                left = text_grob("Electricity Demand [KWh]",  rot = 90))
+
 ```
-
 ### Interchangeability of mappings
 
 We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets $A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group.<!-- When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$-->. With the mapping of $C1$ and $C_2$ reversed, emphasis will shift to different behavior of the variables. \autoref{fig:allFig} (a) shows the letter value plot across days of the week faceted by months like January, March and December and \autoref{fig:allFig} (b) shows letter value of across months faceted by days. The first one helps us to compare different days of the weeks within a month and the second one helps to compare different months for each day of the week.
