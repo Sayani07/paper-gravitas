@@ -366,7 +366,7 @@ day-of-week & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$  & $P_5=$&$7$\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Illustrative circular granularities with bottom granularity "minutes". Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and $P_i$ represents the period length.}
+\caption{Examples of circular granularities with bottom granularity minutes. Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and $P_i$ represents the period length.}
 \label{tab:definitions}
 \end{table}
 
@@ -409,7 +409,7 @@ $Q_4 =$ week-of-month && $P_4 = 5, 4$\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Illustrative quasi-circular granularities $Q_i$ with potential period lengths $P_i$. These quasi-circular granularities relate two linear granularities one of which groups periodically into the other with irregular mapping and hence can not be expressed through modular arithmetic.}
+\caption{Examples of quasi-circular granularities $Q_i$ with potential period lengths $P_i$. These quasi-circular granularities relate two linear granularities one of which groups periodically into the other with irregular mapping and hence can not be expressed through modular arithmetic.}
 \label{tab:quasi}
 \end{table}
 
@@ -567,10 +567,10 @@ table_mayan <- tibble(`linear (G)` = c("kin", "uinal", "tun", "katun", "baktun")
 kable(table_mayan, 
       format = "latex",
       booktabs = TRUE,
-      align = "c",
-      caption = "Hierarchy table for Mayan calendar with all circular single-order-up granularities.")
+      caption = "Hierarchy table for Mayan calendar with all circular single-order-up granularities.") %>% 
+  kable_styling()
   #row_spec(0, bold = TRUE) %>% 
-  #row_spec(1:(nrow(table_mayan)-1), hline_after = T) %>% kable_styling(latex_options = "striped")
+  #row_spec(1:(nrow(table_mayan)-1), hline_after = T)   
 ```
 
 
@@ -648,7 +648,7 @@ table_greg <- tibble(`linear (G)` = c("minute", "hour", "day", "month", "year"),
 kable(table_greg, 
       format = "latex",
       booktabs = TRUE,
-      caption = "Illustrative hierarchy table for Gregorian calendar with both circular and quasi-circular single-order-up granularities.") %>% 
+      caption = "Hierarchy table for Gregorian calendar with both circular and quasi-circular single-order-up granularities.") %>% 
   #row_spec(0, bold = TRUE) %>%
    kable_styling()
 ```
@@ -1254,11 +1254,9 @@ smart_harmony <- smart_meter10 %>%
   knitr::kable(smart_harmony,
                format = "latex",
                booktabs = TRUE,
-                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis.") %>% 
+                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis. Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs.") %>% 
     #row_spec(0, bold = TRUE) %>% 
-    kable_styling() %>% 
-     add_footnote("NOTE: Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs.",
-                  notation="none")
+    kable_styling()
 ```
 
 
