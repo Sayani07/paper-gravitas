@@ -32,7 +32,7 @@ abstract: |
  
  The time granularities can used to create visualizations of the data to explore for periodicities, associations and anomalies. The granularities can be considered to be categorical variables (ordered and unordered) which induces a grouping of the observations. Assuming a numeric response variable, the resulting graphics are then displays of distributions compared across combinations of categorical variables. A recommendation of appropriate distribution display is provided. 
 
- The methods are implemented in the open source R package gravitas. The functions for creating granularities and exploring the associated time series are consistent with a tidy workflow( FIXME REF), and the probability distributions can be examined using the range of graphics available in ggplot2 [@Wickham2009pk]. 
+ The methods are implemented in the open source R package gravitas. The functions for creating granularities and exploring the associated time series are consistent with a tidy workflow (@Grolemund2018-po), and the probability distributions can be examined using the range of graphics available in ggplot2 [@Wickham2009pk]. 
 bibliography: [bibliography.bib]
 preamble: >
   \setlength {\marginparwidth }{2cm}
@@ -366,7 +366,7 @@ day-of-week & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$  & $P_5=$&$7$\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Examples of circular granularities with bottom granularity minutes. Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and $P_i$ represents the period length.}
+\caption{Examples of circular granularities with bottom granularity minutes. Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and $P_i$ represents the period length. Circular granularities could be expressed using modular arithmetic due to their regular mapping. }
 \label{tab:definitions}
 \end{table}
 
@@ -409,7 +409,7 @@ $Q_4 =$ week-of-month && $P_4 = 5, 4$\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Examples of quasi-circular granularities $Q_i$ with potential period lengths $P_i$. These quasi-circular granularities relate two linear granularities one of which groups periodically into the other with irregular mapping and hence can not be expressed through modular arithmetic.}
+\caption{Examples of quasi-circular granularities $Q_i$ with potential period lengths $P_i$. These quasi-circular granularities relate two linear granularities one of which groups periodically into the other with irregular mapping and hence can not be expressed through modular arithmetic. }
 \label{tab:quasi}
 \end{table}
 
@@ -454,7 +454,7 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 
 **Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from definition \ref{def:periodical})<!-- - $B \trianglelefteq G'$ --> <!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
 
-```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="The time domain distributed as linear granularities $B$, $G'$, $H'$ and quasi-circular granularities $Q(B, G')$ and $Q(B, H')$. Both $Q(B, G')$ and $Q(B, H')$ have repeating patterns unlike $G'$ or $H'$ and the patterns are guided by the distribution of $B$ within $G'$ and $H'$ within a period shown by the hashed arrows."}
+```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="The time domain distributed as linear granularities $B$ (bottom granularity), $G'$, $H'$ and quasi-circular granularities $Q(B, G')$ and $Q(B, H')$. Both $Q(B, G')$ and $Q(B, H')$ have repeating patterns unlike $G'$ or $H'$ and the patterns are guided by the distribution of $B$ within $G'$ and $H'$ and remains constant within a period shown by the hashed arrows."}
 knitr::include_graphics("Figs/quasi-circular-ex.png")
 ```
 
@@ -533,7 +533,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
-```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear aperiodic granularities $B$, $M1$, $M2$, $M$ and aperiodic cyclic granularity $A(B, M)$. $A(B, M)$ have repeating patterns with three categories, two of which correspond to the aperiodic linear granularities $M1$ and $M2$ and other one correponding to no aperiodic granularity."}
+```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear aperiodic granularities $M1$, $M2$, $M$ and aperiodic cyclic granularity $A(B, M)$ relating them with bottom granularity $B$. $A(B, M)$ have repeating patterns with three categories, two of which correspond to the aperiodic linear granularities $M1$ and $M2$ and other one correponding to no aperiodic granularity."}
 knitr::include_graphics("Figs/aperiodic-ex.png")
 ```
 
@@ -1049,7 +1049,7 @@ If there are levels of cyclic granularities plotted across x-axis which are not 
 
 <!---as they hinder the exploratory process by having missing combinations of time granularities in each panel.--->
 
-```{r allFig, out.width="100%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Letter value plot of electricity consumption data (a) across month-of-year faceted by quarter-of-year, (b) across weekday/weekend faceted by quarter-of-year and (c) across quarter-of-year faceted by weekday/weekend. Plots (b) and (c) both show harmonies since each quarter consists of both weekdays and weekends. Conversely, weekend and weekday can occur in every quarter. Plot (b) helps to compare weekends and weekdays for each quarter. It can be seen that for every quarter weeekend and weekday consumption are fairly similar except for the second quarter where the letter value D and E behave differently, whereas, Plot (c) helps to compare quarters within weekdays and weekends. For example, the quartile spread of consumption shrinks/lowers from first to fourth quarter, whereas this pattern is not true for weekends. Plot (a) shows a clash since all quarters do not correspond to all months of the year. ", fig.show = 'hold'}
+```{r allFig, out.width="100%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Distribution of energy consumption displayed through letter value plots. Plot (a) displays consumption across month-of-year faceted by quarter-of-year, (b) across weekday/weekend faceted by quarter-of-year and (c) across quarter-of-year faceted by weekday/weekend. Plots (b) and (c) both show harmonies since each quarter consists of both weekdays and weekends. Conversely, weekend and weekday can occur in every quarter. Plot (b) helps to compare weekends and weekdays for each quarter. It can be seen that for every quarter weeekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently, whereas, Plot (c) helps to compare quarters within weekdays and weekends. For example, the quartile spread of consumption shrinks/lowers from first to fourth quarter, whereas this pattern is not true for weekends. Plot (a) shows a clash since all quarters do not correspond to all months of the year. ", fig.show = 'hold'}
 
 load("data/sm_cust50.rds")
 cust50 <- sm_cust50 %>%  distinct(customer_id)
@@ -1254,7 +1254,7 @@ smart_harmony <- smart_meter10 %>%
   knitr::kable(smart_harmony,
                format = "latex",
                booktabs = TRUE,
-                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis. Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs.") %>% 
+                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis along with their number of categories/levels. Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs.") %>% 
     #row_spec(0, bold = TRUE) %>% 
     kable_styling()
 ```
@@ -1437,7 +1437,7 @@ Consider looking at violin plots instead of quantile plots to look at the same d
 <!-- If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. This shows, how looking at the distribution of the dependent variable can throw more light on the energy behavior of the customers, which are lost using aggregate or summary statistics. -->
 
 
-```{r bothcust, fig.cap = "Energy consumption of a single customer shown with different distribution displays, and granularity arrangements. Two granularities are used: hour of the day (I) and  weekday/weekend (II). Plot (a) shows granularity I facetted by granularity II, and plots (b), (c) shows the converse mapping. Plot (a) makes a comparison of usage by workday within each hour of the day using side-by-side boxplots. Generally, on a work day there is more consumption early in the day.  Plots (b) and (c) examine the temporal trend of consumption over the course of a day, separately for the type of day. Plot (b) uses an area quantile to put the emphasis on the time series, for example, the median consumption over time shows prolonged usage in the morning on weekdays. Plot (c) uses a violin plot to place emphasis on distributional differences across hours. It can be seen that the morning use on weekdays is bimodal, some work days there is low usage, which might indicate the person is working from home and also having a late start. (FIXME: make nice axis labels)", out.width="90%"}
+```{r bothcust, fig.cap = "Energy consumption of a single customer shown with different distribution displays, and granularity arrangements. Two granularities are used: hour of the day (I) and  weekday/weekend (II). Plot (a) shows granularity I facetted by granularity II, and plots (b), (c) shows the converse mapping. Plot (a) makes a comparison of usage by workday within each hour of the day using side-by-side boxplots. Generally, on a work day there is more consumption early in the day.  Plots (b) and (c) examine the temporal trend of consumption over the course of a day, separately for the type of day. Plot (b) uses an area quantile to put the emphasis on the time series, for example, the median consumption over time shows prolonged usage in the morning on weekdays. Plot (c) uses a violin plot to place emphasis on distributional differences across hours. It can be seen that the morning use on weekdays is bimodal, some work days there is low usage, which might indicate the person is working from home and also having a late start.", out.width="90%"}
 
 # plot for only customer is shown
 # cust1 <- smart_meter10 %>%
@@ -1460,7 +1460,8 @@ cust2_quantile <- smart_meter10 %>%
     quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
   ) +
   scale_y_sqrt() +
-  ggtitle(" (b) Area quantile plot faceted by weekend-weekday")  + ylab("Electricity Demand [KWh]")
+  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
+  ylab("Electricity Demand [KWh]") + xlab("hour-of-day") + ggtitle("") + ylab("")
 #
 # smart_meter10 %>%
 #   filter(customer_id %in% c(10006704)) %>%
@@ -1479,19 +1480,33 @@ cust2_violin <- smart_meter10 %>%
     plot_type = "violin"
   ) +
   scale_y_sqrt()+
-  ggtitle(" (c) Violin plot faceted by weekend-weekday") + ylab("")
+  #ggtitle(" (c) Violin plot faceted by weekend-weekday") +
+  ylab("") + xlab("hours of the day") + ggtitle("") + 
+  scale_x_discrete( breaks = seq(0, 23, 5))
 
-smart_meter10 %>%
+cust2_box <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("hour_day",
     "wknd_wday",
     response = "general_supply_kwh",
     plot_type = "boxplot"
   ) +
-  scale_y_sqrt()+
-  ggtitle(" (a) Box plot faceted by hour-of-day")  + ylab("Electricity Demand [KWh]")
+  scale_y_sqrt() +
+  #ggtitle(" (a) Box plot faceted by hour-of-day") +
+  xlab("weekday(wdy)/ weekend(wnd)") + ggtitle("") + ylab("") + 
+  scale_x_discrete(labels = c('wdy','wnd'))
 
-ggarrange(cust2_quantile, cust2_violin, nrow = 2)
+#ggarrange(cust2_quantile, cust2_violin, nrow = 2)
+
+
+gg_fig <- ggarrange(cust2_box, 
+          ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("(b)", "(c)")),
+          ncol = 2, labels = "(a)")
+          #label.y = "Electricity Demand [KWh]"\
+
+
+ggpubr::annotate_figure(gg_fig,
+                left = text_grob("Electricity Demand [KWh]",  rot = 90))
 ```
 
 <!-- # ```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. The change in mapping of the cyclic granularities leads to easier comparison within weekdays and weekends for each hour. Median consumption till 6am is higher for weekends compared to weekdays although the quartiles look similar. Outliers appear more during the end of the day implying more uncertain behavior in latter hours of the day compared to early morning hours."} -->
@@ -1602,7 +1617,7 @@ Difference in runs across overs are likely to be negative if good fielding has a
 
 <!-- fetching raw data since dot and fielding information not available in dismissal type not available in cricket data gravitas. Also `cricket` is aggregated across overs -->
 
-```{r cricex, fig.cap= "(a) Letter value plot shows that there is no upward shift in runs in the second innings like that in the first implying teams are vulnerable to score more in the first innings as they approach the end of the inning. (b) Box plot shows at least one wicket in the previous over leads to downward shift of median run rate and quartile spread in the subsequent over for most overs.", warning=FALSE, message = FALSE, out.width = "90%"}
+```{r cricex, fig.cap= "Runs per over shown with different distribution displays, and granularity arrangements. Plot (a) shows letter value plot across overs faceted by innings. There is no upward shift in runs in the second innings like that in the first implying teams are vulnerable to score more in the first innings as they approach the end of the inning. Plot (b) shows box plot across number of wickets in previous over faceted by current over. This indicates that at least one wicket in the previous over leads to lower median run rate and quartile spread in the subsequent over.", warning=FALSE, message = FALSE, out.width = "90%"}
 
 library(tsibble)
 cricket_tsibble <- cricket %>%
@@ -1619,6 +1634,7 @@ cricket_tsibble %>%
     "Mumbai Indians",
     "Chennai Super Kings"
   )) %>%
+  mutate(inning = paste0("inning:", inning)) %>% 
   prob_plot("inning",
     "over",
     response = "runs_per_over",
@@ -1627,7 +1643,17 @@ cricket_tsibble %>%
   ) + 
   scale_fill_brewer(palette = "Dark2") + 
   ggtitle("(a) Runs per over across over faceted by inning") +
-  theme(legend.position = "right")
+  theme(legend.position = "right") +
+  ggtitle("(a)") +
+  ylab("runs per hour") +
+  xlab("over-of-inning") 
+  # ggplot2::theme(
+  #     strip.text = ggplot2::element_text(
+  #       size = 7,
+  #       margin = ggplot2::margin()
+  #     )
+  #   ) 
+  # 
 
 library(tsibble)
 
@@ -1701,8 +1727,9 @@ cricket_data$lag_field <- factor(cricket_data$field, levels = c("0 wicket", ">0 
   symmetric = FALSE,
  quantile_prob = c(0.25, 0.5, 0.75)
 ) + ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + 
-  #ylab("runs per over")  +
-  xlab("Number of wickets in previous over")
+  ylab("runs per over")  +
+  xlab("Number of wickets in previous over") +
+  ggtitle("(b)")
 # + geom_boxplot(width = 0.5, aes(colour = lag_field)) 
 ```
 
