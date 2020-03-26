@@ -353,23 +353,31 @@ In general, any circular granularity relating two linear granularity can be expr
 
 \begin{table}[ht]
 \begin{center}
-\begin{tabular}{lr@{~}lr@{~}r}
+\begin{tabular}{lll}
 \hline
-circular granularity && expression  && period length\\
+circular granularity & expression & period length \\
 \hline
-minute-of-hour & $C_1$ & $= L_1(z \mod 60)$  & $P_1 = $&$60$ \\
-minute-of-day & $C_2$ & $= L_2(z \mod 60*24)$  & $P_2=$&$`r 60*24`$\\
-hour-of-day & $C_3$ & $= L_3(\lfloor z/60\rfloor\mod 24)$  & $P_3 =$&$24$ \\
-hour-of-week & $C_4$ & $= L_4(\lfloor z/60\rfloor\mod 24*7)$  & $P_4=$&$`r 24*7`$\\
-day-of-week & $C_5$ & $= L_5(\lfloor z/24*60\rfloor \mod 7)$  & $P_5=$&$7$\\
+minute-of-hour                               &
+  $C_1 = L_1(z \mod 60)$                     &
+  $P_1 = \phantom{99}60$ \\
+minute-of-day                                &
+  $C_2 = L_2(z \mod 60*24)$                  &
+  $P_2= `r 60*24`$\\
+hour-of-day                                  &
+  $C_3 = L_3(\lfloor z/60\rfloor\mod 24)$    &
+  $P_3 = \phantom{99}24$ \\
+hour-of-week                                 &
+  $C_4 = L_4(\lfloor z/60\rfloor\mod 24*7)$  &
+  $P_4= \phantom{9}`r 24*7`$\\
+day-of-week                                  &
+  $C_5 = L_5(\lfloor z/24*60\rfloor \mod 7)$ &
+  $P_5= \phantom{999}7$\\
 \bottomrule
 \end{tabular}
 \end{center}
 \caption{Examples of circular granularities with bottom granularity minutes. Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and $P_i$ represents the period length. Circular granularities could be expressed using modular arithmetic due to their regular mapping. }
 \label{tab:definitions}
 \end{table}
-
-
 
 
 <!-- ```{r tab-circular} -->
