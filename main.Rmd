@@ -1129,8 +1129,8 @@ scene3 <- VIC %>%
   xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()
 
 gg_fig <- ggarrange(scene3, 
-          ggarrange(scene1, scene2, ncol = 2, labels = c("(b)", "(c)")),
-          nrow = 2, labels = "(a)")
+          ggarrange(scene1, scene2, ncol = 2, labels = c("b", "c")),
+          nrow = 2, labels = "a")
           #label.y = "electricity demand [KWh]"\
 
 
@@ -1509,8 +1509,8 @@ cust2_box <- smart_meter10 %>%
 
 
 gg_fig <- ggarrange(cust2_box, 
-          ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("(b)", "(c)")),
-          ncol = 2, labels = "(a)")
+          ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("b", "c")),
+          ncol = 2, labels = "a")
           #label.y = "electricity demand [KWh]"\
 
 
@@ -1651,11 +1651,12 @@ cricket_tsibble %>%
     plot_type = "lv"
   ) + 
   scale_fill_brewer(palette = "Dark2") + 
-  ggtitle("(a) Runs per over across over faceted by inning") +
+  #ggtitle("(a) Runs per over across over faceted by inning") +
   theme(legend.position = "right") +
-  ggtitle("(a)") +
+  ggtitle("a") +
   ylab("runs per over") +
-  xlab("overs of the innings") 
+  xlab("overs of the innings") +
+  theme(plot.title = element_text(face = "bold"))
   # ggplot2::theme(
   #     strip.text = ggplot2::element_text(
   #       size = 7,
@@ -1734,11 +1735,12 @@ cricket_data$lag_field <- factor(cricket_data$field, levels = c("0 wicket", ">0 
   response = "run_rate",
   plot_type = "boxplot",
   symmetric = FALSE,
- quantile_prob = c(0.25, 0.5, 0.75)
-) + ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + 
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + 
   ylab("runs per over")  +
   xlab("number of wickets in previous over") +
-  ggtitle("(b)")
+  ggtitle("b") +
+   theme(plot.title = element_text(face = "bold"))
 # + geom_boxplot(width = 0.5, aes(colour = lag_field)) 
 ```
 
