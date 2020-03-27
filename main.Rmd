@@ -574,6 +574,7 @@ table_mayan <- tibble(`linear (G)` = c("kin", "uinal", "tun", "katun", "baktun")
 kable(table_mayan, 
       format = "latex",
       booktabs = TRUE,
+      align = "l",
       caption = "Hierarchy table for Mayan calendar with all circular single-order-up granularities.") %>% 
   kable_styling()
   #row_spec(0, bold = TRUE) %>% 
@@ -1075,8 +1076,8 @@ scene1 <-  VIC %>%
             symmetric = FALSE
   ) +
   ylab("") +
-  xlab("weekend/weekday") +
-  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10()
+  #xlab("weekend/weekday") +
+  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + xlab("")
 
 
 
@@ -1092,7 +1093,7 @@ scene2 <- VIC %>%
             symmetric = FALSE
   ) +
   ylab("") +
-    xlab("quarter-of-year")  +
+    xlab("quarters of the year")  +
   scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10()
 
 
@@ -1125,16 +1126,16 @@ scene3 <- VIC %>%
             symmetric = FALSE
   ) +
   ylab("") +
-  xlab("months") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()
+  xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()
 
 gg_fig <- ggarrange(scene3, 
           ggarrange(scene1, scene2, ncol = 2, labels = c("(b)", "(c)")),
           nrow = 2, labels = "(a)")
-          #label.y = "Electricity Demand [KWh]"\
+          #label.y = "electricity demand [KWh]"\
 
 
 ggpubr::annotate_figure(gg_fig,
-                left = text_grob("Electricity Demand [KWh]",  rot = 90))
+                left = text_grob("electricity demand [KWh]",  rot = 90))
 
 ```
 ### Interchangeability of mappings
@@ -1468,7 +1469,7 @@ cust2_quantile <- smart_meter10 %>%
   ) +
   scale_y_sqrt() +
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("Electricity Demand [KWh]") + xlab("hour-of-day") + ggtitle("") + ylab("")
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")
 #
 # smart_meter10 %>%
 #   filter(customer_id %in% c(10006704)) %>%
@@ -1500,7 +1501,8 @@ cust2_box <- smart_meter10 %>%
   ) +
   scale_y_sqrt() +
   #ggtitle(" (a) Box plot faceted by hour-of-day") +
-  xlab("weekday(wdy)/ weekend(wnd)") + ggtitle("") + ylab("") + 
+  xlab("") +
+  ggtitle("") + ylab("") + 
   scale_x_discrete(labels = c('wdy','wnd'))
 
 #ggarrange(cust2_quantile, cust2_violin, nrow = 2)
@@ -1509,11 +1511,11 @@ cust2_box <- smart_meter10 %>%
 gg_fig <- ggarrange(cust2_box, 
           ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("(b)", "(c)")),
           ncol = 2, labels = "(a)")
-          #label.y = "Electricity Demand [KWh]"\
+          #label.y = "electricity demand [KWh]"\
 
 
 ggpubr::annotate_figure(gg_fig,
-                left = text_grob("Electricity Demand [KWh]",  rot = 90))
+                left = text_grob("electricity demand [KWh]",  rot = 90))
 ```
 
 <!-- # ```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. The change in mapping of the cyclic granularities leads to easier comparison within weekdays and weekends for each hour. Median consumption till 6am is higher for weekends compared to weekdays although the quartiles look similar. Outliers appear more during the end of the day implying more uncertain behavior in latter hours of the day compared to early morning hours."} -->
@@ -1652,8 +1654,8 @@ cricket_tsibble %>%
   ggtitle("(a) Runs per over across over faceted by inning") +
   theme(legend.position = "right") +
   ggtitle("(a)") +
-  ylab("runs per hour") +
-  xlab("over-of-inning") 
+  ylab("runs per over") +
+  xlab("overs of the innings") 
   # ggplot2::theme(
   #     strip.text = ggplot2::element_text(
   #       size = 7,
@@ -1735,7 +1737,7 @@ cricket_data$lag_field <- factor(cricket_data$field, levels = c("0 wicket", ">0 
  quantile_prob = c(0.25, 0.5, 0.75)
 ) + ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + 
   ylab("runs per over")  +
-  xlab("Number of wickets in previous over") +
+  xlab("number of wickets in previous over") +
   ggtitle("(b)")
 # + geom_boxplot(width = 0.5, aes(colour = lag_field)) 
 ```
