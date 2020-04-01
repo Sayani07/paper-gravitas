@@ -317,7 +317,7 @@ Cyclic granularities can be constructed by relating two linear granularities. Th
 A circular granularity $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
 \begin{equation} \label{eq:circular-gran}
 \begin{split}
-C_{B, G}(z) & = {L}(z\mod P(B, G)) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
+C_{B, G}(z) & = z\mod P(B, G) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 \end{split}
 \end{equation}
 where
@@ -326,12 +326,10 @@ B denotes a full-integer labelled bottom granularity which groups periodically i
 $P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$.
 \end{definition}
 
+<!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
 
 
-${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$.
-\autoref{fig:circular-dow} depicts the circular granularity "Day-of-Week", constructed from linear granularities "Day" (the bottom granularity) and "Week". The granules that overlap share elements from the underlying time domain. In this example, $P=7$, and the circular granularity $C_{\text{day}, \text{week}}$ representing Day-of-Week consists of the repeated pattern $\{L(0), L(1), L(2),$ $L(3), L(4), L(5), L(6)\}$.
-
-Each circular granularity can use descriptive label mappings, or be simply labelled using the index. The label mapping $L$ in \autoref{fig:circular-dow} can be defined as
+\autoref{fig:circular-dow} depicts the circular granularity "Day-of-Week", constructed from linear granularities "Day" (the bottom granularity) and "Week". The granules that overlap share elements from the underlying time domain. In this example, $P=7$, and the circular granularity $C_{\text{day}, \text{week}}$ representing Day-of-Week consists of the repeated pattern $\{0, 1, 2, 3, 4, 5, 6\}$. Each circular granularity can use descriptive label mappings, or be simply labelled using the index. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for \autoref{fig:circular-dow} can be defined as
 $$
   L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sun}, \text{Mon}, \dots, \text{Sat}\}
 $$
@@ -351,7 +349,7 @@ knitr::include_graphics("Figs/circular-dow-arrow.png")
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
 
-In general, any circular granularity relating two linear granularity can be expressed as $C_{(G, H)}(z) = L(\lfloor z/P(B,G) \rfloor\mod P(G,H))$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping such that the number of granules of $G$ in each granule of $H$ is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity and $L_i$ is the associated label mapping. <!--The representation of the resultant circular granularity will be a function of the index set.--> The bottom granularity is assumed to be minutes in this case.
+In general, any circular granularity relating two linear granularity can be expressed as $C_{(G, H)}(z) = \lfloor z/P(B,G) \rfloor\mod P(G,H)$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping such that the number of granules of $G$ in each granule of $H$ is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity. <!--The representation of the resultant circular granularity will be a function of the index set.--> The bottom granularity is assumed to be minutes in this case.
 
 \begin{table}[ht]
 \begin{center}
@@ -360,19 +358,19 @@ In general, any circular granularity relating two linear granularity can be expr
 circular granularity & expression & period length \\
 \hline
 minute-of-hour                               &
-  $C_1 = L_1(z \mod 60)$                     &
+  $C_1 = z \mod 60$                     &
   $P_1 = \phantom{99}60$ \\
 minute-of-day                                &
-  $C_2 = L_2(z \mod 60*24)$                  &
+  $C_2 = z \mod 60*24$                  &
   $P_2= `r 60*24`$\\
 hour-of-day                                  &
-  $C_3 = L_3(\lfloor z/60\rfloor\mod 24)$    &
+  $C_3 = \lfloor z/60\rfloor\mod 24$    &
   $P_3 = \phantom{99}24$ \\
 hour-of-week                                 &
-  $C_4 = L_4(\lfloor z/60\rfloor\mod 24*7)$  &
+  $C_4 = \lfloor z/60\rfloor\mod 24*7$  &
   $P_4= \phantom{9}`r 24*7`$\\
 day-of-week                                  &
-  $C_5 = L_5(\lfloor z/24*60\rfloor \mod 7)$ &
+  $C_5 = \lfloor z/24*60\rfloor \mod 7$ &
   $P_5= \phantom{999}7$\\
 \bottomrule
 \end{tabular}
