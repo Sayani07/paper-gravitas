@@ -323,11 +323,13 @@ C_{B, G}(z) & = {L}(z\mod P(B, G)) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 where
 z denotes the index set,
 B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping,
-$P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$,
-and ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$.
+$P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$.
 \end{definition}
 
-\autoref{fig:circular-dow} depicts the circular granularity "Day-of-Week", constructed from linear granularities "day" (the bottom granularity) and "week". The granules that overlap share elements from the underlying time domain. In this example, $P=7$, and the circular granularity $C_{\text{day}, \text{week}}$ representing Day-of-Week consists of the repeated pattern $\{L(0), L(1), L(2),$ $L(3), L(4), L(5), L(6)\}$.
+
+
+${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$.
+\autoref{fig:circular-dow} depicts the circular granularity "Day-of-Week", constructed from linear granularities "Day" (the bottom granularity) and "Week". The granules that overlap share elements from the underlying time domain. In this example, $P=7$, and the circular granularity $C_{\text{day}, \text{week}}$ representing Day-of-Week consists of the repeated pattern $\{L(0), L(1), L(2),$ $L(3), L(4), L(5), L(6)\}$.
 
 Each circular granularity can use descriptive label mappings, or be simply labelled using the index. The label mapping $L$ in \autoref{fig:circular-dow} can be defined as
 $$
@@ -614,7 +616,7 @@ C_{uinal, baktun}(z)  = & L(C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + 
 \end{equation}
 
 
-### Circular or quasi-circular single order-up granularities
+### Circular or quasi-circular single order-up granularities {#sec:notall-circular}
 
 <!-- CONTENT CUT -->
 <!-- There can be three scenarios for obtaining multiple-order-granularities here:   -->
@@ -1205,7 +1207,20 @@ ridge or highest density region plots can then be used to explore the data set.-
 
 ### Cyclic granularities search and computation:
 
-R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def})-->, quasi-circular. <!--(Section \ref{sec:quasi-circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})--> If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year), the following cyclic time granularities can be considered for this analysis. The interval of this tsibble is 30 minutes, and hence the temporal granularities may range from half-hour to year. The cyclic granularities which could be considered are hhour_hour, hhour_day, hhour_week, hhour_month, hhour_year, hour_day, hour_week, hour_month, hour_year, day_week, day_month, day_year, week_month, week_year and month_year. These options are too many and hence the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:circular-gran-def}, \ref{sec:quasi-circular-gran-def} or \ref{sec:cyclic-calendar}.
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ circular or quasi-circular granularities that could be formed. If these options are considered too many, the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". 
+
+## Computation
+
+Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:cyclic-calendar}, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} or (for hour_month, day_month, week_month). 
+
+The index set maps the half-hourly time instants to a set of positive integers.
+$$ hour\_day(z) = \lfloor z/2 \rfloor \mod 7$$ (Definition \autoref{def:circular})
+$$ hour\_week(z) =  day\_week(z) + 24*hour\_day(z)$$ (Section \ref{sec:all-circular})
+<!-- $$ day\_month(z) =   \lfloor z/2*24 \rfloor  - \sum_{w=0}^{k-1}\vert T_{w \mod 12*4} \vert$$ (\autoref{def:quasi-circular}) -->
+$$ hour\_month(z) =  hour\_day(z) + 24*day\_month(z)$$ (Section \ref{sec:notall-circular})
+
+<!-- These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def}), quasi-circular. <!--(Section \ref{sec:quasi- circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})--> 
+
 
 ```{r search, echo=FALSE, eval = FALSE}
 library(gravitas)
@@ -1228,7 +1243,7 @@ smart_meter %>%
 <!-- #   search_gran(highest_unit = "month") -->
 <!-- # knitr::kable(smart_meter_limit1, format = "markdown") -->
 
-```{r search_gran_limit2, echo=FALSE, eval = FALSE}
+```{r search_gran_limit2, echo = FALSE, eval = FALSE}
 smart_meter10 %>% search_gran(
   highest_unit = "month",
   filter_out = c("hhour", "fortnight"))%>%
@@ -1273,11 +1288,6 @@ smart_harmony <- smart_meter10 %>%
     #row_spec(0, bold = TRUE) %>% 
     kable_styling()
 ```
-
-
-
-
-
 
 <!-- # smart_meter10 %>% gran_advice("wknd_wday", "hour_day") -->
 
