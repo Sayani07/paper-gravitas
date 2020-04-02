@@ -540,8 +540,8 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
-```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear aperiodic granularities $M1$, $M2$, $M$ and aperiodic cyclic granularity $A(B, M)$ relating them with bottom granularity $B$. $A(B, M)$ have repeating patterns with three categories, two of which correspond to the aperiodic linear granularities $M1$ and $M2$ and other one correponding to no aperiodic granularity."}
-knitr::include_graphics("Figs/aperiodic-ex.png")
+```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of aperiodic cyclic granularities are shown. Panel a shows the time domain distributed as linear granularities Day, Semester, Semester Week, within semester breaks, in-session and aperiodic cyclic granularity Week-of-semester. $A(B, M)$ consists of three categories, 1, 2 and 0 corresponding to within semester breaks, in-session and non-semester period respectively. Panel b depicts the intuition through a measuring tape analogy which needs to be folded at different points every year since $M1$ and $M2$ will fall in different weeks."}
+knitr::include_graphics("Figs/aperiodic-ex2.png")
 ```
 
 
