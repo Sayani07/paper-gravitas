@@ -461,8 +461,8 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 
 **Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from definition \ref{def:periodical})<!-- - $B \trianglelefteq G'$ --> <!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
 
-```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="
-Terminology and intuition of quasi-circular granularities are shown. Panel a shows the time domain distributed as linear granularities $B$ (bottom granularity), $G$, $H'$ and quasi-circular granularities $Q(B, G)$ and $Q(B, H')$. Both $Q(B, G)$ and $Q(B, H')$ have repeating patterns unlike $G$ or $H'$ and the patterns are guided by the distribution of $B$ within $G$ and $H'$ and remains constant within a period shown by the hashed arrows. Panel b depicts the intuition through a measuring tape analogy where the folds are not of same length but has same length over a period."}
+```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="Terminology and intuition of quasi-circular granularities are shown. Panel a shows the time domain distributed as linear granularities $B$ (bottom granularity), $G$, $H'$ and quasi-circular granularities $Q(B, G)$ and $Q(B, H')$. Both $Q(B, G)$ and $Q(B, H')$ have repeating patterns unlike $G$ or $H'$ and the patterns are guided by the distribution of $B$ within $G$ and $H'$ and remains constant within a period shown by the hashed arrows. Panel b depicts the intuition through a measuring tape analogy where the folds are not of same length but has same length over a period."}
+
 knitr::include_graphics("Figs/quasi-circular-ex2.png")
 ```
 
@@ -1517,7 +1517,10 @@ cust2_box <- smart_meter10 %>%
   #ggtitle(" (a) Box plot faceted by hour-of-day") +
   xlab("") +
   ggtitle("") + ylab("") + 
-  scale_x_discrete(labels = c('wdy','wnd'))
+  scale_x_discrete(labels = c('wday','wend')) +
+  ggplot2::theme(axis.text.x = element_text(size = 7))
+  
+  
 
 #ggarrange(cust2_quantile, cust2_violin, nrow = 2)
 
@@ -1657,7 +1660,7 @@ cricket_tsibble %>%
     "Mumbai Indians",
     "Chennai Super Kings"
   )) %>%
-  mutate(inning = paste0("inning:", inning)) %>% 
+  mutate(inning = paste0("innings: ", inning)) %>% 
   prob_plot("inning",
     "over",
     response = "runs_per_over",
@@ -1670,14 +1673,14 @@ cricket_tsibble %>%
   ggtitle("a") +
   ylab("runs per over") +
   xlab("overs of the innings") +
-  theme(plot.title = element_text(face = "bold"))
-  # ggplot2::theme(
-  #     strip.text = ggplot2::element_text(
-  #       size = 7,
-  #       margin = ggplot2::margin()
-  #     )
-  #   ) 
-  # 
+  theme(plot.title = element_text(face = "bold")) +
+  ggplot2::theme(
+       strip.text = ggplot2::element_text(
+        size = 10,
+         margin = ggplot2::margin(b=0, t=0)
+      )
+     )
+  
 
 library(tsibble)
 
@@ -1731,14 +1734,14 @@ cricket_tsibble <- cricket_dot_field %>%
 
 cricket_data <- cricket_tsibble %>%
   mutate(
-    field = if_else(fielding_wckts == 0, "0 wicket", ">0 wickets"),
+    field = if_else(fielding_wckts == 0, "0", "1+"),
     dot = if_else(dot_balls == 0, "no dot balls", ">0 dot balls"),
     lag_field = lag(field),
     lag_dot = lag(dot)
   ) %>%
   filter(lag_field != 0, lag_dot != 0)
 
-cricket_data$lag_field <- factor(cricket_data$field, levels = c("0 wicket", ">0 wickets"))
+cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
 
 # filter(fielding_wckts %in% c(0,1)) %>%
 # 
