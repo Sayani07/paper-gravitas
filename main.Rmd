@@ -343,8 +343,8 @@ for example.
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
 <!-- # ``` -->
 
-```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="The time domain distributed as linear granularities Day and Week and circular granularity Day-of-Week with $P=7$ is constructed using the two linear granularities. Day-of-Week has a repeating pattern unlike Day and Week and has an ordering only within a period represented by hashed arrows."}
-knitr::include_graphics("Figs/circular-dow-arrow.png")
+```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of circular granularities are shown. Panel a shows the time domain distributed as linear granularities Day and Week and circular granularity Day-of-Week with $P=7$ is constructed using the two linear granularities. Day-of-Week has a repeating pattern unlike Day and Week and has an ordering only within a period represented by hashed arrows. Panel b and c depicts the intuition through a measuring tape analogy where the linear measuring tape has been folded to obtain circular granularities from linear ones to accomodate for repeating patterns."}
+knitr::include_graphics("Figs/circular-illustration.png")
 ```
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
