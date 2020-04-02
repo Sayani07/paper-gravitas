@@ -461,11 +461,10 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 
 **Discussion**: If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from definition \ref{def:periodical})<!-- - $B \trianglelefteq G'$ --> <!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
 
-```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="The time domain distributed as linear granularities $B$ (bottom granularity), $G'$, $H'$ and quasi-circular granularities $Q(B, G')$ and $Q(B, H')$. Both $Q(B, G')$ and $Q(B, H')$ have repeating patterns unlike $G'$ or $H'$ and the patterns are guided by the distribution of $B$ within $G'$ and $H'$ and remains constant within a period shown by the hashed arrows."}
-knitr::include_graphics("Figs/quasi-circular-ex.png")
+```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="
+Terminology and intuition of quasi-circular granularities are shown. Panel a shows the time domain distributed as linear granularities $B$ (bottom granularity), $G$, $H'$ and quasi-circular granularities $Q(B, G)$ and $Q(B, H')$. Both $Q(B, G)$ and $Q(B, H')$ have repeating patterns unlike $G$ or $H'$ and the patterns are guided by the distribution of $B$ within $G$ and $H'$ and remains constant within a period shown by the hashed arrows. Panel b depicts the intuition through a measuring tape analogy where the folds are not of same length but has same length over a period."}
+knitr::include_graphics("Figs/quasi-circular-ex2.png")
 ```
-
-
 
 
 
@@ -540,7 +539,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
-```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of aperiodic cyclic granularities are shown. Panel a shows the time domain distributed as linear granularities Day, Semester, Semester Week, within semester breaks, in-session and aperiodic cyclic granularity Week-of-semester. $A(B, M)$ consists of three categories, 1, 2 and 0 corresponding to within semester breaks, in-session and non-semester period respectively. Panel b depicts the intuition through a measuring tape analogy which needs to be folded at different points every year since $M1$ and $M2$ will fall in different weeks."}
+```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of aperiodic cyclic granularities are shown. Panel a shows the time domain distributed as linear granularities Day, Semester, within semester breaks, in-session and aperiodic cyclic granularity Week-of-Semester. $A(B, M)$ consists of three categories 0, 1, 2 non-semester period, within-semester breaks and in-session semester period respectively. Panel b depicts the intuition through a measuring tape analogy which needs to be folded at different points every year since $M1$ and $M2$ will fall in different weeks."}
 knitr::include_graphics("Figs/aperiodic-ex2.png")
 ```
 
