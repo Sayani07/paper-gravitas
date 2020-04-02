@@ -1,0 +1,133 @@
+---
+title: "Ranking harmonies"
+author: "Sayani Gupta"
+date: "20/03/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(gravitas)
+library(philentropy)
+```
+
+# Ranking harmonies based on maximum paiwise distance between distributions of levels
+
+Step 1:
+
+For each harmony pair ($C_1, C_2$) with $m$ and $n$ levels respectively , assign a tibble with $C_1$ denoting rows and $C_2$ denoting columns. In the raw data structure, each cell of this $m*n$ order tibble would be a vector of multiple observations.
+
+Step 2:
+
+Since the length of each of these vectors inside each cell is different, the estimated density values of this data is obtained for n = 512(default?) for each cell. We still have a  $m*n$ order tibble with length of vector in each cell equal to 512 now.
+
+
+Step 3:
+
+For each of these $m$ levels of $C_1$, we need to compute a matrix which provides the pairwise distances of all the $n$ levels of $C_2$. Each of these matrix would be $n*n$ (if symmetric distance obtained just a traingular matric needs to be computed. Thus, in step 3 we have a list of $m$ elements, each of which is a matrix of order $n*n$.
+
+Step 4:
+
+For each of the  $m$ elements, maximum pairwise distance is obtained for each column of the $n*n$ matrix.  Thus, in step 4, maximum pairwise distance for each of the levels of $C_2$ are recorded. Again we have a (m*n) data frame with each cell as a scalar representing the maximum paiwise distances for each level of $C_2$.
+
+Step 5:
+
+Take maximum value of this matrix or take sum of the elements of this matrix to obtain a measure of variation for this harmony pair. The harmony pair with the maximum variation amongst these will be most interesting.
+
+For example, let us take the harmony pair (wknd_wday, hour_day):
+
+```{r}
+library(tidyverse)
+library(gravitas)
+```
+
+# all harmony pairs
+```{r}
+harmony_data <- smart_meter10 %>% harmony(
+  ugran = "month",
+  filter_out = c("hhour", "fortnight")
+) 
+```
+
+# if they have same pairs but one placed on facet and other on x-axis
+# then computational load can be minimised by  
+
+
+
+
+```{r create_gran}
+ data_new <- smart_meter10 %>% 
+   create_gran(harmony_data$facet_variable[7]) %>%
+   create_gran(harmony_data$x_variable[7]) 
+```
+
+```{r step1}
+step1 <- data_new[-c(1:2)]  %>% 
+  pivot_wider(names_from = harmony_data$x_variable[1],
+              values_from = general_supply_kwh,
+              values_fn = list(general_supply_kwh = list))
+
+step1
+```
+
+```{r step2}
+density_extractx <- function(x)
+{
+  density(x)$y
+}
+
+colNms <- colnames(step1)[2:8]
+
+step2 <- NULL
+
+for (i in 1:length(colNms)) {
+  step2[[i]] <- lapply(step1[[colNms[i]]], density_extractx)
+}
+str(step2)
+```
+
+
+```{r step3-4}
+compute_JSD <- function(x, y)
+{
+  mat <- rbind(x, y)
+  return(JSD(mat))
+}
+
+rowTibb <- step1[, 1]
+step3 <- rep(list(diag(nrow(rowTibb))), length(colNms))
+#step4 <- matrix(NA, ncol = nrow(rowTibb), nrow = length(colNms))
+step4 <- array(NA, dim = nrow(rowTibb))
+## Logic
+# for each of the list 7 DOW
+#__ find the stepped sum difference of density vector elements
+for (k in 1:length(colNms)){
+  
+  dist <- matrix(NA, 
+                 nrow = nrow(rowTibb),
+                 ncol = nrow(rowTibb)) ## Matrix
+  row_of_col_max <- NULL
+  for(i in 1:nrow(rowTibb))
+  {
+    for (j in 1:nrow(rowTibb))
+    {
+      m1 <- step2[[k]][[i]]
+      m2 <- step2[[k]][[j]]
+      message(paste0("K:",k," I:",i," J:", j))
+      dist[i, j] <- compute_JSD(m1, m2)
+      # row_of_col_max[j] <- max(dist[, j]) 
+       row_of_col_max <- max(dist)  
+      # maximum of the entire matrix
+    }
+  }
+  step3[[k]] <- dist
+  step4[k] <- row_of_col_max
+  step5 <- mean(step4)
+}
+
+step3
+step4
+step5
+```
+

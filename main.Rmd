@@ -1159,13 +1159,16 @@ Even with harmonies, visualizing distributions can be misleading if statistical 
 
 <!-- The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations. -->
 
-### Unevenly distributed events
-
 Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators. <!-- (see \autoref{eq:MSE})  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$is a function of the sample size $n$.--> 
 
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
 
 <!-- Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels. -->
+
+## Ranking harmonies based on total variability
+
+Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the maximum variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most important display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying the insights of the data. Distances between probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leiber divergence measure. Rpobability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+
 
 # Applications {#sec:application}
 
@@ -1204,11 +1207,7 @@ ridge or highest density region plots can then be used to explore the data set.-
 
 ### Cyclic granularities search and computation:
 
-R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ circular or quasi-circular granularities that could be formed. If these options are considered too many, the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". 
-
-## Computation
-
-Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:cyclic-calendar}, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} or (for hour_month, day_month, week_month). 
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ circular or quasi-circular granularities that could be formed. If these options are considered too many, the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:cyclic-calendar}, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month). 
 
 The index set maps the half-hourly time instants to a set of positive integers.
 $$ hour\_day(z) = \lfloor z/2 \rfloor \mod 7$$ (Definition \autoref{def:circular})
@@ -1270,18 +1269,23 @@ From the search list, we found six cyclic granularities for which we would like 
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
 ```{r harmony-tab, echo=FALSE}
-smart_harmony <- smart_meter10 %>% 
+harmonies <- smart_meter10 %>% 
   harmony(ugran = "month",
-          filter_out = c("hhour", "fortnight"))%>%
+          filter_out = c("hhour", "fortnight"))
+
+smart_harmony <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>% 
+  rank_harmony(harmony_tbl = harmonies,response =  "general_supply_kwh")%>%
   rename(`facet variable` = facet_variable,
          `x-axis variable` = x_variable,
-         `Levels of facet variable` = facet_levels,
-         `Levels of x-axis variable` = x_levels)
+         `facet levels` = facet_levels,
+         `x-axis levels` = x_levels,
+         `average maximum variation` = mean_max_variation) 
 
   knitr::kable(smart_harmony,
                format = "latex",
                booktabs = TRUE,
-                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis along with their number of categories/levels. Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs.") %>% 
+                caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis along with their number of categories/levels. Out of 30 possible combinations of cyclic granularities, only these 13 are harmony pairs. The harmony pairs are ranked basis the average maximum variation which captures maximum pairwise distance between x-axis levels for each facets and then average them over facets.") %>% 
     #row_spec(0, bold = TRUE) %>% 
     kable_styling()
 ```
@@ -1450,6 +1454,8 @@ smart_harmony <- smart_meter10 %>%
 <!-- # ``` -->
 
 <!-- Boxplot of energy consumption is shown across `wknd_wday` (facet) and `hour_day` (x-axis) for the same two households. For the first household, the shape of the distribution does not change significantly for weekdays and weekends. The distribution is roughly smooth with a morning and an evening peak. -->
+
+
 
 In \autoref{fig:bothcust} (b), the distribution of energy consumption is plotted across the harmony pair (wknd_wday, hour_day) through an area quantile plot.
 The black line is the median, whereas the pink band covers 25th to 75th percentile, the orange band covers 10th to 90th percentile and the green band covers 1st to 99th percentile. The first facet represents the weekday behavior while the second one displays the weekend behavior and energy consumption across each hours of the day is shown inside each facet. The energy consumption is extremely skewed with 1st, 10th and 25th percentile lying very close whereas 75th, 90th and 99th lying further away from each other.This is common across both weekdays and weekends. For the first few hours on weekdays, median energy consumption starts and continues to be higher for longer as compared to weekends.
