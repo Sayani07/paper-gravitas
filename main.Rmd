@@ -313,8 +313,8 @@ Cyclic granularities can be constructed by relating two linear granularities. Th
 
 ## Circular {#sec:circular-gran-def}
 
-\begin{definition}[Circular granularity]\label{def:circular}
-A circular granularity $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
+\begin{definition}\label{def:circular}
+A {\bf circular granularity} $C_{B, G}$ relates a linear granularity $G$ to the bottom granularity B, if
 \begin{equation} \label{eq:circular-gran}
 \begin{split}
 C_{B, G}(z) & = z\mod P(B, G) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
@@ -322,9 +322,10 @@ C_{B, G}(z) & = z\mod P(B, G) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 \end{equation}
 where
 z denotes the index set,
-B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping,
+B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping, and 
 $P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$.
 \end{definition}
+
 
 <!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
 
@@ -420,17 +421,18 @@ $Q_4 =$ week-of-month && $P_4 = 5, 4$\\
 \label{tab:quasi}
 \end{table}
 
+
 \begin{definition}\label{def:quasicircular}
-(quasi-circular granularity): A quasi-circular granularity $Q_{B, G'}$ that relates linear granularities $G'$ and bottom granularity $B$, if
-
+A {\bf quasi-circular granularity} $Q_{B, G'}$ relates linear granularities $G'$ and bottom granularity $B$, if
 \begin{equation}\label{eq:quasi}
-Q_{B, G'}(z) = L(z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert), \quad z \in T_k
+Q_{B, G'}(z) = z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert,for\quad z \in T_k
 \end{equation}
-
-where
+where,
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, $P'$ and $R'$ denote the period of the grouping $(B, G')$ and the number of granules of $G'$ in each of these periods, ${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (\lceil P'/R' \rceil-1)\}$, $T_w$ are the sets of indices of $B$ describing $G'(w)$ such that  $G'(w) = \bigcup_{z \in T_w}B(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+$B$ denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G'$ with irregular mapping, $P'$ and $R'$ are the period of the grouping $(B, G')$ and the number of granules of $G'$ in each of these periods, $T_w$ are the sets of indices of $B$ describing $G'(w)$ such that  $G'(w) = \bigcup_{z \in T_w}B(z)$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{definition}
+
+<!--${L}$ is a label mapping that defines an unique label for each index $l \in \{0,1,\dots, (\lceil P'/R' \rceil-1)\}$,-->
 
 **Example**: Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box. Two linear granularities $G' = Alter^{2}_{(1,-1)}(BG, Group_3(B))$ and $H' = Alter^{2}_{(1,-2)}(BG, Group_7(B))$ are considered. <!--This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different.--> $Q_{B, G'}$ and $Q_{B, H'}$ are repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$ or $H'$. For $G'$, $T_0 = \{0,1\}$ and $T_1 = \{2, 3, 4\}$. For $H'$, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$, then we will have \autoref{eq:eq4} and  \autoref{eq:circular-gran}.
 
@@ -520,18 +522,24 @@ knitr::include_graphics("Figs/quasi-circular-ex2.png")
 
 Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ such that Definition \ref{def:periodical} does not hold true for them with respect to $B$ (the bottom granularity). <!--that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity.--> However, $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to Definition \ref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$. Suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
 
-\begin{definition}[Aperiodic cyclic granularity]\label{aperiodic}
-An aperiodic cyclic granularity $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
+
+\begin{definition}\label{aperiodic}
+An {\bf aperiodic cyclic granularity} $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
 \begin{equation}\label{eq:aperiodic}
 \begin{split}
-A_{B, M}(z) & = L(i), \quad z \in T_{i_j} \quad and \quad \forall i \in {1, 2, \dots, n}\\
-     & = L(0), \quad otherwise
+A_{B, M}(z) & =
+\begin{cases}
+i, & \text{for}\quad z \in T_{i_j} \\
+0  & \text{otherwise} 
+\end{cases}
 \end{split}
 \end{equation}
 where,
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, $M = \bigcup_{i=1}^{n}M_{i}$.
+$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$.
 \end{definition}
+
+<!-- \forall i \in {1, 2, \dots, n}\\ -->
 
 **Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. <!--Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. -->The first slot in the diagram shows the index set and $A(B, M)$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.
 
@@ -798,12 +806,12 @@ include_graphics("Figs/data-structure-v2.png")
 The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). Let us consider two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}, let $S_{ij}$ be the set of index set such that for all $s \in S_{ij}$, $C_1(s) = A_i$ and $C_2(s) = B_j$. Data subsets for each combination of levels ($A_i$, $B_j$) like <$A_i$, $B_j$, $v(s)$> can be obtained for all $i \in {1, 2, \dots, l}$ and $j \in {1, 2, \dots, m}$  which will lead to $lm$ data subsets. 
 Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $lm$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities. <!--The implication of these empty sets on visualization will be discussed in Section \ref{sec:vis-interaction}. -->
 
-\begin{definition}[Clash]\label{def:harmony}
-A pair of cyclic granularities which contains structurally, event-driven or build-based empty combinations of its categories.
+\begin{definition}\label{def:harmony}
+A {\bf clash} is a pair of cyclic granularities which contains structurally, event-driven or build-based empty combinations of its categories.
 \end{definition}
 
-\begin{definition}[Harmony]\label{def:clash}
-A pair of cyclic granularities that do not contain any missing combinations of its categories.
+\begin{definition}\label{def:clash}
+A {\bf harmony} is a pair of cyclic granularities that do not contain any missing combinations of its categories.
 \end{definition}
 
 <!--To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
@@ -1207,13 +1215,17 @@ ridge or highest density region plots can then be used to explore the data set.-
 
 ### Cyclic granularities search and computation:
 
-R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ circular or quasi-circular granularities that could be formed. If these options are considered too many, the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute them from the data using Sections \ref{sec:cyclic-calendar}, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month). 
-
-The index set maps the half-hourly time instants to a set of positive integers.
-$$ hour\_day(z) = \lfloor z/2 \rfloor \mod 7$$ (Definition \autoref{def:circular})
-$$ hour\_week(z) =  day\_week(z) + 24*hour\_day(z)$$ (Section \ref{sec:all-circular})
+R package **gravitas** [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing we should have at our disposal is to know which all cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ circular or quasi-circular granularities that could be formed. If these options are considered too many, the most coarse temporal unit can be set to a “month” and some intermediate temporal units which might not be pertinent to the analysis like hhour could be dropped. Then we will be left with six cyclic granularites namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month". Now that we have a list of cyclic granularities to look at, we should be able to compute the multiple-order-up granularities using Sections \ref{sec:cyclic-calendar}. <!-- The lubridate package [@Grolemund2011-vm] provides tools to compute single-order-up granularities, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month).  -->
+Here, the index set $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$ maps the half-hourly time instants to a set of positive integers. Then, multiple-order-up circular granularity $hour\_week$ and quasi-circular granularity $hour\_month$ could be computed from single-order-up granularities as follows:
+<!-- $$ hour\_day(z) = \lfloor z/2 \rfloor \mod 7$$ (Definition \autoref{def:circular}) -->
+\begin{align}
+  hour\_week(z) =  day\_week(z) + 24*hour\_day(z)
+\end{align}
+  
 <!-- $$ day\_month(z) =   \lfloor z/2*24 \rfloor  - \sum_{w=0}^{k-1}\vert T_{w \mod 12*4} \vert$$ (\autoref{def:quasi-circular}) -->
-$$ hour\_month(z) =  hour\_day(z) + 24*day\_month(z)$$ (Section \ref{sec:notall-circular})
+\begin{align}
+hour\_month(z) =  hour\_day(z) + 24*day\_month(z)
+\end{align}
 
 <!-- These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def}), quasi-circular. <!--(Section \ref{sec:quasi- circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})--> 
 
