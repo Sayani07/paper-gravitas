@@ -345,7 +345,7 @@ for example.
 <!-- # ``` -->
 
 ```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of circular granularities are shown. Panel a shows the time domain distributed as linear granularities Day and Week and circular granularity Day-of-Week with $P=7$ is constructed using the two linear granularities. Day-of-Week has a repeating pattern unlike Day and Week and has an ordering only within a period represented by hashed arrows. Panel b and c depicts the intuition through a measuring tape analogy where the linear measuring tape has been folded to obtain circular granularities from linear ones to accomodate for repeating patterns."}
-knitr::include_graphics("Figs/circular-illustration.png")
+knitr::include_graphics("Figs/circular-example.png")
 ```
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
@@ -1054,6 +1054,45 @@ We will discuss the effect of the levels of cyclic granularities on the choice o
 <!-- Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. Let us consider case by case and see which plots are better suitable in which scenarios. -->
 
 <!-- Faceting creates small multiples of data each representing a different subset of the data. Small multiples are powerful for exploratory data analysis where we can rapidly compare patterns in different parts of the data and see whether they are the same or different. But space and resolution quickly become a problem if the number of levels of facet variables is too high. Also, Cleveland suggested that a graphic should display as much information as it can, with the lowest possible cognitive strain to the viewer. -->
+
+## Choosing harmonies to show
+
+Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the maximum variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most important display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying the insights of the data. Distances between probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leiber divergence measure. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+<!-- Suppose we have ${x_1, x_2, \dots, x_n} which are random sample from some underlying population. --> <!-- Let $p(x)$ and $q(x)$ be two probability distributions of a random variable x. -->
+<!-- We compute Kullback-Liebler distance based on quantiles $q_1$ and $q_2$ of $v$ at probabilities $p$ corresponding to $C_1$ and $C_2$ respectively. -->
+
+<!-- \begin{equation} -->
+<!-- D(q_1,q_2) = \int^{\infty}_{-\infty}q_1(x)logq_1(x)/q_2(x)\,dx -->
+<!-- \end{equation} -->
+
+<!-- But since this is not symmetric, Jensen-Shanon distance is calculated which is based on Kullback-Liebler divergence. -->
+
+<!-- $$JS(q_1, q_2) = [D(q_1, r) + D(q_2, r)]/2 where r = (q_1 + q_2)/2$$ -->
+
+1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
+
+2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  ${m \choose 2}$ pairwise distances correponding to each $A_i$'s.
+
+3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by:
+
+$$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$
+where,
+ $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)logq_j(x)/q_k(x)\,dx$$
+is the Kullback-Leibler divergence of $q_j$ with respect to $q_k$.
+
+
+4. For each $\forall \i = {1, 2, \dots, l}$, the maximum pairwise distance could be chosen from  ${m \choose 2}$ distances using $D_{j} = max(d_{jk})/(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accomodate for comparison of maximum distances for different ranges.
+
+
+5. The mean maximum pairwise distance (MMPD) over l = {1, 2, \dots, l}$ is computed by 
+$MMPD = (1/l)\sum_{1}^{l}{D_{j}}$.
+
+6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD since any harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
+
+<!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
+
+
+
 
 ### Synergy of cyclic granularities {#sec:vis-interaction}
 
