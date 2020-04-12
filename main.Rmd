@@ -85,7 +85,7 @@ knitr::opts_knit$set(root.dir = here::here())
 
 Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales such as monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption may be collected every half an hour, energy supply may be collected every minute, and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales such as days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities [@aigner2011visualization].
 
-It is important to be able to navigate through all of these time granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to iteratively explore many possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming.
+It is important to be able to navigate through all of these time granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is a potentially useful approach for exploration. Analysts are expected to alliteratively explore many possible choices of time granularities for comprehending possible periodicities in the data. But too many choices and a lack of a systematic approach to do so might become overwhelming.
 
 <!-- # existing ways and challenges -->
 
@@ -106,7 +106,7 @@ The motivation for this work stems from the desire to provide methods to better 
 
 <!--actions on multiple order up - usage -->
 
-<!-- Finally, visualizing data across single/multiple order-up granularities help us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. However, this approach can lead to a myriad of choices all of which are not useful. Analysts are expected to iteratively visualize these choices for exploring possible patterns in the data. But too many choices might leave him bewildered.  -->
+<!-- Finally, visualizing data across single/multiple order-up granularities help us to understand periodicities, pattern and anomalies in the data. Because of the large volume of data available, using displays of probability distributions conditional on one or more granularities is a potentially useful approach. However, this approach can lead to a myriad of choices all of which are not useful. Analysts are expected to alliteratively visualize these choices for exploring possible patterns in the data. But too many choices might leave him bewildered.  -->
 
 <!-- challenges and how you are dealing wih it -->
 This work provides tools for systematically exploring bivariate granularities within the tidy workflow. In particular, we
@@ -345,7 +345,7 @@ for example.
 <!-- # ``` -->
 
 ```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of circular granularities are shown. Panel a shows the time domain distributed as linear granularities Day and Week and circular granularity Day-of-Week with $P=7$ is constructed using the two linear granularities. Day-of-Week has a repeating pattern unlike Day and Week and has an ordering only within a period represented by hashed arrows. Panel b and c depicts the intuition through a measuring tape analogy where the linear measuring tape has been folded to obtain circular granularities from linear ones to accomodate for repeating patterns."}
-knitr::include_graphics("Figs/circular-example.png")
+knitr::include_graphics("Figs/circular-example-1.png")
 ```
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
@@ -465,7 +465,7 @@ Q_{B,H'}(10) & = L(10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert) ,\quad since \q
 
 ```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap="Terminology and intuition of quasi-circular granularities are shown. Panel a shows the time domain distributed as linear granularities $B$ (bottom granularity), $G$, $H'$ and quasi-circular granularities $Q(B, G)$ and $Q(B, H')$. Both $Q(B, G)$ and $Q(B, H')$ have repeating patterns unlike $G$ or $H'$ and the patterns are guided by the distribution of $B$ within $G$ and $H'$ and remains constant within a period shown by the hashed arrows. Panel b depicts the intuition through a measuring tape analogy where the folds are not of same length but has same length over a period."}
 
-knitr::include_graphics("Figs/quasi-circular-ex2.png")
+# knitr::include_graphics("Figs/quasi-circular-ex2.png")
 ```
 
 
@@ -548,7 +548,7 @@ $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granulariti
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
 ```{r aperiodic-example, echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of aperiodic cyclic granularities are shown. Panel a shows the time domain distributed as linear granularities Day, Semester, within semester breaks, in-session and aperiodic cyclic granularity Week-of-Semester. $A(B, M)$ consists of three categories 0, 1, 2 non-semester period, within-semester breaks and in-session semester period respectively. Panel b depicts the intuition through a measuring tape analogy which needs to be folded at different points every year since $M1$ and $M2$ will fall in different weeks."}
-knitr::include_graphics("Figs/aperiodic-ex2.png")
+knitr::include_graphics("Figs/quasi-periodic-example.png")
 ```
 
 
@@ -838,7 +838,7 @@ An example when there will be no empty combinations could be where $C_1$ and $C_
 
 ## Summarizing the measured variable {#sec:summarize-measured}
 
-Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity correspond to multiple values of the measured variable. This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. But that approach  hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of these multiple observations across cyclic granularities using some summary statistics, each of which can highlight different features of the data or through probability densities could be a potential way to compare and contrast periocities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.--> 
+Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity correspond to multiple values of the measured variable. This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. But that approach  hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of these multiple observations across cyclic granularities using some summary statistics, each of which can highlight different features of the data or through probability densities could be a potential way to compare and contrast periodicities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.--> 
 
 However, we need to consider the effect of number of observations on the summarization even for harmonies. Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations per combination to create a meaningful summarization, then only $T \ge mnk$ will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, $k \ge 30$ is suggested. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
 
@@ -905,7 +905,7 @@ However, we need to consider the effect of number of observations on the summari
 
 <!-- Why 2D -->
 
-<!-- Graphical output devices are flat. If there are only two variables, a cartesian graph of one variable against the other can show the configuration of points. As soon as the data move to three variables, we need to infer multi-dimensional structure by a two-dimensional medium[Cleveland, elements of graphing data]. Any attempt to encode all these temporal granularities together to develop insights on periodicity might fail or become clumsy. Instead, the big problem can be broken down into smaller pieces by focusing on specific tasks per visual representation in a 2D space.   -->
+<!-- Graphical output devices are flat. If there are only two variables, a Cartesian graph of one variable against the other can show the configuration of points. As soon as the data move to three variables, we need to infer multi-dimensional structure by a two-dimensional medium[Cleveland, elements of graphing data]. Any attempt to encode all these temporal granularities together to develop insights on periodicity might fail or become clumsy. Instead, the big problem can be broken down into smaller pieces by focusing on specific tasks per visual representation in a 2D space.   -->
 
 <!-- Why facet-ing -->
 
@@ -1071,7 +1071,7 @@ Even after screening harmonies from the list of all possible combinations of cyc
 
 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
 
-2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  ${m \choose 2}$ pairwise distances correponding to each $A_i$'s.
+2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  ${m \choose 2}$ pairwise distances corresponding to each $A_i$'s.
 
 3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by:
 
@@ -1081,7 +1081,7 @@ where,
 is the Kullback-Leibler divergence of $q_j$ with respect to $q_k$.
 
 
-4. For each $\forall \i = {1, 2, \dots, l}$, the maximum pairwise distance could be chosen from  ${m \choose 2}$ distances using $D_{j} = max(d_{jk})/(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accomodate for comparison of maximum distances for different ranges.
+4. For each $\forall i = {1, 2, \dots, l}$, the maximum pairwise distance could be chosen from  ${m \choose 2}$ distances using $D_{j} = max(d_{jk})/(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges.
 
 
 5. The mean maximum pairwise distance (MMPD) over l = {1, 2, \dots, l}$ is computed by 
@@ -1197,16 +1197,16 @@ We will discuss the effect of the mapping of cyclic granularities in this sectio
 
 ## Number of observations and statistical transformations
 
-Even with harmonies, visualizing distributions can be misleading if statistical transformations are performed on rarely occuring categories (\ref{sec:summarize-measured}) or unevenly distributed events.
+Even with harmonies, visualizing distributions can be misleading if statistical transformations are performed on rarely occurring categories (\ref{sec:summarize-measured}) or unevenly distributed events.
 
 <!-- CONTENT CUT -->
-<!-- ### Rarely occuring events -->
+<!-- ### Rarely occurring events -->
 
 <!-- Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem. -->
 
 <!-- The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations. -->
 
-Even when there are no rarely occuring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators. <!-- (see \autoref{eq:MSE})  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$is a function of the sample size $n$.--> 
+Even when there are no rarely occurring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations based on density should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators. <!-- (see \autoref{eq:MSE})  shows that the variance of both $\hat{f(x)}$ <!--and $\hat{q(u)}$is a function of the sample size $n$.--> 
 
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
 
@@ -1214,7 +1214,7 @@ Even when there are no rarely occuring events, number of observations might vary
 
 ## Ranking harmonies based on total variability
 
-Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the maximum variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most important display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying the insights of the data. Distances between probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leiber divergence measure. Rpobability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the maximum variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most important display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying the insights of the data. Distances between probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leiber divergence measure. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
 
 
 # Applications {#sec:application}
@@ -1433,7 +1433,7 @@ smart_harmony <- smart_meter10 %>%
 <!-- #   create_gran("day_fortnight") %>% -->
 <!-- #   as_tibble() %>%  -->
 <!-- #   group_by(customer_id, day_fortnight) %>%  -->
-<!-- #   summarise(median= log(median(general_supply_kwh)), -->
+<!-- #   summarize(median= log(median(general_supply_kwh)), -->
 <!-- #             total = log(sum(general_supply_kwh))) %>%  -->
 <!-- #   gather("daily_consumption", "value", - c(customer_id, day_fortnight)) %>%  -->
 <!-- #   ggplot2::ggplot(aes( -->
@@ -1452,7 +1452,7 @@ smart_harmony <- smart_meter10 %>%
 <!-- #   create_gran("day_fortnight") %>% -->
 <!-- #   as_tibble() %>%  -->
 <!-- #   group_by(customer_id, day_fortnight) %>%  -->
-<!-- #   summarise(median_consumption= median(general_supply_kwh)) %>% -->
+<!-- #   summarize(median_consumption= median(general_supply_kwh)) %>% -->
 <!-- #   ggplot2::ggplot(aes( -->
 <!-- #     x = as.factor(day_fortnight), -->
 <!-- #     y = median_consumption, -->
@@ -1622,7 +1622,7 @@ This case study shows systematic exploration of energy behavior for a random hou
 
 The method is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalized to other applications. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In a Twenty20 game, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. An idea of cyclic granularities can be conceived with this hierarchy in mind. Examples may include ball of the over, over of the innings or ball of the innings. Although most of these cyclic granularities are circular in theory by design of the hierarchy, in reality these may be aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-the-over will be circular in most cases and aperiodic in others.
 
-<!-- However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. -->
+<!-- However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal data set similar to any temporal data set. -->
 
 The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each inning has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like \autoref{tab:hierarchy-cric}.
 
@@ -1643,7 +1643,7 @@ knitr::kable(hierarchy_model,
 ```
 
 
-However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal dataset similar to any temporal dataset. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. <!--We will explore a few interesting questions and understand how the proposed approach in the paper can help answer some of the questions.-->
+However, even if the situation is not periodic and a similar hierarchy can not be formed, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a  non-temporal data set similar to any temporal data set. There are many interesting questions that can possibly be answered with such a data set irrespective of the type of cyclic granularities. <!--We will explore a few interesting questions and understand how the proposed approach in the paper can help answer some of the questions.-->
 
 <!-- the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls with some exceptions. -->
 
@@ -1667,7 +1667,7 @@ However, even if the situation is not periodic and a similar hierarchy can not b
 
 <!-- Making it short -->
 
-<!-- First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperidic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions: -->
+<!-- First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperiodic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions: -->
 
 First, it would be interesting to see if the distribution of total runs vary depending on if a team bats first or second? Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. It would be interesting to take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}(a), it can be observed that there is no clear upward shift in median and quartile deviation of runs in the second innings as compared to the first innings. This might indicate that players are vulnerable to score through each over and make more runs as they approach towards the end of the first innings, whereas if they bat in the second innings they have a target in mind and are not as vulnerable. To answer Q1, winning teams like CSK and MI have indeed different strategies when it comes to batting in the first or second innings.
 
@@ -1847,14 +1847,14 @@ Wickets per over are considered as aperiodic cyclic granularities with wickets a
 
 # Discussion {#sec:discussion}
 
-Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and thereby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
+Exploratory data analysis is alliteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an observed variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and thereby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
 
 <!--The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
-R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalities can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
+R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functionalists can be imported in the gravitas package to accommodate for aperiodic cyclic granularities.
 
 # Acknowledgements {-}
 
-The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages, Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Spyrison for many useful discussions and feedback on the manuscipt. More details about the package 
+The authors would like to thank the cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Mon ash University for sharing their wisdom and experience of developing R packages, Dr. Peter Tosca [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built under [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Prison for many useful discussions and feedback on the manuscript. More details about the package 
 can be found on the package website https://sayani07.github.io/gravitas/. This article was created with knitr [@knitr, @R-knitr] and R Markdown [@rmarkdown, @R-rmarkdown]. The project's Github repository <https://github.com/Sayani07/paper-gravitas> contains all materials required to reproduce this article and the code is also available online
 in the supplemental materials.
 
