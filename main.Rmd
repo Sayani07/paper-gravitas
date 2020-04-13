@@ -322,15 +322,14 @@ C_{B, G}(z) & = z\mod P(B, G) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 \end{equation}
 where
 z denotes the index set,
-B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping, and 
-$P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$.
+B denotes a full-integer labelled bottom granularity which groups periodically into linear granularity $G$ with regular mapping, and $P \equiv P(B, G)$ is the number of granules of $B$ in each granule of $G$, also called the period of the grouping $(B, G)$.
 \end{definition}
 
 
 <!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
 
 
-\autoref{fig:circular-dow} depicts the circular granularity "Day-of-Week", constructed from linear granularities "Day" (the bottom granularity) and "Week". The granules that overlap share elements from the underlying time domain. In this example, $P=7$, and the circular granularity $C_{\text{day}, \text{week}}$ representing Day-of-Week consists of the repeated pattern $\{0, 1, 2, 3, 4, 5, 6\}$. Each circular granularity can use descriptive label mappings, or be simply labelled using the index. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for \autoref{fig:circular-dow} can be defined as
+\autoref{fig:circular-dow} depicts the linear (a and b) and the corresponding stack (c and d) display of time. The circular granularity day-of-week and day-of-fortnight are constructed from linear granularities day ($B$), week ($G$) and fortnight ($H$). The granules that overlap share elements from the underlying time domain in the linear display. The circular granularity $C_{B , G}$ and $C_{B, H}$ <!--= C_{\text{day}, \text{week}}$--> representing day-of-week and day-of-fortnight respectively consist of repeated pattern of categories $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively. The granules that overlap represents the same category in the stack display. Each circular granularity can use descriptive label mappings, or be simply labelled using the index. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
 $$
   L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sun}, \text{Mon}, \dots, \text{Sat}\}
 $$
@@ -344,19 +343,19 @@ for example.
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
 <!-- # ``` -->
 
-```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Terminology and intuition of circular granularities are shown. Panel a shows the time domain distributed as linear granularities Day and Week and circular granularity Day-of-Week with $P=7$ is constructed using the two linear granularities. Day-of-Week has a repeating pattern unlike Day and Week and has an ordering only within a period represented by hashed arrows. Panel b and c depicts the intuition through a measuring tape analogy where the linear measuring tape has been folded to obtain circular granularities from linear ones to accomodate for repeating patterns."}
+```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="  Circular granularities illustrated through linear (a and b) and stack (c and d) display of time. The linear display is similar to a measuring tape with the measurement marking distributed as linear granularities day, week and fortnight. The stack display gives the intuition of circular granularities by cutting the measuring tape and stacking on top of one another to represent repetitive pattern of categories. The granules that overlap represent same time domain in the linear display and same category in the stack display. Circular granularities day-of-week ($C_{B, G}$) and day-of-fortnight ($C_{B, H}$) have repeating patterns unlike $B$, $G$ or $H$ which gets manifested more clearly through a stack display of time."}
 knitr::include_graphics("Figs/circular-example-1.png")
 ```
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
 
-In general, any circular granularity relating two linear granularity can be expressed as $C_{(G, H)}(z) = \lfloor z/P(B,G) \rfloor\mod P(G,H)$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping such that the number of granules of $G$ in each granule of $H$ is $P(G,H)$. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with $P_i$ being the number of granules of the finer granularity in each granule of the coarser granularity. <!--The representation of the resultant circular granularity will be a function of the index set.--> The bottom granularity is assumed to be minutes in this case.
+In general, any circular granularity relating two linear granularity can be expressed as $C_{(G, H)}(z) = \lfloor z/P(B,G) \rfloor\mod P(G,H)$, where linear granularity $H$ is periodic with respect to linear granularity $G$ with regular mapping and $P(G,H)$ is the period of the grouping $(G, H)$  <!--such that the number of granules of $G$ in each granule of $H$ is-->. Table \ref{tab:definitions} shows representation of circular granularities $C_i$ relating two linear granularities with period $P_i$ <!--being the number of granules of the finer granularity in each granule of the coarser granularity.The representation of the resultant circular granularity will be a function of the index set.--> and minutes as the bottom granularity.
 
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{lll}
 \hline
-circular granularity & expression & period length \\
+circular granularity & expression & period \\
 \hline
 minute-of-hour                               &
   $C_1 = z \mod 60$                     &
@@ -376,7 +375,7 @@ day-of-week                                  &
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Examples of circular granularities with bottom granularity minutes. Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and $P_i$ represents the period length. Circular granularities could be expressed using modular arithmetic due to their regular mapping. }
+\caption{Examples of circular granularities with bottom granularity minutes. Circular granularity $C_i$ relates two linear granularities one of which groups periodically into the other with regular mapping and period $P_i$. Circular granularities could be expressed using modular arithmetic due to their regular mapping. }
 \label{tab:definitions}
 \end{table}
 
@@ -437,7 +436,7 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 **Example**: 
 <!-- Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box.  -->
 
-Consider two linear granularities $G' = Alter^{2}_{(1,-1)}(BG, Group_3(B))$ and $H' = Alter^{2}_{(1,-2)}(BG, Group_7(B))$.<!--This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different.--> Then $Q_{B, G'}$ and $Q_{B, H'}$ are repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$ or $H'$. For $G'$, $T_0 = \{0,1\}$ and $T_1 = \{2, 3, 4\}$. For $H'$, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$, then we will have \autoref{eq:eq4} and  \autoref{eq:eq:eq5}.
+Consider two linear granularities $G' = Alter^{2}_{(1,-1)}(BG, Group_3(B))$ and $H' = Alter^{2}_{(1,-2)}(BG, Group_7(B))$.<!--This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different.--> Then $Q_{B, G'}$ and $Q_{B, H'}$ are repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$ or $H'$. For $G'$, $T_0 = \{0,1\}$ and $T_1 = \{2, 3, 4\}$. For $H'$, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$, then we will have \autoref{eq:eq4} and  \autoref{eq:eq5}.
 
 \begin{equation} \label{eq:eq4}
 \begin{split}
@@ -1199,7 +1198,7 @@ Even after screening harmonies from the list of all possible combinations of cyc
 
 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
 
-2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  ${m \choose 2}$ pairwise distances corresponding to each $A_i$'s.
+2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  ${m \choose 2}$ pairwise distances corresponding to each $A_i$.
 
 3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by:
 
