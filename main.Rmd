@@ -436,7 +436,7 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 <!-- **Example**:  -->
 <!-- Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box.  -->
 
-Consider a linear granularity $G'$ such that $G' = Alter^{2}_{(1,-2)}(B, Group_7(B))$, which implies it is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules.<!-- $$G'= Alter^{2}_{(1,-1)}(BG, Group_3(B))$$ and --><!--This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different.--> Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$. Here, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$. Hence using \ref:{def:quasicircular}, then we will have:
+Consider a linear granularity $G'$ such that $G' = Alter^{2}_{(1,-2)}(B, Group_7(B))$, which implies it is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules.<!-- $$G'= Alter^{2}_{(1,-1)}(BG, Group_3(B))$$ and --><!--This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different.--> Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$. Here, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$. Hence using \ref{def:quasicircular}, then we will have:
 
 <!-- \begin{equation} \label{eq:eq4} -->
 <!-- \begin{split} -->
@@ -526,8 +526,8 @@ If linear granularity $G'$ is periodical with respect to $B$ with irregular mapp
 Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ such that Definition \ref{def:periodical} does not hold true for them with respect to $B$ (the bottom granularity). <!--that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity.--> However, $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to Definition \ref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$. Suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
 
 
-\begin{definition}\label{aperiodic}
-An {\bf aperiodic cyclic granularity} $A_{B, M}$ relates aperiodic linear granularity $M$ and bottom granularity $B$, if
+\begin{definition}\label{def:aperiodic}
+An {\bf aperiodic cyclic granularity} $A_{B, M}$ relates a linear granularity $M$ to the bottom granularity $B$, if
 \begin{equation}\label{eq:aperiodic}
 \begin{split}
 A_{B, M}(z) & =
@@ -539,14 +539,17 @@ i, & \text{for}\quad z \in T_{i_j} \\
 \end{equation}
 where,
 $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$.
+$B$ denotes a full-integer labelled bottom granularity which groups into linear granularity $M$ but not periodically, $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$.
 \end{definition}
 
 <!-- \forall i \in {1, 2, \dots, n}\\ -->
 
-**Example**: \autoref{fig:aperiodic-example} shows two aperiodic linear granularity $M_1$ and $M_2$. <!--Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. -->The first slot in the diagram shows the index set and $A(B, M)$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.
+Consider a school semester which lasts for 18.3 weeks, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks after which there is a study break of 1 week before final exams which continue for 1.3 weeks. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$ and $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years (\autoref{fig:aperiodic-example} c). \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. It is interesting to note here that $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester remains constant over years. Here $Q_{H, M}$ with a period of 18.3 weeks will have irregular mapping since each semester week types consists of different number of semester weeks. 
 
-**Discussion**: Here, $M_1$ can be an aperiodic linear granularity denoting block leaves during Christmas, $M_2$ can be the one denoting Easter, $M_n$ can be Labor day and M can be conceived as the aperiodic linear granularity denoting any holidays. <!--The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event.-->
+
+<!--Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and $A(B, M)$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.-->
+
+<!-- Here, $M_1$ can be an aperiodic linear granularity denoting block leaves during Christmas, $M_2$ can be the one denoting Easter, $M_n$ can be Labor day and M can be conceived as the aperiodic linear granularity denoting any holidays. <!--The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event.--> 
 
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
@@ -556,7 +559,7 @@ knitr::include_graphics("Figs/quasi.png")
 
 ```
 <!-- #  -->
-<!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. --> -->
+<!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. --> 
 
 # Cyclic calendar algebra {#sec:cyclic-calendar}
 
