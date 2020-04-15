@@ -679,6 +679,8 @@ kable(table_greg,
 
 
 
+
+
 Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have: 
 
 <!-- to compute the multiple-order-up granularity hour-of-month and day-of-year for the Gregorian calendar considered. -->
@@ -740,8 +742,18 @@ C_{tun, katun}(z) =  \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20
 <!-- C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod P(m_1, m_2)) -->
 <!-- \end{equation} -->
 
-The representation of single order-up quasi-circular granularities using multiple order-up quasi-circular granularities is not discussed in this paper and is left for future work.
+<!-- CONTENT CHANGE -->
+<!-- The representation of single order-up quasi-circular granularities using multiple order-up quasi-circular granularities is not discussed in this paper and is left for future work. -->
 
+This case is similar to \ref{eq:multifromsingle-quasi2}. Single-order-up quasi-circular granularity ($C_{G_{l},G_{m'}}$) could be obtained from multiple-order-up quasi-circular granularity ($C_{G_l,G_{m}}$) and single/multiple order-up circular granularity $C_{m',m}$ using \ref{eq:multifromsingle-quasi2}.
+
+\begin{equation} \label{eq:multifromsingle-quasi3}
+\begin{split}
+C_{G_{l},G_{m'}}(z) & = C_{G_l,G_{m}}(z) - \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{w} \vert)\\
+\end{split}
+\end{equation}
+
+where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$, $\vert T_w \vert$ is the cardinality of set $T_w$.
 <!-- as they promote the exploratory analysis through visualization. -->
 
 ```{r}
@@ -1855,7 +1867,7 @@ Wickets per over are considered as aperiodic cyclic granularities with wickets a
 Exploratory data analysis is iteratively finding and summarizing patterns. With temporal data available at more finer scales, exploring periodicity can become overwhelming with so many possible cyclic granularities that could be generated for a context. This work provides a framework to systematically explore distribution of an univariate measured variable across two cyclic time granularities by creating any cyclic granularity, choosing a list of harmonies and thereby recommending possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
 
 <!--The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
-R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars and compute multiple order-up quasi-circular granularities from the hierarchy table. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functions can be imported in the `gravitas` package to accommodate for aperiodic cyclic granularities.
+R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functions can be imported in the `gravitas` package to accommodate for aperiodic cyclic granularities.
 
 # Acknowledgements {-}
 
