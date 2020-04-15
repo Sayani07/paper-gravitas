@@ -1199,27 +1199,23 @@ Even when there are no rarely occurring events, number of observations might var
 
 ## Choosing harmonies to show
 
-Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the maximum variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most important display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying the insights of the data. Distances between probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying variation in distributions. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. Moreover, distances between these probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure. 
 
 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
 
 2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  ${m \choose 2}$ pairwise distances corresponding to each $A_i$.
 
-3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by:
-
-$$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$
-where,
- $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$
-is the Kullback-Leibler divergence of $q_j$ with respect to $q_k$.
+3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where,
+ $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$.
 
 
-4. For each $\forall i = {1, 2, \dots, l}$, the maximum pairwise distance could be chosen from  ${m \choose 2}$ distances using $D_{i} = max(d_{jk})/(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges.
+4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  ${m \choose 2}$ distances using $D_{i} = max(d_{jk})/(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges.
 
 
-5. The mean maximum pairwise distance (MMPD) over $l = {1, 2, \dots, l}$ is computed by 
-$MMPD = (1/l)\sum_{i=1}^{l}{D_{j}}$.
+5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by 
+$MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$.
 
-6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD since any harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
+6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
 
 <!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
 
