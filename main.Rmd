@@ -1346,7 +1346,10 @@ From the search list, we found six cyclic granularities for which we would like 
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
 ```{r harmony-tab, echo=FALSE, cache=TRUE}
-
+if(!dir.exists("cache/"))
+{
+  dir.create("cache")
+}
 if (!file.exists("cache/smart_harmony.rds")) { 
   harmonies <- smart_meter10 %>% 
   harmony(ugran = "month",
@@ -1361,7 +1364,7 @@ smart_harmony <- smart_meter10 %>%
          `x-axis levels` = x_levels,
          `average maximum variation` = mean_max_variation) 
 
-  write_rds("cache/smart_harmony.rds") 
+  write_rds(smart_harmony, "cache/smart_harmony.rds")
 }
 smart_harmony <- read_rds("cache/smart_harmony.rds")
 
