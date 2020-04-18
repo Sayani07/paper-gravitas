@@ -422,10 +422,10 @@
     },
     "lattice": {
       "Package": "lattice",
-      "Version": "0.20-41",
+      "Version": "0.20-38",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "fbd9285028b0263d76d18c95ae51a53d"
+      "Hash": "848f8c593fd1050371042d18d152e3d7"
     },
     "lifecycle": {
       "Package": "lifecycle",
@@ -492,10 +492,10 @@
     },
     "nlme": {
       "Package": "nlme",
-      "Version": "3.1-145",
+      "Version": "3.1-144",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0ed9365684dc39cdd0bb5bd2f316dc67"
+      "Hash": "e80d41932d3cc235ccbbbb9732ae162e"
     },
     "openssl": {
       "Package": "openssl",
@@ -597,10 +597,10 @@
     },
     "purrr": {
       "Package": "purrr",
-      "Version": "0.3.3",
+      "Version": "0.3.4",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "22aca7d1181718e927d403a8c2d69d62"
+      "Hash": "97def703420c8ab10d8f0e6c72101e02"
     },
     "readr": {
       "Package": "readr",
@@ -678,6 +678,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "33a5b27a03da82ac4b1d43268f80088a"
+    },
+    "rticles": {
+      "Package": "rticles",
+      "Version": "0.14",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "32e9cc1a0244f9e08aef4b7b69cf0d39"
     },
     "rvest": {
       "Package": "rvest",
@@ -772,10 +779,10 @@
     },
     "tinytex": {
       "Package": "tinytex",
-      "Version": "0.21",
+      "Version": "0.22",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "02e11a2e5d05f1d5ab19394f19ab2999"
+      "Hash": "8b0712f45a05c8e79ce7ba06b249583c"
     },
     "tsibble": {
       "Package": "tsibble",

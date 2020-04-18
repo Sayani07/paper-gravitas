@@ -50,6 +50,8 @@ output:
 
 ```{r initial, echo = FALSE, cache = FALSE, include = FALSE}
 options("knitr.graphics.auto_pdf" = TRUE)
+library(bookdown)
+library(rticles)
 library(knitr)
 library(tidyverse)
 library(lubridate)
