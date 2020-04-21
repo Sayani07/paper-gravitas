@@ -14,7 +14,7 @@ authors:
 
 - name: Dianne Cook
   affiliation: Department of Econometrics and Business Statistics, Monash University
-
+  
 - name: Antony Unwin
   affiliation: University of Augsburg
 
@@ -332,7 +332,7 @@ B denotes a full-integer labelled bottom granularity which groups periodically i
 <!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
 
 
-\autoref{fig:circular-dow} depicts the linear (a and b) and the corresponding stack (c and d) display of time. Circular granularities day-of-week $C_{B , G}$ and day-of-fortnight $C_{B, H}$ are constructed from linear granularities day ($B$), week ($G$) and fortnight ($H$). The granules that overlap share elements from the underlying time domain in the linear display. The circular granularities $C_{B , G}$ and $C_{B , H}$  <!--= C_{\text{day}, \text{week}}$ representing day-of-week and day-of-fortnight respectively --> consist of repeated pattern of categories $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively. The granules that overlap represents the same category in the stack display. Each circular granularity can use descriptive label mappings, or be simply labelled using the index. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
+\autoref{fig:circular-dow} depicts the linear (a) and the corresponding stack (b) display of time. Circular granularities day-of-week $C_{B , G}$ and day-of-fortnight $C_{B, H}$ are constructed from linear granularities day ($B$), week ($G$) and fortnight ($H$). The granules that overlap share elements from the underlying time domain in the linear display. The circular granularities $C_{B , G}$ and $C_{B , H}$  <!--= C_{\text{day}, \text{week}}$ representing day-of-week and day-of-fortnight respectively --> consist of repeated pattern of categories $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively. The granules that overlap represents the same category in the stack display. Each circular granularity can use descriptive label mappings, or be simply labelled using the index. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
 $$
   L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sun}, \text{Mon}, \dots, \text{Sat}\}
 $$
@@ -346,8 +346,8 @@ for example.
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
 <!-- # ``` -->
 
-```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap=" Circular granularities illustrated through linear (a and b) and stack (c and d) display of time. The linear display is similar to a measuring tape with the measurement marking distributed as linear granularities day, week and fortnight. The stack display gives the intuition of circular granularities by cutting the measuring tape and stacking on top of one another to represent repetitive pattern of categories. The granules that overlap represent same time domain in the linear display and same category in the stack display. Circular granularities day-of-week ($C_{B, G}$) and day-of-fortnight ($C_{B, H}$) have repeating patterns unlike $B$, $G$ or $H$ which gets manifested more clearly through a stack display of time."}
-knitr::include_graphics("Figs/circular-example-1.png")
+```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap=" Circular granularities illustrated through linear (a) and stack (b) display of time. The granules that overlap represent same time domain in the linear display and same category in the stack display. Circular granularities day-of-week ($C_{B, G}$) and day-of-fortnight ($C_{B, H}$) have repeating patterns unlike $B$, $G$ or $H$ which gets manifested more clearly through a stack display of time."}
+knitr::include_graphics("Figs/circularex.png")
 ```
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
@@ -568,9 +568,9 @@ Consider a school semester which always lasts for 18 weeks and 2 days, starting 
 
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
-```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P = 18.3 weeks$ denoting semester week of the semester week type will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years (shown through c)."}
+```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years."}
 
-knitr::include_graphics("Figs/quasi.png")
+knitr::include_graphics("Figs/quasiex.png")
 
 ```
 <!-- #  -->
