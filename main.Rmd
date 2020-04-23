@@ -291,7 +291,7 @@ The grouping operation:
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
 
 \begin{example} 
-{\rm minute = G$_{60}(\text{second})$, hour = G$_{60}(\text{minute})$, day = G$_{24}(\text{hour})$.}\todo[inline]{Can you use the same units shown in Fig 1?}
+{\rm days = G$_{24}(\text{hours})$, weeks = G$_{7}(\text{days})$.}
 \end{example}
 
 <!-- CONTENT CUT -->
