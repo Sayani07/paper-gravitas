@@ -177,7 +177,7 @@ Each non-empty subset $G(i)$ is called a {\bf granule}.
 \autoref{fig:linear-time} illustrates the linear time granularities. \todo[inline]{Expand  into  a paragraph - how does  it illustrate the linear granularities? How does  hour, day,... relate to G...} <!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.-->
 
 ```{r linear-time, echo=FALSE, out.width = "100%", fig.cap="The time domain distributed as linear granularities hours, days, weeks and months. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating."}
-knitr::include_graphics("Figs/linear-arr1.png")
+knitr::include_graphics("Figs/linear-arr2.png")
 ```
 
 
