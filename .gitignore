@@ -11,3 +11,4 @@ main.log
 main.tex
 data-raw/CD_INTERVAL_READING_ALL_NO_QUOTES.csv
 harmony_select.R
+tikz_diagram.tex
