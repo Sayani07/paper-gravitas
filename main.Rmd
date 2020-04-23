@@ -36,7 +36,7 @@ abstract: |
 bibliography: [bibliography.bib]
 preamble: >
   \setlength {\marginparwidth }{2cm}
-  \usepackage{mathtools,amssymb,booktabs,longtable,todonotes}
+  \usepackage{mathtools,amssymb,booktabs,longtable,todonotes,amsthm}
   \def\mod{~\text{mod}~}
 output:
   bookdown::pdf_book:
@@ -174,7 +174,7 @@ Each non-empty subset $G(i)$ is called a {\bf granule}.
 \noindent This implies that the granules in a linear granularity are non-overlapping, continuous and ordering is maintained. The indexing for each granule can also be associated with textual representation, called the label.<!--The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.-->
 
 
-\autoref{fig:linear-time} illustrates the linear time granularities.<!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.-->
+\autoref{fig:linear-time} illustrates the linear time granularities. \todo[inline]{Expand  into  a paragraph - how does  it illustrate the linear granularities? How does  hour, day,... relate to G...} <!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.-->
 
 ```{r linear-time, echo=FALSE, out.width = "100%", fig.cap="The time domain distributed as linear granularities hours, days, weeks and months. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating."}
 knitr::include_graphics("Figs/linear-arr1.png")
@@ -199,9 +199,11 @@ $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) 
 
 <!-- CONTENT CUT -->
 <!-- These definitions are illustrated in \autoref{fig:groups-finer}, where both day $\trianglelefteq$ week, and day $\preceq$ week, hold true. However, weekends are finer than weeks but do not group into weeks. And weekends neither groups into or is finer than public holidays. Consider another example where day $\trianglelefteq$ month. This relationship is not fully described until we associate it with periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping (day, month) is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions. -->
+\newtheorem*{example}{Example}
 
-For example, $day \trianglelefteq week$ and $day \preceq week$ since every granule of $week$ is the union of some set of granules of $day$ and each $day$ is a subset of a $week$. Consider another example where $day \trianglelefteq month$. This relationship however is incomplete without its association to periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions.
-
+\begin{example}
+{\rm Let $day \trianglelefteq week$ and $day \preceq week$ since every granule of $week$ is the union of some set of granules of $day$ and each $day$ is a subset of a $week$. Consider another example where $day \trianglelefteq month$. This relationship however is incomplete without its association to periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year, if leap years are ignored. The period becomes 400 years with the inclusion of leap years and all their exceptions.}
+\end{example}
 
 <!-- CONTENT CUT -->
 <!-- # ```{r groups-finer, echo=FALSE, out.width = "100%", fig.cap="Illustrations of groups into and finer than relationships. Weekends are finer than weeks but do not group into weeks. And weekends neither groups into or finer than public holidays"} -->
@@ -246,8 +248,9 @@ $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary gran
 
 <!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
-\noindent For example, in a Gregorian calendar without leap years we could say $day$ groups periodically into $month$ with the period $P = 365$ and the number of granules of $month$ in each period given by $R=12$. In a Gregorian calendar with leap years, $day$ groups quasi-periodically into $month$ with the <!--The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s--> exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
-
+\begin{example}
+{\rm In a Gregorian calendar without leap years we could say $day$ groups periodically into $month$ with the period $P = 365$ and the number of granules of $month$ in each period given by $R=12$. In a Gregorian calendar with leap years, $day$ groups quasi-periodically into $month$ with the <!--The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s--> exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.}
+\end{example}
 
 <!-- CONTENT CUT -->
 <!-- \begin{definition}[Bottom granularity]\label{def:B} -->
@@ -286,7 +289,10 @@ Linear time granularities are computed through an algebraic representation for t
 The grouping operation:
 : Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
-Example: $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$
+
+\begin{example} 
+{\rm minute = G$_{60}(\text{second})$, hour = G$_{60}(\text{minute})$, day = G$_{24}(\text{hour})$.}\todo[inline]{Can you use the same units shown in Fig 1?}
+\end{example}
 
 <!-- CONTENT CUT -->
 <!-- where $\text{second}(1)$ should coincide with $\text{minute}(1)$ and likewise. Otherwise, repeated operations of grouping might result in a granule of "resultant" granularity "day" or "week", which is different from a time-stamped "day" or "week". -->
@@ -308,11 +314,12 @@ For example, due to the uneven length of months, we need to use the altering-tic
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
 
-We propose a formalism of cyclic time granularities through the tsibble [@wang2019tsibble] data structure. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. <!--In a tsibble, each observation (row) is uniquely identified by index and key.--> A time domain, as defined by @Bettini1998-ed, is essentially a mapping of the index set to the index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.<!--Consistent with the assumption of @Bettini2000-vy, all linear granularities can be generated from the bottom granularity by calendar algebraic operations.-->
-
-Cyclic granularities can be constructed by relating two linear granularities. The mappings between these linear granularities could be either _regular_ or _irregular_ with every granule of coarser linear granularity being made up of same (regular) or different (irregular) number of granules of finer linear granularity. <!--For example, a regular mapping exists between  (where 60 minutes always add up to 1 hour), while an irregular mapping exists between  (as the number of days per month ranges from 28 to 31). A grouping operation in Calendar algebra could lead to a regular mapping, whereas a altering-tick operation could result in an irregular mapping.--> Cyclic time granularities are referred to as **circular** if mappings are regular and **quasi-circular** if the mappings are irregular. Examples of common circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month.
+Cyclic granularities represeent cyclical components in time.  Weeks is an example of a cyclical granularity because every 7 days there's another Monday. Cyclic granularities can be constructed by conducting modular arithmetic on two linear granularities. Cycles can be either _regular_, called **circular**, or _irregular_, **quasi-circular**. <!-- with every granule of coarser linear granularity being made up of same (regular) or different (irregular) number of granules of finer linear granularity. For example, a regular mapping exists between  (where 60 minutes always add up to 1 hour), while an irregular mapping exists between  (as the number of days per month ranges from 28 to 31). A grouping operation in Calendar algebra could lead to a regular mapping, whereas a altering-tick operation could result in an irregular mapping. Cyclic time granularities are referred to as **circular** if mappings are regular and **quasi-circular** if the mappings are irregular. Examples of common circular granularities include hour of the day, and day of the week, whereas examples for quasi-circular granularities can be day of the month or week of the month.-->
 
 <!--sub:How to relate linear granularities to tsibble and manipulation of indices required for circular and quasi-circular granularities -->
+
+Cyclic time granularities can be implemented through the tsibble [@wang2019tsibble] data structure. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. <!--In a tsibble, each observation (row) is uniquely identified by index and key.--> A time domain, as defined by @Bettini1998-ed, is essentially a mapping of the index set to the index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.<!--Consistent with the assumption of @Bettini2000-vy, all linear granularities can be generated from the bottom granularity by calendar algebraic operations.-->\todo[inline]{Would it be worth to start this discussion about  data structures earlier, with the linear granularity, and follow it through when appropriate; or put all discussion on  implementation in the data structures section.}
+
 
 ## Circular {#sec:circular-gran-def}
 
@@ -332,7 +339,9 @@ B denotes a full-integer labelled bottom granularity which groups periodically i
 <!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
 
 
-\autoref{fig:circular-dow} depicts the linear (a) and the corresponding stack (b) display of time. Circular granularities day-of-week $C_{B , G}$ and day-of-fortnight $C_{B, H}$ are constructed from linear granularities day ($B$), week ($G$) and fortnight ($H$). The granules that overlap share elements from the underlying time domain in the linear display. The circular granularities $C_{B , G}$ and $C_{B , H}$  <!--= C_{\text{day}, \text{week}}$ representing day-of-week and day-of-fortnight respectively --> consist of repeated pattern of categories $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively. The granules that overlap represents the same category in the stack display. Each circular granularity can use descriptive label mappings, or be simply labelled using the index. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
+\autoref{fig:circular-dow} \todo[inline]{C(B,G) should be above C(B,H) in figure, and yuo could add the integers to the stacked sets.} illustrates the linear and the corresponding cyclical granularities. Cyclical granularities can  be considered to be cutting  the  linear  granularity into pieces, and stacking them to match the cycles (as shown in b). $B, G, H$ (day, week, fortnight, respectively) are linear granularities. The circular granularity $C_{B , G}$ (day-of-week)is constructed from $B$ and  $G$. The circular granularity $C_{B, H}$ (day-of-fortnight) is constructed from $B$ and $H$. These overlapping cyclical granularities share elements from the linear granularity. Each of $C_{B , G}$ and $C_{B , H}$ consist of repeated patterns  $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively.
+
+Each circular granularity can use descriptive label mappings. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
 $$
   L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sun}, \text{Mon}, \dots, \text{Sat}\}
 $$
@@ -346,7 +355,7 @@ for example.
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
 <!-- # ``` -->
 
-```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap=" Circular granularities illustrated through linear (a) and stack (b) display of time. The granules that overlap represent same time domain in the linear display and same category in the stack display. Circular granularities day-of-week ($C_{B, G}$) and day-of-fortnight ($C_{B, H}$) have repeating patterns unlike $B$, $G$ or $H$ which gets manifested more clearly through a stack display of time."}
+```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Illustration of circular relative to linear granularities (a). Circular granularities can be considered to be cutting the linear granularity into pieces and stacking them (b). The circular  granularity creates repeated integer sequences."}
 knitr::include_graphics("Figs/circularex.png")
 ```
 
@@ -734,7 +743,7 @@ Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quas
 
 ## Multiple-to-single {#sec:multiple-to-single}
 
-### Muliple order-up circular granularities {#sec:all-circular-multiple}
+### Multiple order-up circular granularities {#sec:all-circular-multiple}
 
 For a hierarchy table $H_n: (G, C, K)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
 
@@ -869,6 +878,26 @@ Thirdly, empty combinations can be a result of how granularities are constructed
 
 An example when there will be no empty combinations could be where $C_1$ and $C_2$ maps index set to day-of-week and month-of-year respectively. Here $C_1$ can have 7 levels while $C_2$ can have 12 levels. So there are $12\times7=84$ sets $S_{ij}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
 
+## Choosing harmonies to show
+
+Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying variation in distributions. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. Moreover, distances between these probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure.
+
+1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
+
+2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_i$.
+
+3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where,
+ $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$.
+
+
+4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges.
+
+5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by
+$MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$.
+
+6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
+
+<!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
 
 ## Summarizing the measured variable {#sec:summarize-measured}
 
@@ -1223,29 +1252,6 @@ Even when there are no rarely occurring events, number of observations might var
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
 
 <!-- Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels. -->
-
-## Choosing harmonies to show
-
-Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying variation in distributions. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. Moreover, distances between these probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure.
-
-1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
-
-2. There will be $m$ time series variable corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_i$.
-
-3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where,
- $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$.
-
-
-4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges.
-
-
-5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by
-$MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$.
-
-6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
-
-<!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
-
 
 
 
