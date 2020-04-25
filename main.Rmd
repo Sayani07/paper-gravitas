@@ -58,7 +58,8 @@ library(lubridate)
 library(lvplot)
 library(ggridges)
 library(tsibble)
-remotes::install_github("Sayani07/gravitas")
+if (requireNamespace("gravitas"))
+  remotes::install_github("Sayani07/gravitas")
 library(gravitas)
 library(ggpubr)
 library(xtable)
@@ -69,7 +70,7 @@ opts_chunk$set(
   cache = TRUE, cache.path = "cache/",
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
-knitr::opts_knit$set(root.dir = here::here())
+#knitr::opts_knit$set(root.dir = here::here())
 ```
 
 ```{r external, include = FALSE}
@@ -618,7 +619,7 @@ kable(table_mayan,
       format = "latex",
       booktabs = TRUE,
       align = "l",
-      caption = "Hierarchy table for Mayan calendar with all circular single-order-up granularities.") %>%
+      caption = "Hierarchy table for Mayan calendar with circular single-order-up granularities.") %>%
   kable_styling()
   #row_spec(0, bold = TRUE) %>%
   #row_spec(1:(nrow(table_mayan)-1), hline_after = T)
@@ -857,7 +858,7 @@ A {\bf clash} is a pair of cyclic granularities which contains structurally, eve
 \end{definition}
 
 \begin{definition}\label{def:clash}
-A {\bf harmony} is a pair of cyclic granularities that do not contain any missing combinations of its categories.
+A {\bf harmony} is a pair of cyclic granularities that does not contain any missing combinations of its categories.
 \end{definition}
 
 <!--To consider a general framework, we will define pairs of cyclic granularities as harmonies or clashes.
