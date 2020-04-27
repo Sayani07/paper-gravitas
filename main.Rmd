@@ -1173,7 +1173,8 @@ scene1 <-  VIC %>%
   ) +
   ylab("") +
   #xlab("weekend/weekday") +
-  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + xlab("")
+  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + xlab("")+ 
+  theme_minimal()
 
 
 
@@ -1190,7 +1191,7 @@ scene2 <- VIC %>%
   ) +
   ylab("") +
     xlab("quarters of the year")  +
-  scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10()
+  scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + theme_minimal()
 
 
 
@@ -1222,7 +1223,7 @@ scene3 <- VIC %>%
             symmetric = FALSE
   ) +
   ylab("") +
-  xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()
+  xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()+ theme_minimal()
 
 gg_fig <- ggarrange(scene3,
           ggarrange(scene1, scene2, ncol = 2, labels = c("b", "c")),
@@ -1231,7 +1232,7 @@ gg_fig <- ggarrange(scene3,
 
 
 ggpubr::annotate_figure(gg_fig,
-                left = text_grob("electricity demand [KWh]",  rot = 90))
+                left = text_grob("electricity demand [KWh]",  rot = 90)) + theme_minimal()
 
 ```
 ### Interchangeability of mappings
@@ -1600,7 +1601,8 @@ cust2_quantile <- smart_meter10 %>%
   ) +
   scale_y_sqrt() +
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
+  theme_minimal()
 #
 # smart_meter10 %>%
 #   filter(customer_id %in% c(10006704)) %>%
@@ -1621,7 +1623,8 @@ cust2_violin <- smart_meter10 %>%
   scale_y_sqrt()+
   #ggtitle(" (c) Violin plot faceted by weekend-weekday") +
   ylab("") + xlab("hours of the day") + ggtitle("") +
-  scale_x_discrete( breaks = seq(0, 23, 5))
+  scale_x_discrete( breaks = seq(0, 23, 5))+ 
+  theme_minimal()
 
 cust2_box <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
@@ -1635,7 +1638,8 @@ cust2_box <- smart_meter10 %>%
   xlab("") +
   ggtitle("") + ylab("") +
   scale_x_discrete(labels = c('wday','wend')) +
-  ggplot2::theme(axis.text.x = element_text(size = 7))
+  ggplot2::theme(axis.text.x = element_text(size = 7))+ 
+  theme_minimal()
 
 
 
@@ -1795,7 +1799,7 @@ cricket_tsibble %>%
         size = 10,
          margin = ggplot2::margin(b=0, t=0)
       )
-     )
+     ) +  theme_minimal()
 
 
 library(tsibble)
@@ -1873,7 +1877,7 @@ cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
   ylab("runs per over")  +
   xlab("number of wickets in previous over") +
   ggtitle("b") +
-   theme(plot.title = element_text(face = "bold"))
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
 # + geom_boxplot(width = 0.5, aes(colour = lag_field))
 ```
 
