@@ -665,7 +665,9 @@ C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(
 
 <!-- The multiple-order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. -->
 
-We consider the case of only one quasi-circular single order-up granularity in the hierarchy table. Any multiple-order-up quasi-circular granularity $C_{l, m}(z)$ can then be obtained as a function of a single (or multiple) order-up circular granularity $C_{l,m'}(z)$ and single order-up quasi-circular granularity $C_{m',m}(z)$ or vice versa. Two different approaches need to be employed leading to the following cases:
+We consider the case of only one quasi-circular single order-up granularity in the hierarchy table. Any multiple-order-up quasi-circular granularity $C_{l, m}(z)$ can then be obtained as a
+dicrete combination of circular and quasi-circular granularities.
+<!--function of a single (or multiple) order-up circular granularity $C_{l,m'}(z)$ and single order-up quasi-circular granularity $C_{m',m}(z)$ or vice versa. --> Depending on the order of combination, two different approaches need to be employed leading to the following cases:
 
 <!-- For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, -->
 - $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
