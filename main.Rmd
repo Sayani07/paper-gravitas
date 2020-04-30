@@ -561,7 +561,7 @@ $B$ denotes a full-integer labelled bottom granularity which groups into linear 
 
 ```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years."}
 
-knitr::include_graphics("Figs/quasi-ex.png")
+knitr::include_graphics("Figs/aperiodic-ex3.png")
 ```
 
 <!-- #  -->
