@@ -1,0 +1,43 @@
+---
+title: "rank_harmony"
+author: "Sayani Gupta"
+date: "24/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_I$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_M$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, I}$ and $\forall j = {1, 2, \dots, J}$
+
+2. There will be $J$ groups corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $J$groups. Thus there will be  $k = \binom{J}{2}$ pairwise distances corresponding to each $A_i$. Let $D_1$,...,$D_k$ be these distances and let their maximum be $M_k$. $D_{k} \sim N(\mu, \sigma^2)$. Then for $a_k = \mu − \sigma\Phi^{-1}(1/k)$ and $b_k = -\sigma/\Phi^{-1}(1/k)$, we have we have $P(\frac{M_k - a_k}{b_k} \leq z) \xrightarrow{} G(z)$, where $G$ is the Gumbel distribution.
+
+3. So we get normalized variables $N_i = \frac{M_k - a_k}{b_k}$ \forall $A_i$, $\{i \in 1, 2, \dots, I\}$, each of which follows a standard Gumbel distribution. 
+
+
+4. We have been able to normalize for the number of levels of x-axis variable till Step 3. Now we need to combine these normalised variables across different facets in a way so that the number of facet levels do not play a role. For this we can take the mean, median or any quantile value. But the median (and any quantiles) of the Gumbel distribution grow at the rate of (some power of) $log n$ with $n \xrightarrow{} \infty$. Hence, $median(N_i)/log(I)$ can serve as the maximum pairwise distance (MMPD).
+
+5.  Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
+
+
+
+
+
+3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where,
+ $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$.
+
+
+4. For each $i \in \{1, 2, \dots, l\}$, $\binom{m}{2}$ paiwise distances between distributions could be formed. Let $X_{i,p} \sim N(\mu, \sigma^2)$ $\forall i = {1, 2, \dots, l}$ and $\forall p = {1, 2, \dots, \binom{m}{2}}$ and $Y_p =  max\{X_{i,p}\}_{i=1}^{l}$. We will look at the distribution of the sample maximum $Y_p$.
+Let $\overline Y$ and $S_{y}^2$ be the sample mean and standard deviation of the $\{Y_j\}$'s. One of the normalised limit distribution when talking about order statistics could be Gumbel distribution (or can be any generalized extreme value distribution).
+
+$E(Y_{j}) = \mu + \sigma k_n$
+$V(Y_{j}) = \sigma^2 c_n$
+
+where $c_n$ and $k_n$ are the normalizing and centering constants.
+
+```{r}
+library(readr)
+read_rds("cache/smart_harmony_n.rds")
+read_rds("cache/smart_harmony_ak.rds")
+```
