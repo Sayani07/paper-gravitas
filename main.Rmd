@@ -177,7 +177,7 @@ Each non-empty subset $G(i)$ is called a {\bf granule}.
 
  <!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.-->
 
-```{r linear-time, echo=FALSE, out.width = "100%", fig.cap="The time domain distributed as linear granularities hour, day, week, month and year. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating."}
+```{r linear-time, echo=FALSE, out.width = "100%", fig.cap="Illustration of time domain, linear granularities and index set.  Hour, day, week, month and year are linear granularities and can also be considered to be time domains. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating. Hours could also be considered the index set, and a bottom granularity. "}
 knitr::include_graphics("Figs/linear-ex.png")
 ```
 
@@ -287,20 +287,24 @@ Linear time granularities are computed through an algebraic representation for t
 <!--   1. if $i<j$ , where $i$ and $j$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then each element in $G(i)$ is less than all the elements of $G(j)$; and -->
 <!--   2. if $i<k<j$ , where $i$, $j$, and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty. -->
 
-The grouping operation:
-: Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
+\begin{definition}\label{def:grouping_operation}
+Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. {\bf The grouping operation} Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
+\end{definition}
+
 \begin{example} 
 {\rm Due to even length of $day$ and $week$, we can derive them from $hour$ using the grouping operation as follows: day = G$_{24}(\text{hour})$, week = G$_{24*7}(\text{hour})$.}
 \end{example}
 
-The altering-tick operation:
-: Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$.
+\begin{definition}\label{altering-tick}
+Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. {\bf The altering-tick operation} $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$.
+\end{definition}
 
-\begin{example} 
-{\rm Due to the uneven length of $month$, we need to use the altering-tick operation to compute $month$ from $day$. We can consider a granularity $pseudomonth$ which computes $month$ only for non-leap years by grouping 31 granules of $day$, and then shrink April, June, September and November by 1 granule of $day$, and shrink February by 3 granules of $day$ [@Ning_2002]. For more variations of calendar algebra operations, see @Ning_2002.
-}
+\begin{example}
+The altering-tick operation can be used to compute the granularity $pseudomonth$, for the uneven lengths of $month$, by grouping 31 granules of $day$, followed by shrinking April, June, September and November by 1 granule of $day$, and shrinking February by 3 granules of $day$ for non-leap years. 
 \end{example}
+
+\noindent For more variations of calendar algebra operations, see @Ning_2002. 
 
 <!-- CONTENT CUT -->
 <!-- \begin{align*} -->
