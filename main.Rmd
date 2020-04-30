@@ -89,7 +89,7 @@ opts_chunk$set(
 
 Temporal data are available at various resolutions depending on the context. Social and economic data like GDP is often collected and reported at coarse temporal scales such as monthly, quarterly or annually. With recent advancement in technology, more and more data are recorded at much finer temporal scales. Energy consumption may be collected every half an hour, energy supply may be collected every minute, and web search data might be recorded every second. As the frequency of data increases, the number of questions about the periodicity of the observed variable also increases. For example, data collected at an hourly scale can be analyzed using coarser temporal scales such as days, months or quarters. This approach requires deconstructing time in various possible ways called time granularities [@aigner2011visualization].
 
-It is important to be able to navigate through all of these time granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is an indispensible tool for exploration. Analysts are expected to comprehesively explore the many ways to view and consider temporal data. However, the plethora of choices and the lack of a systematic approach to do so quickly becomes overwhelming.
+It is important to be able to navigate through all of these time granularities to have multiple perspectives on the periodicity of the observed data. This idea aligns with the notion of EDA [@Tukey1977-jx] which emphasizes the use of multiple perspectives on data to help formulate hypotheses before proceeding to hypothesis testing. Visualizing probability distributions conditional on one or more granularities is an indispensable tool for exploration. Analysts are expected to comprehensively explore the many ways to view and consider temporal data. However, the plethora of choices and the lack of a systematic approach to do so quickly becomes overwhelming.
 
 <!-- # existing ways and challenges -->
 
@@ -122,7 +122,7 @@ This work provides tools for systematically exploring bivariate granularities wi
 
 <!-- Pairs of granularities can be categorized as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
 
-The remainder of the paper is organized as follows: Section \ref{sec:linear-time} provides some background material on linear granularities and introduces calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring the conditional distributions of the associated time series across pairs of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
+The remainder of the paper is organized as follows: Section \ref{sec:linear-time} provides some background material on linear granularities and calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring the conditional distributions of the associated time series across pairs of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
 # Linear time granularities {#sec:linear-time}
 
@@ -152,7 +152,7 @@ Discrete abstraction of time such as weeks, months or holidays can be thought of
 
 <!-- ### Linear {#sec:linear-gran-def} -->
 
-\newtheorem{definition}{Definition}
+\newtheorem{definition}{Definition}[section]
 
 \begin{definition}\label{def:definition}
 A {\bf time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
@@ -191,7 +191,7 @@ Properties of pairs of granularities fall into various categories.
 \begin{definition}\label{def:finerthan}
 A linear granularity $G$ is {\bf finer than} a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that
 $G(i) \subset H(j).$
-\end{definition}.
+\end{definition}
 
 \begin{definition}\label{def:groupsinto}
 A linear granularity $G$ {\bf groups into} a linear granularity $H$, denoted
@@ -203,7 +203,7 @@ $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) 
 \newtheorem*{example}{Example}
 
 \begin{example}
-{\rm Let $day \trianglelefteq week$ and $day \preceq week$ since every granule of $week$ is the union of some set of granules of $day$ and each $day$ is a subset of a $week$. Consider another example where $day \trianglelefteq month$. This relationship however is incomplete without its association to periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year, if leap years are ignored. This grouping period becomes 4 and 400 years with the inclusion of leap years and leap centries respectively.}
+{\rm Both $day \trianglelefteq week$ and $day \preceq week$ holds, since every granule of $week$ is the union of some set of granules of day and each day is a subset of a $week$. Consider another example where $day \trianglelefteq month$. This relationship however is incomplete without its association to periodicity. Each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year, if leap years are ignored. This grouping period becomes 4 and 400 years with the inclusion of leap years and leap seconds respectively.}
 \end{example}
 
 <!-- CONTENT CUT -->
@@ -212,7 +212,7 @@ $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) 
 <!-- ``` -->
 
 \begin{definition}\label{def:periodical}
-A granularity $H$ is {\bf periodical} with respect to a granularity $G$ if:
+A granularity $G$ is {\bf periodical} with respect to a granularity $H$ if:
 (1) $G \trianglelefteq H$; and
 (2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
@@ -250,7 +250,7 @@ $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary gran
 <!-- **Example**:  Example showing periodic and quasi-periodic linear granularities are displayed in \autoref{fig:group-periodical} and \autoref{fig:quasi-group-periodical} respectively. Each granule is represented by a box. In these figures, the granules that overlap share elements from the underlying time domain. In both of these cases, each granule of $G$ is made up of two and three granules of $B$ alternately. So the period is $P = 5$ and number of granules of $G$ in each period is given by $R=2$. The only difference in \autoref{fig:quasi-group-periodical} is that there is an exception after the first granule of $G$ which consists of one granule of $B$. Except for this exception $E1$, $B$ groups periodically into $G$.  -->
 
 \begin{example}
-{\rm In a Gregorian calendar without leap years we could say $day$ groups periodically into $month$ with the period $P = 365$ and the number of granules of $month$ in each period given by $R=12$. In a Gregorian calendar with leap years, $day$ groups quasi-periodically into $month$ with the <!--The value of $P$ and $R$ would still be 365 and 12 respectively, while the $E_i$s--> exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.}
+{\rm In a Gregorian calendar without leap years we could say $day$ groups periodically into month with the period $P = 365$ and the number of granules of $month$ in each period given by $R=12$. In a Gregorian calendar with leap years, $day$ groups quasi-periodically into $month$ with the exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.}
 \end{example}
 
 <!-- CONTENT CUT -->
@@ -290,18 +290,17 @@ Linear time granularities are computed through an algebraic representation for t
 The grouping operation:
 : Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. The grouping operation Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
-
 \begin{example} 
-{\rm day = G$_{24}(\text{hour})$, week = G$_{7}(\text{day})$.}
+{\rm Due to even length of $day$ and $week$, we can derive them from $hour$ using the grouping operation as follows: day = G$_{24}(\text{hour})$, week = G$_{24*7}(\text{hour})$.}
 \end{example}
-
-<!-- CONTENT CUT -->
-<!-- where $\text{second}(1)$ should coincide with $\text{minute}(1)$ and likewise. Otherwise, repeated operations of grouping might result in a granule of "resultant" granularity "day" or "week", which is different from a time-stamped "day" or "week". -->
 
 The altering-tick operation:
 : Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. The altering-tick operation $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$.
 
-For example, due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April, June, September and November by 1 day, and shrink February by 3 days [@Ning_2002]. For more variations of calendar algebra operations, see @Ning_2002.
+\begin{example} 
+{\rm Due to the uneven length of $month$, we need to use the altering-tick operation to compute $month$ from $day$. We can consider a granularity $pseudomonth$ which computes $month$ only for non-leap years by grouping 31 granules of $day$, and then shrink April, June, September and November by 1 granule of $day$, and shrink February by 3 granules of $day$ [@Ning_2002]. For more variations of calendar algebra operations, see @Ning_2002.
+}
+\end{example}
 
 <!-- CONTENT CUT -->
 <!-- \begin{align*} -->
@@ -315,8 +314,7 @@ For example, due to the uneven length of months, we need to use the altering-tic
 
 <!-- sub: regular and irregular mapping leads to circular and quasi-circular granularities -->
 
-\todo[inline]{Check with Di to revise the first two statements}
-Cyclic granularities represent cyclical repetitions in time. Weeks is an example of a cyclical granularity because every 7 days there's another Monday. Cyclic granularities can be constructed by conducting modular arithmetic on two linear granularities. Cycles can be either _regular_, called **circular**, or _irregular_, **quasi-circular**. <!-- with every granule of coarser linear granularity being made up of same (regular) or different (irregular) number of granules of finer linear granularity. For example, a regular mapping exists between  (where 60 minutes always add up to 1 hour), while an irregular mapping exists between  (as the number of days per month ranges from 28 to 31). A grouping operation in Calendar algebra could lead to a regular mapping, whereas a altering-tick operation could result in an irregular mapping. Cyclic time granularities are referred to as **circular** if mappings are regular and **quasi-circular** if the mappings are irregular. Examples of common circular granularities include hour of the day and day of the week, whereas examples for quasi-circular granularities are day of the month and week of the month.-->
+Cyclic granularities represent cyclical repetitions in time. They can be thought of as additional categorizations of time that are not linear.<!--Weeks is an example of a cyclical granularity because every 7 days there's another Monday.--> Cyclic granularities can be constructed by operating on two linear granularities. Cycles can be either _regular_, called **circular**, or _irregular_, **quasi-circular** when these two linear granularities relate periodically. <!-- with every granule of coarser linear granularity being made up of same (regular) or different (irregular) number of granules of finer linear granularity. For example, a regular mapping exists between  (where 60 minutes always add up to 1 hour), while an irregular mapping exists between  (as the number of days per month ranges from 28 to 31). A grouping operation in Calendar algebra could lead to a regular mapping, whereas a altering-tick operation could result in an irregular mapping. Cyclic time granularities are referred to as **circular** if mappings are regular and **quasi-circular** if the mappings are irregular. Examples of common circular granularities include hour of the day and day of the week, whereas examples for quasi-circular granularities are day of the month and week of the month.-->
 
 <!--sub:How to relate linear granularities to tsibble and manipulation of indices required for circular and quasi-circular granularities -->
 
@@ -337,10 +335,8 @@ B denotes a full-integer labelled bottom granularity which groups periodically i
 
 <!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
 
-
-\autoref{fig:circular-dow} illustrates the linear and the corresponding cyclical granularities. Cyclical granularities can be considered to be cutting the linear granularity into pieces, and stacking them to match the cycles (as shown in b). $B, G, H$ (day, week, fortnight, respectively) are linear granularities. The circular granularity $C_{B , G}$ (day-of-week)is constructed from $B$ and  $G$. The circular granularity $C_{B, H}$ (day-of-fortnight) is constructed from $B$ and $H$. These overlapping cyclical granularities share elements from the linear granularity. Each of $C_{B , G}$ and $C_{B , H}$ consist of repeated patterns  $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively.
-
-Each circular granularity can use descriptive label mappings. <!--Similar to linear granularities, the indexing for each granule of the circular granularity can also be associated with textual representation, called the label.--> Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
+\begin{example}
+{\rm \autoref{fig:circular-dow} illustrates the linear and the corresponding cyclical granularities. Cyclical granularities can be considered to be cutting the linear granularity into pieces, and stacking them to match the cycles (as shown in b). $B, G, H$ (day, week, fortnight, respectively) are linear granularities. The circular granularity $C_{B , G}$ (day-of-week)is constructed from $B$ and  $G$. The circular granularity $C_{B, H}$ (day-of-fortnight) is constructed from $B$ and $H$. These overlapping cyclical granularities share elements from the linear granularity. Each of $C_{B , G}$ and $C_{B , H}$ consist of repeated patterns  $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively. Each circular granularity can use descriptive label mappings. Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
 $$
   L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sun}, \text{Mon}, \dots, \text{Sat}\}
 $$
@@ -348,7 +344,8 @@ or
 $$
   L: \{0,1,2, \dots, 6\} \longmapsto\ \{\text{Sunday}, \text{Monday}, \dots, \text{Saturday}\}
 $$
-for example.
+for example.}
+\end{example}
 
 <!-- # ```{r circular-gran, echo=FALSE,out.width = "100%",fig.cap="Relating circular granularities and bottom linear granularity "} -->
 <!-- # knitr::include_graphics("Figs/circular-gran-diagram.png") -->
@@ -459,32 +456,17 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 <!-- **Example**:  -->
 <!-- Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box.  -->
 
-Consider a linear granularity $G'$ such that $G' = Alter^{2}_{(1,-2)}(B, Group_7(B))$, which implies it is made up of shrinking every 1st granule of $Group_7(B)$ by $2$ granules.<!-- $$G'= Alter^{2}_{(1,-1)}(BG, Group_3(B))$$ and --><!--This implies that $G'$ is made up by shrinking every 1st granule of $Group_3(B)$ by $1$ granule and $H'$ is made up of shrinking every 1st granule of $Group_3(B)$ by $2$ granules. Number of granules of $G'$ and $H'$ in each period of $B$ is 2 but the number of granules of $B$ in each of those granules are different.--> Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$. Here, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
+\begin{example}
+{\rm Consider a linear granularity $G'$ such that $G' = Alter^{2}_{(1,-2)}(B, Group_7(B))$, which implies it is made up of shrinking every 1st granule of $Group_7(B)$ by $2$ granules. Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$. Here, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
 
-<!-- \begin{equation} \label{eq:eq4} -->
-<!-- \begin{split} -->
-<!-- Q_{B,G'}(8) & = L(8 - \sum_{w=0}^{3-1}\vert T_{w \mod 2}\vert) ,\quad since \quad 8 \in T_{3} \\ -->
-<!--   & = L(1) \\ -->
-<!-- \end{split} -->
-<!-- \end{equation} -->
-
-<!-- CONTENT CUT -->
-  <!-- & = L(8 - \sum_{w=0}^{2}\vert T_{w\mod 2}\vert) \\ -->
-  <!-- & = L(8 - \vert T_{0 \mod 2}\vert - \vert T_{1 \mod 2}\vert - \vert T_{2 \mod 2}\vert) \\ -->
-  <!-- & = L(8 - 2*\vert T_{0}\vert - \vert T_{1}\vert) \\ -->
-  <!-- & = L(8 - 2*2 - 3) \\ -->
-
-  <!-- & = L(10 - \sum_{w=0}^{0}\vert T_{w\mod 2}\vert) \\ -->
-  <!-- & = L(10 - \vert T_{0 \mod 2}\vert) \\ -->
-  <!-- & = L(10 - \vert T_{0}\vert) \\ -->
-  <!-- & = L(10 - 7) \\ -->
-
-\begin{align}
+\begin{align*}
 \begin{split}
 Q_{B,H'}(10) & = 10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert ,\quad since \quad 10 \in T_{1}  \\
   & = 3 \\
 \end{split}
-\end{align}
+\end{align*}
+.}
+\end{example}
 
 <!-- **Discussion**:  -->
 If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from Definition \ref{def:periodical})<!-- - $B \trianglelefteq G'$ --> <!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ in Definition \autoref{def:quasicircular} denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
@@ -567,8 +549,9 @@ $B$ denotes a full-integer labelled bottom granularity which groups into linear 
 
 <!-- \forall i \in {1, 2, \dots, n}\\ -->
 
-Consider a school semester which always lasts for 18 weeks and 2 days, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 16 days. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years. \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. It is interesting to note here that $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years. Here $Q_{H, M}$ with a period of 18.3 weeks will have irregular mapping since each semester week types consists of different number of semester weeks.
-
+\begin{example}
+{\rm Consider a school semester which always lasts for 18 weeks and 2 days, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 16 days. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years. \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. It is interesting to note here that $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years. Here $Q_{H, M}$ with a period of 18.3 weeks will have irregular mapping since each semester week types consists of different number of semester weeks.}
+\end{example}
 
 <!--Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and $A(B, M)$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.-->
 
@@ -579,8 +562,8 @@ Consider a school semester which always lasts for 18 weeks and 2 days, starting 
 ```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years."}
 
 knitr::include_graphics("Figs/quasi-ex.png")
-
 ```
+
 <!-- #  -->
 <!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
@@ -641,7 +624,8 @@ C_{G_l,G_m}(z) & = C_{G_l,G_{l+1}}(z) + P(l, l+1)C_{G_{l+1},G_m}(z)\\
 
 , for $l < m - 1$ and $P(i, j) = 1, \quad \forall i = j \in \{0, 1, \dots, m-l-1\}$
 
-**Example:** Let us use Equation \ref{eq:eq7} to compute the multiple-order-up granularity $C_{uinal,katun}$ for Mayan calendar with the index set  $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$ mapping "kins" to a set of positive integers.
+\begin{example} 
+{\rm Let us use Equation \ref{eq:eq7} to compute the multiple-order-up granularity $C_{uinal,katun}$ for Mayan calendar with the index set  $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$ mapping "kins" to a set of positive integers.
 
 
 \begin{equation} \label{eq8}
@@ -651,6 +635,8 @@ C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(
                &~~~ + 18*20\lfloor z/20*18*20\rfloor \mod 20 \\
 \end{split}
 \end{equation}
+}
+\end{example}
 
 ### Circular or quasi-circular single order-up granularities {#sec:notall-circular}
 
@@ -686,7 +672,17 @@ where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w 
 <!-- Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$. -->
 
 
-**Example:** <!--Let us revisit Gregorian calendar for addressing this case.--> Suppose we have a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular.
+\begin{example} 
+{\rm Suppose we have a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular.
+
+Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have:
+
+ $$C_{hour, month}(z) = C_{hour, day}(z) + P(hour, day)*C_{day, month}(z)$$
+ $$C_{day, year}(z) = C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert)$$, where $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$
+ 
+}
+\end{example}
+
 
 ```{r tab-gregorian}
 table_greg <- tibble(`linear (G)` = c("minute", "hour", "day", "month", "year"),
@@ -701,17 +697,6 @@ kable(table_greg,
    kable_styling()
 ```
 
-
-
-
-
-
-Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have:
-
-<!-- to compute the multiple-order-up granularity hour-of-month and day-of-year for the Gregorian calendar considered. -->
-
- - $C_{hour, month}(z) = C_{hour, day}(z) + P(hour, day)*C_{day, month}(z)$
- - $C_{day, year}(z) = C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert)$, where, $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$
 
 <!-- CONTENT CUT -->
 <!-- Clearly, the computation of multiple-order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$ for computation of $\vert T_w \vert$. -->
@@ -752,14 +737,16 @@ For a hierarchy table $H_n: (G, C, K)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots
 C_{G_{l_1}, G_{m_1}}(z) = \lfloor C_{G_{l_2}, G_{m_2}}(z)/P(l_2,l_1) \rfloor \mod P(l_1, m_1)
 \end{equation}
 
-<!-- **Example:**  -->
-Considering the same example of Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun given the multiple-order-up granularity uinal-baktun using equation \ref{eq:all-circular-multiple}.
+\begin{example}
+{\rm Considering the same example of Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun given the multiple-order-up granularity uinal-baktun using equation \ref{eq:all-circular-multiple}.
 
 \begin{equation} \label{eq10}
 \begin{split}
 C_{tun, katun}(z) =  \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20
 \end{split}
 \end{equation}
+}
+\end{example}
 
 ### Muliple order-up quasi-circular granularities {#sec:quasi-circular-multiple}
 
@@ -1299,7 +1286,7 @@ ridge or highest density region plots can then be used to explore the data set.-
 
 ### Cyclic granularities search and computation:
 
-The R package `gravitas` [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing to cosider is which cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ (via \ref{sec:chooseharmonies} item #4) circular or quasi-circular granularities that could be formed relating two linear granularities at a time. If these options are considered too numerous, the smallest and largest granularities are good candidates to disconsider. Hense, we removed half hour and year. Then we will be left $(4*3/2) = 6$ cyclic granularites, namely: "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month", read as "hour of the day", etc. Now that we have a list of cyclic granularities to look at, we should be able to compute the multiple-order-up granularities using Section \ref{sec:cyclic-calendar}. <!-- The lubridate package [@Grolemund2011-vm] provides tools to compute single-order-up granularities, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month).  -->
+The R package `gravitas` [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing to consider is which cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ (via \ref{sec:chooseharmonies} item #4) circular or quasi-circular granularities that could be formed relating two linear granularities at a time. If these options are considered too numerous, the smallest and largest granularities are good candidates to consider. Hence, we removed half hour and year. Then we will be left $(4*3/2) = 6$ cyclic granularites, namely: "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month", read as "hour of the day", etc. Now that we have a list of cyclic granularities to look at, we should be able to compute the multiple-order-up granularities using Section \ref{sec:cyclic-calendar}. <!-- The lubridate package [@Grolemund2011-vm] provides tools to compute single-order-up granularities, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month).  -->
 with the index set mapping half-hourly time periods to a set of positive integers.
 
 
@@ -1363,7 +1350,7 @@ smart_meter10 %>% search_gran(
 
 ### Screening and visualizing harmonies
 
-From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Recalling the data structure <$C1$, $C2$, `general_supply_kwh`> that we would use for exploration, each of these six cyclic granularities can either be mapped to x-axis or to facet. Choosing 2 of the possible 6 granularities, which is equivalent to having ${2 \choose 6} = 30$ canidates for visualization. Fortunately, harmony granularities can be identified among those 30 possibilities to narrow the search. \autoref{tab:harmony-tab} shows 13 harmonies pairs, after removing clashes and any cyclic granularities with levels more than 31, as effective  exploration becomes difficult with many levels (Section \ref{sec:levels}). For each of \autoref{fig:bothcust} (b) and (c), $C1$ is the circular granularity day-type (weekday/weekend) and $C2$ is hour of the day. The geometry used for displaying the distribution is chosen as area-quantiles and violins in \autoref{fig:bothcust} (b and c respectively). \autoref{fig:bothcust} (a) displays reverse mapping of $C1$ and $C2$ with $C1$ now denoting hour of the day and $C2$ denoting day-type with distribution geometrically displayed as boxplots.
+From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Recalling the data structure <$C1$, $C2$, `general_supply_kwh`> that we would use for exploration, each of these six cyclic granularities can either be mapped to x-axis or to facet. Choosing 2 of the possible 6 granularities, which is equivalent to having ${2 \choose 6} = 30$ candidates for visualization. Fortunately, harmony granularities can be identified among those 30 possibilities to narrow the search. \autoref{tab:harmony-tab} shows 13 harmonies pairs, after removing clashes and any cyclic granularities with levels more than 31, as effective  exploration becomes difficult with many levels (Section \ref{sec:levels}). For each of \autoref{fig:bothcust} (b) and (c), $C1$ is the circular granularity day-type (weekday/weekend) and $C2$ is hour of the day. The geometry used for displaying the distribution is chosen as area-quantiles and violins in \autoref{fig:bothcust} (b and c respectively). \autoref{fig:bothcust} (a) displays reverse mapping of $C1$ and $C2$ with $C1$ now denoting hour of the day and $C2$ denoting day-type with distribution geometrically displayed as boxplots.
 
 
 <!-- From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure <$C1$, $C2$, `general_supply_kwh`>, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from six, which essentially is equivalent to having 30 data subsets for visualization. However, harmony/clash pairs can be identified among those 30 possibilities to determine feasibility of plotting any pairs together. \autoref{tab:harmony-tab} shows 13 harmonies pairs, each of which can be plotted together to look at the energy behavior from different perspectives. -->
@@ -1681,7 +1668,7 @@ ggpubr::annotate_figure(gg_fig,
 
 <!-- - if the weekend and weekday behavior are different for most of these households? -->
 
-If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one observation shows a particular behavior, but this behavior paradoxically decomes obsured by aggregation. For example in a particular neighborhood one household may have the least daily power consumption for a full week, yet still not be the household with the minimum weekly power consumption. This is an intuitive possibility, because heterogeneous `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. A strategy for analyzing multiple keys together could be to first group them basis time series or demographic features and then look at their energy behavior. This is beyond the scope of the current work.
+If the data for all keys are visualized together, it might lead to Simpson's paradox, which occurs when one observation shows a particular behavior, but this behavior paradoxically becomes obscured by aggregation. For example in a particular neighborhood one household may have the least daily power consumption for a full week, yet still not be the household with the minimum weekly power consumption. This is an intuitive possibility, because heterogeneous `customer_id`'s with very different occupation or demographics will tend to have very different energy behavior and combining them together will somehow weaken any typical or extreme behavior. A strategy for analyzing multiple keys together could be to first group them basis time series or demographic features and then look at their energy behavior. This is beyond the scope of the current work.
 
 <!-- For the purpose of this paper, the smart meter data is filtered for two customers to illustrate kinds of insights that can be drawn after proceeding with the systematic exploration. -->
 
@@ -1691,7 +1678,7 @@ This case study shows systematic exploration of energy behavior for a random hou
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The method is not only restricted to temporal data, and can be generalised to many hierarchical granularies (with  continuous and uni-directional nature). We illustrate this with an application to the sport cricket. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In the Twenty20 format, an over will consist of 6 balls (with some exceptions), an inning is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus, similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. The idea of cyclic granularities can be likewise mapped to this hierarchy. Example granularites then include ball of the over, over of the inning and ball of the inning. Although most of these cyclic granularities are circular in design of the hierarchy, in application of the rules some granularies will are aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-over will be circular in most cases and aperiodic in others.
+The method is not only restricted to temporal data, and can be generalized to many hierarchical granularities (with  continuous and uni-directional nature). We illustrate this with an application to the sport cricket. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In the Twenty20 format, an over will consist of 6 balls (with some exceptions), an inning is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus, similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. The idea of cyclic granularities can be likewise mapped to this hierarchy. Example granularites then include ball of the over, over of the inning and ball of the inning. Although most of these cyclic granularities are circular in design of the hierarchy, in application of the rules some granularities will are aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an inning finishes before the over finishes. Thus, the cyclic granularity ball-of-over will be circular in most cases and aperiodic in others.
 
 <!-- However, irrespective of the type of cyclic granularities, it can be interesting to visualize the distribution of a measured variable across these cyclic granularities to throw light on the periodic behavior of a non-temporal data set similar to any temporal data set. -->
 
@@ -1740,7 +1727,7 @@ However, even if the situation is not periodic and a similar hierarchy can not b
 
 <!-- First, we look at the distribution of runs (measured variable) across over-of-inning (circular granularity) and match-of-season (aperiodic cyclic granularity) in \autoref{fig:seas-over-inning}. The distribution of runs per over has not significantly changed from 2008 to 2016. There is no clear pattern/trend that runs per over is increasing or decreasing across seasons. Hence, we work with subsets of seasons to answer some of the questions: -->
 
-First, it would be interesting to see if the distribution of total runs vary depending on if a team bats in the first or second inning. The Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. We take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}(a), it can be observed that for the team batting in the first inning there is an upward trend of runs per over, while there is no clear upward trend in median and quartile deviation of runs for the teams batting in the second inning. This seem to indicate that players feel mounting presure to score more runs as they approach towards the end of the first inning. Whereas teams batting in the second inning have a set target in mind and are not subjected to such mounting press and may adopt a more conservative strategy, to score runs. Thus winning teams like CSK and MI seem to employ different inning strategies when it comes to their batting order.
+First, it would be interesting to see if the distribution of total runs vary depending on if a team bats in the first or second inning. The Mumbai Indians (MI) and Chennai Super kings (CSK) <!--are considered one of the best teams in IPL with multiple winning titles and --> appeared in final playoffs from 2010 to 2015. We take their example in order to dive deeper into this question. <!--Circular granularities "over-of-inning" and "inning-of-match" can be computed using \ref{sec:circular-gran-def} with over as index of the tsibble.--> From Figure \ref{fig:cricex}(a), it can be observed that for the team batting in the first inning there is an upward trend of runs per over, while there is no clear upward trend in median and quartile deviation of runs for the teams batting in the second inning. This seem to indicate that players feel mounting pressure to score more runs as they approach towards the end of the first inning. Whereas teams batting in the second inning have a set target in mind and are not subjected to such mounting press and may adopt a more conservative strategy, to score runs. Thus winning teams like CSK and MI seem to employ different inning strategies when it comes to their batting order.
 
 <!-- Also longer and more distinct letter values in the second innings suggests that the variability is more in the second innings. -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first? -->
