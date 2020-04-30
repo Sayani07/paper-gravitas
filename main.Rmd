@@ -1378,12 +1378,15 @@ if(!dir.exists("cache/"))
   dir.create("cache")
 }
 if (!file.exists("cache/smart_harmony.rds")) {
-  harmonies <- smart_meter10 %>%
+  sm <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936))
+  
+  harmonies <- sm %>%
   harmony(ugran = "month",
+          filter_in = "wknd_wday", 
           filter_out = c("hhour", "fortnight"))
 
-smart_harmony <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
+smart_harmony <- sm %>%
   rank_harmony(harmony_tbl = harmonies,response =  "general_supply_kwh")%>%
   rename(`facet variable` = facet_variable,
          `x-axis variable` = x_variable,
@@ -1391,7 +1394,7 @@ smart_harmony <- smart_meter10 %>%
          `x-axis levels` = x_levels,
          `average maximum variation` = mean_max_variation)
 
-  write_rds(smart_harmony, "cache/smart_harmony.rds")
+  write_rds(smart_harmony,"cache/smart_harmony_ak.rds")
 }
 smart_harmony <- read_rds("cache/smart_harmony.rds")
 
