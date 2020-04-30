@@ -305,8 +305,8 @@
       "RemoteRepo": "gravitas",
       "RemoteUsername": "Sayani07",
       "RemoteRef": "master",
-      "RemoteSha": "429b735a923420c53e6b0d8401ebb8cffbccdbcc",
-      "Hash": "9fb554e360105b28cef6e2be21c76e57"
+      "RemoteSha": "f95099c901d5bdc77ee74ad394c4b7b84722827e",
+      "Hash": "c643c76ad2802348ee15da1df787aa70"
     },
     "gridExtra": {
       "Package": "gridExtra",
@@ -328,13 +328,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "e3f662e125e9fdffd1ee4e94baea3451"
-    },
-    "here": {
-      "Package": "here",
-      "Version": "0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "2c0406b8e0a4c3516ab37be62da74e3c"
     },
     "highr": {
       "Package": "highr",
