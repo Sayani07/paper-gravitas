@@ -8,6 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readr)
+library(gravitas)
+library(tidyverse)
 ```
 
  1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_I$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_J$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have s subset of the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, I}$ and $\forall j = {1, 2, \dots, J}$
@@ -24,6 +26,22 @@ library(readr)
 read_rds("data/smart_harmony_ak.rds")
 ```
 
+```{r}
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot("day_week",
+    "day_month",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    symmetric = TRUE,
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  scale_y_sqrt() +
+  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
+  theme_minimal()
+```
+
 
 ## Version 2 (suggested by Sayani - new)
 
@@ -36,6 +54,21 @@ $\forall A_i, \quad i \in \{1, 2, \dots, I\}$, we have a normalised variable eac
 ```{r}
 library(readr)
 read_rds("data/smart_harmony_musigma.rds")
+```
+```{r}
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot("hour_day",
+    "wknd_wday",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    symmetric = TRUE,
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  scale_y_sqrt() +
+  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
+  theme_minimal()
 ```
 
 
@@ -50,6 +83,22 @@ $MMPD = (1/I)\sum_{i=1}^{l}{D_{i}}$.
 ```{r}
 library(readr)
 read_rds("data/smart_harmony_n.rds")
+```
+
+```{r}
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot("week_month",
+    "wknd_wday",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    symmetric = TRUE,
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  scale_y_sqrt() +
+  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
+  theme_minimal()
 ```
 
  5. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD (final measure). Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
