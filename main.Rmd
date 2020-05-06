@@ -120,7 +120,7 @@ This work provides tools for systematically exploring bivariate granularities wi
   * develop an approach to check the feasibility of creating plots or drawing inferences for any two cyclic granularities;
   * recommend prospective probability distributions for exploring distributions of a univariate dependent variable across pair of granularities.
 
-<!-- Pairs of granularities can be categorized as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
+<!-- Pairs of granularities can be categorized as either a *harmony* or *clash*, where = are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis. -->
 
 The remainder of the paper is organized as follows: Section \ref{sec:linear-time} provides some background material on linear granularities and calendar algebra for computing different linear granularities. Section \ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities. Section \ref{sec:cyclic-calendar} introduces cyclic calendar algebra for computing cyclic time granularities. Section \ref{sec:data-structure} discusses the data structure for exploring the conditional distributions of the associated time series across pairs of cyclic time granularities. Section \ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section \ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Section \ref{sec:discussion} summarizes this paper and discusses possible future direction.
 
@@ -1383,7 +1383,7 @@ if (!file.exists("cache/smart_harmony.rds")) {
           filter_out = c("hhour", "fortnight"))
 
 smart_harmony <- sm %>%
-  rank_harmony(harmony_tbl = harmonies,response =  "general_supply_kwh")%>%
+  rank_harmony(harmony_tbl = harmonies,response =  "general_supply_kwh") %>%
   rename(`facet variable` = facet_variable,
          `x-axis variable` = x_variable,
          `facet levels` = facet_levels,
