@@ -296,13 +296,18 @@ $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
 {\rm Due to even length of $day$ and $week$, we can derive them from $hour$ using the grouping operation as follows: day = G$_{24}(\text{hour})$, week = G$_{24*7}(\text{hour})$.}
 \end{example}
 
-\begin{definition}\label{altering-tick}
-Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. {\bf The altering-tick operation} $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$.
-\end{definition}
+If we assume that linear granularities are integer sets with each integer representing a granule, we would be able to express the grouping operation through integer arithmetic which would pair better with the modular arithmetic used in the next section. The grouping operation Group$_m(G)$ essentially leads to a new granularity whose granules are the integer part of the quotient when the integer set spanned by linear granularity $G$ is divided by $m$ (the divisor), such that, $G_2(i) = \lfloor G_1(j)/m \rfloor$. While new granularities are generated with ordering guided by quotients, we shall see how for some cyclic granularities ordering is guided by the remainder with the assumption of linear granularities being represented by integer sets.
 
-\begin{example}
-The altering-tick operation can be used to compute the granularity $pseudomonth$, for the uneven lengths of $month$, by grouping 31 granules of $day$, followed by shrinking April, June, September and November by 1 granule of $day$, and shrinking February by 3 granules of $day$ for non-leap years. 
-\end{example}
+<!-- Alternatively, given any integer $G_1(j)$ and a positive integer $m$, if there exists unique integers $G_2(i)$ and $R$ such that $G1(j) = m * G2(i) + R$ where $0 ≤ R < m$, then $G_2$ is a granularity that is formed -->
+
+<!-- CONTENT CUT altering-tick -->
+<!-- \begin{definition}\label{altering-tick} -->
+<!-- Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. {\bf The altering-tick operation} $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$. -->
+<!-- \end{definition} -->
+
+<!-- \begin{example} -->
+<!-- The altering-tick operation can be used to compute the granularity $pseudomonth$, for the uneven lengths of $month$, by grouping 31 granules of $day$, followed by shrinking April, June, September and November by 1 granule of $day$, and shrinking February by 3 granules of $day$ for non-leap years.  -->
+<!-- \end{example} -->
 
 \noindent For more variations of calendar algebra operations, see @Ning_2002. 
 
