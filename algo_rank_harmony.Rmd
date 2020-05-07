@@ -1,6 +1,5 @@
 ---
 title: "Choosing harmonies based on average maximum pairwise distance of distributions"
-author: "Sayani Gupta"
 output:
   html_document:
     theme: united
@@ -22,10 +21,10 @@ library(tidyverse)
 - Under broad conditions, the similarities that arise from any distribution $L_p$ norms - a class of commonly applied distance matrix from one feature vector to other vectors could be
 
   a) Normal: Pekalska and Duin [23] assumed that Lp-distances between
-feature vectors are normally distributed, if the feature values are independent, identically distributed, and have limited variance.
+feature vectors are normally distributed, if the feature values are independent, identically distributed, and have limited variance. (“The Dissimilarity Representation for Pattern Recognition | Series in Machine Perception and Artificial Intelligence.” n.d. Accessed May 8, 2020. https://www.worldscientific.com/worldscibooks/10.1142/5965.)
 We can not assume that feature values are independent.
 
-  b) Gamma: Ferencz et al. [7] have considered the Gamma distribution to model the L2-distances.
+  b) Gamma: (Ferencz, A., E. G. Learned-Miller, and J. Malik. 2005. “Building a Classification Cascade for Visual Identification from One Example.” In Tenth IEEE International Conference on Computer Vision (ICCV’05) Volume 1, 1:286–93 Vol. 1.) have considered the Gamma distribution to model the L2-distances.
 This is intuitive since if the reponse variable follows Normal distribution, then $L_2$ norm distance measure which is similar to taking squares of differences of Normal variables would follow a Chi-Squared distribution, a special case of Gamma distribution.
  
   c) Weibull: Weibull distributed, if feature vectors are correlated and non-identically distributed. [The Distribution Family of Similarity Distances]
@@ -67,39 +66,53 @@ F(x) = 1 - e^{{-(\frac{d}{\lambda})}^k}
   
 
 
-# Algorithm
+<!-- # Algorithm -->
 
- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_I$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_J$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have s subset of the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, I}$ and $\forall j = {1, 2, \dots, J}$
+<!--  1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_I$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_J$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have s subset of the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, I}$ and $\forall j = {1, 2, \dots, J}$ -->
 
- 2. There will be $J$ groups corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $J$ groups. Thus there will be  $k = \binom{J}{2}$ pairwise distances corresponding to each $A_i$. Let $D_1$,...,$D_k$ be these distances and let their maximum be $M_k$.
+<!--  2. There will be $J$ groups corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $J$ groups. Thus there will be  $k = \binom{J}{2}$ pairwise distances corresponding to each $A_i$. Let $D_1$,...,$D_k$ be these distances and let their maximum be $M_k$. -->
 
+# Smart meter data
 
-## Version 1 (Distances follow Gamma)
+## Distances follow Weibull
 
- 3.1. Suppose the reponse variable follows Normal distribution. Then any distance measure which is similar to taking squares of differences of Normal variables would follow a Chi-Squared distribution, a special case of Gamma distribution. Hence if we proceed with the assumption that the $D_i$ distribution has Gamma distribution, then under EVT the maximum converges to Gumbel distribution and lim $P(M_k - b_k)/a_k)$ converges to a limiting Gumbel distribution where $b_k = (\frac{1}{\beta} (ln n + (\alpha - 1)ln ln n - ln \gamma(\alpha))$ and $a_k = \frac{1}{\beta}$. Here $\alpha$ and $\beta$ could be estimated using $(\mu/s)^2$ and $(s^2/\mu)$ respectively.
-
- 4.1. For each facet, we have a normalised variable using Step 3.1. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
- 
 ```{r}
-read_rds("data/smart_harmony_gamma.rds")
+library(readr)
+read_rds("data/smart_harmony_weibull.rds") %>% knitr::kable()
 ```
 
 
-## Version 1 (suggested by Rob)
+## Distances follow Gamma
 
- 3.2. If the $D_i$ distribution has heavy tails, then under EVT the maximum converges to Frechet and lim $P(M_k / a_k)$ converges to a limiting distribution where $a_k$ = the $(1-\frac{1}{k})$ quantile of the $D_i$ distribution. So normalization could be done  using $M_k / a_k$.
+ <!-- 3.1. Suppose the reponse variable follows Normal distribution. Then any distance measure which is similar to taking squares of differences of Normal variables would follow a Chi-Squared distribution, a special case of Gamma distribution. Hence if we proceed with the assumption that the $D_i$ distribution has Gamma distribution, then under EVT the maximum converges to Gumbel distribution and lim $P(M_k - b_k)/a_k)$ converges to a limiting Gumbel distribution where $b_k = (\frac{1}{\beta} (ln n + (\alpha - 1)ln ln n - ln \gamma(\alpha))$ and $a_k = \frac{1}{\beta}$. Here $\alpha$ and $\beta$ could be estimated using $(\mu/s)^2$ and $(s^2/\mu)$ respectively. -->
 
- 4.2. For each facet, we have a normalised variable using Step 3.2. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
- 
+ <!-- 4.1. For each facet, we have a normalised variable using Step 3.1. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed). -->
+
 ```{r}
-read_rds("data/smart_harmony_ak.rds")
+read_rds("data/smart_harmony_gamma.rds") %>% knitr::kable()
 ```
 
+
+
+
+## Distances follow Normal
+
+<!--  3.3. Let $D_{k} \sim N(\mu, \sigma^2)$. Then for $a_k = \mu − \sigma\Phi^{-1}(1/k)$ and $b_k = -\sigma/\Phi^{-1}(1/k)$, we have we have $P(\frac{M_k - a_k}{b_k} \leq z) \xrightarrow{} G(z)$, where $G$ is the standard Gumbel distribution. So normalization could be done  using $\frac{M_k - a_k}{b_k}$, where $\Phi^{-1}(1/k)$ could be approximated by $(1 - \frac{1}{k})$ sample quantile and $\mu$ and $\sigma$ by sample mean and standard deviation.  -->
+
+<!--  4.3. We have been able to normalize for the number of levels of x-axis variable using Step 3.2. Now  -->
+<!-- $\forall A_i, \quad i \in \{1, 2, \dots, I\}$, we have a normalised variable each of which follows a standard Gumbel distribution. Now we need to combine these normalised variables across different facets in a way so that the number of facet levels do not play a role. For this we can take the mean, median or any quantiles of these normalised variables. But the median (and any quantiles) of these Gumbel distributions grow at the rate of (some power of) $log n$ with $n \xrightarrow{} \infty$. Hence, median($N_i$)/log($I$) could serve as the final measure. -->
+
+
 ```{r}
+library(readr)
+read_rds("data/smart_harmony_normal.rds") %>% knitr::kable()
+```
+
+```{r, echo = FALSE, eval = FALSE}
 smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
-  prob_plot("day_week",
-    "day_month",
+  prob_plot("hour_day",
+    "wknd_wday",
     response = "general_supply_kwh",
     plot_type = "quantile",
     symmetric = TRUE,
@@ -112,23 +125,47 @@ smart_meter10 %>%
 ```
 
 
-## Version 3 (Distances follow Normal)
 
- 3.3. Let $D_{k} \sim N(\mu, \sigma^2)$. Then for $a_k = \mu − \sigma\Phi^{-1}(1/k)$ and $b_k = -\sigma/\Phi^{-1}(1/k)$, we have we have $P(\frac{M_k - a_k}{b_k} \leq z) \xrightarrow{} G(z)$, where $G$ is the standard Gumbel distribution. So normalization could be done  using $\frac{M_k - a_k}{b_k}$, where $\Phi^{-1}(1/k)$ could be approximated by $(1 - \frac{1}{k})$ sample quantile and $\mu$ and $\sigma$ by sample mean and standard deviation. 
+<!--  5. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD (final measure). Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$. -->
 
- 4.3. We have been able to normalize for the number of levels of x-axis variable using Step 3.2. Now 
-$\forall A_i, \quad i \in \{1, 2, \dots, I\}$, we have a normalised variable each of which follows a standard Gumbel distribution. Now we need to combine these normalised variables across different facets in a way so that the number of facet levels do not play a role. For this we can take the mean, median or any quantiles of these normalised variables. But the median (and any quantiles) of these Gumbel distributions grow at the rate of (some power of) $log n$ with $n \xrightarrow{} \infty$. Hence, median($N_i$)/log($I$) could serve as the final measure.
 
+# Cricket data
+
+
+## Distances follow Weibull
+```{r}
+read_rds("data/smart_cric_weibul.rds")%>% knitr::kable()
+```
+
+## Distances follow Gamma
 
 ```{r}
 library(readr)
-read_rds("data/smart_harmony_musigma.rds")
+read_rds("data/smart_cric_gamma.rds") %>% knitr::kable()
 ```
+
+## Distances follow Normal 
 ```{r}
+read_rds("data/smart_cric_normal.rds")%>% knitr::kable()
+```
+
+# Old benchmarks
+
+## Version 1 (suggested by Rob)
+
+ 3.2. If the $D_i$ distribution has heavy tails, then under EVT the maximum converges to Frechet and lim $P(M_k / a_k)$ converges to a limiting distribution where $a_k$ = the $(1-\frac{1}{k})$ quantile of the $D_i$ distribution. So normalization could be done  using $M_k / a_k$.
+
+ 4.2. For each facet, we have a normalised variable using Step 3.2. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
+ 
+```{r, eval=FALSE, echo=FALSE}
+read_rds("data/smart_harmony_ak.rds")
+```
+
+```{r, eval = FALSE}
 smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
-  prob_plot("hour_day",
-    "wknd_wday",
+  prob_plot("day_week",
+    "day_month",
     response = "general_supply_kwh",
     plot_type = "quantile",
     symmetric = TRUE,
@@ -149,12 +186,12 @@ smart_meter10 %>%
 $MMPD = (1/I)\sum_{i=1}^{l}{D_{i}}$.
 
 
-```{r}
+```{r, eval = FALSE, echo=FALSE}
 library(readr)
-read_rds("data/smart_harmony_n.rds")
+read_rds("data/smart_harmony_n.rds") %>% knitr::kable()
 ```
 
-```{r}
+```{r, echo = FALSE, eval = FALSE}
 smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("week_month",
@@ -168,21 +205,5 @@ smart_meter10 %>%
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
   ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
   theme_minimal()
-```
-
- 5. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD (final measure). Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$.
-
-
-## results on cricket data
-
-Gamma
-
-```{r}
-library(readr)
-read_rds("data/smart_harmony_normal_cric.rds")
-```
-Normal 
-```{r}
-read_rds("data/smart_harmony_gamma_cric.rds")
 ```
 
