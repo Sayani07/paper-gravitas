@@ -1,8 +1,11 @@
 ---
-title: "rank_harmony"
+title: "Choosing harmonies based on average maximum pairwise distance of distributions"
 author: "Sayani Gupta"
-date: "24/04/2020"
-output: html_document
+output:
+  html_document:
+    theme: united
+    highlight: tango
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
@@ -12,24 +15,74 @@ library(gravitas)
 library(tidyverse)
 ```
 
+# Pointers
+
+- A major result in the field of EVT is the probability density of the maximum or minimum can only be one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. But the normalising constants vary depending on the underlying distribution of the variables. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.
+
+- Under broad conditions, the similarities that arise from any distribution $L_p$ norms - a class of commonly applied distance matrix from one feature vector to other vectors could be
+
+  a) Normal: Pekalska and Duin [23] assumed that Lp-distances between
+feature vectors are normally distributed, if the feature values are independent, identically distributed, and have limited variance.
+We can not assume that feature values are independent.
+
+  b) Gamma: Ferencz et al. [7] have considered the Gamma distribution to model the L2-distances.
+This is intuitive since if the reponse variable follows Normal distribution, then $L_2$ norm distance measure which is similar to taking squares of differences of Normal variables would follow a Chi-Squared distribution, a special case of Gamma distribution.
+ 
+  c) Weibull: Weibull distributed, if feature vectors are correlated and non-identically distributed. [The Distribution Family of Similarity Distances]
+
+- For each of the cases, the normalising constants are a function of the paramters which have been estimated using method of moments.
+
+  a) **Normal**  
+  $D_{k} \sim N(\mu, \sigma^2)$  
+    *Normalising constants*:  
+    $a_k = \mu − \sigma\Phi^{-1}(1/k) \quad \quad b_k = -\sigma/\Phi^{-1}(1/k)$  
+    *Estimated parameters*:  
+    $\hat{\mu}=\dfrac{1}{n}\sum\limits_{i=1}^n X_i \quad \quad \hat{\sigma^2}=\dfrac{1}{n}\sum\limits_{i=1}^n (X_i-\bar{X})^2$  
+    $\hat{\Phi^{-1}(1/k)} =  (1 - \frac{1}{k})_{th}$ sample quantile
+  
+  b) **Gamma**  
+  $D_{k} \sim \gamma(\alpha, \beta)$  
+    *Normalising constants:*  
+    $b_k = (\frac{1}{\beta} (ln n + (\alpha - 1)ln ln n - ln       \gamma(\alpha))  \quad \quad a_k = \frac{1}{\beta}$  
+    *Estimated parameters:*  
+    $\alpha = (\mu/s)^2 \quad \quad \beta = (s^2/\mu)$
+
+ 
+  c)  **Weibull** 
+  
+\begin{equation}
+
+f_D(d; \lambda, k) = \left\{ \begin{array}{cl}
+    \frac{k}{\lambda}(\frac{d}{\lambda})^{k-1} e^{-(d/\lambda)^k} & \ ; \ d \geq 0 \\
+    0 & \ ; \ d < 0 \end{array} \right. \
+\end{equation}  
+    *Normalising constants:*  
+  $b_k = F^{-1}(1-1/n)  \quad \quad a_k = A(b_k)$, where $A(x)$ is an auxilliary function which can be chosen as $(1-F(x)/f(x))$.
+  
+  \begin{equation}
+F(x) = 1 - e^{{-(\frac{d}{\lambda})}^k}
+\end{equation}
+    *Estimated parameters:*  
+  $k = (\frac{\sigma}{\mu})^{-1.086} \quad \quad \lambda = \frac{\mu}{\Gamma(1+1/k)} \quad \quad \hat{\mu}=\dfrac{1}{n}\sum\limits_{i=1}^n D_i \quad \quad \hat{\sigma^2}=\dfrac{1}{n-1}\sum\limits_{i=1}^n (X_i-\bar{D})^2$  
+  
+
+
+# Algorithm
+
  1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_I$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_J$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have s subset of the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, I}$ and $\forall j = {1, 2, \dots, J}$
 
  2. There will be $J$ groups corresponding to each level $A_i$ of $C_1$. We compute the pairwise differences in distributions of these $J$ groups. Thus there will be  $k = \binom{J}{2}$ pairwise distances corresponding to each $A_i$. Let $D_1$,...,$D_k$ be these distances and let their maximum be $M_k$.
 
-```{r}
-read_rds("data/smart_harmony_gamma.rds")
-```
 
 ## Version 1 (Distances follow Gamma)
 
  3.1. Suppose the reponse variable follows Normal distribution. Then any distance measure which is similar to taking squares of differences of Normal variables would follow a Chi-Squared distribution, a special case of Gamma distribution. Hence if we proceed with the assumption that the $D_i$ distribution has Gamma distribution, then under EVT the maximum converges to Gumbel distribution and lim $P(M_k - b_k)/a_k)$ converges to a limiting Gumbel distribution where $b_k = (\frac{1}{\beta} (ln n + (\alpha - 1)ln ln n - ln \gamma(\alpha))$ and $a_k = \frac{1}{\beta}$. Here $\alpha$ and $\beta$ could be estimated using $(\mu/s)^2$ and $(s^2/\mu)$ respectively.
 
  4.1. For each facet, we have a normalised variable using Step 3.1. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
-
+ 
 ```{r}
-read_rds("data/smart_harmony_ak.rds")
+read_rds("data/smart_harmony_gamma.rds")
 ```
-
 
 
 ## Version 1 (suggested by Rob)
