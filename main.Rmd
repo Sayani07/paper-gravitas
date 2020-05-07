@@ -290,13 +290,12 @@ Linear time granularities are computed through an algebraic representation for t
 \begin{definition}\label{def:grouping_operation}
 Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. {\bf The grouping operation} Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
+The grouping operation Group$_m(G)$, provides a new granularity whose granules are the integer part of the quotient when the integer set spanned by linear granularity $G$ is divided by $m$, such that, $G_2(i) = \lfloor G_1(j)/m \rfloor$.
 \end{definition}
 
 \begin{example} 
 {\rm Due to even length of $day$ and $week$, we can derive them from $hour$ using the grouping operation as follows: day = G$_{24}(\text{hour})$, week = G$_{24*7}(\text{hour})$.}
 \end{example}
-
-If we assume that linear granularities are integer sets with each integer representing a granule, we would be able to express the grouping operation through integer arithmetic which would pair better with the modular arithmetic used in the next section. The grouping operation Group$_m(G)$ essentially leads to a new granularity whose granules are the integer part of the quotient when the integer set spanned by linear granularity $G$ is divided by $m$ (the divisor), such that, $G_2(i) = \lfloor G_1(j)/m \rfloor$. While new granularities are generated with ordering guided by quotients, we shall see how for some cyclic granularities ordering is guided by the remainder with the assumption of linear granularities being represented by integer sets.
 
 <!-- Alternatively, given any integer $G_1(j)$ and a positive integer $m$, if there exists unique integers $G_2(i)$ and $R$ such that $G1(j) = m * G2(i) + R$ where $0 ≤ R < m$, then $G_2$ is a granularity that is formed -->
 
