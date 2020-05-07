@@ -152,7 +152,7 @@ Discrete abstraction of time such as weeks, months or holidays can be thought of
 
 <!-- ### Linear {#sec:linear-gran-def} -->
 
-\newtheorem{definition}{Definition}[section]
+\newtheorem{definition}{Definition}
 
 \begin{definition}\label{def:definition}
 A {\bf time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
@@ -465,7 +465,7 @@ $B$ denotes a full-integer labelled bottom granularity which groups periodically
 <!-- Example showing quasi-circular granularities relating two linear granularities each with bottom granularities are visually depicted in a series of slots in \autoref{fig:quasi-circular-example}. Each granule is represented by a box.  -->
 
 \begin{example}
-{\rm Consider a linear granularity $G'$ such that $G' = Alter^{2}_{(1,-2)}(B, Group_7(B))$, which implies it is made up of shrinking every 1st granule of $Group_7(B)$ by $2$ granules. Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$. Here, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
+{\rm Consider $G'$ such that every two consecutive granules of $G'$ are made up of $7$ and $5$ granules of $B$ respectively within each period of the grouping ($B$, $G'$). Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not necessarily the same across different granules of $G'$. Here, $T_0 = \{0, 1, 2, 3, 4, 5, 6\}$ and $T_1 = \{7, 8, 9, 10, 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
 
 \begin{align*}
 \begin{split}
@@ -475,6 +475,8 @@ Q_{B,H'}(10) & = 10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert ,\quad since \quad
 \end{align*}
 }
 \end{example}
+
+<!--such that $G' = Alter^{2}_{(1,-2)}(B, Group_7(B))$, which implies it is made up of shrinking every 1st granule of $Group_7(B)$ by $2$ granules.-->
 
 <!-- **Discussion**:  -->
 If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'}B(P'*\lfloor w/R' \rfloor + z)$$ (from Definition \ref{def:periodical})<!-- - $B \trianglelefteq G'$ --> <!-- and,  number of granules of $B$ in each granule of $G'$ is not a constant (irregular mapping) -->. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ in Definition \autoref{def:quasicircular} denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
