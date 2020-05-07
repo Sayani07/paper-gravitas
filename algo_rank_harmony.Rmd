@@ -18,18 +18,31 @@ library(tidyverse)
 
 - A major result in the field of EVT is the probability density of the maximum or minimum can only be one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. But the normalising constants vary depending on the underlying distribution of the variables. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.
 
-- Under broad conditions, the similarities that arise from any distribution $L_p$ norms - a class of commonly applied distance matrix from one feature vector to other vectors could be
+- Under broad conditions, the similarities that arise from any distribution $L^p$ norms - a class of commonly applied distance matrix from one feature vector to other vectors could be
 
-  a) Normal: Pekalska and Duin [23] assumed that Lp-distances between
-feature vectors are normally distributed, if the feature values are independent, identically distributed, and have limited variance. (“The Dissimilarity Representation for Pattern Recognition | Series in Machine Perception and Artificial Intelligence.” n.d. Accessed May 8, 2020. https://www.worldscientific.com/worldscibooks/10.1142/5965.)
-We can not assume that feature values are independent.
+  a) Normal: Pekalska and Duin assumed that Lp-distances between
+feature vectors are normally distributed, if the feature values are independent, identically distributed, and have limited variance.  We can not assume that feature values are independent.(“The Dissimilarity Representation for Pattern Recognition | Series in Machine Perception and Artificial Intelligence.”   n.d. Accessed May 8, 2020.    https://www.worldscientific.com/worldscibooks/10.1142/5965.)  
 
-  b) Gamma: (Ferencz, A., E. G. Learned-Miller, and J. Malik. 2005. “Building a Classification Cascade for Visual Identification from One Example.” In Tenth IEEE International Conference on Computer Vision (ICCV’05) Volume 1, 1:286–93 Vol. 1.) have considered the Gamma distribution to model the L2-distances.
-This is intuitive since if the reponse variable follows Normal distribution, then $L_2$ norm distance measure which is similar to taking squares of differences of Normal variables would follow a Chi-Squared distribution, a special case of Gamma distribution.
+  b) Gamma: Ferencz, Miller and Malik have considered the
+Gamma distribution to model the L2-distances.
+This is intuitive since if the reponse variable follows
+Normal distribution, then $L_2$ norm distance measure which
+is similar to taking squares of differences of Normal
+variables would follow a Chi-Squared distribution, a special
+case of Gamma distribution.(Ferencz, A., E. G. Learned-Miller, and J. Malik. 2005. “Building a Classification Cascade for Visual Identification from One Example.” In Tenth IEEE International Conference on Computer Vision (ICCV’05) Volume 1, 1:286–93 Vol. 1.)  
  
-  c) Weibull: Weibull distributed, if feature vectors are correlated and non-identically distributed. [The Distribution Family of Similarity Distances]
+  c) Weibull: Weibull distributed, if feature vectors are
+correlated and non-identically distributed.
+(Burghouts, Gertjan, Arnold Smeulders, and Jan-Mark
+Geusebroek. 2008. “The Distribution Family of Similarity
+Distances.” In Advances in Neural Information Processing
+Systems 20, edited by J. C. Platt, D. Koller, Y. Singer, and
+S. T. Roweis, 201–8. Curran Associates, Inc.)
 
-- For each of the cases, the normalising constants are a function of the paramters which have been estimated using method of moments.
+- For each of the cases, the norming constants are a function
+of the paramters which have been estimated using method of moments.
+
+ Norming constants are taken from Embrechts, Paul, Claudia   Klüppelberg, and Thomas Mikosch. 2013. Modelling Extremal Events: For Insurance and Finance. Springer Science & Business Media.
 
   a) **Normal**  
   $D_{k} \sim N(\mu, \sigma^2)$  
@@ -62,7 +75,7 @@ f_D(d; \lambda, k) = \left\{ \begin{array}{cl}
 F(x) = 1 - e^{{-(\frac{d}{\lambda})}^k}
 \end{equation}
     *Estimated parameters:*  
-  $k = (\frac{\sigma}{\mu})^{-1.086} \quad \quad \lambda = \frac{\mu}{\Gamma(1+1/k)} \quad \quad \hat{\mu}=\dfrac{1}{n}\sum\limits_{i=1}^n D_i \quad \quad \hat{\sigma^2}=\dfrac{1}{n-1}\sum\limits_{i=1}^n (X_i-\bar{D})^2$  
+  $k = (\frac{\sigma}{\mu})^{-1.086} \quad \quad \lambda = \frac{\mu}{\Gamma(1+1/k)} \quad \quad \hat{\mu}=\dfrac{1}{n}\sum\limits_{i=1}^n D_i=\bar{D} \quad \quad \hat{\sigma^2}=\dfrac{1}{n-1}\sum\limits_{i=1}^n (X_i-\bar{D})^2$  
   
 
 
