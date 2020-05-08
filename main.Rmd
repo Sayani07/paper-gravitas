@@ -260,8 +260,11 @@ $H(0), \dots, H(R - 1)$, respectively, then the description of an arbitrary gran
 
 <!-- Here, g-rel could be any relationship defined between granularities as defined in @Bettini1998-ed. Given the set of all granularities defined over the time domain $(\mathbb{Z}; <)$, and the granularity relationship $\trianglelefteq$ (groups into), the granularity mapping each index into the corresponding instant (same integer number as the index) is a bottom granularity with respect to $\trianglelefteq$. -->
 
-A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**.  <!--so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _chronons_ (@Jensen1998-qn). Chronons may be grouped into granules of a bottom granularity and --> Granules in bottom granularity or any finer granularity may be aggregated in some manner to form larger granules belonging to a coarser granularity. A system of multiple granularities in lattice structures is referred to as a **calendar** by @Dyreson_2000.
+\begin{definition}\label{def:order}
+The {\bf order} of a linear granularity is the level of coarseness associated with a linear granularity. For example, for two linear granularities $G$ and $H$, if $G$ {\em groups into} or {\em finer than} $H$ or $H$ is composed of higher number of granules of the bottom granularity than $G$, then $G$ is of lower order than $H$.
+\end{definition}
 
+A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**.  <!--so that the the underlying time domain can be described as a sequence of non-decomposable, consecutive time intervals of some fixed, minimal duration called _chronons_ (@Jensen1998-qn). Chronons may be grouped into granules of a bottom granularity and --> Granules in bottom granularity or any finer granularity may be aggregated in some manner to form larger granules belonging to a coarser granularity. A system of multiple granularities in lattice structures is referred to as a **calendar** by @Dyreson_2000.
 
 ## Computation through calendar algebra
 
@@ -577,23 +580,38 @@ knitr::include_graphics("Figs/aperiodic-ex3.png")
 <!-- #  -->
 <!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
-# Relativities {#sec:cyclic-calendar}
+## Relativities {#sec:cyclic-calendar}
 
 <!-- In Section \ref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the framework of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities --><!--This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as--> <!-- through cyclic calendar algebra operations.-->
 
-The cyclic calendar algebra consists of broadly two kinds of operations:
-(1) **single-to-multiple** and (2) **multiple-to-single** \todo[inline]{these don't make sense to me, they are just the reverse of each other, so why are both needed. its not  clear from the  next block of text what each operation does} which entails the representation of _multiple-order-up_ cyclic granularities from _single-order-up_ cyclic granularities respectively. The hierarchical structure of time creates a natural nested ordering which can produce single-order-up or multiple-order-up granularities. We shall use the notion of a hierarchy table and order to define them.
-
-
-\begin{definition}\label{def:order}
-The {\bf order} of a linear granularity is the level of coarseness associated with a linear granularity. For example, for two linear granularities $G$ and $H$, if $G$ {\em groups into} or {\em finer than} $H$ or $H$ is composed of higher number of granules of the bottom granularity than $G$, then $G$ is of lower order than $H$. In any hierarchy table, linear granularities are arranged from lowest to highest order.
-\end{definition}
+The hierarchical structure of time creates a natural nested ordering which can produce multiple-order-up granularities. We shall use the notion of a hierarchy table to define them. 
 
 \begin{definition}\label{def:hierarchy} 
-Let $H_n: (G, C, K)$ be a {\bf hierarchy table} containing $n$ linear granularities. $G_{l}$ and $G_{m}$ represent the linear granularity of order $l$ and $m$ respectively with $l<m$. $K \equiv P(l,m)$ represents the period length of the grouping $(G_{l}, G_{m})$ for a circular granularity and $K \equiv k(l,m)$ represents the operation to obtain $G_{m}$ from $G_{l}$ for a quasi-circular granularity $C_{G(l),G(m)}$, $\forall l,m \in {1, 2, \dots,n}$. We assume that the cyclic granularity $C_{G(l),G(m)}$ is either circular or quasi-circular. It is difficult to position an aperiodic linear granularity in a hierarchy and hence the possibility of an aperiodic cyclic granularity is not considered.
+A {\bf hierarchy table} helps to define cyclic granularities relative to linear granularities. The hierarchy table $H_n: (G, C, K)$ arranges $n$ linear granularities from lowest to higher oder and lays down the way they relate through $K$. Let $G_{l}$ and $G_{m}$ represent the linear granularity of order $l$ and $m$ respectively with $l<m$. Then $K \equiv P(l,m)$ represents the period length of the grouping $(G_{l}, G_{m})$ for a circular granularity and $K \equiv k(l,m)$ represents the operation to obtain $G_{m}$ from $G_{l}$ for a quasi-circular granularity $C_{G(l),G(m)}$, $\forall l,m \in {1, 2, \dots,n}$. 
 \end{definition}
 
-We refer to granularities which are nested within multiple levels of the hierarchy table as _multiple-order-up_ and those concerning a single level as _single-order-up_ granularities.
+\noindent We assume that the cyclic granularity $C_{G(l),G(m)}$ is either circular or quasi-circular. It is difficult to position an aperiodic linear granularity in a hierarchy and hence the possibility of an aperiodic cyclic granularity is not considered.
+
+\begin{definition}\label{def:norderup} 
+Cyclic granularities which are nested within multiple levels of the hierarchy table are called {\bf multiple-order-up} granularities.
+\end{definition}
+
+
+
+<!-- \begin{definition}\label{def:norderup}  -->
+
+<!-- \end{definition} -->
+
+A _single-order-up_ is a cyclic granularity which is nested within a single level. It is a special case of multiple-order-up granularity.
+
+## Computation through cyclic calendar algebra
+
+The cyclic calendar algebra consists of broadly two kinds of operations:
+(1) **single-to-multiple** and (2) **multiple-to-single** which entails the representation of _multiple-order-up_ cyclic granularities from _single-order-up_ cyclic granularities respectively. 
+
+
+
+
 
 <!-- Thus the first linear granularity can either be the bottom granularity (finest possible) or the finest granularity within the set of linear granularities and the other granularities are subsequently more "coarse" than the earlier one. -->
 
@@ -620,9 +638,9 @@ kable(table_mayan,
 
 Examples of multiple-order-up granularities can be kin-of-tun or kin-of-baktun whereas examples of single-order-up granularities may include kin-of-uinal, uinal-of-tun etc.
 
-## Single-to-multiple {#sec:single-to-multiple}
+### Single-to-multiple {#sec:single-to-multiple}
 
-### All circular single order-up granularities {#sec:all-circular}
+#### All circular single order-up granularities {#sec:all-circular}  
 
 Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of the individual circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can be chosen depending on the context.
 
@@ -653,7 +671,7 @@ C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(
 }
 \end{example}
 
-### Circular or quasi-circular single order-up granularities {#sec:notall-circular}
+#### Circular or quasi-circular single order-up granularities {#sec:notall-circular}  
 
 <!-- CONTENT CUT -->
 <!-- There can be three scenarios for obtaining multiple-order-granularities here:   -->
@@ -742,9 +760,9 @@ kable(table_greg,
 <!--  With one aperiodic granularity, we can write the following:  -->
 <!-- A_{P, Q)} & = (A{AG_Q} - 1)*k(P_AG) + A_{P, AG} {TO REVISE: many aperiodic granularties not to be included} -->
 
-## Multiple-to-single {#sec:multiple-to-single}
+### Multiple-to-single {#sec:multiple-to-single}
 
-### Multiple order-up circular granularities {#sec:all-circular-multiple}
+#### Multiple order-up circular granularities {#sec:all-circular-multiple}  
 
 For a hierarchy table $H_n: (G, C, K)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
 
@@ -763,7 +781,7 @@ C_{tun, katun}(z) =  \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20
 }
 \end{example}
 
-### Muliple order-up quasi-circular granularities {#sec:quasi-circular-multiple}
+#### Muliple order-up quasi-circular granularities {#sec:quasi-circular-multiple}  
 
 <!-- \begin{equation} \label{eq:quasi-circular-multiple} -->
 <!-- C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod P(m_1, m_2)) -->
