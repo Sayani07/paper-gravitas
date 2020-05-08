@@ -161,7 +161,7 @@ A {\bf time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time in
 The time domain is assumed to be *discrete*, and there is unique predecessor and successor for every element in the time domain except for the first and last.
 
 \begin{definition}\label{def:index set}
-There is a unique {\bf index set}, $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$, which map the time instants to a set of positive integers. Often, this is thought of as $t=0, \dots, T$.
+There is a unique {\bf index set}, $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$, which map the time instants to a set of non-negative integers. Often, this is thought of as $t=0, \dots, T$.
 \end{definition}
 
 \begin{definition}\label{def:linear}
@@ -577,7 +577,7 @@ knitr::include_graphics("Figs/aperiodic-ex3.png")
 <!-- #  -->
 <!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
-# Hierarchy and ordering {#sec:cyclic-calendar}
+# Relativities {#sec:cyclic-calendar}
 
 <!-- In Section \ref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the framework of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities --><!--This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as--> <!-- through cyclic calendar algebra operations.-->
 
