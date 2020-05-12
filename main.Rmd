@@ -551,6 +551,10 @@ If linear granularity $G'$ is periodical with respect to $B$ with irregular mapp
 
 Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider n aperiodic linear granularities $M_i$  $\forall \{i\in{1, 2, \dots, n\}}$ such that Definition \ref{def:periodical} does not hold true for them with respect to $B$ (the bottom granularity). <!--that is, none of them can be expressed as periodic or quasi-periodic with respect to the bottom granularity.--> However, $B \trianglelefteq M_i$ $\forall \{i\in{1, 2, \dots, n\}}$. Then according to Definition \ref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$. Suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
 
+```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years."}
+
+knitr::include_graphics("Figs/aperiodic-ex3.png")
+```
 
 \begin{definition}\label{def:aperiodic}
 An {\bf aperiodic cyclic granularity} $A_{B, M}$ relates a linear granularity $M$ to the bottom granularity $B$, if
@@ -580,10 +584,6 @@ $B$ denotes a full-integer labelled bottom granularity which groups into linear 
 
 <!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
 
-```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years."}
-
-knitr::include_graphics("Figs/aperiodic-ex3.png")
-```
 
 <!-- #  -->
 <!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
@@ -592,14 +592,14 @@ knitr::include_graphics("Figs/aperiodic-ex3.png")
 
 <!-- In Section \ref{sec:cyclic-gran}, we discussed how we can define cyclic granularities by extending the framework of linear granularities defined in @Bettini1998-ed. In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities --><!--This is similar to calendar algebra in @Ning2002-tf, where linear granularities are generated from the bottom linear granularity or from those that are already generated. Since, our method caters to computation of cyclic granularities, we shall refer to it as--> <!-- through cyclic calendar algebra operations.-->
 
-The hierarchical structure of time creates a natural nested ordering which can produce multiple-order-up granularities. We shall use the notion of a hierarchy table to define them. 
+The hierarchical structure of time creates a natural nested ordering  which can be used in the computation of relative pairs of granularities. This is illustrated using two examples, a Mayan calendar, which is simple, in addition to the more complex Gregorian calendar.
 
 \begin{definition}\label{def:hierarchy} 
-The {\bf hierarchy table} $H_n: (G, C, K)$ arranges $n$ periodic linear granularities from lowest to higher order and lays down the way they relate through $K$ so that cyclic granularities $C$ could be defined relative to these linear granularities. Let $G_{l}$ and $G_{m}$ represent the linear granularity of order $l$ and $m$ respectively with $l<m$. Then $K \equiv P(l,m)$ represents the period length of the grouping $(G_{l}, G_{m})$, if $C_{G_{l}, G_{m}}$ is a circular granularity and $K \equiv k(l,m)$ represents the operation to obtain $G_{m}$ from $G_{l}$, if $C_{G_{l}, G_{m}}$ is quasi-circular.
+The nested ordering of linear granularities can be organized into a {\bf hierarchy table}, denoted as $H_n: (G, C, K)$, which arranges them from lowest to highest in order. It shows how the $n$ granularities relate through $K$, and how the cyclic granularities, $C$. can be defined relative to the linear granularities. Let $G_{l}$ and $G_{m}$ represent the linear granularity of order $l$ and $m$ respectively with $l<m$. Then $K \equiv P(l,m)$ represents the period length of the grouping $(G_{l}, G_{m})$, if $C_{G_{l}, G_{m}}$ is a circular granularity and $K \equiv k(l,m)$ represents the operation to obtain $G_{m}$ from $G_{l}$, if $C_{G_{l}, G_{m}}$ is quasi-circular.
 \end{definition}
 
 \begin{example}
-{\rm So far we have used examples of linear granularities from Gregorian calendar as it is the most widely used calendar. However, it is far from being the only one. The day is the basic unit of time underlying most calendars [@Reingold2001-kf]. Various calendars, however, use different conventions to structure days into larger units: weeks, months, years and cycle of years. The French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined. For example, in the Mayan calendar, one day is referred to as a kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal; 1 katun = 20 tun and 1 baktun = 20 katun. \autoref{tab:tab-mayan} represents the hierarchy table for the Mayan calendar.}
+{\rm  \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan calendar. In the Mayan calendar, one day is referred to as a kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal (about a year); 1 katun = 20 tun (20 years) and 1 baktun = 20 katun. }
 \end{example}
 
 ```{r tab-mayan}
@@ -618,21 +618,24 @@ kable(table_mayan,
 ```
 
 
+ <!--So far we have used examples of linear granularities from Gregorian calendar as it is the most widely used calendar. However, it is far from being the only one.-->
+\noindent It is interesting to note, that in the Mayan calendar, like most calendars, that day is the basic unit of time [@Reingold2001-kf]. The structuring of larger units,  weeks, months, years and cycle of years, though, varies substantially. An exception is the French revolutionary calendar, which divides each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined.
+ 
 <!-- for a quasi-circular granularity $C_{G(l),G(m)}$, $\forall l,m \in {1, 2, \dots,n}$.  -->
 <!-- so that cyclic granularities $C$ could be defined relative to these linear granularities. -->
 
-\noindent It might not be always possible to position an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only and that the cyclic granularity $C_{G(l),G(m)}$ is either circular or quasi-circular.
+Note that, it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only and that the cyclic granularity $C_{G(l),G(m)}$ is either circular or quasi-circular.
 
 
 \begin{definition}\label{def:norderup} 
-Cyclic granularities which are nested within multiple levels of the hierarchy table are called {\bf multiple-order-up} granularities.
+The hierarchy table contains {\bf multiple-order-up} granularities which are cyclic granularities that are nested within multiple levels.
+A {\bf single-order-up} is a cyclic granularity which is nested within a single level. It is a special case of multiple-order-up granularity.
 \end{definition}
 
-A _single-order-up_ is a cyclic granularity which is nested within a single level. It is a special case of multiple-order-up granularity.
  <!--All calendars fall under three types - solar, lunar or lunisolar/solilunar-->
 
 \begin{example}
-{\rm For \autoref{tab:tab-mayan}, examples of multiple-order-up granularities can be kin-of-tun or kin-of-baktun whereas examples of single-order-up granularities may include kin-of-uinal, uinal-of-tun etc.}
+{\rm In \autoref{tab:tab-mayan}, kin-of-tun or kin-of-baktun are examples of multiple-order-up granularities and single-order-up granularities are kin-of-uinal, uinal-of-tun etc.}
 \end{example}
 
 
