@@ -662,9 +662,11 @@ The cyclic calendar algebra consists of broadly two kinds of operations:
 
 ### Single-to-multiple {#sec:single-to-multiple}
 
-#### All circular single order-up granularities {#sec:all-circular}  
+<!-- #### All circular single order-up granularities {#sec:all-circular}   -->
 
-Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. Since, the operation requires the use of modular arithmetic, it is important that the label mapping of the individual circular single order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can be chosen depending on the context.
+<!-- Circular single-order-up granularities can be used recursively to obtain multiple order up circular granularity. -->
+
+\noindent Methods to obtain multiple-order-up granularity will be different based on if the hierarchy consists of all circular single-order-up granularities or a mix of circular and quasi-circular single-order-up granularities. The methods require the use of integer arithmetic, and hence it is important that the label mapping of the individual single-order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can be chosen depending on the context. Circular single-order-up granularities can be used recursively to obtain a multiple-order-up circular granularity using Equation \ref{eq:eq7} for $l < m - 1$ and $P(i, j) = 1, \quad \forall i = j \in \{0, 1, \dots, m-l-1\}$.
 
 \begin{equation} \label{eq:eq7}
 \begin{split}
@@ -677,23 +679,17 @@ C_{G_l,G_m}(z) & = C_{G_l,G_{l+1}}(z) + P(l, l+1)C_{G_{l+1},G_m}(z)\\
 \end{split}
 \end{equation}
 
-, for $l < m - 1$ and $P(i, j) = 1, \quad \forall i = j \in \{0, 1, \dots, m-l-1\}$
+\noindent For example, the multiple-order-up granularity $C_{uinal,katun}$ for Mayan calendar <!--with the index set  $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$ mapping "kins" to a set of positive integers--> could be obtained using Equation \ref{eq:eq8}.
 
-\begin{example} 
-{\rm Let us use Equation \ref{eq:eq7} to compute the multiple-order-up granularity $C_{uinal,katun}$ for Mayan calendar with the index set  $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$ mapping "kins" to a set of positive integers.
-
-
-\begin{equation} \label{eq8}
+\begin{equation} \label{eq:eq8}
 \begin{split}
 C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(uinal, katun)C_{katun, baktun}(z) \\
                = & \lfloor z/20\rfloor \mod 18 + 18*\lfloor z/20*18\rfloor \mod 20  \\
                &~~~ + 18*20\lfloor z/20*18*20\rfloor \mod 20 \\
 \end{split}
 \end{equation}
-}
-\end{example}
 
-#### Circular or quasi-circular single order-up granularities {#sec:notall-circular}  
+<!-- #### Circular or quasi-circular single order-up granularities {#sec:notall-circular}   -->
 
 <!-- CONTENT CUT -->
 <!-- There can be three scenarios for obtaining multiple-order-granularities here:   -->
@@ -703,9 +699,8 @@ C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(
 
 <!-- The multiple-order-up cyclic granularites resulting from the first two cases are circular and has been handled in \autoref{sec:all-circular}. Any cyclic granularity resulting from the last case are quasi-circular. Examples might include hour-of-month or day-of-year. -->
 
-We consider the case of only one quasi-circular single order-up granularity in the hierarchy table. Any multiple-order-up quasi-circular granularity $C_{l, m}(z)$ can then be obtained as a
-dicrete combination of circular and quasi-circular granularities.
-<!--function of a single (or multiple) order-up circular granularity $C_{l,m'}(z)$ and single order-up quasi-circular granularity $C_{m',m}(z)$ or vice versa. --> Depending on the order of combination, two different approaches need to be employed leading to the following cases:
+\noindent We consider the case of only one quasi-circular single order-up granularity in the hierarchy table while computing a multiple-order-up quasi-circular granularity. Any multiple-order-up quasi-circular granularity $C_{l, m}(z)$ could then be obtained as a dicrete combination of circular and quasi-circular granularities.
+<!--function of a single (or multiple) order-up circular granularity $C_{l,m'}(z)$ and single order-up quasi-circular granularity $C_{m',m}(z)$ or vice versa. --> Depending on the order of the combination, again two different approaches need to be employed leading to the following cases:
 
 <!-- For example, with $C_{l, m}(z) = f(C_{l,m'}(z), C_{m',m}(z))$, -->
 - $C_{l,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
@@ -722,22 +717,16 @@ C_{G_l,G_{m}}(z) & = C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{
 \end{split}
 \end{equation}
 
-where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
+\noindent where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
 <!-- Let us consider the computation of $C_{hour, month}(z)$ for a $z$ such that $C_{hour, day}(z) = 12$, $C_{day, month}(z) = 20$ and $C_{month, year}(z) = 9$. -->
 
+\noindent Consider a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. <!--Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days.--> This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities with day-of-month as the only single-order-up quasi-circular granularity.
 
-\begin{example} 
-{\rm Suppose we have a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. Since months consists of unequal number of days, any linear granularity with higher order than months will also have unequal number of days. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities. Only one single-order-up granularity day-of-month is quasi-circular.
-
-Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we have:
+\noindent Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we then have:
 
  $$C_{hour, month}(z) = C_{hour, day}(z) + P(hour, day)*C_{day, month}(z)$$
  $$C_{day, year}(z) = C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert)$$, where $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$
- 
-}
-\end{example}
-
 
 ```{r tab-gregorian}
 table_greg <- tibble(`linear (G)` = c("minute", "hour", "day", "month", "year"),
@@ -784,24 +773,16 @@ kable(table_greg,
 
 ### Multiple-to-single {#sec:multiple-to-single}
 
-#### Multiple order-up circular granularities {#sec:all-circular-multiple}  
+<!-- #### Multiple order-up circular granularities {#sec:all-circular-multiple}   -->
 
-For a hierarchy table $H_n: (G, C, K)$ with $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, we have
+\noindent Similar to single-to-multiple operations, multiple-to-single operations also involve different approaches for all circular single-order-up granularities and a mix of circular and quasi-circular single-order-up granularities in the hierarchy. For a hierarchy table $H_n: (G, C, K)$ with only  circular single-order-up granularities in the hierarchy and $l_1, l_2, m_1, m_2 \in {1, 2, \dots, n}$ and $l_2<l_1$ and $m_2>m_1$, multiple-order-up granularities could be obtained using \ref{eq:all-circular-multiple}.
 
 \begin{equation} \label{eq:all-circular-multiple}
 C_{G_{l_1}, G_{m_1}}(z) = \lfloor C_{G_{l_2}, G_{m_2}}(z)/P(l_2,l_1) \rfloor \mod P(l_1, m_1)
 \end{equation}
 
-\begin{example}
-{\rm Considering the same example of Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun given the multiple-order-up granularity uinal-baktun using equation \ref{eq:all-circular-multiple}.
+\noindent For example, in Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun from uinal-of-baktun, since $C_{tun, katun}(z) =  \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20$.
 
-\begin{equation} \label{eq10}
-\begin{split}
-C_{tun, katun}(z) =  \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20
-\end{split}
-\end{equation}
-}
-\end{example}
 
 #### Muliple order-up quasi-circular granularities {#sec:quasi-circular-multiple}  
 
