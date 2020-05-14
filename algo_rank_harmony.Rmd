@@ -91,7 +91,7 @@ F(x) = 1 - e^{{-(\frac{d}{\lambda})}^k}
 
 ```{r}
 library(readr)
-read_rds("data/smart_harmony_weibull.rds") %>% knitr::kable()
+read_rds("data/smart_harmony_wb.rds") %>% knitr::kable()
 ```
 
 
@@ -102,10 +102,8 @@ read_rds("data/smart_harmony_weibull.rds") %>% knitr::kable()
  <!-- 4.1. For each facet, we have a normalised variable using Step 3.1. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed). -->
 
 ```{r}
-read_rds("data/smart_harmony_gamma.rds") %>% knitr::kable()
+read_rds("data/smart_harmony_g.rds") %>% knitr::kable()
 ```
-
-
 
 
 ## Distances follow Normal
@@ -118,7 +116,7 @@ read_rds("data/smart_harmony_gamma.rds") %>% knitr::kable()
 
 ```{r}
 library(readr)
-read_rds("data/smart_harmony_normal.rds") %>% knitr::kable()
+read_rds("data/smart_harmony_norm.rds") %>% knitr::kable()
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -142,81 +140,91 @@ smart_meter10 %>%
 <!--  5. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD (final measure). Harmony pair with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$. -->
 
 
+
+## Version 1 (General - suggested by Rob)
+
+ 3.2. If the $D_i$ distribution has heavy tails, then under EVT the maximum converges to Frechet and lim $P(M_k / a_k)$ converges to a limiting distribution where $a_k$ = the $(1-\frac{1}{k})$ quantile of the $D_i$ distribution. So normalization could be done  using $M_k / a_k$.
+
+ 4.2. For each facet, we have a normalised variable using Step 3.2. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
+
+
+```{r}
+read_rds("data/smart_harmony_g.rds") %>% knitr::kable()
+```
+
+
+<!-- ```{r, eval=FALSE, echo=FALSE} -->
+<!-- read_rds("data/smart_harmony_ak.rds") -->
+<!-- ``` -->
+
+<!-- ```{r, eval = FALSE} -->
+<!-- smart_meter10 %>% -->
+<!--   filter(customer_id %in% c(10017936)) %>% -->
+<!--   prob_plot("day_week", -->
+<!--     "day_month", -->
+<!--     response = "general_supply_kwh", -->
+<!--     plot_type = "quantile", -->
+<!--     symmetric = TRUE, -->
+<!--     quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99) -->
+<!--   ) + -->
+<!--   scale_y_sqrt() + -->
+<!--   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") + -->
+<!--   ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+  -->
+<!--   theme_minimal() -->
+<!-- ``` -->
+
+
+<!-- ## Version 4 (old benchmark) -->
+
+<!--  3.4. For each $i \in \{1, 2, \dots, I\}$, the maximum pairwise distance could be chosen from  $\binom{I}{2}$ distances using $D_{i}$ = max($d_{jl}$)/$J$(max($d_{jl}$) - min($d_{jl}$)) $\forall j, l = {1, 2, \dots, J}$. -->
+
+<!--  4.4. Mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, I}$ is computed by -->
+<!-- $MMPD = (1/I)\sum_{i=1}^{l}{D_{i}}$. -->
+
+
+<!-- ```{r, eval = FALSE, echo=FALSE} -->
+<!-- library(readr) -->
+<!-- read_rds("data/smart_harmony_n.rds") %>% knitr::kable() -->
+<!-- ``` -->
+
+<!-- ```{r, echo = FALSE, eval = FALSE} -->
+<!-- smart_meter10 %>% -->
+<!--   filter(customer_id %in% c(10017936)) %>% -->
+<!--   prob_plot("week_month", -->
+<!--     "wknd_wday", -->
+<!--     response = "general_supply_kwh", -->
+<!--     plot_type = "quantile", -->
+<!--     symmetric = TRUE, -->
+<!--     quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99) -->
+<!--   ) + -->
+<!--   scale_y_sqrt() + -->
+<!--   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") + -->
+<!--   ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+  -->
+<!--   theme_minimal() -->
+<!-- ``` -->
+
+
 # Cricket data
 
 
 ## Distances follow Weibull
 ```{r}
-read_rds("data/smart_cric_weibul.rds")%>% knitr::kable()
+read_rds("data/ smart_cric_weibull.rds")%>% knitr::kable()
 ```
 
 ## Distances follow Gamma
 
 ```{r}
 library(readr)
-read_rds("data/smart_cric_gamma.rds") %>% knitr::kable()
+read_rds("data/ smart_cric_gamma.rds") %>% knitr::kable()
 ```
 
 ## Distances follow Normal 
 ```{r}
-read_rds("data/smart_cric_normal.rds")%>% knitr::kable()
+read_rds("data/ smart_cric_normal.rds")%>% knitr::kable()
 ```
 
-# Old benchmarks
-
-## Version 1 (suggested by Rob)
-
- 3.2. If the $D_i$ distribution has heavy tails, then under EVT the maximum converges to Frechet and lim $P(M_k / a_k)$ converges to a limiting distribution where $a_k$ = the $(1-\frac{1}{k})$ quantile of the $D_i$ distribution. So normalization could be done  using $M_k / a_k$.
-
- 4.2. For each facet, we have a normalised variable using Step 3.2. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
- 
-```{r, eval=FALSE, echo=FALSE}
-read_rds("data/smart_harmony_ak.rds")
+## Distances follow general 
+```{r}
+read_rds("data/ smart_cric_general.rds")%>% knitr::kable()
 ```
-
-```{r, eval = FALSE}
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("day_week",
-    "day_month",
-    response = "general_supply_kwh",
-    plot_type = "quantile",
-    symmetric = TRUE,
-    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal()
-```
-
-
-## Version 4 (old benchmark)
-
- 3.4. For each $i \in \{1, 2, \dots, I\}$, the maximum pairwise distance could be chosen from  $\binom{I}{2}$ distances using $D_{i}$ = max($d_{jl}$)/$J$(max($d_{jl}$) - min($d_{jl}$)) $\forall j, l = {1, 2, \dots, J}$.
-
- 4.4. Mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, I}$ is computed by
-$MMPD = (1/I)\sum_{i=1}^{l}{D_{i}}$.
-
-
-```{r, eval = FALSE, echo=FALSE}
-library(readr)
-read_rds("data/smart_harmony_n.rds") %>% knitr::kable()
-```
-
-```{r, echo = FALSE, eval = FALSE}
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("week_month",
-    "wknd_wday",
-    response = "general_supply_kwh",
-    plot_type = "quantile",
-    symmetric = TRUE,
-    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal()
-```
-

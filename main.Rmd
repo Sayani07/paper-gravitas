@@ -843,7 +843,18 @@ Single-order-up quasi-circular granularity could be obtained from multiple-order
 
 <!-- How volumes of continuously collected data can be visualized to ease further decision making?  -->
 
-Effective exploration and visualization require proper data structures. It is recognized that there is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis. Moreover, one can use calendars based on application domain that define contextual system of linear and cyclic granularities. A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble] (Time Series taBBLE) data structure. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble. Since all cyclic granularities can be expressed in terms of the index set, we consider the data structure in Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is a two-dimensional array extending the columns of tsibble by including the cyclic granularities $C_i$ and $v$ denotes the measurement variable. The total number of cyclic granularities would be based on the number of linear granularities considered in the hierarchy table and presence of any aperiodic cyclic granularities. Suppose we have $n$ linear granularities in the hierarchy table, $n(n-1)/2$ circular or quasi-circular cyclic granularities could be constructed. Any attempt to encode all or many cyclic granularities at the same time to develop insights on periodicity might fail or otherwise become too numerous for comprehensive human consumption. Instead, this big problem is broken down by focusing on two cyclic granularities at a time. Hence data sets of the form <$C_i$, $C_j$, $v$> forms the basis for exploration and analysis of the measured variable.
+<!-- # Why data structure for cyclic granularities exploration -->
+
+\noindent Effective exploration and visualization require proper data structures. It is recognized that there is a crucial influence of linear vs cyclic time characteristics on the expressiveness of visualization and analysis. Moreover, one can use calendars based on application domain that define contextual system of linear and cyclic granularities.
+
+<!-- #recent data structures for temporal exploration -->
+
+\noindent A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble] data structure. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.  
+
+<!--# our proposal of extension of tsibble data strcuture and -->
+<!--# why looking at pair of granularities instead of all -->
+
+\noindent All cyclic granularities can be expressed in terms of the index set, and hence, we consider the data structure in Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is a two-dimensional array extending the columns of tsibble by including the cyclic granularities $C_i$ and $v$ denotes the measurement variable. The total number of cyclic granularities would be based on the number of linear granularities considered in the hierarchy table and presence of any aperiodic cyclic granularities. Suppose we have $n$ linear granularities in the hierarchy table, $n(n-1)/2$ circular or quasi-circular cyclic granularities could be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic granularities. Any attempt to encode all or many of these cyclic granularities at the same time to develop insights on periodicity might fail or otherwise become too numerous for comprehensive human consumption. Instead, this big problem is broken down by focusing on pair of cyclic granularities at a time. Hence data sets of the form <$C_i$, $C_j$, $v$> forms the basis for exploration and analysis of the measured variable.
 
 
 <!-- CONTENT SHORT -->
@@ -908,7 +919,16 @@ An example when there will be no empty combinations could be where $C_1$ and $C_
 
 ## Choosing harmonies to show {#sec:chooseharmonies}
 
-Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the number of combinations quickly becomes too large and thus, it is beneficial useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. Distances between these probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure.
+<!-- Why do we need ranking system -->
+<!-- set of pairs - building the ranks for N_C and N_L -->
+
+Even after screening harmonies from the list of all possible combinations of cyclic time granularities that could be plotted together, the number of combinations quickly becomes too large and thus, it is beneficial to rank these harmonies. Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+
+<!-- Calculating distances and lit review -->
+
+<!-- Normalizing -->
+
+ Distances between these probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure.
 
 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_i$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
 
@@ -928,6 +948,11 @@ $MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$.
 <!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
 
 ## Summarizing the measured variable {#sec:summarize-measured}
+
+<!-- Why we looking at probability measure -->
+
+<!-- T+1 observation not T -->
+
 
 Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of these multiple observations across cyclic granularities using some summary statistics, each of which can highlight different features of the data or through probability densities is a valid way to compare and contrast periodicities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.-->
 
