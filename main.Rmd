@@ -172,7 +172,7 @@ than all elements of $G(j)$; and
 Each non-empty subset $G(i)$ is called a {\bf granule}.
 \end{definition}
 
-\noindent This implies that the granules in a linear granularity are non-overlapping, continuous and ordering is maintained. The indexing for each granule can also be associated with textual representation, called the label.  A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**.<!--The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings.--> \autoref{fig:linear-time} illustrates the linear time granularities. Here, "hour" is the bottom granularity and "day", "week", "month" and "year" are linear granularities which maps from index set to subsets of the hourly time domain. <!--For example, day($0$) =  {hour($0$), hour($1$), hour($2$), \dots, hour($23$)}, day($1$) =  {hour($24$), hour($25$), hour($26$), \dots, hour($47$)} and so on.--> If we have "hour" running from $\{0, 1, \dots,t\}$, we will have "day" running from $\{0, 1, \dots, \lfloor t/24\rfloor\}$. These linear granularities are ordered with ordering guided by the index set which is a set of integers. Hence, they are uni-directional and non-repeating. 
+\noindent This implies that the granules in a linear granularity are non-overlapping, continuous and ordering is maintained. The indexing for each granule can also be associated with textual representation, called the label.  A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**.<!--The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labelled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labelled granularities, while others can be implemented using more flexible labelings.--> \autoref{fig:linear-time} illustrates the linear time granularities. Here, "hour" is the bottom granularity and "day", "week", "month" and "year" are linear granularities which maps from index set to subsets of the hourly time domain. <!--For example, day($0$) =  {hour($0$), hour($1$), hour($2$), \dots, hour($23$)}, day($1$) =  {hour($24$), hour($25$), hour($26$), \dots, hour($47$)} and so on.--> If we have "hour" running from $\{0, 1, \dots,t\}$, we will have "day" running from $\{0, 1, \dots, \lfloor t/24\rfloor\}$. These linear granularities are ordered with ordering guided by the index set which is a set of integers. Hence, they are uni-directional and non-repeating. 
 
 
  <!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.-->
@@ -280,7 +280,7 @@ Granules in bottom granularity or any finer granularity may be aggregated in som
 
 
 <!-- CONTENT CUT -->
-<!-- For a coarser granularity $G_2$ and a finer one $G_1$, a _grouping operation_ partitions some granules of $G_1$  to form a granule of $G_2$. For example, $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$. The _altering-tick operation_ generates new full-integer labeled granularity by periodically expanding or shrinking granules of $G_2$ in terms of granules of $G_1$. For example, <!--due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April, June, September and November by 1 day, and shrink February by 3 days [@Ning2002-tf]. For more variations of calendar algebra operations, see @Ning2002-tf.
+<!-- For a coarser granularity $G_2$ and a finer one $G_1$, a _grouping operation_ partitions some granules of $G_1$  to form a granule of $G_2$. For example, $\text{minute} = \text{Group}_{60}(\text{second})$; $\text{hour} = \text{Group}_{60}(\text{minute})$. The _altering-tick operation_ generates new full-integer labelled granularity by periodically expanding or shrinking granules of $G_2$ in terms of granules of $G_1$. For example, <!--due to the uneven length of months, we need to use the altering-tick operation to compute months from days. We can consider a granularity "pseudomonth" which computes months only for non-leap years by grouping 31 days, and then shrink April, June, September and November by 1 day, and shrink February by 3 days [@Ning2002-tf]. For more variations of calendar algebra operations, see @Ning2002-tf.
 
 <!-- CONTENT CUT -->
 <!-- The calendar algebra consists of two kinds of operations: grouping-oriented and granule-oriented operations. The grouping-oriented operations combine certain granules of a granularity together to form the granules of the new granularity. For example, consider a calendar with only two linear granularities: "minute" and "hour", where "hour" is generated by grouping every $60$ "minutes". -->
@@ -289,8 +289,8 @@ Granules in bottom granularity or any finer granularity may be aggregated in som
 <!-- \begin{definition}[Labelled granularity]\label{def:labelgran} -->
 
 <!-- CONTENT CUT -->
-<!-- The notion of a labeled granularity is introduced in @Bettini2000-qk to simplify the calendar algebra. A labeled granularity is a pair $(L, G)$, where the label set $L$ is a subset of the integers instead of the set of integers and -->
-<!-- follows the conditions (1) and (2) in \ref{def:linear} where $i$, $j$, and $k$ are in $L$. When the label set $L$ is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}.<!-- However, the set $L$ of labels can be an arbitrary subset of (possibly non contiguous) integers and could be used to identify granules.-->
+<!-- The notion of a labelled granularity is introduced in @Bettini2000-qk to simplify the calendar algebra. A labelled granularity is a pair $(L, G)$, where the label set $L$ is a subset of the integers instead of the set of integers and -->
+<!-- follows the conditions (1) and (2) in \ref{def:linear} where $i$, $j$, and $k$ are in $L$. When the label set $L$ is exactly the integers, the granularities are called "full-integer" labelled granularity, such as in Definition \ref{def:linear}.<!-- However, the set $L$ of labels can be an arbitrary subset of (possibly non contiguous) integers and could be used to identify granules.-->
 
 
 <!-- $G$ is a mapping from $L$ to the subsets of the time domain such that: -->
@@ -299,7 +299,7 @@ Granules in bottom granularity or any finer granularity may be aggregated in som
 <!--   2. if $i<k<j$ , where $i$, $j$, and $k$ are in $L$, and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty. -->
 
 \begin{definition}\label{def:grouping_operation}
-Let $G_1$ be a full-integer labeled granularity, and $m$ a positive integer. {\bf The grouping operation} Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labeled granularity such that for each integer $i$,
+Let $G_1$ be a full-integer labelled granularity, and $m$ a positive integer. {\bf The grouping operation} Group$_m(G)$ generates a new granularity $G_2$, by partitioning the granules of $G_1$ into $m$-granule groups and making each group a granule of the resulting granularity. More precisely, $G_2 = \text{Group}_m(G_1)$ is the full-integer labelled granularity such that for each integer $i$,
 $$G_2(i) = \bigcup\limits_{j = (i-1)m+1}^{im} G_1(j).$$
 The grouping operation Group$_m(G)$, provides a new granularity whose granules are the integer part of the quotient when the integer set spanned by linear granularity $G$ is divided by $m$, such that, $G_2(i) = \lfloor G_1(j)/m \rfloor$.
 \end{definition}
@@ -312,7 +312,7 @@ The grouping operation Group$_m(G)$, provides a new granularity whose granules a
 
 <!-- CONTENT CUT altering-tick -->
 <!-- \begin{definition}\label{altering-tick} -->
-<!-- Let $G_1$, $G_2$ be full-integer labeled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. {\bf The altering-tick operation} $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$. -->
+<!-- Let $G_1$, $G_2$ be full-integer labelled granularities, and $l$, $k$, $m$ integers, with $G_1 \trianglelefteq G_2$, $G_1\preceq G_2$, and $1 \leq l \leq m$. {\bf The altering-tick operation} $\text{Alter}^{m}_{l,k} (G_2, G_1)$ operation modifies the granules of $G_1$ so that the $l^{\text{th}}$ granule of each period has $k$ additional granules of $G_2$. -->
 <!-- \end{definition} -->
 
 <!-- \begin{example} -->
@@ -352,7 +352,7 @@ B denotes a full-integer labelled bottom granularity which groups periodically i
 \end{definition}
 
 
-<!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labeled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labeled granularities, while others can be implemented using more flexible labelings. -->
+<!-- The label can be mapped to index for input and the index can later be mapped to this label for output. When the label set is exactly the integers, the granularities are called "full-integer" labelled granularity, such as in Definition \ref{def:linear}. Some calendar operations will only work on full-integer labelled granularities, while others can be implemented using more flexible labelings. -->
 
 \begin{example}
 {\rm \autoref{fig:circular-dow} illustrates the linear and the corresponding cyclical granularities. Cyclical granularities can be considered to be cutting the linear granularity into pieces, and stacking them to match the cycles (as shown in b). $B, G, H$ (day, week, fortnight, respectively) are linear granularities. The circular granularity $C_{B , G}$ (day-of-week)is constructed from $B$ and  $G$. The circular granularity $C_{B, H}$ (day-of-fortnight) is constructed from $B$ and $H$. These overlapping cyclical granularities share elements from the linear granularity. Each of $C_{B , G}$ and $C_{B , H}$ consist of repeated patterns  $\{0, 1, 2, \dots, 6\}$ and $\{0, 1, 2, \dots, 13\}$ with $P=7$ and $P=14$ respectively. Each circular granularity can use descriptive label mappings. Suppose ${L}$ is a label mapping that defines an unique label for each index $l \in \{ 0,1,\dots, (P-1)\}$, then the label mapping $L$ for $C_{B, G}$ can be defined as
@@ -626,7 +626,6 @@ kable(table_mayan,
 
 Note that, it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only and that the cyclic granularity $C_{G(l),G(m)}$ is either circular or quasi-circular.
 
-
 \begin{definition}\label{def:norderup} 
 The hierarchy table contains {\bf multiple-order-up} granularities which are cyclic granularities that are nested within multiple levels.
 A {\bf single-order-up} is a cyclic granularity which is nested within a single level. It is a special case of multiple-order-up granularity.
@@ -784,7 +783,7 @@ C_{G_{l_1}, G_{m_1}}(z) = \lfloor C_{G_{l_2}, G_{m_2}}(z)/P(l_2,l_1) \rfloor \mo
 \noindent For example, in Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun from uinal-of-baktun, since $C_{tun, katun}(z) =  \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20$.
 
 
-#### Muliple order-up quasi-circular granularities {#sec:quasi-circular-multiple}  
+#### Multiple order-up quasi-circular granularities {#sec:quasi-circular-multiple}  
 
 <!-- \begin{equation} \label{eq:quasi-circular-multiple} -->
 <!-- C_{G_{l1}, G_{m1}}(z) = C_{G_{l2}, G_{m2}}(\lfloor z/k(l_2,l_1) \rfloor\mod P(m_1, m_2)) -->
