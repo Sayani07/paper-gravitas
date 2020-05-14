@@ -1,0 +1,95 @@
+---
+title: "Untitled"
+author: "Sayani Gupta"
+date: "14/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(gravitas)
+library(tidyverse)
+```
+
+
+
+```{r}
+cricket_data <- read_rds("data/cricket_data.rds")
+cricket_data %>% hist_distance(gran1 = "lag_field", gran2 = "over", response = "runs_per_over", hierarchy_tbl = hierarchy_model)
+```
+
+```{r}
+
+  hierarchy_model <- tibble::tibble(
+      units = c("index", "over", "inning", "match"),
+      convert_fct = c(1, 20, 2, 1))
+
+.data <- cricket_data
+
+hierarchy_tbl <- hierarchy_model
+
+response <- "runs_per_over"
+
+harmonies_cric <- cricket_data %>% harmony(lgran = "over", ugran = "match", filter_in = c("lag_field", "over"), hierarchy_tbl = hierarchy_model)
+
+
+smart_cric_normal <- cricket_data %>% 
+  rank_harmony(harmony_tbl = harmonies_cric, 
+               response = response,
+               hierarchy_tbl = hierarchy_model,
+               dist_distribution = "normal")
+
+smart_cric_gamma <- cricket_data %>% 
+  rank_harmony(harmony_tbl = harmonies_cric, 
+               response = response,
+               hierarchy_tbl = hierarchy_model,
+               dist_distribution = "gamma")
+
+smart_cric_weibull <- cricket_data %>% 
+  rank_harmony(harmony_tbl = harmonies_cric, 
+               response = response,
+               hierarchy_tbl = hierarchy_model,
+               dist_distribution = "weibull")
+```
+
+Now the pair (over, lag_field) and (over_inning_match) has the same levels (20,2). Hence we can see if the norming constants are working properly using these as example.
+
+```{r}
+cricket_data %>% 
+  prob_plot("over",
+            "lag_field",
+            plot_type = "boxplot",
+            response = response,
+            hierarchy_tbl = hierarchy_model)
+```
+
+
+```{r}
+cricket_data %>% 
+  prob_plot("over",
+            "inning_match",
+            plot_type = "boxplot",
+            response = response,
+            hierarchy_tbl = hierarchy_model)
+```
+
+```{r}
+cricket_data %>% 
+  prob_plot("lag_field",
+            "over_match",
+            plot_type = "boxplot",
+            response = response,
+            hierarchy_tbl = hierarchy_model)
+```
+
+
+
+```{r}
+cricket_data %>% 
+  prob_plot("inning_match",
+            "over_inning",
+            plot_type = "boxplot",
+            response = response,
+            hierarchy_tbl = hierarchy_model)
+```
