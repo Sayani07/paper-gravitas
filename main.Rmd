@@ -848,7 +848,7 @@ Single-order-up quasi-circular granularity could be obtained from multiple-order
 
 \noindent A recent tidy data structure to support exploration and modeling of temporal data is tsibble [@wang2019tsibble] data structure. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.  
 
-<!--# our proposal of extension of tsibble data strcuture and -->
+<!--# our proposal of extension of tsibble data structure and -->
 <!--# why looking at pair of granularities instead of all -->
 
 \noindent All cyclic granularities can be expressed in terms of the index set, and hence, we consider the data structure in Figure \@ref(fig:data-structure) for exploration of temporal data of this kind. This is a two-dimensional array extending the columns of tsibble by including the cyclic granularities. The total number of cyclic granularities would be based on the number of linear granularities considered in the hierarchy table and presence of any aperiodic cyclic granularities, for example, if we have $n$ periodic linear granularities in the hierarchy table, $n(n-1)/2$ circular or quasi-circular cyclic granularities could be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that could originate from $N_L$ periodic and aperiodic linear granularities. Any attempt to encode all or many of these cyclic granularities at the same time to develop insights on periodicity might fail or otherwise become too numerous for comprehensive human consumption. Instead, this big problem is broken down by focusing on pair of cyclic granularities ($C_i$, $C_j$) at a time for $i, j \in \{1, 2, \dots, N_C\}$. Data sets of the form <$C_i$, $C_j$, $v$> then forms the basis for exploration and analysis of the measured variable $v$.
@@ -918,43 +918,65 @@ A {\bf harmony} is a pair of cyclic granularities that does not contain any empt
 <!-- Why do we need ranking system -->
 <!-- set of pairs - building the ranks for N_C and N_L -->
 
-\noindent The data structure suggests that we look at pairs of cyclic granularities at a time from $N_C$ cyclic granulairites. Hence, all possible pairs of cyclic time granularities that could be analyzed together is $N_C \choose 2$. Now, if $N_C$ is fairly large, even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank these harmonies basis how well they capture the variation in the measured variable. The harmony pair $(C_i, C_j)$ would be most interesting if the average variation in the measured variable between different levels of $C_i$ and $C_j$ is maximum.<!-- Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. -->
+\noindent The data structure suggests that we look at pairs of cyclic granularities at a time from $N_C$ cyclic granularities. Hence, all possible pairs of cyclic time granularities that could be analyzed together is $N_C \choose 2$. Now, if $N_C$ is fairly large, even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank these harmonies basis how well they capture the variation in the measured variable. The harmony pairs $(C_i, C_j)$ with higher average variation in the measured variable between different levels of $C_i$ and $C_j$ has a higher chance to bring out distinct characteristics of the data.<!-- Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. -->
 
 <!-- Calculating distances between distributions --> 
 
-\noindent One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable across different levels of $C_j$ and integrating it for all levels of $C_i$. Distances or similarity measures have been extensively studied and applied to fields like clustering, classification and anomaly detection. We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.
-One of the common ways to measure distances between distributions is through Jenson-Shanon divergence which is based on Kullback-Leibler divergence. In our work, probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. Suppose $q$ is a sample quantile vector of the measured variable computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where,
- $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$.
+\noindent One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable. <!--across different levels of $C_j$ and integrating it for all levels of $C_i$. Distances or similarity measures have been extensively studied and applied to fields like clustering, classification and anomaly detection. ---> We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.
+One of the common ways to measure distances between distributions is through Jenson-Shanon divergence which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. The Jensen-Shanon distance between two sample quantile vectors $q_u$ and $q_v$ computed for probability vector $p$ will be given by $$d_{uv} = [D(q_u, r) + D(q_v, r)]/2 \quad where \quad r = (q_u + q_v)/2$$ where,
+ $$D(q_u,q_v) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_u$ and $q_v$.
 
 <!-- Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. -->
 
 
-<!-- # distribution of distances -->
-<!-- # Normalizing and lit review -->
 
-\noindent Since we are looking to rank the harmony pairs based on if it captures the maximum variation across levels of $C_i$ and $C_j$, we need to make sure that this maximum value is independent of the number of levels of the two cyclic granularities. A major result in the field of EVT is the probability distribution of the maximum can only be one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. But the normalising constants vary depending on the underlying distribution of the measured variables. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.
+<!-- # why Normalizing required --->
 
-<!-- For ranking the harmony pairs, these distances need to be normalised by the number of levels of . -->
+\noindent The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the cyclic granularities. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $X_{1},X_{2}\ldots ,X_{n}$  be a sequence of independent and identically-distributed random variables, and $M_{n}=\max\{X_{1},\ldots ,X_{n}\}$. If a sequence of pairs of real numbers $a_{n}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{n}-b_{n}}{a_{n}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $X_i$'s. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.  
+
+<!-- # distribution of distances and lit review -->
+
+\noindent Menendez1997-in and Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a Chi-squared distribution. However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.
+
+\noindent The algorithm employed addressing all the issues decried above is summarized as follows:
+<!-- Algorithm -->
+
+<!-- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
+
+\noindent Algorithm
+**Input** $(C_i, C_j, v) \quad \forall i, j \in N_C$  
+**Output** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
+
+1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$. 
+
+2. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Let $d_1, d_2, d_3, \dots d_m$ be the pairwise Jensen-Shannon distances. Suppose the maximum pairwise distance for $A_k$ maximum be $M_k$.
+
+3. The distribution of distances is heavy tailed. But if they are gamma or weibull could be judged by looking at the QQ-plots of the empirical distribution. The estimates of the parameters are obtained using Maximum Likelihood Estimation.
+
+4. The norming constants $(a_k, b_k)$ are obtained from @Embrechts2013-pd and each $M_k$ is normalized using normalized maximum $NM_k = \frac{M_k - b_k}{a_k}$ for each $A_k$, $k \in {1, 2, \dots, K}$. We have normalized the number of levels of $C_j$ using Steps 1-4.
+
+<!-- the norming constants, which are a function of the parameters are obtained using method of moments. -->
 
 
-<!-- Distances between these probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure. -->
+<!-- Since the distances follow a Chi-squared distribution with , the norming constants are taken as $a_n = $ and $b_n = $ -->
 
-1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$
 
-2. There will be $m$ time series variable corresponding to each level $A_k$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_k$.
+5. We also need to aggregate these normalized maximum across different levels of $C_i$. For this we can take the mean, median or any quantiles of these normalized maximums. The median (and any quantiles) of these maximum distributions (which converges to a Gumbel distribution) grow at the rate of (some power of) $log K$ with $K \xrightarrow{} \infty$. Hence, M/log($K$) could serve as the final measure (MMPD), where $M = median\{NM_1, NM_2, \dots, NM_K\}$.
 
-3. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance.
+6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD.
+
+<!-- 2. There will be $m$ time series variable corresponding to each level $A_k$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_k$. -->
+
 
 <!-- Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where, -->
 <!--  $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$. -->
 
+<!-- 4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges. -->
 
-4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges.
+<!-- 5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by -->
+<!-- $MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$. -->
 
-5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by
-$MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$.
-
-6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD.
+<!-- 6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. -->
 
 <!-- with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$. -->
 
