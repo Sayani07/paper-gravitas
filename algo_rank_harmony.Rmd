@@ -91,7 +91,7 @@ F(x) = 1 - e^{{-(\frac{d}{\lambda})}^k}
 
 ```{r}
 library(readr)
-read_rds("data/smart_harmony_wb.rds") %>% knitr::kable()
+smart_weibull <- read_rds("data/smart_harmony_wb.rds")  %>% mutate(rank_weibull = row_number())
 ```
 
 
@@ -102,7 +102,7 @@ read_rds("data/smart_harmony_wb.rds") %>% knitr::kable()
  <!-- 4.1. For each facet, we have a normalised variable using Step 3.1. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed). -->
 
 ```{r}
-read_rds("data/smart_harmony_g.rds") %>% knitr::kable()
+smart_gamma <- read_rds("data/smart_gamma.rds")  %>% mutate(rank_gamma = row_number())
 ```
 
 
@@ -116,7 +116,7 @@ read_rds("data/smart_harmony_g.rds") %>% knitr::kable()
 
 ```{r}
 library(readr)
-read_rds("data/smart_harmony_norm.rds") %>% knitr::kable()
+smart_normal <- read_rds("data/smart_harmony_norm.rds") %>% mutate(rank_normal = row_number())
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -149,7 +149,20 @@ smart_meter10 %>%
 
 
 ```{r}
-read_rds("data/smart_harmony_g.rds") %>% knitr::kable()
+smart_general <- read_rds("data/smart_general.rds") %>% mutate(rank_general = row_number())
+
+data_unite <- smart_normal %>% 
+  left_join(smart_gamma, by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%
+  rename("MMPD_normal" = "mean_max_variation.x", "MMPD_gamma" = "mean_max_variation.y") %>% 
+    left_join(smart_weibull,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  rename("MMPD_weibull" = "mean_max_variation") %>% 
+  left_join(smart_general,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  rename("MMPD_general" = "mean_max_variation") %>% 
+  select(-c(facet_levels, x_levels))
+
+
+data_unite %>% select(-c(MMPD_normal, MMPD_gamma, MMPD_weibull, MMPD_general))
+data_unite %>% select(-c(rank_normal, rank_gamma, rank_weibull, rank_general))
+
+  
 ```
 
 
