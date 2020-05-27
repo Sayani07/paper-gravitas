@@ -25,6 +25,7 @@ library(ggridges)
 library(viridis)
 library(tsibble)
 library(gravitas)
+library(ggpubr)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -209,8 +210,8 @@ data_unite %>%
 
 ## Graphical evidence
 
-```{r, echo = FALSE, eval = FALSE}
-smart_meter10 %>%
+```{r, echo = FALSE}
+p1 <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
     "hour_day",
@@ -222,13 +223,48 @@ smart_meter10 %>%
   scale_y_sqrt() +
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
   ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal()
+  theme_minimal() + 
+  ggtitle("Rank 1 Section 6.1.1")  + 
+  scale_x_discrete(breaks = seq(0, 23, 5))
+
+
+p2 <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot("hour_day",
+    "wknd_wday",
+    response = "general_supply_kwh",
+    plot_type = "boxplot",
+    #symmetric = TRUE,
+    #quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  scale_y_sqrt() +
+  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
+  ylab("electricity demand [KWh]") + xlab("") + ggtitle("") + ylab("")+ 
+  theme_minimal() + 
+  ggtitle("Rank 1 Section 6.1.2") + scale_x_discrete(labels = c('wday','wend'))
+
 ```
 
-```{r, echo = FALSE, eval = FALSE}
-smart_meter10 %>%
+```{r, echo = FALSE}
+p3 <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
-  prob_plot("day_week",
+  prob_plot("week_month",
+    "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "boxplot",
+    #symmetric = TRUE,
+    #quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  scale_y_sqrt() +
+  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
+  theme_minimal() + 
+  ggtitle("Rank 2 Section 6.1.2") + 
+  scale_x_discrete(breaks = seq(0, 23, 5))
+
+p4 <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot("hour_day",
     "week_month",
     response = "general_supply_kwh",
     plot_type = "boxplot",
@@ -237,24 +273,14 @@ smart_meter10 %>%
   ) +
   scale_y_sqrt() +
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal()
+  ylab("electricity demand [KWh]") + xlab("week of the month") + ggtitle("") + ylab("")+ 
+  theme_minimal()  + 
+  ggtitle("Rank 2 Section 6.1.2")
 
 
+ggpubr::ggarrange(p1, p2,  ncol = 2)
 
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("week_month",
-    "day_week",
-    response = "general_supply_kwh",
-    plot_type = "boxplot",
-    #symmetric = TRUE,
-    #quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal()
+ggpubr::ggarrange(p3, p4,  ncol = 2)
 ```
 
 
