@@ -13,13 +13,13 @@ library(tidyverse)
 ```
 
 
-
 ```{r}
-cricket_data <- read_rds("data/cricket_data.rds")
-cricket_data %>% hist_distance(gran1 = "lag_field", gran2 = "over", response = "runs_per_over", hierarchy_tbl = hierarchy_model)
+
+# cricket_data %>% histogram_distance(gran1 = "over", gran2 = "inning_match", response = "runs_per_over", hierarchy_tbl = hierarchy_model)
 ```
 
 ```{r}
+cricket_data <- read_rds("data/cricket_data.rds")
 
   hierarchy_model <- tibble::tibble(
       units = c("index", "over", "inning", "match"),
@@ -93,3 +93,14 @@ cricket_data %>%
             response = response,
             hierarchy_tbl = hierarchy_model)
 ```
+
+
+
+```{r, eval = FALSE}
+sm <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936))
+ .data = sm
+ response  = "general_supply_kwh"
+ .data %>% hist_distance(gran1 = "hour_day", gran2 = "wknd_wday", response = "general_supply_kwh")
+```
+

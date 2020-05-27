@@ -117,6 +117,9 @@ smart_gamma <- read_rds("data/smart_gamma.rds")  %>% mutate(rank_gamma = row_num
 ```{r}
 library(readr)
 smart_normal <- read_rds("data/smart_harmony_norm.rds") %>% mutate(rank_normal = row_number())
+
+library(readr)
+smart_chi <-read_rds("data/smart_harmony_chisq.rds") %>% mutate(rank_chi = row_number())
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
@@ -146,23 +149,23 @@ smart_meter10 %>%
  3.2. If the $D_i$ distribution has heavy tails, then under EVT the maximum converges to Frechet and lim $P(M_k / a_k)$ converges to a limiting distribution where $a_k$ = the $(1-\frac{1}{k})$ quantile of the $D_i$ distribution. So normalization could be done  using $M_k / a_k$.
 
  4.2. For each facet, we have a normalised variable using Step 3.2. We can take the maximum across all facets as the final mesasure. But this maximum is not normalized against the number of facet levels. Or we can take the mean (to be discussed).
-
-
+ 
 ```{r}
 smart_general <- read_rds("data/smart_general.rds") %>% mutate(rank_general = row_number())
 
-data_unite <- smart_normal %>% 
-  left_join(smart_gamma, by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%
-  rename("MMPD_normal" = "mean_max_variation.x", "MMPD_gamma" = "mean_max_variation.y") %>% 
-    left_join(smart_weibull,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  rename("MMPD_weibull" = "mean_max_variation") %>% 
-  left_join(smart_general,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  rename("MMPD_general" = "mean_max_variation") %>% 
-  select(-c(facet_levels, x_levels))
+data_unite <- smart_chi %>% 
+  left_join(smart_weibull, by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>% 
+   rename("MMPD_chisq" = "mean_max_variation.x", "MMPD_weibull" = "mean_max_variation.y") %>% 
+    left_join(smart_gamma,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  
+  rename("MMPD_gamma" = "mean_max_variation") %>% 
+  left_join(smart_normal,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>% 
+  rename("MMPD_normal" = "mean_max_variation") %>% 
+   left_join(smart_general,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>% 
+  rename("MMPD_general" = "mean_max_variation") %>%  select(-c(facet_levels, x_levels)) 
 
 
-data_unite %>% select(-c(MMPD_normal, MMPD_gamma, MMPD_weibull, MMPD_general))
-data_unite %>% select(-c(rank_normal, rank_gamma, rank_weibull, rank_general))
-
-  
+data_unite %>% select(-c(MMPD_normal, MMPD_gamma, MMPD_weibull, MMPD_general, -MMPD_chisq)) %>% knitr::kable()
+data_unite %>% select(-c(rank_normal, rank_gamma, rank_weibull, rank_general, rank_chi)) %>% knitr::kable()
 ```
 
 
@@ -222,22 +225,34 @@ data_unite %>% select(-c(rank_normal, rank_gamma, rank_weibull, rank_general))
 
 ## Distances follow Weibull
 ```{r}
-read_rds("data/ smart_cric_weibull.rds")%>% knitr::kable()
+cric_weibull <- read_rds("data/ smart_cric_weibull.rds")%>% mutate(rank_weibull = row_number())
 ```
 
 ## Distances follow Gamma
 
 ```{r}
 library(readr)
-read_rds("data/ smart_cric_gamma.rds") %>% knitr::kable()
+cric_gamma <-read_rds("data/ smart_cric_gamma.rds") %>% mutate(rank_gamma = row_number())
 ```
 
 ## Distances follow Normal 
 ```{r}
-read_rds("data/ smart_cric_normal.rds")%>% knitr::kable()
+cric_normal <-read_rds("data/ smart_cric_normal.rds")%>% mutate(rank_normal = row_number())
 ```
 
 ## Distances follow general 
 ```{r}
-read_rds("data/ smart_cric_general.rds")%>% knitr::kable()
+cric_general <- read_rds("data/ smart_cric_general.rds")%>% mutate(rank_general = row_number())
+
+
+data_unite <- smart_normal %>% 
+  left_join(smart_gamma, by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%
+  rename("MMPD_normal" = "mean_max_variation.x", "MMPD_gamma" = "mean_max_variation.y") %>% 
+    left_join(smart_weibull,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  rename("MMPD_weibull" = "mean_max_variation") %>% 
+  left_join(smart_general,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>%  rename("MMPD_general" = "mean_max_variation") %>% 
+  select(-c(facet_levels, x_levels))
+
+
+data_unite %>% select(-c(MMPD_normal, MMPD_gamma, MMPD_weibull, MMPD_general))
+data_unite %>% select(-c(rank_normal, rank_gamma, rank_weibull, rank_general))
 ```
