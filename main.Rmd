@@ -101,7 +101,7 @@ Time deconstructions can also be based on the hierarchical structure of time. Fo
 
 <!--motivation -->
 
-The motivation for this work stems from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates [see @Goodwin_2012] of usage across households, such as half-hourly total usage by state, because energy companies need to plan for maximum loads on the network. But studying overall energy use hides the distributions of usage at finer scales, and makes it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data will benefit from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem that is relevant to any temporal data observed more than once per year.
+The motivation for this work stems from the desire to provide methods to better understand large quantities of measurements on energy usage reported by smart meters in households across Australia, and indeed many parts of the world. Smart meters currently provide half-hourly use in kWh for each household, from the time that they were installed, some as early as 2012. Households are distributed geographically and have different demographic properties such as the existence of solar panels, central heating or air conditioning. The behavioral patterns in households vary substantially, for example, some families use a dryer for their clothes while others hang them on a line, and some households might consist of night owls, while others are morning larks. It is common to see aggregates [see @Goodwin_2012] of usage across households, such as half-hourly total usage by state, because energy companies need to plan for maximum loads on the network. But studying overall energy use hides the distribution of usage at finer scales, and makes it more difficult to find solutions to improve energy efficiency. We propose that the analysis of smart meter data will benefit from systematically exploring energy consumption by visualizing the probability distributions across different deconstructions of time to find regular patterns/anomalies. Although, the motivation came through the smart meter example, this is a problem that is relevant to any temporal data observed more than once per year.
 
 <!-- at finer or coarser scales can be benefited from the approach of Exploratory Data Analysis (EDA). EDA calls for utilizing visualization and transformation to explore data systematically. It is a process of generating hypothesis, testing them and consequently refining them through investigations. -->
 
@@ -913,75 +913,6 @@ A {\bf harmony} is a pair of cyclic granularities that does not contain any empt
 
 \noindent An example when there will be no empty combinations could be where $C_i$ and $C_j$ maps index set to day-of-week and month-of-year respectively. Here $C_i$ can have 7 levels while $C_j$ can have 12 levels. So there are $12\times7=84$ sets $S_{kl}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
 
-## Choosing harmonies to show {#sec:chooseharmonies}
-
-<!-- Why do we need ranking system -->
-<!-- set of pairs - building the ranks for N_C and N_L -->
-
-\noindent The data structure suggests that we look at pairs of cyclic granularities at a time from $N_C$ cyclic granularities. Hence, all possible pairs of cyclic time granularities that could be analyzed together is $N_C \choose 2$. Now, if $N_C$ is fairly large, even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank these harmonies basis how well they capture the variation in the measured variable.<!--The harmony pairs $(C_i, C_j)$ with higher average variation in the measured variable between different levels of $C_i$ and $C_j$ has a higher chance to bring out distinct characteristics of the data.<!-- Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. -->
-
-<!-- Calculating distances between distributions --> 
-
-\noindent One of the potential ways to evaluate this variation is by computing the maximum pairwise distances between the distributions of the measured variable across different levels of the cyclic granularities. <!--across different levels of $C_j$ and integrating it for all levels of $C_i$. Distances or similarity measures have been extensively studied and applied to fields like clustering, classification and anomaly detection. ---> We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.
-One of the common ways to measure distances between distributions is through Jenson-Shanon divergence which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. The Jensen-Shanon distance between two sample quantile vectors $q_u$ and $q_v$ computed for probability vector $p$ will be given by $$d_{uv} = [D(q_u, r) + D(q_v, r)]/2 \quad where \quad r = (q_u + q_v)/2$$ where,
- $$D(q_u,q_v) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_u$ and $q_v$.
-
-<!-- Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. -->
-
-
-
-<!-- # why Normalizing required --->
-
-\noindent The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the cyclic granularities. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $X_{1},X_{2}\ldots ,X_{n}$  be a sequence of independent and identically-distributed random variables, and $M_{n}=\max\{X_{1},\ldots ,X_{n}\}$. If a sequence of pairs of real numbers $a_{n}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{n}-b_{n}}{a_{n}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $X_i$'s. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.  
-
-<!-- # distribution of distances and lit review -->
-
-\noindent Menendez1997-in and Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a Chi-squared distribution. However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.
-
-\noindent The algorithm employed addressing all the issues described above is summarized as follows:
-<!-- Algorithm -->
-
-<!-- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
-
-\noindent Algorithm
-**Input** $(C_i, C_j, v) \quad \forall i, j \in N_C$  
-**Output** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
-
-1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$. 
-
-2. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Let $d_1, d_2, d_3, \dots d_m$ be the pairwise Jensen-Shannon distances. Suppose the maximum pairwise distance for $A_k$ maximum be $M_k$.
-
-3. The distribution of distances is heavy tailed. But if they are gamma or weibull could be judged by looking at the QQ-plots of the empirical distribution. The estimates of the parameters are obtained using Maximum Likelihood Estimation.
-
-4. The norming constants $(a_k, b_k)$ are obtained from @Embrechts2013-pd and each $M_k$ is normalized using normalized maximum $NM_k = \frac{M_k - b_k}{a_k}$ for each $A_k$, $k \in {1, 2, \dots, K}$. We have normalized the number of levels of $C_j$ using Steps 1-4.
-
-<!-- the norming constants, which are a function of the parameters are obtained using method of moments. -->
-
-
-<!-- Since the distances follow a Chi-squared distribution with , the norming constants are taken as $a_n = $ and $b_n = $ -->
-
-
-5. We also need to aggregate these normalized maximum across different levels of $C_i$. For this we can take the mean, median or any quantiles of these normalized maximums. The median (and any quantiles) of these maximum distributions (which converges to a Gumbel distribution) grow at the rate of (some power of) $log K$ with $K \xrightarrow{} \infty$. Hence, M/log($K$) could serve as the final measure (MMPD), where $M = median\{NM_1, NM_2, \dots, NM_K\}$.
-
-6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD.
-
-<!-- 2. There will be $m$ time series variable corresponding to each level $A_k$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_k$. -->
-
-
-<!-- Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where, -->
-<!--  $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$. -->
-
-<!-- 4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges. -->
-
-<!-- 5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by -->
-<!-- $MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$. -->
-
-<!-- 6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. -->
-
-<!-- with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$. -->
-
-<!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
-
 ## Summarizing the measured variable {#sec:summarize-measured}
 
 <!-- Why we looking at probability measure -->
@@ -990,12 +921,12 @@ One of the common ways to measure distances between distributions is through Jen
 
 <!-- In linear granularities, if we consider a data set of size T where each time point corresponds to an unique value of the measured variable.  -->
 
-Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. <!--This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable.--> It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of the measured variables through these multiple observations across cyclic granularities could be a potential way to explore and bring forward different features of the  data. <!-- compare and contrast periodicities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.-->
+Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. <!--This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable.--> It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of the measured variable through these multiple observations could be a potential way to explore and bring forward different features of the data. <!-- compare and contrast periodicities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.-->
 
 <!-- using some summary statistics, each of which can highlight different features of the data or through probability densities -->
 
 <!-- T+1 observation not T -->
-However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $L$ and $M$ categories respectively <!--Each element of $C_i$ occurs approximately $(T+1)/L$ times while each element of $C_j$ occurs approximately $(T+1)/M$ times. and there are no or very few empty combinations since we only consider harmonies.--> Each combination might occur on average an equal number of times as $T\rightarrow\infty$ when the number of observations per combination is $nobs = (T + 1)/(LM)$ or they can vary anywhere between $nobs = 0$ and $nobs = (T+1)$. Now the statistical transformation used for summarizing the measured variable  for a combination should be chosen in line with this $nobs$. For example, it might be useful to compute deciles only when $nobs>=10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem.
+However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $L$ and $M$ categories respectively. <!--Each element of $C_i$ occurs approximately $(T+1)/L$ times while each element of $C_j$ occurs approximately $(T+1)/M$ times. and there are no or very few empty combinations since we only consider harmonies.--> Let $nobs$ be the number of observations for a combination of levels from $(C_i, C_j)$. Now, $nobs$ might be equal for all combinations on an average <!--as $T\rightarrow\infty$ when the number of observations per combination is-->  so that $nobs = (T + 1)/(LM)$ as $T\rightarrow\infty$ or ideally take any value between $\{0, 1, 2, \dots, T\}$. The statistical transformation used for summarizing the measured variable for a combination should be chosen in line with  $nobs$. For example, it might be useful to compute deciles only when $nobs \ge 10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month are more likely to suffer from this problem.
 
 
 
@@ -1326,13 +1257,85 @@ ggpubr::annotate_figure(gg_fig,
                 left = text_grob("electricity demand [KWh]",  rot = 90)) + theme_minimal()
 
 ```
+
 ### Interchangeability of mappings
 
 We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets, then $A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group.<!-- When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$--> With the mapping of $C1$ and $C_2$ reversed, emphasis will shift to different behavior of the variables. \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
 
+
+
+## Choosing harmonies to show {#sec:chooseharmonies}
+
+<!-- Why do we need ranking system -->
+<!-- set of pairs - building the ranks for N_C and N_L -->
+
+\noindent The data structure suggests that we look at pairs of cyclic granularities at a time from $N_C$ cyclic granularities. Hence, all possible pairs of cyclic time granularities that could be analyzed together is $N_C \choose 2$. Now, if $N_C$ is fairly large, even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank these harmonies basis how well they capture the variation in the measured variable.<!--The harmony pairs $(C_i, C_j)$ with higher average variation in the measured variable between different levels of $C_i$ and $C_j$ has a higher chance to bring out distinct characteristics of the data.<!-- Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. -->
+
+<!-- Calculating distances between distributions --> 
+
+\noindent One of the potential ways to evaluate this variation is by computing the maximum pairwise distances between the distributions of the measured variable across different levels of the cyclic granularities. <!--across different levels of $C_j$ and integrating it for all levels of $C_i$. Distances or similarity measures have been extensively studied and applied to fields like clustering, classification and anomaly detection. ---> We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.
+One of the common ways to measure distances between distributions is through Jenson-Shanon divergence which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. The Jensen-Shanon distance between two sample quantile vectors $q_u$ and $q_v$ computed for probability vector $p$ will be given by $$d_{uv} = [D(q_u, r) + D(q_v, r)]/2 \quad where \quad r = (q_u + q_v)/2$$ where,
+ $$D(q_u,q_v) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_u$ and $q_v$.
+
+<!-- Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. -->
+
+
+
+<!-- # why Normalizing required --->
+
+\noindent The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the cyclic granularities. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $X_{1},X_{2}\ldots ,X_{n}$  be a sequence of independent and identically-distributed random variables, and $M_{n}=\max\{X_{1},\ldots ,X_{n}\}$. If a sequence of pairs of real numbers $a_{n}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{n}-b_{n}}{a_{n}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $X_i$'s. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.  
+
+<!-- # distribution of distances and lit review -->
+
+\noindent Menendez1997-in and Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a Chi-squared distribution. However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.
+
+\noindent The algorithm employed addressing all the issues described above is summarized as follows:
+<!-- Algorithm -->
+
+<!-- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
+
+\noindent Algorithm
+**Input** $(C_i, C_j, v) \quad \forall i, j \in N_C$  
+**Output** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
+
+1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$. 
+
+2. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Let $d_1, d_2, d_3, \dots d_m$ be the pairwise Jensen-Shannon distances. Suppose the maximum pairwise distance for $A_k$ maximum be $M_k$.
+
+3. The distribution of distances is heavy tailed. But if they are gamma or weibull could be judged by looking at the QQ-plots of the empirical distribution. The estimates of the parameters are obtained using Maximum Likelihood Estimation.
+
+4. The norming constants $(a_k, b_k)$ are obtained from @Embrechts2013-pd and each $M_k$ is normalized using normalized maximum $NM_k = \frac{M_k - b_k}{a_k}$ for each $A_k$, $k \in {1, 2, \dots, K}$. We have normalized the number of levels of $C_j$ using Steps 1-4.
+
+<!-- the norming constants, which are a function of the parameters are obtained using method of moments. -->
+
+
+<!-- Since the distances follow a Chi-squared distribution with , the norming constants are taken as $a_n = $ and $b_n = $ -->
+
+
+5. We also need to aggregate these normalized maximum across different levels of $C_i$. For this we can take the mean, median or any quantiles of these normalized maximums. The median (and any quantiles) of these maximum distributions (which converges to a Gumbel distribution) grow at the rate of (some power of) $log K$ with $K \xrightarrow{} \infty$. Hence, M/log($K$) could serve as the final measure (MMPD), where $M = median\{NM_1, NM_2, \dots, NM_K\}$.
+
+6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD.
+
+<!-- 2. There will be $m$ time series variable corresponding to each level $A_k$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_k$. -->
+
+
+<!-- Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where, -->
+<!--  $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$. -->
+
+<!-- 4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges. -->
+
+<!-- 5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by -->
+<!-- $MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$. -->
+
+<!-- 6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. -->
+
+<!-- with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$. -->
+
+<!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
+
 ## Number of observations and statistical transformations
 
-Visualizing distributions can be misleading if statistical transformations are performed on rarely occurring categories (\ref{sec:summarize-measured}) or unevenly distributed events. For Kernel density based plots $nobs>30$ is suggested, whereas for summary statistics based plots like boxplots $nobs = 10$ is acceptable and for quantile plots $nobs$ should at least be equal to the number of quantiles plotted.
+Visualizing distributions can be misleading if statistical transformations are performed on rarely occurring categories (Section \ref{sec:summarize-measured}) or unevenly distributed events. For Kernel density based plots $nobs>30$ is suggested, for summary statistics based plots like boxplots $nobs = 10$ is acceptable and for quantile plots $nobs$ should at least be equal to the number of quantiles plotted.
 
 <!-- If we require at least $k$ observations per combination to create a meaningful summarization, then only $T \ge lmk$ will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, $k \ge 30$ is suggested.  -->
 
@@ -1348,7 +1351,6 @@ Even when there are no rarely occurring events, number of observations might var
 <!-- the bias in the estimation of $f(x)$ does not depend directly on the sample size($n$), but only on band width $h$,  -->
 
 <!-- Measures such as Gini's coefficient may be used to see if sample sizes vary widely across panels. -->
-
 
 
 # Applications {#sec:application}
