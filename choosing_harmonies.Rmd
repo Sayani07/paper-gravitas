@@ -117,7 +117,13 @@ Currently, MME is used. But MASS::fitdistr() and package fitdistrplus also provi
 
 # Choose thresholds for harmonies
 
-WIP
+Threholds could be chosen for distances (chi-squared) or maximum distance (Gumbel distribution). 
+
+Critical values of the Chi-squared statistic could be obtained for appropriate degrees of freedom. 
+
+Chi-squared statistic: And test values less than critical value would imply that the distances are not significantly different from zero , implying distributions are similar. If distributions are similar most times, then the plot is not interesting. Hence, all pairs for which most of the pairwise distances are significantly different from zero would only be included in the harmony rank table.
+
+Gumbel statistic: The test decides if the sample of maximum distance is from Gumbel or not. If it is from Gumbel, the value of the test statistic should be ideally zero. And we want to take all pairs for which the statistic is significantly different from zero. So we choose test values greater than the Gumbel critical value at 5% significance.
 
 # Results
 
@@ -156,11 +162,27 @@ data_unite %>%
          "gamma"  = "rank_gamma",
          "weibull"  = "rank_weibull",
          "general"  = "rank_general",
-         "chi"  = "rank_chi") %>% 
+         "chi"  = "rank_chi",
+         "f_L" = "facet_levels",
+         "x_L" = "x_levels") %>% 
   knitr::kable(format = "latex")
+  
+  threshold <- read_rds("data/smart_harmony_threshold.rds") %>% 
+               mutate(thresval = "select") %>% 
+    select(facet_variable, x_variable, thresval)
+
+data_unite %>% 
+  select(-c(normal, gamma, weibull, general, chisq)) %>%
+  left_join(threshold, 
+            by = c("facet_variable", "x_variable"))%>%
+  select(-facet_levels, -x_levels) %>% 
+    knitr::kable(format = "latex")
+
+
 
 # data_unite %>%
-#   select(-c(rank_normal, rank_gamma, rank_weibull, rank_general, rank_chi)) %>% 
+#   select(-c(rank_normal, rank_gamma, rank_weibull, rank_general, rank_chi)) %>%
+#   filter()
 #   knitr::kable()
 ```
 
