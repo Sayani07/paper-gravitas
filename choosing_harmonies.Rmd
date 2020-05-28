@@ -113,7 +113,7 @@ response  = "general_supply_kwh"
 
 # Estimating parameters
 
-Currently, MME is used. But MASS::fitdistr() and package fitdistrplus also provide methods to estimate paramters through MLE. WIP.
+Currently, MME is used. But MASS::fitdistr() and package fitdistrplus also provide methods to estimate parameters through MLE. WIP.
 
 # Choose thresholds for harmonies
 
