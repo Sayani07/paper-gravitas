@@ -1287,51 +1287,45 @@ One of the common ways to measure distances between distributions is through Jen
 
 <!-- # distribution of distances and lit review -->
 
-\noindent Menendez1997-in and Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a Chi-squared distribution. However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.
+\noindent @Menendez1997-in and @Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a Chi-squared distribution. However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.
 
 \noindent The algorithm employed addressing all the issues described above is summarized as follows:
 <!-- Algorithm -->
 
 <!-- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
 
-\noindent Algorithm
 **Input** $(C_i, C_j, v) \quad \forall i, j \in N_C$  
 **Output** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
 
-1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$. 
 
-2. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Let $d_1, d_2, d_3, \dots d_m$ be the pairwise Jensen-Shannon distances. Suppose the maximum pairwise distance for $A_k$ maximum be $M_k$.
+1. Fix $k$. Then there are $L$ groups corresponding to level $A_k$ of $C_i$ for the pair $(C_i, C_j)$.
 
-3. The distribution of distances is heavy tailed. But if they are gamma or weibull could be judged by looking at the QQ-plots of the empirical distribution. The estimates of the parameters are obtained using Maximum Likelihood Estimation.
+2. Compute  $m = \binom{L}{2}$ pairwise distances between distributions of $L$ unordered levels and $m = L-1$ pairwise distances for $L$ ordered categories.
 
-4. The norming constants $(a_k, b_k)$ are obtained from @Embrechts2013-pd and each $M_k$ is normalized using normalized maximum $NM_k = \frac{M_k - b_k}{a_k}$ for each $A_k$, $k \in {1, 2, \dots, K}$. We have normalized the number of levels of $C_j$ using Steps 1-4.
+3. Compute maximum within the $m$ distances.
 
-<!-- the norming constants, which are a function of the parameters are obtained using method of moments. -->
+4. Compute normalised maximum distance ($NM$) using appropriate norming constants so that the distribution of the normalised maximum converges to a Gumbel distribution as $m\rightarrow\infty$.
 
+5. Use Step 1-4 to compute normalised maximum distance for each $k$ levels ($NM_k$).
 
-<!-- Since the distances follow a Chi-squared distribution with , the norming constants are taken as $a_n = $ and $b_n = $ -->
+6. Compute median maximum pairwise distance $$MMPD = median\{NM_1, NM_2, \dots, NM_K\}$$.
 
-
-5. We also need to aggregate these normalized maximum across different levels of $C_i$. For this we can take the mean, median or any quantiles of these normalized maximums. The median (and any quantiles) of these maximum distributions (which converges to a Gumbel distribution) grow at the rate of (some power of) $log K$ with $K \xrightarrow{} \infty$. Hence, M/log($K$) could serve as the final measure (MMPD), where $M = median\{NM_1, NM_2, \dots, NM_K\}$.
-
-6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD.
-
-<!-- 2. There will be $m$ time series variable corresponding to each level $A_k$ of $C_1$. We compute the pairwise differences in distributions of these $m$ time series variables. Thus there will be  $\binom{m}{2}$ pairwise distances corresponding to each $A_k$. -->
+7. Repeat Step 1 to 6 for all harmony pairs.
 
 
-<!-- Suppose $q$ is the sample quantile vector computed for probability vector $p$. Then Jensen-Shanon distance between two sample quantiles $q_j$ and $q_k$ will be given by $$d_{jk} = [D(q_j, r) + D(q_k, r)]/2 \quad where \quad r = (q_j + q_k)/2$$ where, -->
-<!--  $$D(q_j,q_k) = \int^{\infty}_{-\infty}q_j(x)log\frac{q_j(x)}{q_k(x)}\,dx$$ is the Kullback-Leibler divergence between $q_j$ and $q_k$. -->
+<!-- 1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$.  -->
 
-<!-- 4. For each $i \in \{1, 2, \dots, l\}$, the maximum pairwise distance could be chosen from  $\binom{m}{2}$ distances using $D_{i} = max(d_{jk})/m(max(d_{jk}) - min(d_{jk}))$ $\forall j, k = {1, 2, \dots, m}$. Here, maximum is being adjusted against the range of the data to accommodate for comparison of maximum distances for different ranges. -->
+<!-- 2. Pairwise distances are computed between different quantiles of the time series variables using Jensen-Shanon distance. Let $d_1, d_2, d_3, \dots d_m$ be the pairwise Jensen-Shannon distances. Suppose the maximum pairwise distance for $A_k$ maximum be $M_k$. -->
 
-<!-- 5. The mean maximum pairwise distance (MMPD) over $i = {1, 2, \dots, l}$ is computed by -->
-<!-- $MMPD = (1/l)\sum_{i=1}^{l}{D_{i}}$. -->
+<!-- 3. The distribution of distances is heavy tailed. But if they are gamma or weibull could be judged by looking at the QQ-plots of the empirical distribution. The estimates of the parameters are obtained using Maximum Likelihood Estimation. -->
+
+<!-- 4. The norming constants $(a_k, b_k)$ are obtained from @Embrechts2013-pd and each $M_k$ is normalized using normalized maximum $NM_k = \frac{M_k - b_k}{a_k}$ for each $A_k$, $k \in {1, 2, \dots, K}$. We have normalized the number of levels of $C_j$ using Steps 1-4. -->
+
+
+<!-- 5. We also need to aggregate these normalized maximum across different levels of $C_i$. For this we can take the mean, median or any quantiles of these normalized maximums. The median (and any quantiles) of these maximum distributions (which converges to a Gumbel distribution) grow at the rate of (some power of) $log K$ with $K \xrightarrow{} \infty$. Hence, M/log($K$) could serve as the final measure (MMPD), where $M = median\{NM_1, NM_2, \dots, NM_K\}$. -->
 
 <!-- 6. Steps 1 to 5 are repeated for every harmony pair and harmony pairs rearranged from highest to lowest MMPD. -->
 
-<!-- with higher MMPD would be more interesting as it would mean that the harmony pair exhibits more variations in distributions on an average between different levels of $C_2$. -->
-
-<!-- for each level of $C_1$, maximum variation in distribution has been captured against different levels of $C_2$. -->
 
 ## Number of observations and statistical transformations
 
