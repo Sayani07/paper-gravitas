@@ -1970,8 +1970,11 @@ cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
   ylab("runs per over")  +
   xlab("number of wickets in previous over") +
   ggtitle("b") +
-   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
-# + geom_boxplot(width = 0.5, aes(colour = lag_field))
+   theme(plot.title = element_text(face = "bold")) +
+        theme(axis.ticks = element_blank(), legend.background = element_blank(),
+            legend.key = element_blank(), panel.background = element_blank(), strip.background = element_blank(),
+            plot.background = element_blank(), complete = TRUE, panel.grid.major = element_line(colour = "#E0E0E0"),
+            panel.border = element_rect(colour = "#E0E0E0", fill = NA))
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
