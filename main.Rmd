@@ -1283,7 +1283,7 @@ One of the common ways to measure distances between distributions is through Jen
 
 <!-- # why Normalizing required --->
 
-\noindent The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the cyclic granularities. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $X_{1},X_{2}\ldots ,X_{n}$  be a sequence of independent and identically-distributed random variables, and $M_{n}=\max\{X_{1},\ldots ,X_{n}\}$. If a sequence of pairs of real numbers $a_{n}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{n}-b_{n}}{a_{n}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $X_i$'s. Hence to normalize appropriately, it is important to assume a distribution of distances in our case.  
+\noindent The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the cyclic granularities. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $d_{1},d_{2}\ldots ,d_{m}$  be a sequence of independent and identically-distributed pairwise distances, and $M_{m}=\max\{d_{1},\ldots ,d_{m}\}$. If a sequence of pairs of real numbers $a_{m}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{m}-b_{m}}{a_{m}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $d_i$'s. Hence to normalize appropriately, it is important to assume a distribution of $d_i$'s in our case.  
 
 <!-- # distribution of distances and lit review -->
 
@@ -1294,11 +1294,12 @@ One of the common ways to measure distances between distributions is through Jen
 
 <!-- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
 
-**Input** $(C_i, C_j, v) \quad \forall i, j \in N_C$  
-**Output** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
+- **Input:** Data corresponding to all harmony pairs, i.e., data sets of the form $(C_i, C_j, v)$ 
+$\forall i, j \in N_C$  
+- **Output:** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
 
 
-1. Fix $k$. Then there are $L$ groups corresponding to level $A_k$ of $C_i$ for the pair $(C_i, C_j)$.
+1. Fix $k$. Then there are $L$ groups corresponding to level $A_k$ of $C_i$.
 
 2. Compute  $m = \binom{L}{2}$ pairwise distances between distributions of $L$ unordered levels and $m = L-1$ pairwise distances for $L$ ordered categories.
 
@@ -1306,11 +1307,11 @@ One of the common ways to measure distances between distributions is through Jen
 
 4. Compute normalised maximum distance ($NM$) using appropriate norming constants so that the distribution of the normalised maximum converges to a Gumbel distribution as $m\rightarrow\infty$.
 
-5. Use Step 1-4 to compute normalised maximum distance for each $k$ levels ($NM_k$).
+5. Use Steps 1-4 to compute normalised maximum distance for each $k$ levels ($NM_k$).
 
-6. Compute median maximum pairwise distance $$MMPD = median\{NM_1, NM_2, \dots, NM_K\}$$.
+6. Compute $MMPD = median(NM_1, NM_2, \dots, NM_K)/log(K)$. Median normalised distance grows at the rate of log(K) as $K\rightarrow\infty$ and hence is normalised for the value of K in $MMPD$. 
 
-7. Repeat Step 1 to 6 for all harmony pairs.
+7. Repeat Steps 1 to 6 for all harmony pairs.
 
 
 <!-- 1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$.  -->
