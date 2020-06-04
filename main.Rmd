@@ -1274,20 +1274,22 @@ We will discuss the effect of the mapping of cyclic granularities in this sectio
 <!-- Calculating distances between distributions --> 
 
 \noindent One of the potential ways to evaluate this variation is by computing the maximum pairwise distances between the distributions of the measured variable across different levels of the cyclic granularities. <!--across different levels of $C_j$ and integrating it for all levels of $C_i$. Distances or similarity measures have been extensively studied and applied to fields like clustering, classification and anomaly detection. ---> We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.
-One of the common ways to measure distances between distributions is through Jenson-Shanon divergence (@Lin1991-fj) which is based on Kullback-Leibler divergence. The Jensen-Shanon distance between two probability distribution p1 and p2 is given by $$d_{p_1, p2} = [D(p_1, r) + D(p_2, r)]/2 \quad where \quad r = (p_1 + p_2)/2$$ where,
+One of the common ways to measure distances between distributions is through Jenson-Shanon divergence (@Lin1991-fj) which is based on Kullback-Leibler divergence. The Jensen-Shanon distance between two probability distribution p1 and p2 is given by $$d = [D(p_1, r) + D(p_2, r)]/2 \quad where \quad r = (p_1 + p_2)/2$$ where,
  $$D(p_1,p_2) = \int^{\infty}_{-\infty}p_1(x)log\frac{p_1(x)}{p_2(x)}\,dx$$ is the Kullback-Leibler divergence between $p_1$ and $p_2$. Probability distributions are estimated through quantiles instead of kernel density so that there is minimal dependency on selecting kernel or bandwidth. 
 
  <!-- $q_u$ and $q_v$ computed for probability vector $p$ will be given by -->
 
 <!-- # why Normalizing required --->
 
-\noindent The choice of aesthetic mapping and facets for visualizing data sets <$C_i$, $C_j$, $v$> leads to placing $A_k$'s in close proximity with $B_l$ representing a group/facet. A harmony pair ($C_i$, $C_j$) would be a more interesting display if the maximum pairwise distance between $A_k$'s $\forall k \in \{1, 2, \dots, K\}$ are higher for each group/facet. A probable solution for ranking interesting harmony pairs could be to arrange from highest to lowest average maximum pairwise distances. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $d_{1},d_{2}\ldots ,d_{m}$  be a sequence of independent and identically-distributed pairwise distances, and $M_{m}=\max\{d_{1},\ldots ,d_{m}\}$. If a sequence of pairs of real numbers $a_{m}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{m}-b_{m}}{a_{m}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $d_i$'s. Hence to normalize appropriately, it is important to assume a distribution of $d_i$'s in our case.  
+\noindent The choice of aesthetic mapping and facets for visualizing data sets <$C_i$, $C_j$, $v$> leads to placing $A_k$'s in close proximity with $B_l$ representing a group/facet. A harmony pair ($C_i$, $C_j$) would be a more interesting display if the maximum pairwise distance between $A_k$'s $\forall k \in \{1, 2, \dots, K\}$ are higher for each group/facet. A probable solution for ranking interesting harmony pairs could be to arrange from highest to lowest average maximum pairwise distances. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized in a way that eliminates the effect of different levels.<!--- \noindent The Fisher–Tippett–Gnedenko theorem states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. --> Suppose $d_{1},d_{2}\ldots ,d_{m}$ be a sequence of independent and identically-distributed pairwise distances, and $M_{m}=\max\{d_{1},\ldots ,d_{m}\}$. If a sequence of pairs of real numbers $(a_{m}, b_{m})$ exists such that each $a_{m}>0$ and $\lim _{{m\to \infty }}P\left({\frac  {M_{m}-b_{m}}{a_{m}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants $(a_{m}, b_{m})$ vary depending on the underlying distribution of the pairwise distances. Hence to normalize appropriately, it is important to assume a distribution of these distances. 
 
 <!-- # distribution of distances and lit review -->
 
-\noindent @Menendez1997-in and @Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a Chi-squared distribution. However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.
+\noindent @Menendez1997-in and @Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a chi-squared distribution with degrees of freedom equal to the number of discretization used to estimate the continuous distribution. With large degrees of freedom, chi-squared is asymptotically normal by the CLT. Hence, the norming constants for the distribution of maximum distance are chosen to be $b_m = \Phi^{-1}(1- 1/m)$ and $a_m = 1/m\phi(b_m)$, where $\Phi^{-1}$ and $\phi$ are the quantile and density function of a standard normal distribution.
 
-\noindent The algorithm employed addressing all the issues described above is summarized as follows:
+<!--However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.-->
+
+\noindent The algorithm employed is summarized as follows:
 <!-- Algorithm -->
 
 <!-- 1. Suppose $C_i$ and $C_2$ are two cyclic granularities such that $C_i$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_l$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
@@ -1297,19 +1299,21 @@ $\forall i, j \in N_C$
 - **Output:** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
 
 
-1. Fix $k$. Then there are $L$ groups corresponding to level $A_k$ of $C_i$.
+1. Fix harmony pair $(C_i, C_j)$.
 
-2. Compute  $m = \binom{L}{2}$ pairwise distances between distributions of $L$ unordered levels and $m = L-1$ pairwise distances for $L$ ordered categories.
+2. Fix $k$. Then there are $L$ groups corresponding to level $A_k$ of $C_i$.
 
-3. Compute maximum within the $m$ distances.
+3. Compute  $m = \binom{L}{2}$ pairwise distances between distributions of $L$ unordered levels and $m = L-1$ pairwise distances for $L$ ordered categories.
 
-4. Compute normalised maximum distance ($NM$) using appropriate norming constants so that the distribution of the normalised maximum converges to a Gumbel distribution as $m\rightarrow\infty$.
+4. Compute maximum within the $m$ computed distances.
 
-5. Use Steps 1-4 to compute normalised maximum distance for each $k$ levels ($NM_k$).
+5. Compute normalized maximum distance ($NM$) using appropriate norming constants so that the distribution of the normalized maximum converges to a Gumbel distribution as $m\rightarrow\infty$.
 
-6. Compute $MMPD = median(NM_1, NM_2, \dots, NM_K)/log(K)$. Median normalised distance grows at the rate of log(K) as $K\rightarrow\infty$ and hence is normalised for the value of K in $MMPD$. 
+6. Use Steps 1-4 to compute normalized maximum distance for $\forall k \in  \{1, 2, \ldots, K\}$.
 
-7. Repeat Steps 1 to 6 for all harmony pairs.
+7. Compute MMPD = median $(NM_1, NM_2, \dots, NM_K)$/log($K$). Median normalized distance grows at the rate of log($K$) as $K\rightarrow\infty$ and hence is normalized for the value of $K$ in MMPD. 
+
+8. Repeat Steps 1 to 7 for all harmony pairs.
 
 
 <!-- 1. For each pair of cyclic granularity $(C_i, C_j)$, there will be $L$ groups corresponding to each level $A_k$ of $C_i$. Thus there will be  $m = \binom{L}{2}$ pairwise distances corresponding to each $A_k$.  -->
