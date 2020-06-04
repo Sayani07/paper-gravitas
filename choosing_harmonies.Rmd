@@ -419,6 +419,24 @@ data_unite %>%
 ```
 
 
+```{r}
+cricket_data <- read_rds("data/cricket_data.rds")
+cricket_data %>%
+  filter(over!=1) %>%
+  prob_plot("over", "lag_field",
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "violin",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over")  +
+  xlab("number of wickets in previous over") +
+  ggtitle("b") +
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
+```
+
+
 # Bibliography
 
 ```{r write-bib, eval = FALSE}
