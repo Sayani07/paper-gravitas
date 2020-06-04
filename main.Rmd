@@ -388,7 +388,7 @@ minute-of-hour                               &
   $C_1 = z \mod 60$                     &
   $P_1 = \phantom{99}60$ \\
 minute-of-day                                &
-  $C_2 = z \mod 60*24$                  &
+  $C_j = z \mod 60*24$                  &
   $P_2= `r 60*24`$\\
 hour-of-day                                  &
   $C_3 = \lfloor z/60\rfloor\mod 24$    &
@@ -859,7 +859,7 @@ Single-order-up quasi-circular granularity could be obtained from multiple-order
 
 <!-- CONTENT SHORT -->
 <!-- across bivariate cyclic granularities.  -->
-<!-- Let us consider two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ denotes the measurement variable. Data sets of the form <$C_1$, $C_2$, $v$> can then form the basis for exploration and analysis of the measured variable across bivariate cyclic granularities.  -->
+<!-- Let us consider two cyclic granularities $C_1$ and $C_j$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_j$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ denotes the measurement variable. Data sets of the form <$C_1$, $C_j$, $v$> can then form the basis for exploration and analysis of the measured variable across bivariate cyclic granularities.  -->
 
 
 <!--Since, we are interested in detection of unknown periodic behavior of data, it makes sense to support the detection of patterns by obtaining statistical summaries across cyclic time granularities.-->
@@ -880,7 +880,7 @@ include_graphics("Figs/data-struc-rev.png")
 
 ## Harmonies and clashes {#sec:synergy}
 
-<!-- Let us consider two cyclic granularities $C_1$ and $C_2$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ denotes the measurement variable. Data sets of the form <$C_1$, $C_2$, $v$> can then form the basis for exploration and analysis of the measured variable across bivariate cyclic granularities. -->
+<!-- Let us consider two cyclic granularities $C_1$ and $C_j$, such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_j$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ denotes the measurement variable. Data sets of the form <$C_1$, $C_j$, $v$> can then form the basis for exploration and analysis of the measured variable across bivariate cyclic granularities. -->
 
 The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). Let us consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k | k \in \mathbb{N}, k \leq K\}$ and $C_j$ maps index set to a set $\{B_l | l \in \mathbb{N}, l \leq L\}$. Here, $A_k$'s or $B_l$'s are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{kl}$ be a subset of the index set such that for all $s \in S_{kl}$, $C_i(s) = A_k$ and $C_j(s) = B_l$. Data subsets for each combination of levels ($A_k$, $B_l$) like <$A_k$, $B_l$, $v(s)$> can be obtained for all $k \in {1, 2, \dots, K}$ and $l \in {1, 2, \dots, L}$  which will lead to $KL$ data subsets. Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $KL$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities. <!--The implication of these empty sets on visualization will be discussed in Section \ref{sec:vis-interaction}. -->
 
@@ -1004,7 +1004,7 @@ However, we need to consider the effect of number of observations on the summari
 
 <!-- A well designed visual representation can replace cognitive calculations with simple perpetual inferences and improve speed of comprehension and decision making. However, creating a visualization requires a number of nuanced judgements. The challenge being given a data set, the number of visual encodings and hence the space of possible visual design is extremely huge.  -->
 
-The grammar of graphics introduced a framework to construct statistical graphics by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by @Wickham2009pk, which is an alternate and modified parametrization of the grammar suggests that graphics are made up of distinct layers of grammatical elements. Drawing from the grammar of graphics, if <$C_1$, $C_2$, $v$> serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
+The grammar of graphics introduced a framework to construct statistical graphics by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by @Wickham2009pk, which is an alternate and modified parametrization of the grammar suggests that graphics are made up of distinct layers of grammatical elements. Drawing from the grammar of graphics, if <$C_i$, $C_j$, $v$> serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
 
 <!-- CONTENT CUT -->
 <!-- There are seven grammatical elements in total, out of which data, aesthetics and geometries are essential elements. Data are observations made on a number of variables, typically thought of as a sample from a population distribution. Aesthetic mapping describes how variables are mapped to elements of the plot, such as horizontal axis or color. Geometries determine the physical representation of the data in the plot. The remaining grammatical elements of a graphic namely facets, statistics, coordinates and themes are optional and contains detail of the plot. Facets dictates how to split up our plot and is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data and can see whether they are the same or different. -->
@@ -1030,11 +1030,11 @@ The grammar of graphics introduced a framework to construct statistical graphics
 <!-- - **A coordinate system** maps the position of objects onto the plane of the plot, and controls how the axes and grid lines are drawn.  -->
 
 
-- Data: <$C_1$, $C_2$, $v$>
-- Aesthetic mapping (mapping of variables to elements of the plot): $C_1$ mapped to $x$ position and $v$ to $y$ position
+- Data: <$C_i$, $C_j$, $v$>
+- Aesthetic mapping (mapping of variables to elements of the plot): $C_i$ mapped to $x$ position and $v$ to $y$ position
 - Statistical transformation (data summarization): any descriptive or smoothing statistics that summarizes distribution of $v$
 - Geometric objects (physical representation of the data): any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
-- Facet (split plots):  $C_2$
+- Facet (split plots):  $C_j$
 
 <!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or faceting. Faceting creates tables of graphics by displaying the same graph for each subset. -->
 
@@ -1051,15 +1051,15 @@ The grammar of graphics introduced a framework to construct statistical graphics
 
 <!-- .  allows us to produce graphics using the same structured thinking that is used to design analysis. Briefly, any graphics are made up of **Layers**, **Facet**, **Scale** and a  **coordinate system**. **Layers** are made up of **data**, **mapping**, **statistical transformation**, **geometric objects** and **position adjustments**. -->
 
-<!-- The three key components of every visualization is: data, aesthetic mappings between variables in the data and visual attributes, and at least one layer which describes how to render each observation. Layers are usually created with a geom function. Considering the data structure <$A_k$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, visualizations can be defined by: -->
-<!-- - Data: <$A_k$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ -->
+<!-- The three key components of every visualization is: data, aesthetic mappings between variables in the data and visual attributes, and at least one layer which describes how to render each observation. Layers are usually created with a geom function. Considering the data structure <$A_k$, $B_l(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$, visualizations can be defined by: -->
+<!-- - Data: <$A_k$, $B_l(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ -->
 <!-- - Aesthetic mapping: $A_k$ mapped to $x$ position and $v(s)$ to $y$ position. -->
 <!-- - Layer: any geom that summarizes distribution -->
 
 <!-- To add additional variables to a plot, we can use other aesthetics like colour, shape, and size or faceting. Faceting creates tables of graphics by displaying the same graph for each subset. -->
-<!-- - Facet:  $B_j(s)$ -->
+<!-- - Facet:  $B_l(s)$ -->
 
-<!-- We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_k$, $B_j(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
+<!-- We exploit some features of layers and faceting [@Wilkinson1999-nk] and [@Wickham2009pk] to come up with a recommendation system while visualizing the distribution of the "dependent" variable across bivariate cyclic temporal granularities with the data structure <$A_k$, $B_l(s)$, $v(s)$> $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$. The framework involves faceting approach with one cyclic granularity plotted along the x-axis, the other one across facet and the dependent time series variable on the y-axis. -->
 
 <!-- Hence, the ingredients for the plots are subsets of numbers (or categorical measurements), and the choice of faceting or axis alignment for the subset strata. The basic plot choice is display of density. Different plots might be appropriate depending on which features of the density we arae interested to look at, the levels of time granularities being plotted, how granularities interact and number of observations available. We will look at each of these aspects separately and analyze the effect of each on visualization. While we accomplish that, we need to bear in mind that any customized species of visualization might be constructed by varying the set of mappings between data properties and visual attributes such as position, shape and color. We are trying to address problems where even with good aesthetic qualities and good data, the graph might be confusing or misleading because of how people process the information. -->
 
@@ -1113,7 +1113,7 @@ Choice of plots are dictated by the statistical transformations and geometric ob
 
 ### Levels {#sec:levels}
 
-We will discuss the effect of the levels of cyclic granularities on the choice of plots <!--Recall that for cyclic granularities $C_1$ and $C_2$ such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. $A_k$'s and $B_j$'s are referred to as the levels of $C_1$ and $C_2$ for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ respectively.The levels have an impact on the--> since space and resolution might become a problem if the number of levels are too high. A potential approach could be to categorize the levels as very high/high/medium/low for each cyclic granularity and define some criteria based on usual cognitive power, display size available and the aesthetic mappings. Default values for these categorizations could be chosen based on levels of common temporal granularities like days of the month, days of the fortnight or days of the week.<!--For example, any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low.>
+The levels of cyclic granularities has a role to play on the choice of plots <!--Recall that for cyclic granularities $C_i$ and $C_j$ such that $C_i$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_n$\}, and $C_j$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\}. $A_k$'s and $B_l$'s are referred to as the levels of $C_i$ and $C_j$ for all $i \in {1, 2, \dots, n}$ and $j \in {1, 2, \dots, m}$ respectively.The levels have an impact on the--> since space and resolution might become a problem with too many levels. A potential approach could be to categorize the levels as very high/high/medium/low for each cyclic granularity and define some criteria based on usual cognitive power, display size available and the aesthetic mappings. Default values for these categorizations could be chosen based on levels of common temporal granularities like days of the month, days of the fortnight or days of the week.<!--For example, any levels above 31 can be considered as very high, any levels between 14 to 31 can be taken as high and that between 7 to 14 can be taken as medium and below 7 as low.>
 
 <!-- The criteria for different levels could be based on usual cognitive power while comparing across facets and display size available to us.  -->
 
@@ -1146,7 +1146,7 @@ We will discuss the effect of the levels of cyclic granularities on the choice o
 
 <!-- Even after screening harmonies from the list of all possible pairs of cyclic time granularities, the options could be too many and it might be useful to rank these harmonies. Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most important display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. And the harmony pair which has more variation between x-axis levels for all facet levels on an average is likely to be a good measure of how important a harmony pair is displaying the insights of the data. Distances between probability distributions of the measured variable across x-axis levels are computed using Jenson-Shannon distances which is a symmetric divergence obtained from Kullback-Leibler divergence measure. Probability distributions are represented through sample percentiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. -->
 <!-- Suppose we have ${x_1, x_2, \dots, x_n} which are random sample from some underlying population. --> <!-- Let $p(x)$ and $q(x)$ be two probability distributions of a random variable x. -->
-<!-- We compute Kullback-Liebler distance based on quantiles $q_1$ and $q_2$ of $v$ at probabilities $p$ corresponding to $C_1$ and $C_2$ respectively. -->
+<!-- We compute Kullback-Liebler distance based on quantiles $q_1$ and $q_2$ of $v$ at probabilities $p$ corresponding to $C_i$ and $C_j$ respectively. -->
 
 <!-- \begin{equation} -->
 <!-- D(q_1,q_2) = \int^{\infty}_{-\infty}q_1(x)logq_1(x)/q_2(x)\,dx -->
@@ -1161,7 +1161,7 @@ We will discuss the effect of the levels of cyclic granularities on the choice o
 
 ### Synergy of cyclic granularities {#sec:vis-interaction}
 
-If there are levels of cyclic granularities plotted across the  x-axis which are not spanned by levels of cyclic granularities plotted across facets or vice versa, we will have empty sets leading to potential ineffective graphs. We hypothesize that the synergy of these cyclic granularities are thus playing a role while deciding if the resulting plot would be a good candidate for exploratory analysis. Harmonies are pairs of granularities that do not contain empty combinations and thus aid exploratory data analysis, and clashes are pairs that do not aid the process of exploratory analysis because they contain empty combinations. As a result, we should avoid plotting clashes. For illustration, \autoref{fig:allFig} (a) shows the distribution of half-hourly electricity consumption through letter value plot across months of the year faceted by quarters of the year. This plot does not work because every quarter does not correspond to all months of the year, for example, the first quarter of the year would never correspond to the month December of an year.
+For data sets of the form ($C_i$, $C_j$, $v$) $\forall i, j \in N_C$, if there are levels of $C_i$ (or $C_j$) not spanned by levels of $C_j$ (or $C_i$), empty sets are formed leading to potential ineffective graphs. The conjecture is that the synergy of these cyclic granularities are thus playing a role while deciding if the resulting plot would be a good candidate for exploratory analysis. Harmonies are pairs of granularities that do not contain empty combinations and thus aid exploratory data analysis. Plotting Clashes should be avoided since they contain empty combinations. For illustration, \autoref{fig:allFig} (a) shows the distribution of half-hourly electricity consumption through letter value plot across months of the year faceted by quarters of the year. This plot does not work because every quarter does not correspond to all months of the year, for example, the first quarter of the year would never correspond to the month December of an year.
 
 <!--In Section \ref{sec:synergy}, we discussed how pairs of granularities can have empty combinations either due to structure of calendar, event location or duration or due to the way they are built. In this section, we will see how these empty combinations affect the visualization when a dependent variable is plotted against these granularities.-->
 
@@ -1260,7 +1260,7 @@ ggpubr::annotate_figure(gg_fig,
 
 ### Interchangeability of mappings
 
-We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_1$, $C_2$, $v$> with $C_1$ mapped to $x$ position and $C_2$ to facets, then $A_i$'s are placed in close proximity and each $B_j$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_i$'s are compared against each other within each group.<!-- When $C_2$ is mapped to facets and $C_1$ is mapped to $x$ axis, comparisons would ideally happen across all $B_j$ within each $A_i$--> With the mapping of $C1$ and $C_2$ reversed, emphasis will shift to different behavior of the variables. \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
+We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_i$, $C_j$, $v$> with $C_i$ mapped to $x$ position and $C_j$ to facets, then $A_k$'s are placed in close proximity and each $B_l$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_k$'s are compared against each other within each group.<!-- When $C_j$ is mapped to facets and $C_i$ is mapped to $x$ axis, comparisons would ideally happen across all $B_l$ within each $A_k$--> With the mapping of $C_i$ and $C_j$ reversed, emphasis will shift to different behavior of the variables. \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
 
 
 
@@ -1274,15 +1274,14 @@ We will discuss the effect of the mapping of cyclic granularities in this sectio
 <!-- Calculating distances between distributions --> 
 
 \noindent One of the potential ways to evaluate this variation is by computing the maximum pairwise distances between the distributions of the measured variable across different levels of the cyclic granularities. <!--across different levels of $C_j$ and integrating it for all levels of $C_i$. Distances or similarity measures have been extensively studied and applied to fields like clustering, classification and anomaly detection. ---> We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.
-One of the common ways to measure distances between distributions is through Jenson-Shanon divergence (@Lin1991-fj) which is based on Kullback-Leibler divergence. The Jensen-Shanon distance between twon probability distribution p1 and p2 is given by:  $q_u$ and $q_v$ computed for probability vector $p$ will be given by $$d_{p_1, p2} = [D(p_1, r) + D(p_2, r)]/2 \quad where \quad r = (p_1 + p_2)/2$$ where,
- $$D(p_1,p_2) = \int^{\infty}_{-\infty}p_1(x)log\frac{p_1(x)}{p_2(x)}\,dx$$ is the Kullback-Leibler divergence between $p_1$ and $p_2$. 
+One of the common ways to measure distances between distributions is through Jenson-Shanon divergence (@Lin1991-fj) which is based on Kullback-Leibler divergence. The Jensen-Shanon distance between two probability distribution p1 and p2 is given by $$d_{p_1, p2} = [D(p_1, r) + D(p_2, r)]/2 \quad where \quad r = (p_1 + p_2)/2$$ where,
+ $$D(p_1,p_2) = \int^{\infty}_{-\infty}p_1(x)log\frac{p_1(x)}{p_2(x)}\,dx$$ is the Kullback-Leibler divergence between $p_1$ and $p_2$. Probability distributions are estimated through quantiles instead of kernel density so that there is minimal dependency on selecting kernel or bandwidth. 
 
-
-Probability distributions are estimated through quantiles instead of kernel density so that there is minimal dependency on selecting kernel or bandwidth. 
+ <!-- $q_u$ and $q_v$ computed for probability vector $p$ will be given by -->
 
 <!-- # why Normalizing required --->
 
-\noindent The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the cyclic granularities. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $d_{1},d_{2}\ldots ,d_{m}$  be a sequence of independent and identically-distributed pairwise distances, and $M_{m}=\max\{d_{1},\ldots ,d_{m}\}$. If a sequence of pairs of real numbers $a_{m}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{m}-b_{m}}{a_{m}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $d_i$'s. Hence to normalize appropriately, it is important to assume a distribution of $d_i$'s in our case.  
+\noindent The choice of aesthetic mapping and facets for visualizing data sets <$C_i$, $C_j$, $v$> leads to placing $A_k$'s in close proximity with $B_l$ representing a group/facet. A harmony pair ($C_i$, $C_j$) would be a more interesting display if the maximum pairwise distance between $A_k$'s $\forall k \in \{1, 2, \dots, K\}$ are higher for each group/facet. A probable solution for ranking interesting harmony pairs could be to arrange from highest to lowest average maximum pairwise distances. But maximum is not robust to the number of levels and seems to be higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized in a way that eliminates the effect of different levels. \noindent The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re-normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. Suppose $d_{1},d_{2}\ldots ,d_{m}$  be a sequence of independent and identically-distributed pairwise distances, and $M_{m}=\max\{d_{1},\ldots ,d_{m}\}$. If a sequence of pairs of real numbers $a_{m}>0$ and $\lim _{{n\to \infty }}P\left({\frac  {M_{m}-b_{m}}{a_{m}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, the Fréchet or the Weibull family. The normalizing constants, however, vary depending on the underlying distribution of $d_i$'s. Hence to normalize appropriately, it is important to assume a distribution of $d_i$'s in our case.  
 
 <!-- # distribution of distances and lit review -->
 
@@ -1291,7 +1290,7 @@ Probability distributions are estimated through quantiles instead of kernel dens
 \noindent The algorithm employed addressing all the issues described above is summarized as follows:
 <!-- Algorithm -->
 
-<!-- 1. Suppose $C_1$ and $C_2$ are two cyclic granularities such that $C_1$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_j$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
+<!-- 1. Suppose $C_i$ and $C_2$ are two cyclic granularities such that $C_i$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_l$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
 
 - **Input:** Data corresponding to all harmony pairs, i.e., data sets of the form $(C_i, C_j, v)$ 
 $\forall i, j \in N_C$  
@@ -1336,7 +1335,7 @@ Visualizing distributions can be misleading if statistical transformations are p
 <!-- CONTENT CUT -->
 <!-- ### Rarely occurring events -->
 
-<!-- Suppose we have $T$ observations, and two cyclic granularities $C_1$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_1$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem. -->
+<!-- Suppose we have $T$ observations, and two cyclic granularities $C_i$ with $n$ categories and $C_2$ with $m$ categories. Each element of $C_i$ occurs approximately $T/n$ times while each element of $C_2$ occurs approximately $T/m$ times. There are no empty combinations, and each combination will occur on average an equal number of times as $T\rightarrow\infty$, so the average number of observations per combination is $T/(mn)$. If we require at least $k$ observations to create a meaningful panel, then provided $T \ge mnk$, the visualization will be acceptable. The value of $k$ will depend on the statistical transformation we are producing. For computing deciles, $k=10$ may be acceptable, but for density estimates, we would need $k \ge 30$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month can suffer from such problem. -->
 
 <!-- The above discussion shows that problems will occur when $n_1n_2 > T/k$, even without structurally empty combinations. -->
 
