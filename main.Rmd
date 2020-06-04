@@ -1355,7 +1355,7 @@ Even when there are no rarely occurring events, number of observations might var
 ## Smart meter data of Australia {#sec:smartmeter}
 
 <!-- # how data looks -->
-Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trial [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. <!--It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units.-->The idea here is to show how to look at the energy consumption across different cyclic granularities in a systematic way to identify different behavioral patterns.
+Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trials [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. <!--It would be interesting to explore the energy consumption distribution for these customers and gain insights on their energy behavior which are lost either due to aggregation or looking only at coarser temporal units.-->The idea here is to show how to visualize the distribution of the energy consumption across different cyclic granularities in a systematic way to identify different behavioral patterns.
 
 <!-- and identify the extreme and regular households. -->
 
@@ -1386,9 +1386,9 @@ Smart meters provide large quantities of measurements on energy usage for househ
 ridge or highest density region plots can then be used to explore the data set.-->
 
 ### Cyclic granularities search and computation:
-
-The tsibble object `smart_meter10` from R package `gravitas` [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing to consider is which cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month, year, there could be $(6*5/2) = 15$ (via \ref{sec:data-structure}) circular or quasi-circular granularities that could be formed relating two linear granularities at a time. If these options are considered too numerous, the smallest and largest granularities are good candidates to consider. Hence, we removed half hour and year. Then we will be left $(4*3/2) = 6$ cyclic granularites, namely: "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month", read as "hour of the day", etc. Now that we have a list of cyclic granularities to look at, we should be able to compute the multiple-order-up granularities using Section \ref{sec:cyclic-calendar}. <!-- The lubridate package [@Grolemund2011-vm] provides tools to compute single-order-up granularities, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month).  -->
-with the index set mapping half-hourly time periods to a set of positive integers.
+  
+The tsibble object `smart_meter10` from R package `gravitas` [@R-gravitas] is used to facilitate the systematic exploration here. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing to consider is which cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month and year in the hierarchy table, $N_C = (6*5/2) = 15$. <!--(via Section \ref{sec:data-structure}) circular or quasi-circular granularities that could be formed relating two linear granularities at a time.--> If $N_C$ seem too large, the smallest and largest linear granularities could be considered to be removed from the hierarchy table. We remove half-year and year to have $N_C = (4*3/2) = 6$ and obtain cyclic granularities namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month", read as "hour of the day", etc. Further, we add cyclic granularity day-type( "wknd_wday") to capture weekend and weekday behavior. Now that we have a list of cyclic granularities to look at, we should be able to compute the multiple-order-up granularities using Section \ref{sec:cyclic-calendar}. <!-- The lubridate package [@Grolemund2011-vm] provides tools to compute single-order-up granularities, \ref{sec:circular-gran-def} (for hour_day, hour_week and day_week) and \ref{sec:quasi-circular-gran-def} (for hour_month, day_month, week_month).  
+with the index set mapping half-hourly time periods to a set of positive integers.-->
 
 
 
@@ -1406,11 +1406,12 @@ with the index set mapping half-hourly time periods to a set of positive integer
 
 <!-- These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def}), quasi-circular. <!--(Section \ref{sec:quasi- circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})-->
 
-
 ```{r search, echo=FALSE, eval = FALSE}
 library(gravitas)
 smart_meter %>%
-  search_gran(filter_out = c("semester", "quarter", "fortnight"))
+  search_gran(filter_out = c("semester", 
+                             "quarter",
+                             "fortnight"))
 ```
 
 <!-- #smart_smart_search <- smart_meter %>% search_gran() -->
@@ -1439,9 +1440,6 @@ smart_meter10 %>% search_gran(
 ```
 
 
-
-
-
 <!-- # smart_meter_limit2 <- smart_meter10 %>% search_gran(highest_unit = "month", -->
 <!-- #                               filter_out = c("hhour", "fortnight") -->
 <!-- # ) -->
@@ -1451,7 +1449,7 @@ smart_meter10 %>% search_gran(
 
 ### Screening and visualizing harmonies
 
-From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Recalling the data structure <$C1$, $C2$, `general_supply_kwh`> that we would use for exploration, each of these six cyclic granularities can either be mapped to x-axis or to facet. Choosing 2 of the possible 6 granularities, which is equivalent to having ${6 \choose 2} = 30$ candidates for visualization. Fortunately, harmony granularities can be identified among those 30 possibilities to narrow the search. \autoref{tab:harmony-tab} shows 13 harmonies pairs, after removing clashes and any cyclic granularities with levels more than 31, as effective  exploration becomes difficult with many levels (Section \ref{sec:levels}). For each of \autoref{fig:bothcust} (b) and (c), $C1$ is the circular granularity day-type (weekday/weekend) and $C2$ is hour of the day. The geometry used for displaying the distribution is chosen as area-quantiles and violins in \autoref{fig:bothcust} (b and c respectively). \autoref{fig:bothcust} (a) displays reverse mapping of $C1$ and $C2$ with $C1$ now denoting hour of the day and $C2$ denoting day-type with distribution geometrically displayed as boxplots.
+From the search list, $N_C = 7$ cyclic granularities are chosen for which we would like to derive insights of energy behavior. Recalling the data structure <$C_i$, $C_j$, `general_supply_kwh`> for exploration $\forall i, j \in \{1, 2, ldots, 7\}$, each of these $7$ cyclic granularities can either be mapped to x-axis or to facet. Choosing $2$ of the possible $7$ granularities, which is equivalent to having ${7 \choose 2} = 21$ candidates for visualization. Fortunately, harmony granularities can be identified among those $21$ possibilities to narrow the search. \autoref{tab:harmony-tab} shows $10$ harmony pairs after removing clashes and any cyclic granularities with levels more than 31, as effective  exploration becomes difficult with many levels (Section \ref{sec:levels}). For each of \autoref{fig:bothcust} (b) and (c), $C_i$ is the circular granularity day-type (weekday/weekend) and $C_j$ is hour of the day. The geometry used for displaying the distribution is chosen as area-quantiles and violins in \autoref{fig:bothcust} (b and c respectively). \autoref{fig:bothcust} (a) displays reverse mapping of $C_i$ and $C_j$ with $C_i$ denoting hour of the day and $C_j$ denoting day-type with distribution geometrically displayed as boxplots.
 
 
 <!-- From the search list, we found six cyclic granularities for which we would like to derive insights of energy behavior. Given the data structure <$C1$, $C2$, `general_supply_kwh`>, each of those six cyclic granularities can either be mapped to x-axis or to facet. Thus the problem is equivalent to taking 2 granularities at a time from six, which essentially is equivalent to having 30 data subsets for visualization. However, harmony/clash pairs can be identified among those 30 possibilities to determine feasibility of plotting any pairs together. \autoref{tab:harmony-tab} shows 13 harmonies pairs, each of which can be plotted together to look at the energy behavior from different perspectives. -->
