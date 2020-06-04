@@ -306,6 +306,16 @@ ggpubr::ggarrange(p3, p4,  ncol = 2)
 ```
 
 
+```{r}
+prob_plot(.data,  gran1 = "day_week", gran2 = "day_month", plot_type = "boxplot")
+
+prob_plot(.data,  gran1 = "wknd_wday", gran2 = "day_month", plot_type = "boxplot")
+
+prob_plot(.data,  gran1 = "wknd_wday", gran2 = "hour_day", plot_type = "boxplot")
+
+
+```
+
 ## cricket data
 
 
