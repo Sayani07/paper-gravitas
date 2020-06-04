@@ -86,12 +86,12 @@ $m$ = $L-1$ (ordered)
 | d_3              	|      	|      	|      	|    	|    	|      	|
 | ..               	|      	|      	|      	|    	|    	|      	|
 | ..               	|      	|      	|      	|    	|    	|      	|
-| d_m              	| d_m1 	| d_m2 	| d_m3 	| .. 	| .. 	| d_mL 	|
+| d_m              	| d_m1 	| d_m2 	| d_m3 	| .. 	| .. 	| d_mK 	|
 
 $H_{01}: d_{11} = d_{21} = \ldots = d_{m1} = 0$  
-$H_{02}: d_{12} = d_{22} = \ldots = d_{L2} = 0$  
+$H_{02}: d_{12} = d_{22} = \ldots = d_{m2} = 0$  
 \vdots
-$H_{0m}: d_{1m} = d_{2m} = \ldots = d_{Lm} = 0$  
+$H_{0K}: d_{1K} = d_{2K} = \ldots = d_{mK} = 0$  
 
  - can do ANOVA at this stage
  - interpretation of results (if interaction of levels significant when testing if means of distributions of distances are equal to zero )
@@ -120,7 +120,7 @@ normal_nonstd: non-standard normal ordered distances
 normal_un: standard normal unordered distances  
 normal_nonstd_un: non-standard normal unordered   distances
 
-```{r}
+```{r allgraph}
 library(readr)
 smart_normal <- read_rds("data/ smart_harmony_normal.rds")  %>% mutate(rank_normal = row_number())
 
@@ -167,7 +167,7 @@ smart_normal %>%
 ## Graphical evidence
 
 ```{r, echo = FALSE}
-p1 <- smart_meter10 %>%
+smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
     "hour_day",
@@ -180,11 +180,22 @@ p1 <- smart_meter10 %>%
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
   ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
   theme_minimal() + 
-  ggtitle("Rank 1 Section 6.1.1")  + 
   scale_x_discrete(breaks = seq(0, 23, 5))
 
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>% prob_plot( gran1 = "day_week", gran2 = "day_month", plot_type = "boxplot") + scale_x_discrete(breaks = seq(0, 31, 5))
 
-p2 <- smart_meter10 %>%
+
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>% prob_plot(gran1 = "wknd_wday", gran2 = "day_month", plot_type = "boxplot") + scale_x_discrete(breaks = seq(0, 31, 5))
+
+
+smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>% 
+  prob_plot(gran1 = "wknd_wday", gran2 = "hour_day", plot_type = "boxplot")
+
+
+smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("hour_day",
     "wknd_wday",
@@ -196,62 +207,7 @@ p2 <- smart_meter10 %>%
   scale_y_sqrt() +
   #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
   ylab("electricity demand [KWh]") + xlab("") + ggtitle("") + ylab("")+ 
-  theme_minimal() + 
-  ggtitle("Rank 1 Section 6.1.2") + scale_x_discrete(labels = c('wday','wend'))
-
-```
-
-```{r, echo = FALSE}
-p3 <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("week_month",
-    "hour_day",
-    response = "general_supply_kwh",
-    plot_type = "boxplot",
-    #symmetric = TRUE,
-    #quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal() + 
-  ggtitle("Rank 2 Section 6.1.2") + 
-  scale_x_discrete(breaks = seq(0, 23, 5))
-
-p4 <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("hour_day",
-    "week_month",
-    response = "general_supply_kwh",
-    plot_type = "boxplot",
-    #symmetric = TRUE,
-    #quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("week of the month") + ggtitle("") + ylab("")+ 
-  theme_minimal()  + 
-  ggtitle("Rank 2 Section 6.1.2")
-
-
-ggpubr::ggarrange(p1, p2,  ncol = 2)
-
-ggpubr::ggarrange(p3, p4,  ncol = 2)
-```
-
-
-```{r}
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>% prob_plot( gran1 = "day_week", gran2 = "day_month", plot_type = "boxplot")
-
-
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>% prob_plot(gran1 = "wknd_wday", gran2 = "day_month", plot_type = "boxplot")
-
-
-smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>% 
-  prob_plot(gran1 = "wknd_wday", gran2 = "hour_day", plot_type = "boxplot")
+  theme_minimal() + scale_x_discrete(labels = c('wday','wend'))
 
 
 ```
@@ -259,7 +215,7 @@ smart_meter10 %>%
 ## cricket data
 
 
-```{r}
+```{r cricket}
 cricket_data <- read_rds("data/cricket_data.rds")
 
   hierarchy_model <- tibble::tibble(
@@ -274,7 +230,7 @@ harmonies_cric <- cricket_data %>% harmony(lgran = "over", ugran = "match", filt
 ```
 
 
-```{r}
+```{r cricket_lag}
 cricket_data <- read_rds("data/cricket_data.rds")
 cricket_data %>%
   filter(over!=1) %>%
