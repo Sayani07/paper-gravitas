@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.6.4)  5 JUN 2020 09:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.6.4)  16 JUL 2020 08:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -498,67 +498,78 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
 (/Users/sgup0008/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [2]
-Overfull \hbox (66.88316pt too wide) in paragraph at lines 184--221
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+27.
+(/Users/sgup0008/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [3]
+<figure/unnamed-chunk-2-1.pdf, id=101, 568.1225pt x 351.3125pt>
+File: figure/unnamed-chunk-2-1.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-2-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-2-1.pdf  used on input line 288.
+(pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
+<figure/unnamed-chunk-2-2.pdf, id=102, 568.1225pt x 346.29375pt>
+File: figure/unnamed-chunk-2-2.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-2-2.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-2-2.pdf  used on input line 288.
+(pdftex.def)             Requested size: 469.7731pt x 286.3458pt.
+[4] [5 <./figure/unnamed-chunk-2-1.pdf> <./figure/unnamed-chunk-2-2.pdf>]
+Overfull \hbox (66.88316pt too wide) in paragraph at lines 301--338
 [][] 
  []
 
-<figure/unnamed-chunk-1-1.pdf, id=77, 555.07375pt x 329.23pt>
-File: figure/unnamed-chunk-1-1.pdf Graphic file (type pdf)
-<use figure/unnamed-chunk-1-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-1-1.pdf  used on input line 225.
+<figure/unnamed-chunk-3-1.pdf, id=127, 555.07375pt x 329.23pt>
+File: figure/unnamed-chunk-3-1.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-3-1.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.75674pt x 278.62607pt.
-<figure/unnamed-chunk-1-2.pdf, id=78, 568.1225pt x 351.3125pt>
-File: figure/unnamed-chunk-1-2.pdf Graphic file (type pdf)
-<use figure/unnamed-chunk-1-2.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-1-2.pdf  used on input line 225.
+<figure/unnamed-chunk-3-2.pdf, id=128, 568.1225pt x 351.3125pt>
+File: figure/unnamed-chunk-3-2.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-3-2.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-3-2.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/unnamed-chunk-1-3.pdf, id=79, 568.1225pt x 351.3125pt>
-File: figure/unnamed-chunk-1-3.pdf Graphic file (type pdf)
-<use figure/unnamed-chunk-1-3.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-1-3.pdf  used on input line 225.
+<figure/unnamed-chunk-3-3.pdf, id=129, 568.1225pt x 351.3125pt>
+File: figure/unnamed-chunk-3-3.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-3-3.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-3-3.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/unnamed-chunk-1-4.pdf, id=80, 568.1225pt x 351.3125pt>
-File: figure/unnamed-chunk-1-4.pdf Graphic file (type pdf)
-<use figure/unnamed-chunk-1-4.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-1-4.pdf  used on input line 225.
+<figure/unnamed-chunk-3-4.pdf, id=130, 568.1225pt x 351.3125pt>
+File: figure/unnamed-chunk-3-4.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-3-4.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-3-4.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.7731pt x 290.49573pt.
-<figure/unnamed-chunk-1-5.pdf, id=81, 555.07375pt x 315.1775pt>
-File: figure/unnamed-chunk-1-5.pdf Graphic file (type pdf)
-<use figure/unnamed-chunk-1-5.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-1-5.pdf  used on input line 225.
+<figure/unnamed-chunk-3-5.pdf, id=131, 555.07375pt x 315.1775pt>
+File: figure/unnamed-chunk-3-5.pdf Graphic file (type pdf)
+<use figure/unnamed-chunk-3-5.pdf>
+Package pdftex.def Info: figure/unnamed-chunk-3-5.pdf  used on input line 342.
 (pdftex.def)             Requested size: 469.75674pt x 266.73349pt.
-[3] [4 <./figure/unnamed-chunk-1-1.pdf> <./figure/unnamed-chunk-1-2.pdf>] [5 <.
-/figure/unnamed-chunk-1-3.pdf> <./figure/unnamed-chunk-1-4.pdf>]
-<figure/cricket_lag-1.pdf, id=125, 572.1375pt x 352.31625pt>
-File: figure/cricket_lag-1.pdf Graphic file (type pdf)
-<use figure/cricket_lag-1.pdf>
-Package pdftex.def Info: figure/cricket_lag-1.pdf  used on input line 230.
-(pdftex.def)             Requested size: 469.75816pt x 289.27213pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 235.
-[6 <./figure/unnamed-chunk-1-5.pdf> <./figure/cricket_lag-1.pdf>] [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 235.
+[6 <./figure/unnamed-chunk-3-1.pdf>] [7 <./figure/unnamed-chunk-3-2.pdf> <./fig
+ure/unnamed-chunk-3-3.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 353.
+[8 <./figure/unnamed-chunk-3-4.pdf> <./figure/unnamed-chunk-3-5.pdf>] [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 353.
 (./choosing_harmonies_Normal.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 235.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 235.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 353.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 353.
 Package rerunfilecheck Info: File `choosing_harmonies_Normal.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: 31FDB7E84FCE12CA661E2B05193F1BD5;1146.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 235.
+(rerunfilecheck)             Checksum: C6553F2D1671346AAF6C42D0486A0EDD;1471.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 353.
  ) 
 Here is how much of TeX's memory you used:
- 10222 strings out of 482401
- 148277 string characters out of 5945990
- 393848 words of memory out of 5000000
- 25791 multiletter control sequences out of 15000+600000
- 577988 words of font info for 63 fonts, out of 8000000 for 9000
+ 10290 strings out of 482401
+ 149428 string characters out of 5945990
+ 394923 words of memory out of 5000000
+ 25836 multiletter control sequences out of 15000+600000
+ 578307 words of font info for 64 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 34i,6n,34p,864b,412s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/Users/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/U
-sers/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Use
-rs/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users
-/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/s
-gup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/sgup000
-8/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</Users/sgup0008/Libr
+ 34i,6n,34p,864b,459s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Us
+ers/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/User
+s/sgup0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/sgu
+p0008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/Users/sgup0
+008/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/sgup000
+8/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</Users/sgup0008/Libr
 ary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/sgup0008/Librar
 y/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/sgup0008/Library/
 TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/sgup0008/Library/Ti
@@ -567,11 +578,13 @@ TeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/sgup0008/Library/TinyTeX
 /texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/sgup0008/Library/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/sgup0008/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmr7.pfb></Users/sgup0008/Library/TinyTeX/texmf-dis
-t/fonts/type1/public/lm/lmsy10.pfb>
-Output written on choosing_harmonies_Normal.pdf (7 pages, 551115 bytes).
+t/fonts/type1/public/lm/lmsy10.pfb></Users/sgup0008/Library/TinyTeX/texmf-dist/
+fonts/type1/public/lm/lmsy7.pfb></Users/sgup0008/Library/TinyTeX/texmf-dist/fon
+ts/type1/public/lm/lmtt10.pfb>
+Output written on choosing_harmonies_Normal.pdf (9 pages, 537392 bytes).
 PDF statistics:
- 202 PDF objects out of 1000 (max. 8388607)
- 164 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 103 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 248 PDF objects out of 1000 (max. 8388607)
+ 202 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 116 words of extra memory for PDF output out of 10000 (max. 10000000)
 

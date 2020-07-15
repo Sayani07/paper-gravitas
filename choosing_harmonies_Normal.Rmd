@@ -26,6 +26,7 @@ library(viridis)
 library(tsibble)
 library(gravitas)
 library(ggpubr)
+library(readr)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -86,7 +87,7 @@ $m$ = $L-1$ (ordered)
 | d_3              	|      	|      	|      	|    	|    	|      	|
 | ..               	|      	|      	|      	|    	|    	|      	|
 | ..               	|      	|      	|      	|    	|    	|      	|
-| d_m              	| d_m1 	| d_m2 	| d_m3 	| .. 	| .. 	| d_mK 	|
+| d_m              	| d_m1 	| d_m2 	| d_m3 	 .. 	| .. 	| d_mK 	|
 
 $H_{01}: d_{11} = d_{21} = \ldots = d_{m1} = 0$  
 $H_{02}: d_{12} = d_{22} = \ldots = d_{m2} = 0$  
@@ -109,6 +110,127 @@ $H_{0K}: max(d_{1K},...d_{mK}) = 0$
  -  normalised maximum distribution follows standardised Gumbel distribution
  -  multiple hypothesis testing problem where p-values needs to be adjusted with Fisher's combination test (preferred) or Bonferroni's correction
  - What is the test statistic for multiple hypothesis problem?
+ 
+Permutation test:
+
+<!-- paiwise percentile tests for distances. Each facet is a category with m ordered/unordered pairwise distances. We are testing if the 95th percentile of these facets are equal. If at least two of them are different, we keep the harmony pair, else remove them from the list. -->
+
+<!-- 1st screening criterion: 95th percentile different for different facet labels -->
+
+<!-- 2nd screening/ranking criterion: within the harmonies foir which facet levels are different, MMPD is used to rank them -->
+
+**Assumption:** random permutation without considering ordering 
+(Local)
+
+1. Given the original sequence for $\{C_i, C_j\}$; $\{v_t: t=0, 1, 2, \dots, T-1\}$, the MMPD is computed and is represented by $MMPD_{obs}$.
+
+2. From the original sequence a random permutation is obtained: $\{v_t^*: t=0, 1, 2, \dots, T-1\}$.
+
+3. MMPD is computed for all random permutation and is represented by $MMPD_{sample}$.
+
+4.  Steps (2) and (3) are repeated a large number
+of times M (e.g. 1000).
+
+5. For each permutation, one $MMPD_{sample}$ value is obtained.
+
+6. $95^{th}$ percentile of this $MMPD_{sample}$ distribution is computed and stored in $MMPD_{threshold}$.
+
+7. If  $MMPD_{obs}> MMPD_{threshold}$, then it implies the observed MMPD is 95% of the times higher than the any other random permutation of the original sequence.
+
+Pros: Considering thresholds locally for each harmony pairs would imply that data is reshuffled only within that harmony pair and generated MMPDs are only reflection of how MMPDs are when measured between that harmony pairs only.
+
+
+Cons: The threshold value is considered locally for each harmony pairs and hence it does not align the original MMPD values we get. That is, a harmony pair with lower MMPD might get selected over that with a higher MMPD. Difficult to understand but it means that although MMPD value is smaller, it is significantly different from zero.
+
+
+**Assumption:** random permutation without considering ordering 
+(Local)
+
+1. Given the data; $\{v_t: t=0, 1, 2, \dots, T-1\}$, the MMPD is computed and is represented by $MMPD_{obs}$.
+
+2. From the original sequence a random permutation is obtained: $\{v_t^*: t=0, 1, 2, \dots, T-1\}$.
+
+3. MMPD is computed for all random permutation of the data and is represented by $MMPD_{sample}$.
+
+4.  Steps (2) and (3) are repeated a large number
+of times M (e.g. 1000).
+
+5. For each permutation, one $MMPD_{sample}$ value is obtained.
+
+6. $95^{th}$ percentile of this $MMPD_{sample}$ distribution is computed and stored in $MMPD_{threshold}$.
+
+7. If  $MMPD_{obs}> MMPD_{threshold}$, harmony pairs are accepted. Onlyone threshold for all harmony pairs.
+
+Pros: Considering thresholds global for all harmony pairs would imply less computation time.
+
+Cons: Only one threshold for all harmony pairs might not be an appropriate measure but a good benchmark.
+
+
+```{r}
+library(readr)
+signi <- read_rds("data/significant_harmonies.rds")
+signi
+local_thres <- c(FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE)
+
+signi %>% select(-facet_levels, -x_levels) %>% 
+  mutate(local_threshold = local_thres) %>% knitr::kable(format = "latex")
+
+```
+
+<!-- **Assumption:** random permutation considering ordering -->
+
+<!-- Intuition? -->
+
+<!-- Original: -->
+
+<!-- | facets/observation     	| 1  	| 2  	| 3  	| .. 	| .. 	| n  	| -->
+<!-- |-----	|------	|------	|------	|----	|----	|------	| -->
+<!-- | B_1 	| x_1 	| x_2 	| x_3 	| .. 	| .. 	| x_n 	| -->
+<!-- | B_2 	| y_1 	| y_2 	| y_3 	| .. 	| .. 	| y_n 	| -->
+<!-- | B_3 	|      	|      	|      	|    	|    	|      	| -->
+<!-- | ..  	|      	|      	|      	|    	|    	|      	| -->
+<!-- | ..  	|      	|      	|      	|    	|    	|      	| -->
+<!-- | B_L 	| z_1 	| z_2 	| z_3 	| .. 	| .. 	| z_n 	| -->
+
+
+<!-- Unordered: Permuting across levels -->
+
+<!-- | facets/observation     	| 1  	| 2  	| 3  	| .. 	| .. 	| n  	| -->
+<!-- |-----	|------	|------	|------	|----	|----	|------	| -->
+<!-- | B_1 	| y_3 	| x_2 	| z_2 	| .. 	| .. 	| y_1 	| -->
+<!-- | B_2 	| x_n 	| y_2 	| x_1 	| .. 	| .. 	| z_3 	| -->
+<!-- | B_3 	|      	|      	|      	|    	|    	|      	| -->
+<!-- | ..  	|      	|      	|      	|    	|    	|      	| -->
+<!-- | ..  	|      	|      	|      	|    	|    	|      	| -->
+<!-- | B_L 	| x_10 	| x_3 	| y_n 	| .. 	| .. 	| x_5 	| -->
+
+
+<!-- Ordered: Permuting from the same levels -->
+
+<!-- | facets/observation     	| 1  	| 2  	| 3  	| .. 	| .. 	| n  	| -->
+<!-- |-----	|------	|------	|------	|----	|----	|------	| -->
+<!-- | B_1 	| x_3 	| x_10 	| x_100 	| .. 	| .. 	| x_1 	| -->
+<!-- | B_2 	| y_n 	| y_2 	| y_10 	| .. 	| .. 	| y_3 	| -->
+<!-- | B_3 	|      	|      	|      	|    	|    	|      	| -->
+<!-- | ..  	|      	|      	|      	|    	|    	|      	| -->
+<!-- | ..  	|      	|      	|      	|    	|    	|      	| -->
+<!-- | B_L 	| z_10 	| z_200 	| z_10 	| .. 	| .. 	| z_5 	| -->
+
+
+
+```{r}
+sm <- smart_meter10 %>%
+filter(customer_id %in% c(10017936))
+.data = sm
+sm %>% prob_plot("week_month", "day_week", plot_type = "boxplot")
+
+sm %>% prob_plot("day_month", "hour_day", plot_type = "quantile", symmetric = FALSE, quantile_prob = c(0.05, 0.25, 0.5, 0.75, 0.95))
+
+
+```
+
+ 
+ 
 
 # Results
 
@@ -214,42 +336,46 @@ smart_meter10 %>%
 
 ## cricket data
 
+# error after updating package and tsibble
 
-```{r cricket}
-cricket_data <- read_rds("data/cricket_data.rds")
+<!-- ```{r cricket} -->
+<!-- cricket_data <- read_rds("data/cricket_data.rds") -->
 
-  hierarchy_model <- tibble::tibble(
-      units = c("index", "over", "inning", "match"),
-      convert_fct = c(1, 20, 2, 1))
+<!--   hierarchy_model <- tibble::tibble( -->
+<!--       units = c("index", "over", "inning", "match"), -->
+<!--       convert_fct = c(1, 20, 2, 1)) -->
 
-hierarchy_tbl <- hierarchy_model
+<!-- hierarchy_tbl <- hierarchy_model -->
 
-response <- "runs_per_over"
+<!-- response <- "runs_per_over" -->
 
-harmonies_cric <- cricket_data %>% harmony(lgran = "over", ugran = "match", filter_in = c("lag_field", "over"), hierarchy_tbl = hierarchy_model)
-```
-
-
-```{r cricket_lag}
-cricket_data <- read_rds("data/cricket_data.rds")
-cricket_data %>%
-  filter(over!=1) %>%
-  prob_plot("over", "lag_field",
-  hierarchy_model,
-  response = "run_rate",
-  plot_type = "violin",
-  symmetric = FALSE,
- quantile_prob = c(0.25, 0.5, 0.75)) +
-   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
-  ylab("runs per over")  +
-  xlab("number of wickets in previous over") +
-  ggtitle("b") +
-   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
-```
+<!-- harmonies_cric <- cricket_data %>% harmony(lgran = "over", ugran = "match", filter_in = c("lag_field", "over"), hierarchy_tbl = hierarchy_model) -->
+<!-- ``` -->
 
 
-# Bibliography
+<!-- ```{r cricket_lag} -->
+<!-- cricket_data <- read_rds("data/cricket_data.rds") -->
+<!-- cricket_data %>% -->
+<!--   filter(over!=1) %>% -->
+<!--   prob_plot("over", "lag_field", -->
+<!--   hierarchy_model, -->
+<!--   response = "run_rate", -->
+<!--   plot_type = "violin", -->
+<!--   symmetric = FALSE, -->
+<!--  quantile_prob = c(0.25, 0.5, 0.75)) + -->
+<!--    #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + -->
+<!--   ylab("runs per over")  + -->
+<!--   xlab("number of wickets in previous over") + -->
+<!--   ggtitle("b") + -->
+<!--    theme(plot.title = element_text(face = "bold")) +  theme_minimal() -->
+<!-- ``` -->
 
-```{r write-bib, eval = FALSE}
-write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas", "knitr", "rmarkdown"), file = "rpkgs.bib")
-```
+
+<!-- # Bibliography -->
+
+<!-- ```{r write-bib, eval = FALSE} -->
+<!-- write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas", "knitr", "rmarkdown"), file = "rpkgs.bib") -->
+<!-- ``` -->
+
+# Does normalisation work?
+
