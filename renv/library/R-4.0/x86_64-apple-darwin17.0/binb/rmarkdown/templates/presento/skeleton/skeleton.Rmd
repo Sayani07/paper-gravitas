@@ -1,0 +1,46 @@
+---
+author: Ratul Saha
+address: www.ratulsaha.com
+title: PRESENTO
+subtitle: clean, simple and extensible
+date: \today
+output: binb::presento
+---
+
+## Presento
+
+- \begin{center}\largetext{The design is \underline{clean}}\end{center}    \bigskip
+- \begin{center}\largetext{The rules are \underline{simple}}\end{center}   \bigskip
+- \item \begin{center}\largetext{The code is \underline{extensible}}\end{center}
+
+
+## Open Source Fonts
+
+-  \montserratfont This is \textsc{Montserrat}	\bigskip
+-  \notosansfont This is \textsc{Noto Sans}		\bigskip
+-  \latolightfont This is Lato (light)          \bigskip
+-  \inconsolatafont This is inconsolata         \bigskip
+-  \textsc{This is Alegreya Sans small caps}    \bigskip
+
+
+## Color Palette
+
+\begin{center}
+  \crule[colordgray] \crule[colorhgray] \crule[colorblue] \crule[colorgreen] \crule[colororange]
+\end{center}
+
+____
+
+\begin{center}
+ \hugetext{BIG BOLD TEXT} 
+ \medskip 
+ \small but background color does not work
+\end{center}
+
+____
+
+\tikz[overlay,remember picture] \node[opacity=0.8, at=(current page.center)]{%
+  \includegraphics[width=\paperwidth]{images/skeleton}};
+\begin{textblock}{7}(7,2.5)
+  {\color{colorblue}\hugetext{\textbf{RUN!}}}
+\end{textblock}
