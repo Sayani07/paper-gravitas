@@ -60,6 +60,13 @@ We shall call this measure of variation as  Median Maximum Pairwise Distances (M
 The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the harmonies. But maximum is not robust to the number of levels and is higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re- normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. The normalizing constants, however, vary depending on the underlying distribution and hence it is important to assume a distribution of distances in our case.
 
 
+# Does normalisation work?
+(Show with by comparing with maximum and 
+showing for similar levels)
+# Does it match with the threshold?
+# Should they tally with each other?
+
+
 ```{r rank harmony}
 library(gravitas)
 library(ggplot2)
@@ -391,15 +398,7 @@ cricket_data %>%
 ```
 
 
-<!-- # Bibliography -->
-
-<!-- ```{r write-bib, eval = FALSE} -->
-<!-- write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas", "knitr", "rmarkdown"), file = "rpkgs.bib") -->
-<!-- ``` -->
-
-# Does normalisation work?
-
-```{r}
+```{r smart_harmony}
 library(ggplot2)
 library(gravitas)
 sm <- smart_meter10 %>% dplyr::filter(customer_id %in% c("10017936"))
@@ -409,13 +408,19 @@ harmonies <- sm %>%
           filter_in = "wknd_wday",
           filter_out = c("hhour", "fortnight"))
 
-.data = sm
-response  = "general_supply_kwh"
-harmony_tbl =  harmonies
-smart_harmony <- .data %>% gravitas::rank_harmony(harmony_tbl = harmonies,
-response = "general_supply_kwh", dist_ordered = FALSE)
 
+harmony_tbl =  harmonies
+
+smart_harmony <- sm %>% 
+  rank_harmony(harmony_tbl = harmonies,
+               response = "general_supply_kwh", 
+               dist_ordered = FALSE)
+
+smart_harmony %>% kable()
 
 smart_harmony %>% ggplot(aes(x = x_levels, y =  r)) + geom_point()
+
+
+smart_harmony %>% ggplot(aes(x = facet_levels, y =  r)) + geom_point()
 ```
 
