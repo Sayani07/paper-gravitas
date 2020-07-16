@@ -51,13 +51,34 @@ Even after excluding clashes, the list of harmonies left could be large and over
 
 # Computing distances
 
-One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable. We do this through Jensen-Shannon divergence which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable. We do this through Jensen-Shannon distance which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
 
- We shall call this measure of variation as  Median Maximum Pairwise Distances (MMPD)
+We shall call this measure of variation as  Median Maximum Pairwise Distances (MMPD)
 
 # Normalize distances
 
 The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the harmonies. But maximum is not robust to the number of levels and is higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re- normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. The normalizing constants, however, vary depending on the underlying distribution and hence it is important to assume a distribution of distances in our case.
+
+
+```{r rank harmony}
+library(gravitas)
+library(ggplot2)
+library(dplyr)
+sm <- smart_meter10 %>%
+filter(customer_id %in% c("10017936"))
+harmonies <- sm %>%
+harmony(ugran = "month",
+filter_in = "wknd_wday",
+filter_out = c("hhour", "fortnight"))
+.data = sm
+response  = "general_supply_kwh"
+harmony_tbl =  harmonies
+smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
+response = "general_supply_kwh", dist_ordered = FALSE)
+```
+
+
+
 
 # Choose thresholds for harmonies
 
@@ -336,39 +357,38 @@ smart_meter10 %>%
 
 ## cricket data
 
-# error after updating package and tsibble
 
-<!-- ```{r cricket} -->
-<!-- cricket_data <- read_rds("data/cricket_data.rds") -->
+```{r cricket}
+cricket_data <- read_rds("data/cricket_data.rds")
 
-<!--   hierarchy_model <- tibble::tibble( -->
-<!--       units = c("index", "over", "inning", "match"), -->
-<!--       convert_fct = c(1, 20, 2, 1)) -->
+  hierarchy_model <- tibble::tibble(
+      units = c("index", "over", "inning", "match"),
+      convert_fct = c(1, 20, 2, 1))
 
-<!-- hierarchy_tbl <- hierarchy_model -->
+hierarchy_tbl <- hierarchy_model
 
-<!-- response <- "runs_per_over" -->
+response <- "runs_per_over"
 
-<!-- harmonies_cric <- cricket_data %>% harmony(lgran = "over", ugran = "match", filter_in = c("lag_field", "over"), hierarchy_tbl = hierarchy_model) -->
-<!-- ``` -->
+harmonies_cric <- cricket_data %>% harmony(lgran = "over", ugran = "match", filter_in = c("lag_field", "over"), hierarchy_tbl = hierarchy_model)
+```
 
 
-<!-- ```{r cricket_lag} -->
-<!-- cricket_data <- read_rds("data/cricket_data.rds") -->
-<!-- cricket_data %>% -->
-<!--   filter(over!=1) %>% -->
-<!--   prob_plot("over", "lag_field", -->
-<!--   hierarchy_model, -->
-<!--   response = "run_rate", -->
-<!--   plot_type = "violin", -->
-<!--   symmetric = FALSE, -->
-<!--  quantile_prob = c(0.25, 0.5, 0.75)) + -->
-<!--    #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") + -->
-<!--   ylab("runs per over")  + -->
-<!--   xlab("number of wickets in previous over") + -->
-<!--   ggtitle("b") + -->
-<!--    theme(plot.title = element_text(face = "bold")) +  theme_minimal() -->
-<!-- ``` -->
+```{r cricket_lag}
+cricket_data <- read_rds("data/cricket_data.rds")
+cricket_data %>%
+  filter(over!=1) %>%
+  prob_plot("over", "lag_field",
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "violin",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over")  +
+  xlab("number of wickets in previous over") +
+  ggtitle("b") +
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
+```
 
 
 <!-- # Bibliography -->
@@ -378,4 +398,24 @@ smart_meter10 %>%
 <!-- ``` -->
 
 # Does normalisation work?
+
+```{r}
+library(ggplot2)
+library(gravitas)
+sm <- smart_meter10 %>% dplyr::filter(customer_id %in% c("10017936"))
+
+harmonies <- sm %>% 
+  harmony(ugran = "month",
+          filter_in = "wknd_wday",
+          filter_out = c("hhour", "fortnight"))
+
+.data = sm
+response  = "general_supply_kwh"
+harmony_tbl =  harmonies
+smart_harmony <- .data %>% gravitas::rank_harmony(harmony_tbl = harmonies,
+response = "general_supply_kwh", dist_ordered = FALSE)
+
+
+smart_harmony %>% ggplot(aes(x = x_levels, y =  r)) + geom_point()
+```
 

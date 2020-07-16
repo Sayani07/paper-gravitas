@@ -211,6 +211,7 @@ data_unite <- smart_chi %>%
   rename("normal" = "mean_max_variation") %>% 
    left_join(smart_general,  by = c("facet_variable", "x_variable", "facet_levels", "x_levels")) %>% 
   rename("general" = "mean_max_variation") 
+
 ```
 
 
