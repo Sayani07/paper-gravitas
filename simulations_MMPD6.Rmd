@@ -27,10 +27,11 @@ library(tsibble)
 library(gravitas)
 library(ggpubr)
 library(readr)
+
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
-  cache = FALSE, cache.path = "cache/",
+  cache = TRUE, cache.path = "cache/",
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
 knitr::opts_knit$set(root.dir = here::here())
@@ -124,7 +125,7 @@ cric_harmony %>%
 ## Number of levels and ranking
 
 ```{r normalisation_work}
-smart_harmony %>% mutate(lev = facet_levels*x_levels) %>% ggplot(aes(x = lev, y = r)) +geom_point()
+smart_harmony %>% mutate(lev = facet_levels*x_levels) %>% ggplot(aes(x = lev, y = r)) + geom_line()
 smart_harmony %>% mutate(lev = facet_levels*x_levels, r_MMPD = row_number()) %>% ggplot(aes(x = lev, y = r_MMPD)) +geom_line()
 ```
 
@@ -137,10 +138,59 @@ Both of these should be checked again taking unnormalised statistic
 
 ## Scenario 1: Simulated same normal distributions for all combinations of the pair of cyclic granularities
 
+```{r scene1}
+library(readr)
+library(ggplot2)
+sim_data1 <- read_rds("sim_data1.rds")
+
+sim_data1 %>%
+  dplyr::filter(name==1) %>%
+  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
+
+global_harmony_iter1 <- read_rds("data/global_harmony_iter1.rds")
+
+global_harmony_iter1 %>% kable()
+```
+
 
 ## Scenario 2: Simulated same normal distributions for all x-levels within a facet, but different distributions across facets
 
+```{r scene2}
+library(readr)
+library(ggplot2)
+sim_data2 <- read_rds("sim_data2.rds")
+
+sim_data2 %>%
+  dplyr::filter(name==1) %>%
+  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
+
+global_harmony_iter2 <- read_rds("data/global_harmony_iter2.rds")
+
+global_harmony_iter2 %>% kable()
+```
+
+
 ## Scenario 3: Simulated different normal distributions for different x-levels but they do not vary across facets
+
+```{r scene3}
+library(readr)
+library(ggplot2)
+
+sim_data3 <- read_rds("sim_data3.rds")
+
+sim_data3 %>%
+  dplyr::filter(name==1) %>%
+  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
+
+sim_data3 %>%
+  dplyr::filter(name==4) %>%
+  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
+
+
+global_harmony_iter3 <- read_rds("data/global_harmony_iter3.rds")
+
+global_harmony_iter3 %>% kable()
+```
 
 # Scenario 4: Mixture of secenario 2 and 3
 
