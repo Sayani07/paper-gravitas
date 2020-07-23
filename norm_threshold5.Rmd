@@ -1,0 +1,300 @@
+---
+title: Finalised versions of normalisation and threshold
+authors:
+- name: Sayani Gupta
+  affiliation: Department of Econometrics and Business Statistics, Monash University
+  email: Sayani.Gupta@monash.edu
+
+bibliography: bibliography.bib
+output:
+  bookdown::pdf_book:
+    #base_format: rticles::asa_article
+    fig_height: 5
+    fig_width: 8
+    fig_caption: yes
+    dev: "pdf"
+---
+
+```{r initial, echo = FALSE, cache = FALSE, include = FALSE}
+options("knitr.graphics.auto_pdf" = TRUE)
+library(knitr)
+library(tidyverse)
+library(lubridate)
+library(lvplot)
+library(ggridges)
+library(viridis)
+library(tsibble)
+library(gravitas)
+library(ggpubr)
+library(readr)
+opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
+  fig.path = "figure/", fig.align = "center", fig.show = "hold",
+  cache = FALSE, cache.path = "cache/",
+  out.width = ifelse(is_html_output(), "100%", "\\textwidth")
+)
+knitr::opts_knit$set(root.dir = here::here())
+```
+
+```{r external, include = FALSE}
+# read_chunk('scripts/main.R')
+```
+
+```{r load}
+
+```
+
+# Idea
+
+Even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank the  harmonies basis how well they capture the variation in the measured variable and additionally reduce the number of harmonies for further exploration/visualization. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, displays that capture more variation within different categories in the same group would be important to bring out different patterns of the data. Thus the idea here is to rate a harmony pair higher if this variation between different levels of the x-axis variable is higher on an average across all levels of facet variables.
+
+
+# Computing distances
+
+One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable. We do this through Jensen-Shannon distance which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
+
+We shall call this measure of variation as  Median Maximum Pairwise Distances (MMPD)
+
+# Normalize distances
+
+The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the harmonies. But maximum is not robust to the number of levels and is higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re- normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. The normalizing constants, however, vary depending on the underlying distribution and hence it is important to assume a distribution of distances in our case.
+
+
+```{r smart_harmony}
+
+sm <- smart_meter10 %>% dplyr::filter(customer_id %in% c("10017936"))
+
+harmonies <- sm %>% 
+  harmony(ugran = "month",
+          filter_in = "wknd_wday",
+          filter_out = c("hhour", "fortnight"))
+
+
+harmony_tbl =  harmonies
+
+smart_harmony <- sm %>% 
+  rank_harmony(harmony_tbl = harmonies,
+               response = "general_supply_kwh", 
+               dist_ordered = TRUE)
+
+smart_harmony %>% 
+  mutate(MMPD = round(MMPD, 3), max_pd = round(max_pd, 3)) %>% 
+  mutate(rankn = row_number()) %>%
+  rename("rankun" = "r") %>% kable()
+```
+
+
+```{r cricket_harmony}
+
+cricket_data <- read_rds("data/cricket_data.rds")
+
+  hierarchy_model <- tibble::tibble(
+      units = c("index", "over", "inning", "match"),
+      convert_fct = c(1, 20, 2, 1))
+
+.data <- cricket_data
+
+hierarchy_tbl <- hierarchy_model
+
+response <- "runs_per_over"
+
+harmonies_cric <- cricket_data %>% 
+  harmony(lgran = "over",
+          ugran = "match", 
+          filter_in = c("lag_field", "over"),
+          hierarchy_tbl = hierarchy_model)
+
+
+cric_harmony <- cricket_data %>% 
+  rank_harmony(harmony_tbl = harmonies_cric, 
+               response = response,
+               hierarchy_tbl = hierarchy_model,
+               dist_ordered = TRUE) %>% 
+  dplyr::filter(!(facet_variable=="over_inning"|x_variable =="over_inning"))
+
+cric_harmony %>% 
+  mutate(rankn = row_number()) %>%
+  rename("rankun" = "r") %>% 
+  mutate(MMPD = round(MMPD, 3), max_pd = round(max_pd, 3)) %>% 
+  kable()
+```
+
+# Does normalisation work?
+
+# Comparing similar levels
+
+check (inning_match, over) and (lag_field, over) with similar levels.
+(inning_match, over) is ranked above (lag_field, over). Let us see if it makes sense graphically. 
+
+## indicating difference in variation better than max (2 by 2)
+
+```{r cric_graph_evidence}
+p1 <- cricket_data %>%
+  dplyr::filter(over!=1) %>%
+  prob_plot("inning_match", "lag_field",
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "quantile",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over")  +
+  xlab("number of wickets in previous over") +
+  ggtitle("") +
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
+
+p2 <- cricket_data %>%
+  dplyr::filter(over!=1) %>%
+  prob_plot("lag_field", "inning_match",
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "quantile",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over")  +
+  xlab("number of wickets in previous over") +
+  ggtitle("") +
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
+
+ggpubr::ggarrange(p1, p2, nrow = 2, labels = c("MMPD = 0.08,  max_pd = 0.068", "MMPD = 0.06,  max_pd = 0.064")) + ggtitle("Normalised max better indicating difference")
+```
+
+## indicating difference in variation for harmonies with same levels (20 by 2)
+
+
+```{r cric_samelev}
+
+p1 <- cricket_data %>%
+  dplyr::filter(over!=1) %>%
+  prob_plot("over","lag_field",
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "boxplot",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over")  +
+  xlab("number of wickets in previous over") +
+  ggtitle("MMPD = .058,  max_pd = 0.368") +
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
+
+p2 <- cricket_data %>%
+  dplyr::filter(over!=1) %>%
+  prob_plot("over", "inning_match", 
+  hierarchy_model,
+  response = "run_rate",
+  plot_type = "boxplot",
+  symmetric = FALSE,
+ quantile_prob = c(0.25, 0.5, 0.75)) +
+   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over")  +
+  xlab("number of wickets in previous over") +
+  ggtitle("MMPD = 0.039,  max_pd = 0.201") +
+   theme(plot.title = element_text(face = "bold")) +  theme_minimal()
+p1
+p2
+
+#ggpubr::ggarrange(p1, p2, ncol = 2, labels = c()) + ggtitle("Normalised max better indicating difference")
+```
+
+
+
+## How does it compare with taking unnormalised maximums?
+
+```{r normalisation_work}
+smart_harmony %>% mutate(lev = facet_levels*x_levels) %>% ggplot(aes(x = lev, y = r)) +geom_point()
+smart_harmony %>% mutate(lev = facet_levels*x_levels, r_MMPD = row_number()) %>% ggplot(aes(x = lev, y = r_MMPD)) +geom_line()
+```
+
+
+
+```{r rank harmony}
+library(gravitas)
+library(ggplot2)
+library(dplyr)
+sm <- smart_meter10 %>%
+filter(customer_id %in% c("10017936"))
+harmonies <- sm %>%
+harmony(ugran = "month",
+filter_in = "wknd_wday",
+filter_out = c("hhour", "fortnight"))
+.data = sm
+response  = "general_supply_kwh"
+harmony_tbl =  harmonies
+smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
+response = "general_supply_kwh", dist_ordered = FALSE)
+```
+
+# How does the normalization work for the x-levels?
+
+Let us fix the facet-level and see for different x-levels (31, 2) and (31, 7). Contrary to normalised max, non-normalised max ranks (31, 7) higher than (31, 2). Let us see which has higher variation.
+
+```{r same-facet-level}
+sm <- smart_meter10 %>%
+filter(customer_id %in% c(10017936))
+.data = sm
+p1 <- sm %>% prob_plot("day_month", "wknd_wday", plot_type = "boxplot", symmetric = FALSE)  + 
+  scale_y_log10()
+
+p2 <- sm %>% prob_plot("day_month", "day_week", plot_type = "boxplot", symmetric = FALSE, quantile_prob = c(0.05, 0.25, 0.5, 0.75, 0.95)) + 
+  scale_y_log10()
+
+p1
+p2
+```
+
+
+# How does the normalization work for the facet-levels?
+
+Let us fix the x-level and see for different facet-levels.
+(2, 24) and (7, 24). Contrary to normalised max, non-normalised max ranks (7, 24)  higher than (2, 24). Let us see which has higher variation.
+
+```{r same-x-level}
+sm <- smart_meter10 %>%
+filter(customer_id %in% c(10017936))
+.data = sm
+p1 <- sm %>% prob_plot("wknd_wday", "hour_day", plot_type = "boxplot", symmetric = FALSE)  + 
+  scale_y_log10()
+
+p2 <- sm %>% prob_plot("week_month", "hour_day", plot_type = "boxplot", symmetric = FALSE, quantile_prob = c(0.05, 0.25, 0.5, 0.75, 0.95)) + 
+  scale_y_log10()
+
+p1
+p2
+```
+
+# Choose thresholds for harmonies
+
+Permutation test:
+
+**Assumption:** random permutation without considering ordering 
+(global)
+
+1. Given the data; $\{v_t: t=0, 1, 2, \dots, T-1\}$, the MMPD is computed and is represented by $MMPD_{obs}$.
+
+2. From the original sequence a random permutation is obtained: $\{v_t^*: t=0, 1, 2, \dots, T-1\}$.
+
+3. MMPD is computed for all random permutation of the data and is represented by $MMPD_{sample}$.
+
+4.  Steps (2) and (3) are repeated a large number
+of times M (e.g. 1000).
+
+5. For each permutation, one $MMPD_{sample}$ value is obtained.
+
+6. $95^{th}$ percentile of this $MMPD_{sample}$ distribution is computed and stored in $MMPD_{threshold}$.
+
+7. If  $MMPD_{obs}> MMPD_{threshold}$, harmony pairs are accepted. Onlyone threshold for all harmony pairs.
+
+Pros: Considering thresholds global for all harmony pairs would imply less computation time.
+
+Cons: Only one threshold for all harmony pairs might not be an appropriate measure but a good benchmark.
+
+
+# Does it match with the threshold?
+
+No
+
+# Should they tally with each other?
+
+Yes ideally. But given the number of permutations they are not matching. Tried with increasing the number of permutations - didn't help. Also, permutations taking very long since for each permutation MMPD is calcuated for every harmony pair at each step.
