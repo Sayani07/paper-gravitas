@@ -47,18 +47,31 @@ knitr::opts_knit$set(root.dir = here::here())
 
 # Idea
 
-Even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank the  harmonies basis how well they capture the variation in the measured variable and additionally reduce the number of harmonies for further exploration/visualization. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, displays that capture more variation within different categories in the same group would be important to bring out different patterns of the data. Thus the idea here is to rate a harmony pair higher if this variation between different levels of the x-axis variable is higher on an average across all levels of facet variables.
-
+Even after excluding clashes, the list of harmonies left could be large and overwhelming for human consumption. Hence, there is a need to rank the harmonies basis how well they capture the variation in the measured variable and additionally reduce the number of harmonies for further exploration/visualization. Assuming a numeric response variable, our graphics are displays of distributions compared across combinations of categorical variables, one placed at x-axis and the other on the facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, displays that capture more variation within different categories in the same group would be important to bring out different patterns of the data. Thus, the idea here is to rate a harmony pair higher if this variation between different levels of the x-axis variable is higher on an average across all levels of facet variables.
 
 # Computing distances
 
-One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable. We do this through Jensen-Shannon distance which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth.
-
-We shall call this measure of variation as  Median Maximum Pairwise Distances (MMPD)
+One of the potential ways to evaluate this variation is by computing the pairwise distances between the distributions of the measured variable. We do this through Jensen-Shannon distance which is based on Kullback-Leibler divergence. Probability distributions are represented through sample quantiles instead of kernel density estimate so that there is minimal dependency on selecting kernel or bandwidth. We call this measure of variation as  Median Maximum Pairwise Distances (MMPD)
 
 # Normalize distances
 
 The harmony pairs could be arranged from highest to lowest average maximum pairwise distances across different levels of the harmonies. But maximum is not robust to the number of levels and is higher for harmonies with higher levels. Thus these maximum pairwise distances need to be normalized for different harmonies in a way that eliminates the effect of different levels. The Fisher–Tippett–Gnedenko theorem in the field of Extreme Value Theory states that the maximum of a sample of iid random variables after proper re- normalization can converge in distribution to only one of Weibull, Gumbel or Freschet distribution, independent of the underlying data or process. The normalizing constants, however, vary depending on the underlying distribution and hence it is important to assume a distribution of distances in our case.
+
+## Distribution of distances
+
+Theoretical: JS distances are distributed as chi-squared with $m$ df where we discretize the continuous distribution with $m$ discrete values. Taking sample percentiles to approximate the integral would mean taking $m = 99$.
+With large $m$, chi-squared is asymptotically normal by the CLT. Thus, by CLT, ${\chi^2}_{m} \tilde{} N(m, 2m)$, which would depend on the number of discretization used to approximate the continuous distribution.
+
+
+Then $b_n = 1-1/n$ quantile of the normal distribution and $a_n = 1/[n*\phi(b_n)]$ where $\phi$ is the normal density function. $n$ is the number of pairwise comparisons being made.
+
+Empirical: Distribution of JS distances is assumed to be normal but the mean and variance are estimated from the sample, rather than deducing it from the number of discretization used to approximate the continuous distribution.
+
+```{r}
+smart_harmony <-read_rds("data/smart_harmony_nonst.rds")
+smart_harmony
+```
+
 
 
 ```{r smart_harmony}
@@ -85,48 +98,14 @@ smart_harmony %>%
 ```
 
 
-```{r cricket_harmony}
-
-cricket_data <- read_rds("data/cricket_data.rds")
-
-  hierarchy_model <- tibble::tibble(
-      units = c("index", "over", "inning", "match"),
-      convert_fct = c(1, 20, 2, 1))
-
-.data <- cricket_data
-
-hierarchy_tbl <- hierarchy_model
-
-response <- "runs_per_over"
-
-harmonies_cric <- cricket_data %>% 
-  harmony(lgran = "over",
-          ugran = "match", 
-          filter_in = c("lag_field", "over"),
-          hierarchy_tbl = hierarchy_model)
-
-
-cric_harmony <- cricket_data %>% 
-  rank_harmony(harmony_tbl = harmonies_cric, 
-               response = response,
-               hierarchy_tbl = hierarchy_model,
-               dist_ordered = TRUE) %>% 
-  dplyr::filter(!(facet_variable=="over_inning"|x_variable =="over_inning"))
-
-cric_harmony %>% 
-  mutate(rankn = row_number()) %>%
-  rename("rankun" = "r") %>% 
-  mutate(MMPD = round(MMPD, 3), max_pd = round(max_pd, 3)) %>% 
-  kable()
-```
 
 # Does normalisation work?
 
 ## Number of levels and ranking
 
 ```{r normalisation_work}
-smart_harmony %>% mutate(lev = facet_levels*x_levels) %>% ggplot(aes(x = lev, y = r)) + geom_line()
-smart_harmony %>% mutate(lev = facet_levels*x_levels, r_MMPD = row_number()) %>% ggplot(aes(x = lev, y = r_MMPD)) +geom_line()
+smart_harmony %>% mutate(lev = facet_levels*x_levels) %>% ggplot(aes(x = lev, y = r)) + geom_line() + geom_point(colour = "blue")
+smart_harmony %>% mutate(lev = facet_levels*x_levels, r_MMPD = row_number()) %>% ggplot(aes(x = lev, y = r_MMPD)) +geom_line() + geom_point(colour = "blue")
 ```
 
 ## Comparing levels using simulated data
