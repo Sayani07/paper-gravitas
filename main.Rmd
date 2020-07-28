@@ -1462,11 +1462,11 @@ From the search list, $N_C = 7$ cyclic granularities are chosen for which we wou
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
 ```{r harmony-tab, echo=FALSE, cache=TRUE}
-if(!dir.exists("cache/"))
-{
-  dir.create("cache")
-}
-if (!file.exists("cache/smart_harmony.rds")) {
+# if(!dir.exists("cache/"))
+# {
+#   dir.create("cache")
+# }
+# if (!file.exists("cache/smart_harmony.rds")) {
   sm <- smart_meter10 %>%
   filter(customer_id %in% c(10017936))
   
@@ -1481,11 +1481,11 @@ smart_harmony <- sm %>%
          `x-axis variable` = x_variable,
          `facet levels` = facet_levels,
          `x-axis levels` = x_levels,
-         `average maximum variation` = mean_max_variation)
+         `average maximum variation` = MMPD)
 
-  write_rds(smart_harmony,"cache/smart_harmony_ak.rds")
-}
-smart_harmony <- read_rds("cache/smart_harmony.rds")
+#   write_rds(smart_harmony,"cache/smart_harmony_ak.rds")
+# }
+#smart_harmony <- read_rds("cache/smart_harmony.rds")
 
   knitr::kable(smart_harmony,
                format = "latex",
