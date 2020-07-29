@@ -1290,7 +1290,7 @@ One of the common ways to measure distances between distributions is through Jen
 
 <!-- # distribution of distances and lit review -->
 
-\noindent @Menendez1997-in and @Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a chi-squared distribution with degrees of freedom equal to the number of discretization used to estimate the continuous distribution. With large degrees of freedom, chi-squared is asymptotically normal by the Central Limit Theorem. Hence, the norming constants for the distribution of $M_m$ are chosen to be $b_m = \Phi^{-1}(1- 1/m)$ and $a_m = 1/m\phi(b_m)$, where $\Phi^{-1}$ and $\phi$ are the quantile and density function of the assymptotic normal distribution. Typically normal distributions will have Gumbel limiting distribution for the maxima, which have medians that grow as $m\rightarrow\infty$ at the rate of log $m$.
+\noindent @Menendez1997-in and @Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a chi-squared distribution with degrees of freedom equal to the number of discretization used to estimate the continuous distribution. With large degrees of freedom, chi-squared is asymptotically normal by the Central Limit Theorem. Hence, the norming constants for the distribution of $M_m$ are chosen to be $b_m = \Phi^{-1}(1- 1/m)$ and $a_m = 1/m\phi(b_m)$, where $\Phi^{-1}$ and $\phi$ are the quantile and density function of the limiting normal distribution. Typically normal distributions will have Gumbel limiting distribution for the maxima, which have medians that grow at the rate of log $m$ as $m\rightarrow\infty$. This fact is used to normalize the statistic for different facet levels.
 
 <!-- Median normalized distance grows at the rate of log($K$) as $K\rightarrow\infty$ and hence is normalized for the value of $K$ in MMPD.  -->
 
@@ -1328,7 +1328,6 @@ $\forall i, j \in N_C$
 
 - **Input:** Harmony pairs $(C_i, C_j)$ $\forall i, j \in N_C$  
 - **Output:** Harmony pairs $(C_i, C_j)$ for which MMPD is significant.
-
 
 1. Given the measured variable; $\{v_t: t=0, 1, 2, \dots, T-1\}$, MMPD is computed for all harmony pairs and is represented by $MMPD_{obs}$.
 
