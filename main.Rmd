@@ -1318,7 +1318,7 @@ $\forall i, j \in N_C$
 <!--so that the distribution of the normalized maximum converges to a Gumbel distribution as $m\rightarrow\infty$.-->
 
 
-6. Use Steps 1-4 to compute normalized maximum distance for $\forall k \in  \{1, 2, \ldots, K\}$.
+6. Use Steps 1-5 to compute normalized maximum distance for $\forall k \in  \{1, 2, \ldots, K\}$.
 
 7. Compute MMPD = median $(NM_1, NM_2, \dots, NM_K)$/log($K$).
 
@@ -1326,7 +1326,24 @@ $\forall i, j \in N_C$
 
 \noindent The algorithm employed for selecting harmonies with significant variation is summarized as follows:
 
+- **Input:** Harmony pairs $(C_i, C_j)$ $\forall i, j \in N_C$  
+- **Output:** Harmony pairs $(C_i, C_j)$ for which MMPD is significant.
 
+
+1. Given the measured variable; $\{v_t: t=0, 1, 2, \dots, T-1\}$, MMPD is computed for all harmony pairs and is represented by $MMPD_{obs}$.
+
+2. From the original sequence a random permutation is obtained: $\{v_t^*: t=0, 1, 2, \dots, T-1\}$.
+
+3. MMPD is computed for all harmony pairs for this random permutation of the data and is represented by $MMPD_{sample}$.
+
+4.  Steps (2) and (3) are repeated a large number
+of times M (e.g. 100).
+
+5. For each permutation, one $MMPD_{sample}$ vector is obtained.
+
+6. $95^{th}$ percentile of this $MMPD_{sample}$ distribution is computed and stored in $MMPD_{threshold}$.
+
+7. Harmony pairs for which $MMPD_{obs}> MMPD_{threshold}$ are accepted.
 
 ## Number of observations and statistical transformations
 
