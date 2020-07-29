@@ -1488,23 +1488,23 @@ Few harmony pairs are displayed in \autoref{fig:bothcust} to illustrate the sigi
   harmony(ugran = "month",
           filter_in = "wknd_wday", 
           filter_out = c("hhour", "fortnight"))
-
+set.seed(12345)
 global_harmony <- sm %>%
   global_threshold(harmony_tbl = harmonies,
-                   response = "general_supply_kwh")%>%
-  # select(facet_variable,x_variable,
-  #        facet_levels,x_levels,MMPD) %>% 
+                   response = "general_supply_kwh", nsamp = 5)%>%
+  select(facet_variable,x_variable,
+         facet_levels,x_levels,MMPD, gt_MMPD) %>%
   rename(`facet variable` = facet_variable,
          `x-axis variable` = x_variable,
          `facet levels` = facet_levels,
          `x-axis levels` = x_levels,
-         `average maximum variation` = MMPD) 
+         `above threshold` = gt_MMPD) 
 
 #   write_rds(smart_harmony,"cache/smart_harmony_ak.rds")
 # }
 #smart_harmony <- read_rds("cache/smart_harmony.rds")
 
-  knitr::kable(smart_harmony,
+  knitr::kable(global_harmony,
                format = "latex",
                booktabs = TRUE,
                 caption = "Harmonies with two cyclic granularity one placed on facet and the other on x-axis along with their number of categories/levels. Out of 42 possible combinations of cyclic granularities, only these 10 are harmony pairs. The harmony pairs are ranked basis highest to lowest MMPD, only the first 6 of which are significant.") %>%
