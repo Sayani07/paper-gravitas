@@ -1324,6 +1324,7 @@ $\forall i, j \in N_C$
 
 8. Repeat Steps 1 to 7 for all harmony pairs.
 
+\noindent The algorithm employed for selecting harmonies with significant variation is summarized as follows:
 
 
 
