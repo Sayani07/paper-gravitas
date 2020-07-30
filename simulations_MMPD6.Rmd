@@ -183,8 +183,19 @@ unnest(sim_dist) %>%
 pivot_wider(names_from = Var2, values_from  = sim_dist)
 
 
-step1_data <- list(dat1, dat2)
+harmony_data <- list(dat1, dat2)
 response = "general_supply_kwh"
+
+global_harmony <- harmony_data %>%
+  global_threshold(harmony_tbl = harmonies,
+               response = "sim_dist",
+               dist_distribution = "normal",
+               dist_ordered = TRUE,
+               create_gran_data = FALSE)
+
+
+
+
 # global_harmony_iter1 <-  smart_meter10 %>%
 #   global_threshold(harmony_tbl = harmonies,
 #   response, step1_data = step1_data,
