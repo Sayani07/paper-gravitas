@@ -6,48 +6,10 @@ library(distributional)
 library(magrittr)
 library(tidyr)
 library(dplyr)
+library(ggpubr)
 
-##--rank-harmony
-#' Plotting probability distributions across granularities
-#'
-#' Plot probability distribution of univariate series across bivariate temporal granularities.
-#'
-#' @param .data a tsibble, if cyclic granularity needs to be constructed or a list consisting of tibbles for each pair of cyclic granularity in the harmony table
-#' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
-#' @param response response variable.
-#' @param prob numeric vector of probabilities with values in [0,1].
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
-#' @param dist_distribution Underlying distribution of distances. Look at hist_distance()
-#' @param dist_ordered if levels of the time granularity is ordered.
-#' @param alpha significance level
-#' @param create_gran_data if data corresponding to a pair of cyclic granularity needs to be created
-#' @return  A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
-#
-#' @examples
-#' library(tsibbledata)
-#' library(ggplot2)
-#' library(tsibble)
-#' library(lvplot)
-#' library(dplyr)
-#' library(gravitas)
-#' library(purrr)
-#' library(magrittr)
-#' sm <- smart_meter10 %>%
-#' filter(customer_id %in% c("10017936"))
-#' harmonies <- sm %>%
-#' harmony(ugran = "month",
-#'        filter_in = "wknd_wday",
-#'        filter_out = c("hhour", "fortnight"))
-#' .data = sm
-#' response  = "general_supply_kwh"
-#' harmony_tbl =  harmonies
-#' smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
-#' response = "general_supply_kwh", dist_ordered = TRUE)
-#' harmony_tbl <- PBS %>% harmony(ugran = "year")
-#' rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
-#' @export rank_harmony
-#' @export create_harmony_data
 
+##----rank_harmony
 rank_harmony <- function(.data = NULL,
                          harmony_tbl = NULL,
                          response = NULL,
@@ -228,7 +190,7 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, cre
       
       #responsei <- create_harmony_datai[[response]]
       
-      harmony_datai %>%
+      harmony_datai  %>% 
         dplyr::mutate(
           response = harmony_datai[[response]]
         ) %>%
@@ -314,52 +276,15 @@ quantile_extractx <- function(x =  NULL, prob = seq(0.01, 0.99, by = 0.01))
   stats::quantile(x, prob, type=8, na.rm = TRUE)
 }
 
-
-##----global-threshold
-
-#' Selecting harmonies with significant difference in distributions for two cyclic granularities
-#'
-#' @param .data a tsibble.
-#' @param response response variable.
-#' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
-#' @param prob numeric vector of probabilities with values in [0,1].
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
-#' @param create_gran_data if data corresponding to a pair of cyclic granularity needs to be created
-#' @param nsamp sample size of permutation test to compute threshold
-#' @param dist_ordered if levels of the time granularity is ordered.
-#' @examples
-#' \dontrun{
-#' library(tsibbledata)
-#' library(ggplot2)
-#' library(tsibble)
-#' library(lvplot)
-#' library(dplyr)
-#' library(gravitas)
-#' library(purrr)
-#' library(magrittr)
-#' sm <- smart_meter10 %>%
-#' filter(customer_id %in% c("10017936"))
-#' .data = sm
-#' harmonies <- sm %>%
-#' harmony(ugran = "month",
-#'        filter_in = "wknd_wday",
-#'        filter_out = c("hhour", "fortnight"))
-#' gran1 = "wknd_wday"
-#' gran2 = "hour_day"
-#' response  = "general_supply_kwh"
-#' global_harmony <-  sm %>%
-#' global_threshold(harmony_tbl = harmonies,
-#' response = "general_supply_kwh", nsamp = 2)
-#' }
-#' @export
+##----global_threshold
 global_threshold <- function(.data = NULL,
-                             harmony_tbl = NULL,
-                             response = NULL,
-                             prob = seq(0.01,0.99, 0.01),
-                             hierarchy_tbl = NULL,
-                             create_gran_data = TRUE,
-                             dist_ordered = TRUE,
-                             nsamp = 20,...)
+harmony_tbl = NULL,
+response = NULL,
+prob = seq(0.01,0.99, 0.01),
+hierarchy_tbl = NULL,
+create_gran_data = TRUE,
+dist_ordered = TRUE,
+nsamp = 20,...)
 {
   MMPD_obs <-  .data %>%
     rank_harmony(harmony_tbl = harmonies,
@@ -422,99 +347,73 @@ global_threshold <- function(.data = NULL,
       MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(max_pd)
     })
   
-  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.9)
-  right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.9)
+  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.95)
+  right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.95)
   MMPD_obs %>% dplyr::mutate(gt_MMPD = MMPD > right_quantile_MMPD,
                              gt_maxpd = max_pd > right_quantile_maxpd)
 }
 
-# not relevant now
+##----samenull_2by4
+harmonies <- tibble::tibble(facet_variable = c("A", "B"),x_variable  = c("B","A"), facet_levels = c(2, 4),x_levels = c(4, 2))
+.data = harmonies[1,]
 
-#   # do it for every harmony pair in the harmony table
-#   return_val <- (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
-#     cyc_grans <- harmony_tbl%>% magrittr::extract(rowi,)
-#     facet_var <- cyc_grans$facet_variable
-#     x_var <- cyc_grans$x_variable
-#
-#     # MMPD sample values for each harmony pair
-#     z <- pvalue_harmony_pair(.data, gran1 = facet_var, gran2 = x_var, response)
-#
-#     # obs value of MMPD for every harmony pair
-#     data_pair <- create_gran_pair(.data,
-#                                   gran1 = facet_var,
-#                                   gran2 = x_var,
-#                                   hierarchy_tbl) %>%
-#       tibble::as_tibble()
-#
-#     obs <- data_pair %>%
-#       dplyr::select(facet_var, x_var, !!response) %>%
-#       dplyr::mutate(
-#         response = .data[[response]]
-#       ) %>%
-#       dplyr::select(-!!response) %>%
-#       tidyr::pivot_wider(names_from = facet_var,
-#                          values_from = response,
-#                          values_fn = list(response = list)) %>%
-#       dist_harmony_pair()
-#
-#     MMPD_obs <- obs$val
-#
-#     # get MMPD samples for all pairs
-#     right_quantile <- stats::quantile(unlist(z), probs = 0.95)
-#     #MMPD_obs > right_quantile
-#     right_quantile
-#   })
-#
-#   return_val_un <- unlist(return_val)
-#   #return_val_obs <- unlist(MMPD_obs)
-#   harmony_tbl %>%
-#     dplyr::mutate(threshold = return_val_un)
-# }
+sim_dist1 = rep(distributional::dist_normal(5, 10), 8)
+data1 <- sim_distharmony1(.data, sim_dist = sim_dist1)
+data1
+data2 <- data1
+names(data2) =  c("Var2", "Var1","dist","sim_dist")
 
-pvalue_harmony_pair <- function(.data = NULL,
-                                gran1 = NULL,
-                                gran2 = NULL,
-                                response = NULL,
-                                size =NULL,
-                                hierarchy_tbl = NULL,  test = "median", tau = 0.95, r = 500, probs = 0.95,...)
-{
-  if(is.null(size)){
-    size = length(.data)
-  }
-  data_pair <- create_gran_pair(.data, gran1, gran2, hierarchy_tbl) %>% tibble::as_tibble()
-  
-  
-  MMPD_sample_lst <- (1:5) %>%
-    purrr::map(function(i){
-      
-      # get the sample
-      
-      response_sample <- sample(data_pair[[response]], nrow(data_pair))
-      MMPD_sample <- data_pair %>%
-        dplyr::select(!!gran1, !!gran2, !!response) %>%
-        # get data in required format for each sample
-        dplyr::mutate(
-          response = response_sample
-        ) %>%
-        dplyr::select(-!!response) %>%
-        tidyr::pivot_wider(names_from = !!gran1,
-                           values_from = response,
-                           values_fn = list(response = list)) %>%
-        # compute MMPD for each of these random sample
-        dist_harmony_pair()
-      
-      MMPD_sample$val
-    })
-  
-  MMPD_sample_lst
-  #right_quantile <- stats::quantile(unlist(MMPD_sample_lst), probs)
-  #MMPD_obs > right_quantile
-}
+data_l = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+data_m = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist) %>% unnest(sim_dist)
+data_mlist =  list(data_l, data_m)
+
+
+global_harmony <-  map(data_mlist, ~ (.x %>% select(-1)))%>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+p1 <- data1 %>% select(-dist) %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+
+p2 <- data2 %>% select(-dist) %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+
+p1
+p2
+
+
+data_l = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+data_m = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist) %>% unnest(sim_dist)
+data_mlist =  list(data_l, data_m)
+
+sim_harmony <- map(data_mlist, ~ (.x %>% select(-1)))  %>%
+  rank_harmony(harmony_tbl = harmonies,
+               response = "sim_dist",
+               prob = seq(0.01, 0.99, 0.01),
+               dist_distribution = "normal",
+               hierarchy_tbl = NULL,
+               dist_ordered = TRUE,
+               alpha = 0.05,
+               create_gran_data = FALSE)
+
+
+global_harmony <-  map(data_mlist, ~ (.x %>% select(-1)))%>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+global_harmony %>% kable()
 
 
 
-
-##----diffnull-7by11
+##----diffnull_7by11
 
 harmonies <- tibble::tibble(facet_variable = c("A", "B"),x_variable  = c("B","A"), facet_levels = c(2, 4),x_levels = c(4, 2))
 .data = harmonies[1,]
@@ -526,16 +425,9 @@ sim_dist6 <- distributional::dist_normal(mu = 1:77, sigma = 5)
 
 
 data1 <- sim_distharmony1(.data, sim_dist = sim_dist6)
+data1
 data2 <- data1
 names(data2) =  c("Var2", "Var1","dist","sim_dist")
-
-data1 %>% select(-dist) %>% unnest(sim_dist) %>%
-  ggplot(aes(x = Var2, y = sim_dist)) +
-  facet_wrap(~Var1) + geom_boxplot()
-
-data2 %>% select(-dist) %>% unnest(sim_dist) %>%
-  ggplot(aes(x = Var2, y = sim_dist)) +
-  facet_wrap(~Var1) + geom_boxplot()
 
 data_l = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
 data_m = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist) %>% unnest(sim_dist)
@@ -549,7 +441,215 @@ global_harmony <-  map(data_mlist, ~ (.x %>% select(-1)))%>%
                    dist_ordered = TRUE,
                    create_gran_data = FALSE, nsamp = 20)
 
-global_harmony %>% knitr::kable()
+p1 <- data1 %>% select(-dist) %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+
+p2 <- data2 %>% select(-dist) %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+
+p1
+p2
 
 
+data_l = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+data_m = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist) %>% unnest(sim_dist)
+data_mlist =  list(data_l, data_m)
 
+sim_harmony <- map(data_mlist, ~ (.x %>% select(-1)))  %>%
+  rank_harmony(harmony_tbl = harmonies,
+               response = "sim_dist",
+               prob = seq(0.01, 0.99, 0.01),
+               dist_distribution = "normal",
+               hierarchy_tbl = NULL,
+               dist_ordered = TRUE,
+               alpha = 0.05,
+               create_gran_data = FALSE)
+
+
+global_harmony <-  map(data_mlist, ~ (.x %>% select(-1)))%>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+global_harmony %>% kable()
+
+
+##----diffnull_2by4
+
+harmonies <- tibble::tibble(facet_variable = c("A", "B"),x_variable  = c("B","A"), facet_levels = c(2, 4),x_levels = c(4, 2))
+.data = harmonies[1,]
+
+sim_dist2 <- c(rep(distributional::dist_normal(mu = 10, sigma = 5),2),rep(distributional::dist_exponential(10),2), rep(distributional::dist_weibull(0.5, 2),2), rep(distributional::dist_exponential(5),2))
+
+data1 <- sim_distharmony1(.data, sim_dist = sim_dist2)
+data1
+data2 <- data1
+names(data2) =  c("Var2", "Var1","dist","sim_dist")
+
+data_l = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+data_m = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist) %>% unnest(sim_dist)
+data_mlist =  list(data_l, data_m)
+
+
+global_harmony <-  map(data_mlist, ~ (.x %>% select(-1)))%>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+p1 <- data1 %>% select(-dist) %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+
+p2 <- data2 %>% select(-dist) %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+
+p1
+p2
+
+
+data_l = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+data_m = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist) %>% unnest(sim_dist)
+data_mlist =  list(data_l, data_m)
+
+sim_harmony <- map(data_mlist, ~ (.x %>% select(-1)))  %>%
+  rank_harmony(harmony_tbl = harmonies,
+               response = "sim_dist",
+               prob = seq(0.01, 0.99, 0.01),
+               dist_distribution = "normal",
+               hierarchy_tbl = NULL,
+               dist_ordered = TRUE,
+               alpha = 0.05,
+               create_gran_data = FALSE)
+
+
+global_harmony <-  map(data_mlist, ~ (.x %>% select(-1)))%>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+global_harmony %>% kable()
+
+
+##----samenull_3levels
+
+harmonies <- tibble::tibble(facet_variable = c("A", "B","A", "C", "B", "C"),x_variable  = c("B","A", "C", "A", "C", "B"), facet_levels = c(2, 7, 2, 11, 7, 11),x_levels = c(7, 2, 11, 2, 11, 7))
+
+.data1 = harmonies[1,]
+.data3 = harmonies[3,]
+.data5 = harmonies[5,]
+
+sim_dist7 <- distributional::dist_normal(0,1)
+
+data1 <- sim_distharmony1(.data1, sim_dist = sim_dist7) %>% unnest(sim_dist) %>% select(-dist) %>% ungroup()
+data2 <- data1
+names(data2) =  c("Var2", "Var1","sim_dist")
+data2 <- data2 %>% select(Var1, everything())
+
+
+data3 <- sim_distharmony1(.data3, sim_dist = sim_dist7)%>% unnest(sim_dist)%>% select(-dist) %>% ungroup()
+data4 <- data3
+names(data4) =  c("Var2", "Var1","sim_dist")
+data4 <- data4 %>% select(Var1, everything())
+
+  
+data5 <- sim_distharmony1(.data5, sim_dist = sim_dist7)%>% unnest(sim_dist) %>% select(-dist) %>% ungroup()
+data6 <- data5
+names(data6) =  c("Var2", "Var1","sim_dist")
+data6 <- data6 %>% select(Var1, everything())
+
+
+# data_1 = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+# data_2 = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist)
+
+data_mlist =  list(data1, data2, data3, data4, data5, data6)
+
+
+global_harmony <-  data_mlist %>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+global_harmony %>% kable()
+
+pnull <- data1 %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot() + ggtitle("selected by both max not MMPD even when distribution is same")
+pnull
+
+##----diffnull_3levels
+
+
+harmonies <- tibble::tibble(facet_variable = c("A", "B","A", "C", "B", "C"),x_variable  = c("B","A", "C", "A", "C", "B"), facet_levels = c(2, 7, 2, 11, 7, 11),x_levels = c(7, 2, 11, 2, 11, 7))
+
+.data1 = harmonies[1,]
+.data3 = harmonies[3,]
+.data5 = harmonies[5,]
+
+sim_dist7 <- distributional::dist_normal(0,1)
+sim_dist8 <- c(rep(distributional::dist_normal(mu = 10, sigma = 5),4),rep(distributional::dist_exponential(10),4), rep(distributional::dist_weibull(0.5, 2),4), rep(distributional::dist_exponential(5),4), rep(distributional::dist_exponential(10),6))
+
+sim_dist9 <- distributional::dist_normal(mu = 1:77, sigma = 5)
+
+data1 <- sim_distharmony1(.data1, sim_dist = sim_dist7) %>% unnest(sim_dist) %>% select(-dist) %>% ungroup()
+data2 <- data1
+names(data2) =  c("Var2", "Var1","sim_dist")
+data2 <- data2 %>% select(Var1, everything())
+
+
+data3 <- sim_distharmony1(.data3, sim_dist = sim_dist8)%>% unnest(sim_dist)%>% select(-dist) %>% ungroup()
+data4 <- data3
+names(data4) =  c("Var2", "Var1","sim_dist")
+data4 <- data4 %>% select(Var1, everything())
+
+
+data5 <- sim_distharmony1(.data5, sim_dist = sim_dist9)%>% unnest(sim_dist) %>% select(-dist) %>% ungroup()
+data6 <- data5
+names(data6) =  c("Var2", "Var1","sim_dist")
+data6 <- data6 %>% select(Var1, everything())
+
+
+# data_1 = bind_cols(pairn = 1L, data1) %>% select(-dist) %>% unnest(sim_dist)
+# data_2 = bind_cols(pairn = 2L, data2) %>% select(pairn, Var1, Var2,sim_dist, -dist)
+
+data_mlist =  list(data1, data2, data3, data4, data5, data6)
+
+
+global_harmony <-  data_mlist %>%
+  global_threshold(harmony_tbl = harmonies,
+                   response = "sim_dist",
+                   dist_distribution = "normal",
+                   dist_ordered = TRUE,
+                   create_gran_data = FALSE, nsamp = 20)
+
+global_harmony %>% kable()
+
+p1 <- data6 %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot()
+p1
+
+p1 <- data3 %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot() + ggtitle("selected by both MMPD and max")
+p1
+
+p2 <- data5 %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot() + ggtitle("selected by max and not MMPD")
+p2
+
+p3 <- data6 %>% unnest(sim_dist) %>%
+  ggplot(aes(x = Var2, y = sim_dist)) +
+  facet_wrap(~Var1) + geom_boxplot() + ggtitle("selected by max and not MMPD")
+p3

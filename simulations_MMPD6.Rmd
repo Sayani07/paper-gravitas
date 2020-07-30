@@ -35,25 +35,24 @@ opts_chunk$set(
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
 knitr::opts_knit$set(root.dir = here::here())
+read_chunk('check_gt_mnylvls.R')
 ```
 
 ```{r external, include = FALSE}
-read_chunk('main.R')
+
 ```
 
 ```{r load}
 
 ```
 
-```{r rank-harmony}
+```{r rank_harmony}
 
 ```
 
-
-```{r global-threshold}
+```{r global_threshold}
 
 ```
-
 
 
 # Idea
@@ -103,21 +102,21 @@ of times M (e.g. 1000).
 
 6. $95^{th}$ percentile of this $MMPD_{sample}$ distribution is computed and stored in $MMPD_{threshold}$.
 
-7. If  $MMPD_{obs}> MMPD_{threshold}$, harmony pairs are accepted. Onlyone threshold for all harmony pairs.
+7. If  $MMPD_{obs}> MMPD_{threshold}$, harmony pairs are accepted. Only one threshold for all harmony pairs.
 
 Pros: Considering thresholds global for all harmony pairs would imply less computation time.
 
 Cons: Only one threshold for all harmony pairs means we are assuming distribution of all harmonies pairs are similar, which might not be the case.But nevertheless, it is a good benchmark.
 
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 smart_harmony <-read_rds("data/smart_harmony_nonst.rds")
 smart_harmony
 ```
 
 
 
-```{r smart_harmony}
+```{r smart_harmony,eval = FALSE, echo = FALSE}
 
 sm <- smart_meter10 %>% dplyr::filter(customer_id %in% c("10017936"))
 
@@ -141,12 +140,9 @@ smart_harmony %>%
 ```
 
 
-# Does normalisation work?
+# Does normalization work? -  Minimal examples
 
-
-## Minimal example
-
-Consider three cyclic granularities $A$, $B$ and $C$ with $2$, $3$ and $4$ categories. Thus, the harmony table consisting of all possible harmony pairs (assuming all pairs are harmonies), would look like the following:
+Consider two cyclic granularities $A$ and $B$ with $2$ and $3$categories. Thus, the harmony table consisting of all possible harmony pairs (assuming all pairs are harmonies), would look like the following:
 
 ```{r harmony_min}
 # harmonies <- tibble::tibble(facet_variable = c("A", "B", "A", "C", "B", "C"),
@@ -162,105 +158,54 @@ harmonies <- tibble::tibble(facet_variable = c("A", "B"),
 harmonies %>% knitr::kable()
 ```
 
+The output table has the value of MMPD (normalized median maximum pairwise distances), max_pd (un-normalized maximum pairwise distances), r(Rank of max_pd), gt_MMPD(global threshold of MMPD indicator) and gt_maxpd(global threshold of max_pd indicator).
 
-### Scenario 1: Simulated same normal distributions for all combinations of categories for all rows in the harmony table.
+## Scenario 1: Simulated same normal distributions for all combinations of categories for all harmony pairs.
 
-Type I Error. Reject the null hypothesis when there is in fact no significant effect.
+Failure to reject the null hypothesis when there is in fact no significant effect.
 
-```{r diffnull-7by11}
+
+```{r samenull_2by4}
+
+```
+
+*Conclusion*: The test does not select harmony pairs when distributions of categories are same
+
+
+## Scenario 2: Simulated different distributions for all combinations of categories for harmony pairs for few levels.
+
+
+
+```{r diffnull_2by4}
 
 ```
 
 
-## Number of levels and ranking
+*Conclusion*: The test select the harmony pair for which distribution of x-axis categories are significantly different
 
-```{r normalisation_work}
-smart_harmony %>% mutate(lev = facet_levels*x_levels) %>% ggplot(aes(x = lev, y = r)) + geom_line() + geom_point(colour = "blue")
-smart_harmony %>% mutate(lev = facet_levels*x_levels, r_MMPD = row_number()) %>% ggplot(aes(x = lev, y = r_MMPD)) +geom_line() + geom_point(colour = "blue")
+
+## Scenario 3: Simulated different distributions for all combinations of categories for all harmony pairs with many levels.
+
+
+```{r diffnull_7by11}
+
 ```
 
-## Comparing levels using simulated data
+*Conclusion*: The test with MMPD rejects the harmony pair even for which distribution of x-axis categories are significantly different. But the test with only maximum selects the pair with varying x-axis categories.
 
-- MMPD should help choose the significantly different distributions only
-- The ranking should be from most different to least different
+## Scenario 4: Cumulative 3 levels with 2, 7 and 11 and testing level and power
 
-Both of these should be checked again taking unnormalised statistic
+```{r samenull_3levels}
 
-## Scenario 1: Simulated same normal distributions for all combinations of the pair of cyclic granularities
-
-```{r scene1}
-library(readr)
-library(ggplot2)
-sim_data1 <- read_rds("sim_data1.rds")
-
-sim_data1 %>%
-  dplyr::filter(name==1) %>%
-  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
-
-global_harmony_iter1 <- read_rds("data/global_harmony_iter1.rds")
-
-global_harmony_iter1 %>% kable()
 ```
 
 
-## Scenario 2: Simulated same normal distributions for all x-levels within a facet, but different distributions across facets
 
-```{r scene2}
-library(readr)
-library(ggplot2)
-sim_data2 <- read_rds("sim_data2.rds")
+*Conclusion*: With 3 levels the test incorrectly chooses 1 harmony pair with similar distribution. The harmony pair which is displayed.
 
-sim_data2 %>%
-  dplyr::filter(name==1) %>%
-  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
 
-global_harmony_iter2 <- read_rds("data/global_harmony_iter2.rds")
+```{r diffnull_3levels}
 
-global_harmony_iter2 %>% kable()
 ```
 
-
-## Scenario 3: Simulated different normal distributions for different x-levels but they do not vary across facets
-
-```{r scene3}
-library(readr)
-library(ggplot2)
-
-sim_data3 <- read_rds("sim_data3.rds")
-
-sim_data3 %>%
-  dplyr::filter(name==1) %>%
-  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
-
-sim_data3 %>%
-  dplyr::filter(name==4) %>%
-  ggplot(aes(x = Var2, y = sim_data)) + geom_boxplot() + facet_wrap(~Var1)
-
-
-global_harmony_iter3 <- read_rds("data/global_harmony_iter3.rds")
-
-global_harmony_iter3 %>% kable()
-```
-
-# Scenario 4: Mixture of secenario 2 and 3
-
-
-
-```{r rank harmony}
-library(gravitas)
-library(ggplot2)
-library(dplyr)
-sm <- smart_meter10 %>%
-filter(customer_id %in% c("10017936"))
-harmonies <- sm %>%
-harmony(ugran = "month",
-filter_in = "wknd_wday",
-filter_out = c("hhour", "fortnight"))
-.data = sm
-response  = "general_supply_kwh"
-harmony_tbl =  harmonies
-smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
-response = "general_supply_kwh", dist_ordered = FALSE)
-```
-
-
+*Conclusion*: The test with MMPD selects just one pair, as opposed to the test with maximum. This needs to be checked against what we expect from the test. The harmony pairs which are selected (either through MMPD or maximum) are displayed.
