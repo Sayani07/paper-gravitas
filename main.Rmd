@@ -1,5 +1,5 @@
 ---
-title: Visualizing probability distributions across bivariate cyclic temporal granularities
+title: Visualizing probability distributions across bivariate cyclic temporal granularities with how to choose harmonies
 
 # to produce blinded version set to 1
 blinded: 0
