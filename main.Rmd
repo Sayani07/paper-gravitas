@@ -539,7 +539,6 @@ If linear granularity $G'$ is periodical with respect to $B$ with irregular mapp
 
 ```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years."}
 
-knitr::include_graphics("Figs/aperiodic-ex3.png")
 ```
 
 \begin{definition}\label{def:aperiodic}
@@ -592,18 +591,6 @@ The nested ordering of linear granularities can be organized into a {\bf hierarc
 \end{example}
 
 ```{r tab-mayan}
-table_mayan <- tibble(`linear (G)` = c("kin", "uinal", "tun", "katun", "baktun"),
-                      `single-order-up cyclic (C)` = c("kin-of-uinal","uinal-of-tun"," tun-of-katun", "katun-of-baktun", 1),
-                       `period length/conversion operator (K)`= c(20, 18, 20, 20, 1))
-kable(table_mayan,
-      format = "latex",
-      booktabs = TRUE,
-      align = "l",
-      caption = "Hierarchy table for Mayan calendar with circular single-order-up granularities.") %>%
-  kable_styling()
-  #row_spec(0, bold = TRUE) %>%
-  #row_spec(1:(nrow(table_mayan)-1), hline_after = T)
-  #.
 ```
 
 
@@ -709,16 +696,6 @@ C_{G_l,G_{m}}(z) & = C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{
  $$C_{day, year}(z) = C_{day,month}(z) + \sum_{w=0}^{C_{month, year}(z)-1}(\vert T_{w} \vert)$$, where $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$
 
 ```{r tab-gregorian}
-table_greg <- tibble(`linear (G)` = c("minute", "hour", "day", "month", "year"),
-                      `single-order-up cyclic (C)` = c("minute-of-hour","hour-of-day","day-of-month", "month-of-year", 1),
-                     `period length/conversion operator (K)` = c(60, 24, "k(day, month)", 12, 1))
-
-kable(table_greg,
-      format = "latex",
-      booktabs = TRUE,
-      caption = "Hierarchy table for the Gregorian calendar with both circular and quasi-circular single-order-up granularities.") %>%
-  #row_spec(0, bold = TRUE) %>%
-   kable_styling()
 ```
 
 
@@ -857,7 +834,6 @@ Single-order-up quasi-circular granularity could be obtained from multiple-order
 <!-- These are based on conditioning the values taken on by one or more of the variables in a data set. This means creating same plots using data subsets corresponding to each level of the conditioned variable. This is a powerful tool for exploratory data analysis as we can rapidly compare patterns in different parts of the data. -->
 
 ```{r data-structure, fig.cap = "The data structure for exploring periodicities in data by including cyclic granularities in the tsibble structure with index, key and measured variables.", fig.pos="htb"}
-include_graphics("Figs/data-struc-diffcol.png")
 ```
 
 ## Harmonies and clashes {#sec:synergy}
@@ -1148,62 +1124,6 @@ For data sets of the form ($C_i$, $C_j$, $v$) $\forall i, j \in N_C$, if there a
 
 ```{r allFig, out.width="100%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap="Distribution of energy consumption displayed through letter value plots. Plot (a) displays consumption across month-of-year faceted by quarters of the year, (b) across weekday/weekend faceted by quarters of the year and (c) across quarters of the year faceted by weekday/weekend. Plots (b) and (c) both show harmonies since each quarter consists of both weekdays and weekends. Conversely, weekend and weekday can occur in every quarter. Analysts should avoid plotting such clashes. Plot (b) helps to compare weekends and weekdays for each quarter. It can be seen that for every quarter weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently, whereas, Plot (c) helps to compare quarters within weekdays and weekends. For example, the quartile spread of consumption shrinks/lowers from first to fourth quarter for weekdays, whereas this pattern is not true for weekends. Plot (a) shows a clash since all quarters do not correspond to all months of the year. ", fig.show = 'hold'}
 
-load("data/sm_cust50.rds")
-cust50 <- sm_cust50 %>%  distinct(customer_id)
-
-VIC <- sm_cust50 %>% as_tsibble(regular = FALSE) %>% 
-  filter(customer_id==cust50$customer_id[2])
-
-scene1 <-  VIC %>%
-  #create_gran("quarter_year") %>%
-  #filter(month_year %in% c("Jan", "Mar", "Dec")) %>%
-  #create_gran("day_week") %>%
-  #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
-  prob_plot("quarter_year", "wknd_wday",
-            response = "general_supply_kwh",
-            plot_type = "lv",
-            symmetric = FALSE
-  ) +
-  ylab("") +
-  #xlab("weekend/weekday") +
-  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + xlab("")+ 
-  theme_minimal()
-
-
-
-scene2 <- VIC %>%
-  prob_plot("wknd_wday",
-            "quarter_year",
-            response = "general_supply_kwh",
-            plot_type = "lv",
-            symmetric = FALSE
-  ) +
-  ylab("") +
-    xlab("quarters of the year")  +
-  scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + theme_minimal()
-
-
-
-
-scene3 <- VIC %>%
-  prob_plot("quarter_year",
-            "month_year",
-            response = "general_supply_kwh",
-            plot_type = "lv",
-            symmetric = FALSE
-  ) +
-  ylab("") +
-  xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()+ theme_minimal()
-
-gg_fig <- ggarrange(scene3,
-          ggarrange(scene1, scene2, ncol = 2, labels = c("b", "c")),
-          nrow = 2, labels = "a")
-          #label.y = "electricity demand [KWh]"\
-
-
-ggpubr::annotate_figure(gg_fig,
-                left = text_grob("electricity demand [KWh]",  rot = 90)) + theme_minimal()
-
 ```
 
 ### Interchangeability of mappings
@@ -1288,10 +1208,6 @@ with the index set mapping half-hourly time periods to a set of positive integer
 <!-- These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def}), quasi-circular. <!--(Section \ref{sec:quasi- circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})-->
 
 ```{r search, echo=FALSE, eval = FALSE}
-smart_meter %>%
-  search_gran(filter_out = c("semester", 
-                             "quarter",
-                             "fortnight"))
 ```
 
 <!-- #smart_smart_search <- smart_meter %>% search_gran() -->
@@ -1310,13 +1226,6 @@ smart_meter %>%
 <!-- # knitr::kable(smart_meter_limit1, format = "markdown") -->
 
 ```{r search_gran_limit2, echo = FALSE, eval = FALSE}
-smart_meter10 %>% search_gran(
-  highest_unit = "month",
-  filter_out = c("hhour", "fortnight"))%>%
-  knitr::kable(format = "latex",
-      booktabs = TRUE) %>%
-  #row_spec(0, bold = TRUE)%>%
-  kable_styling()
 ```
 
 
@@ -1346,45 +1255,6 @@ In \autoref{fig:bothcust} (b), <!--the distribution of energy consumption is plo
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
 ```{r harmony-tab, echo=FALSE, cache=TRUE}
-# if(!dir.exists("cache/"))
-# {
-#   dir.create("cache")
-# }
-# if (!file.exists("cache/smart_harmony.rds")) {
-  sm <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936))
-  
-  harmonies <- sm %>%
-  harmony(ugran = "month",
-          filter_in = "wknd_wday", 
-          filter_out = c("hhour", "fortnight")) %>%
-    rename(`facet variable` = facet_variable,
-         `x-axis variable` = x_variable,
-         `facet levels` = facet_levels,
-         `x-axis levels` = x_levels) 
-  
-  
-# set.seed(12345)
-# 
-# global_harmony <- sm %>%
-#   global_threshold(harmony_tbl = harmonies,
-#                    response = "general_supply_kwh", nsamp = 5) %>%
-#   rename(`facet variable` = facet_variable,
-#          `x-axis variable` = x_variable,
-#          `facet levels` = facet_levels,
-#          `x-axis levels` = x_levels) %>% 
-#   mutate(MMPD = if_else(gt_MMPD == TRUE,
-#                         paste0(MMPD, "*"), paste0(MMPD))) %>%
-#   select(`facet variable`,`x-axis variable`,
-#          `facet levels`,`x-axis levels`) 
-
-
-  knitr::kable(harmonies,
-               format = "latex",
-               booktabs = TRUE,
-                caption = "Harmonies with a pair of cyclic granularity one placed on facet and the other on x-axis. Out of 42 possible combinations of cyclic granularities, only 16 are harmony pairs.") %>%
-    #row_spec(0, bold = TRUE) %>%
-    kable_styling()
 ```
 
 <!-- # smart_meter10 %>% gran_advice("wknd_wday", "hour_day") -->
@@ -1558,82 +1428,6 @@ In \autoref{fig:bothcust} (b), <!--the distribution of energy consumption is plo
 
 
 ```{r bothcust, fig.cap = "Energy consumption of a single customer shown with different distribution displays, and granularity arrangements. Two granularities are used: hour of the day (I) and weekday/weekend (II). Plot (a) shows granularity I facetted by granularity II, and plots (b), (c) shows the converse mapping. Plot (a) makes a comparison of usage by workday within each hour of the day using side-by-side boxplots. Generally, on a work day there is more consumption early in the day.  Plots (b) and (c) examine the temporal trend of consumption over the course of a day, separately for the type of day. Plot (b) uses an area quantile to put the emphasis on the time series, for example, the median consumption over time shows prolonged usage in the morning on weekdays. Plot (c) uses a violin plot to place emphasis on distributional differences across hours. It can be seen that the morning use on weekdays is bimodal, some work days there is low usage, which might indicate the person is working from home and also having a late start.", out.width="90%"}
-
-# plot for only customer is shown
-# cust1 <- smart_meter10 %>%
-# filter(customer_id %in% c(10006704)) %>%
-#   prob_plot("wknd_wday",
-#                             "hour_day",
-#                             response = "general_supply_kwh",
-#                             plot_type = "quantile",
-#             symmetric = FALSE,
-#             quantile_prob = c(0.25, 0.5, 0.75, 0.9))
-#   scale_y_sqrt() +
-#   ggtitle("Energy consumption distribution for customer id: 10006704")
-cust2_quantile <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("wknd_wday",
-    "hour_day",
-    response = "general_supply_kwh",
-    plot_type = "quantile",
-    symmetric = TRUE,
-    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (b) Area quantile plot faceted by weekend-weekday") +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
-  theme_minimal()
-#
-# smart_meter10 %>%
-#   filter(customer_id %in% c(10006704)) %>%
-#   prob_plot("wknd_wday",
-#                             "hour_day",
-#                             response = "general_supply_kwh",
-#                             plot_type = "violin") +
-#   scale_y_sqrt() +
-#   ggtitle("Energy consumption distribution for customer id: 10006704")
-
-cust2_violin <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("wknd_wday",
-    "hour_day",
-    response = "general_supply_kwh",
-    plot_type = "violin"
-  ) +
-  scale_y_sqrt()+
-  #ggtitle(" (c) Violin plot faceted by weekend-weekday") +
-  ylab("") + xlab("hours of the day") + ggtitle("") +
-  scale_x_discrete( breaks = seq(0, 23, 5))+ 
-  theme_minimal()
-
-cust2_box <- smart_meter10 %>%
-  filter(customer_id %in% c(10017936)) %>%
-  prob_plot("hour_day",
-    "wknd_wday",
-    response = "general_supply_kwh",
-    plot_type = "boxplot"
-  ) +
-  scale_y_sqrt() +
-  #ggtitle(" (a) Box plot faceted by hour-of-day") +
-  xlab("") +
-  ggtitle("") + ylab("") +
-  scale_x_discrete(labels = c('wday','wend')) +
-  ggplot2::theme(axis.text.x = element_text(size = 7))+ 
-  theme_minimal()
-
-
-
-#ggarrange(cust2_quantile, cust2_violin, nrow = 2)
-
-
-gg_fig <- ggarrange(cust2_box,
-          ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("b", "c")),
-          ncol = 2, labels = "a")
-          #label.y = "electricity demand [KWh]"\
-
-
-ggpubr::annotate_figure(gg_fig,
-                left = text_grob("electricity demand [KWh]",  rot = 90))
 ```
 
 <!-- # ```{r cust-ridge, fig.cap ="Boxplot of energy consumption across hours of the day faceted by weekday/weekend for customer id: 10017936. The change in mapping of the cyclic granularities leads to easier comparison within weekdays and weekends for each hour. Median consumption till 6am is higher for weekends compared to weekdays although the quartiles look similar. Outliers appear more during the end of the day implying more uncertain behavior in latter hours of the day compared to early morning hours."} -->
@@ -1673,11 +1467,7 @@ The method is not only restricted to temporal data, and can be generalized to ma
 \noindent The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each innings has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like \autoref{tab:hierarchy-cric}. However, even if the situation is not periodic, it can be interesting to visualize the distribution of a measured variable to shed light on the aperiodic behavior of a non-temporal data set similar to aperiodic events like formal meetings, workshops, conferences, school semesters in a temporal set up. <!--There are many interesting questions that could possibly be answered with such a data set irrespective of the type of cyclic granularities.-->
 
 ```{r hierarchy-cric}
-hierarchy_model <- tibble::tibble(
-  `linear (G)` = c("over", "inning", "match", "season"),
-  `single-order-up cyclic (C)` = c("over-of-inning", "inning-of-match", "match-of-season", 1),
-  `period length/conversion operator (K)` = c(20, 2, "k(match, season)", 1)
-)
+
 knitr::kable(hierarchy_model,
              format = "latex",
              booktabs = TRUE,
@@ -1744,122 +1534,6 @@ Difference in runs across overs are likely to be negative if good fielding has a
 
 ```{r cricex, fig.cap= "Runs per over shown with different distribution displays, and granularities. Plot (a) shows letter value plot across overs faceted by innings. For the team batting in the first innings there is an upward trend of runs per over, while there is no such pattern of runs for the teams batting in the second innings. Plot (b) shows quantile plot of runs per over across an indicator of wickets in previous over faceted by current over. This indicates that at least one wicket in the previous over leads to lower median run rate and quartile spread in the subsequent over.", warning = FALSE, message = FALSE, out.width = "90%"}
 
-library(tsibble)
-cricket_tsibble <- cricket %>%
-  mutate(data_index = row_number()) %>%
-  as_tsibble(index = data_index)
-
-hierarchy_model <- tibble::tibble(
-  units = c("index", "over", "inning", "match"),
-  convert_fct = c(1, 20, 2, 1)
-)
-
-cricket_tsibble %>%
-  filter(batting_team %in% c(
-    "Mumbai Indians",
-    "Chennai Super Kings"
-  )) %>%
-  mutate(inning = paste0("innings: ", inning)) %>%
-  prob_plot("inning",
-    "over",
-    response = "runs_per_over",
-    hierarchy_model,
-    plot_type = "lv"
-  ) +
-  scale_fill_brewer(palette = "Dark2") +
-  #ggtitle("(a) Runs per over across over faceted by inning") +
-  theme(legend.position = "right") +
-  ggtitle("a") +
-  ylab("runs per over") +
-  xlab("overs of the innings") +
-  theme(plot.title = element_text(face = "bold")) +
-  ggplot2::theme(
-       strip.text = ggplot2::element_text(
-        size = 10,
-         margin = ggplot2::margin(b=0, t=0)
-      )
-     ) +  theme_minimal() 
-#geom_smooth(aes( x = over,
-#                               y=runs_per_over), method = lm, #formula = y ~ splines::bs(x, 3), se = FALSE)
-
-cricket_all <- read_csv("data-raw/deliveries_all.csv")
-matches_all <- read_csv("data-raw/matches_all.csv")
-
-cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" = "id"))
-
-# cricket_per_over <- cricket_season %>%
-#   group_by(season,
-#            match_id,
-#            batting_team,
-#            bowling_team,
-#            inning,
-#            over) %>%
-#   summarise(runs_per_over = sum(total_runs),
-#             run_rate = sum(total_runs)/length(total_runs))
-#
-# cricket_tsibble_all <- cricket_per_over %>%
-#   ungroup() %>%
-#   mutate(data_index = row_number()) %>%
-#   as_tsibble(index = data_index)
-
-cricket_dot_field <- cricket_season %>%
-  mutate(
-    fielding_proxy = if_else(dismissal_kind %in%
-      c("caught", "caught and bowled"), 1, 0),
-    dot_ball_proxy = if_else(total_runs == 0, 1, 0),
-    wicket_proxy = if_else(is.na(dismissal_kind), 0, 1)
-  ) %>%
-  group_by(
-    season,
-    match_id,
-    batting_team,
-    bowling_team,
-    inning,
-    over
-  ) %>%
-  summarise(
-    runs_per_over = sum(total_runs),
-    run_rate = sum(total_runs)*6 / length(total_runs),
-    fielding_wckts = sum(fielding_proxy),
-    dot_balls = sum(dot_ball_proxy)
-  ) %>%
-  mutate(diff_run_rate = c(0, diff(run_rate)))
-
-cricket_tsibble <- cricket_dot_field %>%
-  ungroup() %>%
-  mutate(data_index = row_number()) %>%
-  as_tsibble(index = data_index)
-
-cricket_data <- cricket_tsibble %>%
-  mutate(
-    field = if_else(fielding_wckts == 0, "0", "1+"),
-    dot = if_else(dot_balls == 0, "no dot balls", ">0 dot balls"),
-    lag_field = lag(field),
-    lag_dot = lag(dot)
-  ) %>%
-  filter(lag_field != 0, lag_dot != 0) 
-
-cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
-
-# filter(fielding_wckts %in% c(0,1)) %>%
-#
- cricket_data %>%
-  filter(over!=1) %>%
-  prob_plot("over", "lag_field",
-  hierarchy_model,
-  response = "run_rate",
-  plot_type = "quantile",
-  symmetric = FALSE,
- quantile_prob = c(0.25, 0.5, 0.75)) +
-   #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
-  ylab("runs per over")  +
-  xlab("number of wickets in previous over") +
-  ggtitle("b") +
-   theme(plot.title = element_text(face = "bold")) +
-        theme(axis.ticks = element_blank(), legend.background = element_blank(),
-            legend.key = element_blank(), panel.background = element_blank(), strip.background = element_blank(),
-            plot.background = element_blank(), complete = TRUE, panel.grid.major = element_line(colour = "#E0E0E0"),
-            panel.border = element_rect(colour = "#E0E0E0", fill = NA))
 ```
 
 <!-- Q2: Among good fielding and bowling - which affect the runs of the subsequent overs more? -->
