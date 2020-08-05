@@ -50,20 +50,7 @@ output:
 
 ```{r initial, echo = FALSE, cache = FALSE, include = FALSE}
 options("knitr.graphics.auto_pdf" = TRUE)
-library(bookdown)
-library(rticles)
 library(knitr)
-library(tidyverse)
-library(lubridate)
-library(lvplot)
-library(ggridges)
-library(tsibble)
-if (requireNamespace("gravitas") == F)
-  remotes::install_github("Sayani07/gravitas")
-library(gravitas)
-library(ggpubr)
-library(xtable)
-library(kableExtra)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = "figure/", fig.align = "center", fig.show = "hold",
@@ -73,8 +60,8 @@ opts_chunk$set(
 #knitr::opts_knit$set(root.dir = here::here())
 ```
 
-```{r external, include = FALSE}
-# read_chunk('scripts/main.R')
+```{r external, include = FALSE, cache = FALSE}
+read_chunk('scripts/main.R')
 ```
 
 ```{r load}
@@ -178,7 +165,6 @@ Each non-empty subset $G(i)$ is called a {\bf granule}.
  <!--, each of which are non-repeating in nature and arranged from past to future. If we consider $T$ hours, we will have $\lfloor T/24\rfloor$ days, $\lfloor T/(24*7)\rfloor$ weeks and so on.-->
 
 ```{r linear-time, echo=FALSE, out.width = "100%", fig.cap="Illustration of time domain, linear granularities and index set.  Hour, day, week, month and year are linear granularities and can also be considered to be time domains. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating. Hours could also be considered the index set, and a bottom granularity. "}
-knitr::include_graphics("Figs/linear-ex.png")
 ```
 
 
@@ -371,7 +357,7 @@ for example.}
 <!-- # ``` -->
 
 ```{r circular-dow,echo=FALSE,out.width = "100%",fig.cap="Illustration of circular relative to linear granularities (a). Circular granularities can be considered to be cutting the linear granularity into pieces and stacking them (b). The circular granularity creates repeated integer sequences."}
-knitr::include_graphics("Figs/circular-ex.png")
+
 ```
 
 <!-- All circular granularities can be expressed in terms of the bottom linear granularity with equation \autoref{eq:eq2}. -->
@@ -1302,7 +1288,6 @@ with the index set mapping half-hourly time periods to a set of positive integer
 <!-- These cyclic granularities are a function of the index variable and are computed based on if they are circular <!--(Section \ref{sec:circular-gran-def}), quasi-circular. <!--(Section \ref{sec:quasi- circular-gran-def}) or aperiodic (Section \ref{sec:aperiodic-gran-def})-->
 
 ```{r search, echo=FALSE, eval = FALSE}
-library(gravitas)
 smart_meter %>%
   search_gran(filter_out = c("semester", 
                              "quarter",
@@ -1688,8 +1673,6 @@ The method is not only restricted to temporal data, and can be generalized to ma
 \noindent The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each innings has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like \autoref{tab:hierarchy-cric}. However, even if the situation is not periodic, it can be interesting to visualize the distribution of a measured variable to shed light on the aperiodic behavior of a non-temporal data set similar to aperiodic events like formal meetings, workshops, conferences, school semesters in a temporal set up. <!--There are many interesting questions that could possibly be answered with such a data set irrespective of the type of cyclic granularities.-->
 
 ```{r hierarchy-cric}
-library(gravitas)
-library(tibble)
 hierarchy_model <- tibble::tibble(
   `linear (G)` = c("over", "inning", "match", "season"),
   `single-order-up cyclic (C)` = c("over-of-inning", "inning-of-match", "match-of-season", 1),
@@ -1798,9 +1781,6 @@ cricket_tsibble %>%
      ) +  theme_minimal() 
 #geom_smooth(aes( x = over,
 #                               y=runs_per_over), method = lm, #formula = y ~ splines::bs(x, 3), se = FALSE)
-
-
-library(tsibble)
 
 cricket_all <- read_csv("data-raw/deliveries_all.csv")
 matches_all <- read_csv("data-raw/matches_all.csv")
@@ -1913,7 +1893,7 @@ cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
 Exploratory data analysis and data analysis in general involve many iterations of finding and summarizing patterns. With temporal data available at ever finer scales, exploring periodicity can become overwhelming with so many possible  granularities to explore. This work provides a framework to systematically explore distribution of an univariate measured variable across two cyclic time granularities by creating any cyclic granularity, ranking a list of harmonies and thereby identifying possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
 
 <!--The infrastructure of systematic exploration of observed variable across pair of cyclic time granularities has been implemented in the
-R package `gravitas`. --> A missing piece is to enable user-defined temporal calendars. Also, computation of cyclic aperiodic granularities would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functions can be imported in the `gravitas` package to accommodate for aperiodic cyclic granularities. Another future direction of work could be to further refine the search of harmonies by only selecting pairs of cyclic granularities for which variation in measured variable is significant and rating these selected harmony pairs in order of importance for exploration.
+R package `gravitas`. --> A missing piece in the package `gravitas` is the  computation of cyclic aperiodic granularities which would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functions can be imported in the `gravitas` package to accommodate for aperiodic cyclic granularities. Another future direction of work could be to further refine the search of harmonies by only selecting pairs of cyclic granularities for which variation in measured variable is significant and rating these selected harmony pairs in order of importance for exploration.
 
 # Acknowledgements {-}
 
