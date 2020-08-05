@@ -849,7 +849,7 @@ Single-order-up quasi-circular granularity could be obtained from multiple-order
 <!--# our proposal of extension of tsibble data structure and -->
 <!--# why looking at pair of granularities instead of all -->
 
-\noindent All cyclic granularities can be expressed in terms of the index set, and hence, we introduce the data structure in Figure \@ref(fig:data-structure). This basic structure of a tsibble (index, key, measurements) is augmented by columns of cyclic granularities.The total number of cyclic granularities would be based on the number of linear granularities considered in the hierarchy table and presence of any aperiodic cyclic granularities, for example, if we have $n$ periodic linear granularities in the hierarchy table, $n(n-1)/2$ circular or quasi-circular cyclic granularities could be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that could originate from $N_L$ periodic and aperiodic linear granularities. Any attempt to encode all or many of these cyclic granularities at the same time to develop insights on periodicity might fail or otherwise become too numerous for comprehensive human consumption. Instead, this big problem is broken down by focusing on pair of cyclic granularities ($C_i$, $C_j$) at a time for $i, j \in \{1, 2, \dots, N_C\}$. Data sets of the form <$C_i$, $C_j$, $v$> then forms the basis for exploration and analysis of the measured variable $v$.
+\noindent All cyclic granularities can be expressed in terms of the index set, and hence, we introduce the data structure in Figure \@ref(fig:data-structure). This basic structure of a tsibble (index, key, measurements) is augmented by columns of cyclic granularities. The total number of cyclic granularities would be based on the number of linear granularities considered in the hierarchy table and presence of any aperiodic cyclic granularities, for example, if we have $n$ periodic linear granularities in the hierarchy table, $n(n-1)/2$ circular or quasi-circular cyclic granularities could be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that could originate from $N_L$ periodic and aperiodic linear granularities. Any attempt to encode all or many of these cyclic granularities at the same time to develop insights on periodicity might fail or otherwise become too numerous for comprehensive human consumption. Instead, this big problem is broken down by focusing on pair of cyclic granularities ($C_i$, $C_j$) at a time for $i, j \in \{1, 2, \dots, N_C\}$. Data sets of the form <$C_i$, $C_j$, $v$> then forms the basis for exploration and analysis of the measured variable $v$.
 
 <!-- CONTENT SHORT -->
 <!-- Cyclic time granularities can be implemented through the tsibble [@wang2019tsibble] (Time Series taBBLE) data structure. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. <!--In a tsibble, each observation (row) is uniquely identified by index and key.A time domain, as defined by @Bettini1998-ed, is essentially a mapping of the index set to the index of a tsibble. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.<!--Consistent with the assumption of @Bettini2000-vy, all linear granularities can be generated from the bottom granularity by calendar algebraic operations.\todo[inline]{Would it be worth to start this discussion about data structures earlier, with the linear granularity, and follow it through when appropriate; or put all discussion on implementation in the data structures section.} -->
@@ -919,12 +919,12 @@ A {\bf harmony} is a pair of cyclic granularities that does not contain any empt
 
 <!-- In linear granularities, if we consider a data set of size T where each time point corresponds to an unique value of the measured variable.  -->
 
-Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. <!--This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable.--> It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of the measured variable through these multiple observations could be a potential way to explore and bring forward different features of the data. <!-- compare and contrast periodicities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.-->
+Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. <!--This is unlike the case of linear granularities where each time point corresponds to an unique value of the measured variable.--> It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of the measured variable using these multiple observations could be a potential way to explore and bring forward different features of the data. <!-- compare and contrast periodicities in the data.<!--Any attempt to encode all or many cyclic granularities together to develop insights on periodicity might become clumsy. Instead, the big problem is broken down by focusing on two cyclic granularities at a time Summarizing properties of the distribution of the measured variable can give valuable indication of features.-->
 
 <!-- using some summary statistics, each of which can highlight different features of the data or through probability densities -->
 
 <!-- T+1 observation not T -->
-However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $L$ and $M$ categories respectively. <!--Each element of $C_i$ occurs approximately $(T+1)/L$ times while each element of $C_j$ occurs approximately $(T+1)/M$ times. and there are no or very few empty combinations since we only consider harmonies.--> Let $nobs$ be the number of observations for a combination of levels from $(C_i, C_j)$. Now, $nobs$ might be equal for all combinations on an average <!--as $T\rightarrow\infty$ when the number of observations per combination is-->  so that $nobs = (T + 1)/(LM)$ as $T\rightarrow\infty$ or ideally take any value between $\{0, 1, 2, \dots, T\}$. The statistical transformation used for summarizing the measured variable for a combination should be chosen in line with  $nobs$. For example, it might be useful to compute deciles only when $nobs \ge 10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month are more likely to suffer from this problem.
+However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $K$ and $L$ categories respectively. Let $nobs$ be the number of observations for a combination of levels from $(C_i, C_j)$. Now, $nobs$ might be equal for all combinations on an average so that $nobs = (T + 1)/(KL)$ as $T\rightarrow\infty$ or ideally take any value between $\{0, 1, 2, \dots, T\}$. The statistical transformation used for summarizing the measured variable should be chosen in line with  $nobs$. For example, it might be useful to compute deciles for summarization only when $nobs \ge 10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month are likely to suffer from this problem.
 
 
 
@@ -1178,7 +1178,7 @@ For data sets of the form ($C_i$, $C_j$, $v$) $\forall i, j \in N_C$, if there a
 load("data/sm_cust50.rds")
 cust50 <- sm_cust50 %>%  distinct(customer_id)
 
-VIC <- sm_cust50 %>%
+VIC <- sm_cust50 %>% as_tsibble(regular = FALSE) %>% 
   filter(customer_id==cust50$customer_id[2])
 
 scene1 <-  VIC %>%
@@ -1199,10 +1199,6 @@ scene1 <-  VIC %>%
 
 
 scene2 <- VIC %>%
-  #create_gran("month_year") %>%
-  #filter(month_year %in% c("Jan", "Mar", "Dec")) %>%
-  #create_gran("day_week") %>%
-  #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
   prob_plot("wknd_wday",
             "quarter_year",
             response = "general_supply_kwh",
@@ -1215,27 +1211,8 @@ scene2 <- VIC %>%
 
 
 
-# VIC %>%
-#   #create_gran("month_year") %>%
-#   #filter(month_year %in% c("Jan", "Mar", "Dec")) %>%
-#   #create_gran("day_week") %>%
-#   #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
-#   prob_plot("month_year",
-#             "day_month",
-#             response = "general_supply_kwh",
-#             plot_type = "lv",
-#             symmetric = FALSE
-#   ) +
-#   ylab("") +
-#   xlab("day_month")  +
-#   ggtitle("(d) Letter value plot across days of months & months")
-
 
 scene3 <- VIC %>%
-  #create_gran("month_year") %>%
-  #filter(month_year %in% c("Jan", "Mar", "Dec")) %>%
-  #create_gran("day_week") %>%
-  #filter(day_week %in% c("Sat", "Sun", "Mon")) %>%
   prob_plot("quarter_year",
             "month_year",
             response = "general_supply_kwh",
@@ -1259,90 +1236,6 @@ ggpubr::annotate_figure(gg_fig,
 ### Interchangeability of mappings
 
 We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_i$, $C_j$, $v$> with $C_i$ mapped to $x$ position and $C_j$ to facets, then $A_k$'s are placed in close proximity and each $B_l$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_k$'s are compared against each other within each group.<!-- When $C_j$ is mapped to facets and $C_i$ is mapped to $x$ axis, comparisons would ideally happen across all $B_l$ within each $A_k$--> With the mapping of $C_i$ and $C_j$ reversed, emphasis will shift to different behavior of the variables. \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
-
-
-
-## Choosing harmonies to show {#sec:chooseharmonies}
-
-<!-- Why do we need ranking system -->
-<!-- set of pairs - building the ranks for N_C and N_L -->
-
-\noindent The data structure suggests that we look at pairs of cyclic granularities at a time from $N_C$ cyclic granularities. Hence, all possible pairs of cyclic time granularities that could be analyzed together is $^{N_C} P_2$, with each of the circular granularity either mapped to facets or x-axis. Now, if $N_C$ is fairly large, even after excluding clashes, the list of harmonies left would be very large and overwhelming for human consumption. Hence, there is a need to rank the harmonies basis how well they capture the variation in the measured variable and additionally reduce the number of harmonies for further exploration/visualization. Displays that capture more variation within different categories in the same group would be important to bring out different patterns of the data. Hence, the idea  would be to select only those harmonies which have significant variation in the measured variable and to rank the selected harmonies, such that a harmony pair is rated more important if the variation between different levels of the x-axis variable is higher on an average across all levels of facet variables. This twofold objective is achieved by defining a statistic that could essentially capture the variation of the measured variable in a harmony pair and constructing a test to check if the variation is statistically significant.
-
-
-<!-- Hence, there is a need to select only those harmonies which have significant variation in the measured variable and hence might appear to be interesting when displayed. Moreover, there is a need to rank these harmonies basis how interesting they are, which could be measured through the captured amount of variation in the measured variable. -->
-
-
-
-<!--The harmony pairs $(C_i, C_j)$ with higher average variation in the measured variable between different levels of $C_i$ and $C_j$ has a higher chance to bring out distinct characteristics of the data.<!-- Ranking could be based on how well a harmony pair displays the variation in distributions of the measured variable within and across each levels of the cyclic granularities. For each facet level, the most interesting display is the one in which the difference in the distribution of the measured variable between the x-axis categories is maximum. The harmony pair which has more variation between x-axis levels for all facet levels, on average, is likely to be a good measure of how important a harmony pair is displaying variation in the distributions. -->
-
-<!-- Calculating distances between distributions --> 
-
-\noindent One of the potential ways to evaluate this variation is by computing the maximum pairwise distances between the distributions of the measured variable. <!--We consider distances between probability distributions which lines up with our pivotal idea of being able to visualize probability distributions across pairs of cyclic granularities.-->
-A common way to measure distances between distributions is through Jenson-Shanon divergence (@Lin1991-fj) which is based on Kullback-Leibler divergence (@Kullback1951-jy). The Jensen-Shanon distance between two probability distribution $p_1$ and $p_2$ is given by $$d = [D(p_1, r) + D(p_2, r)]/2 \quad where \quad r = (p_1 + p_2)/2$$ where,
- $$D(p_1,p_2) = \int^{\infty}_{-\infty}p_1(x)log\frac{p_1(x)}{p_2(x)}\,dx$$ is the Kullback-Leibler divergence between $p_1$ and $p_2$. Probability distributions are estimated through quantiles instead of kernel density so that there is minimal dependency on selecting kernel or bandwidth. 
-
-
-<!-- # why Normalizing required --->
-<!-- too much details - not required -->
-
-\noindent The choice of mapping considered for visualizing data sets <$C_i$, $C_j$, $v$> leads to placing $A_k$'s in close proximity with $B_l$'s representing a group/facet. A harmony pair ($C_i$, $C_j$) would be a more interesting display if the maximum pairwise distance between $A_k$'s $\forall k \in \{1, 2, \dots, K\}$ are higher for each group/facet.<!-- But maximum is not robust to the number of levels and seems to be higher for harmonies with higher number of levels.--> However, these maximum pairwise distances need to be normalized so that the effect of different levels of $C_i$ and $C_j$ are eliminated. Suppose $d_{1},d_{2}\ldots ,d_{m}$ be a sequence of independent and identically-distributed pairwise distances and $M_{m}=\max\{d_{1},\ldots ,d_{m}\}$. Then Fisher–Tippett–Gnedenko theorem [@De_Haan2007-yx] suggests that if a sequence of pairs of real numbers $(a_{m}, b_{m})$ exists such that each $a_{m}>0$ and $\lim _{{m\to \infty }}P\left({\frac  {M_{m}-b_{m}}{a_{m}}}\leq x\right)=F(x)$, where $F$ is a non-degenerate distribution function, then the limit distribution $F$ belongs to either the Gumbel, Fréchet or Weibull family. The normalizing constants $(a_{m}, b_{m})$ vary depending on the underlying distribution of the pairwise distances. Hence to normalize appropriately, it is important to assume a distribution of these distances. 
-
-<!-- # distribution of distances and lit review -->
-
-\noindent @Menendez1997-in and @Grosse2002-ex provide studies of the statistical properties of the Jensen-Shannon divergences and suggest that the theoretical asymptotic distribution of Jensen-Shannon divergence converges to a chi-squared distribution with degrees of freedom equal to the number of discretization used to estimate the continuous distribution. With large degrees of freedom, chi-squared is asymptotically normal by the Central Limit Theorem. Hence, the norming constants for the distribution of $M_m$ are chosen to be $b_m = \Phi^{-1}(1- 1/m)$ and $a_m = 1/m\phi(b_m)$, where $\Phi^{-1}$ and $\phi$ are the quantile and density function of the limiting normal distribution. Typically normal distributions will have Gumbel limiting distribution for the maxima, which have medians that grow at the rate of log $m$ as $m\rightarrow\infty$. This fact is used to normalize the statistic for different facet levels.
-
-<!-- Median normalized distance grows at the rate of log($K$) as $K\rightarrow\infty$ and hence is normalized for the value of $K$ in MMPD.  -->
-
-
-<!--However, since we are dealing with small finite samples, a more appropriate approach would be to look at the distribution of the samples through histogram, density plots or using QQ-plot to see how well the empirical quantiles match the theoretical quantiles.-->
-
-\noindent The algorithm employed for computing MMPD is summarized as follows:
-<!-- Algorithm -->
-
-<!-- 1. Suppose $C_i$ and $C_2$ are two cyclic granularities such that $C_i$ maps index set to a set $\{A_1, A_2, A_3, \dots, A_l$\}, and $C_2$ maps index set to a set $\{B_1, B_2, B_3, \dots, B_m$\} and $v$ is the measured variable. Hence for each combination ($A_k$, $B_l$), we have the time series variable $v_{ij} \subseteq v$, $\forall i = {1, 2, \dots, l}$ and $\forall j = {1, 2, \dots, m}$ -->
-
-- **Input:** Data corresponding to all harmony pairs, i.e., data sets of the form $(C_i, C_j, v)$ 
-$\forall i, j \in N_C$  
-- **Output:** MMPD (Median Maximum Pairwise Distances) measuring the average variation across different levels of $C_i$ and $C_j$ $\forall i, j \in N_C$  
-
-1. Fix harmony pair $(C_i, C_j)$.
-
-2. Fix $k$. Then there are $L$ groups corresponding to level $A_k$ of $C_i$.
-
-3. Compute  $m = \binom{L}{2}$ pairwise distances between distributions of $L$ unordered levels and $m = L-1$ pairwise distances for $L$ ordered categories.
-
-4. Identify maximum within the $m$ computed distances.
-
-5. Compute normalized maximum distance ($NM$) using appropriate norming constants.
-<!--so that the distribution of the normalized maximum converges to a Gumbel distribution as $m\rightarrow\infty$.-->
-
-
-6. Use Steps 1-5 to compute normalized maximum distance for $\forall k \in  \{1, 2, \ldots, K\}$.
-
-7. Compute MMPD = median $(NM_1, NM_2, \dots, NM_K)$/log($K$).
-
-8. Repeat Steps 1 to 7 for all harmony pairs.
-
-\noindent The algorithm employed for selecting harmonies with significant variation is summarized as follows:
-
-- **Input:** Harmony pairs $(C_i, C_j)$ $\forall i, j \in N_C$  
-- **Output:** Harmony pairs $(C_i, C_j)$ for which MMPD is significant.
-
-1. Given the measured variable; $\{v_t: t=0, 1, 2, \dots, T-1\}$, MMPD is computed for all harmony pairs and is represented by $MMPD_{obs}$.
-
-2. From the original sequence a random permutation is obtained: $\{v_t^*: t=0, 1, 2, \dots, T-1\}$.
-
-3. MMPD is computed for all harmony pairs for this random permutation of the data and is represented by $MMPD_{sample}$.
-
-4.  Steps (2) and (3) are repeated a large number
-of times M (e.g. 100).
-
-5. For each permutation, one $MMPD_{sample}$ vector is obtained.
-
-6. $95^{th}$ percentile of this $MMPD_{sample}$ distribution is computed and stored in $MMPD_{threshold}$.
-
-7. Harmony pairs for which $MMPD_{obs}> MMPD_{threshold}$ are accepted.
 
 ## Number of observations and statistical transformations
 
