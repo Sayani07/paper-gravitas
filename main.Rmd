@@ -570,18 +570,6 @@ $B$ denotes a full-integer labelled bottom granularity which groups into linear 
 {\rm Consider a school semester which always lasts for 18 weeks and 2 days, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 16 days. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years. \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. It is interesting to note here that $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years.}
 \end{example}
 
- <!-- Here $Q_{H, M}$ with a period of 18.3 weeks will have irregular mapping since each semester week types consists of different number of semester weeks. -->
-
-
-<!--Each granule is represented by a box. The diagram also illustrates that the granules that overlap share elements from the underlying time domain. The first slot in the diagram shows the index set and $A(B, M)$ consists of three categories, $L(1)$ corresponding to the first aperiodic event $M_1$, $L(2)$ corresponding to aperiodic event $M_2$ and the $L(0)$ corresponding to no event/aperiodic linear granularity.-->
-
-<!-- Here, $M_1$ can be an aperiodic linear granularity denoting block leaves during Christmas, $M_2$ can be the one denoting Easter, $M_n$ can be Labor day and M can be conceived as the aperiodic linear granularity denoting any holidays. <!--The number of categories obtained coincides with the number of aperiodic linear granularities considered and an additional category representing no event.-->
-
-<!-- map a time index to a categorical variable containing binary values. It takes the value 1 whenever the time index coincides with the events in context (e.g. public or school holiday) and 0 when it does not. Here, 1 and 0 are proxies to denote the binary categorization and can be replaced with a logical vector. -->
-
-
-<!-- #  -->
-<!-- # <!-- To consider the exhaustive set of temporal regularities that might exist in the data, we can also define temporal granularities based on the hierarchical structure of a calendar. -->
 
 ## Relativities {#sec:cyclic-calendar}
 
@@ -706,35 +694,6 @@ C_{G_l,G_{m}}(z) & = C_{G_{l},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{
 ```
 
 
-<!-- CONTENT CUT -->
-<!-- Clearly, the computation of multiple-order-up granularities become more involved with quasi-circular granularities. $C_{hour, month}(z)$ can be represented as function of circular granularity $C_{hour, day}(z)$ and quasi-circular granularity $C_{day, month}(z)$, both of which are single order-up. However, $C_{day, year}(z)$ can not be computed only with single order-up granularities $C_{day, month}(z)$ and $C_{month, year}(z)$. It also requires the knowledge of the composition of the linear granularity $days$ within $months$ in an $year$ for computation of $\vert T_w \vert$. -->
-<!-- If $C_{G_{l},G_{m'}}(z)$ or $C_{G_{l},G_{m'}}(z)$ are multiple-order-up circular granularities, they could be computed using similar approach in Section \ref{sec:all-circular}. -->
-
-<!-- \begin{equation} \label{eq:multifromsingle-quasi} -->
-<!-- \begin{split} -->
-<!-- C_{G_l,G_m}(z) & = L(C_{G_{l},G_{m'}}(z) + P(l, m')(C_{G_{m'},G_{m}}(z))) \\  -->
-<!-- & = L(\sum_{i=0}^{m' - l - 1} P(l, l+i)(C_{G_{l+i},G_{l+i+1}}(z))) + P(l, m')(C_{G_{m'},G_{m}}(z))\\ -->
-<!-- \end{split} -->
-<!-- \end{equation} -->
-
-<!-- where $G_{m'}$ is the first linear granularity in the hierarchy table that groups periodically into the bottom granularity with irregular mapping. -->
-
-
-
-<!-- The aperiodic granularity $C_{day, quarter}(z))$ in \autoref{eq:hour-month} can be broken further. -->
-
-<!-- \begin{equation} \label{eq11} -->
-<!-- \begin{split} -->
-<!-- A_{(hour, month)} & = (\sum_{w=0}^{9 - 1}(\vert T(w)\vert) +  20)/24 + 12 \\ -->
-<!--                   & = (\sum_{w=0}^{C_{month, year} - 1}(\vert T(w)\vert) +  A_{day, month})*k(hour_day) + A_{hour, day} \\ -->
-<!--                   & = (A{day_year} - 1)*k(hour_day) + A_{hour, day} \\ -->
-<!-- \end{split} -->
-<!-- \end{equation} -->
-<!-- where, $month(w) = \bigcup_{z \in T_w}day(z)$ -->
-
-<!--  With one aperiodic granularity, we can write the following:  -->
-<!-- A_{P, Q)} & = (A{AG_Q} - 1)*k(P_AG) + A_{P, AG} {TO REVISE: many aperiodic granularties not to be included} -->
-
 ### Multiple-to-single {#sec:multiple-to-single}
 
 <!-- #### Multiple order-up circular granularities {#sec:all-circular-multiple}   -->
@@ -759,50 +718,6 @@ C_{G_{l_1}, G_{m_1}}(z) = \lfloor C_{G_{l_2}, G_{m_2}}(z)/P(l_2,l_1) \rfloor \mo
 
 Single-order-up quasi-circular granularity could be obtained from multiple-order-up quasi-circular granularity and single/multiple-order-up circular granularity using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}.
 
-<!-- \begin{equation} \label{eq:multifromsingle-quasi3} -->
-<!-- \begin{split} -->
-<!-- C_{G_{l},G_{m'}}(z) & = C_{G_l,G_{m}}(z) - \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{w} \vert)\\ -->
-<!-- \end{split} -->
-<!-- \end{equation} -->
-
-<!-- where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{l}$, $\vert T_w \vert$ is the cardinality of set $T_w$. -->
-<!-- as they promote the exploratory analysis through visualization. -->
-
-```{r}
-# grid.arrange(p1,p2,p3,p4,nrow = 2)
-
-#
-# x <- gridExtra::arrangeGrob (p5, p6, p1, p2, p3, p4,newpage = TRUE)
-# grid::grid.draw(x)
-
-#
-# gridExtra::grid.arrange(
-#   p1,
-#   p2,
-#   p3,
-#   p4,
-#   p5,
-#   p6,
-#   nrow = 3,
-#   top = "Title of the page",
-#   bottom = grid::textGrob(
-#     "this footnote is right-justified",
-#     gp = grid::gpar(fontface = 3, fontsize = 9),
-#     hjust = 1,
-#     x = 1
-#   )
-# )
-# plot.new()
-# mtext('Various probability distribution plot of electricity consumption data of Victoria from 2012 to 2014 (top left) Letter Value plot by DoM and MoY (top right) Decile Plot by HoD and DoW (middle left) Box plot by DoY and DoM (middle right) Violin plot of DoM and WoM (bottom left) Ridge plot by WoM and WoY (bottom right) Decile plot by DoY and MoY', side = 3, line = - 10, outer = TRUE)
-```
-
-<!-- More generally, if we have two circular granularities C1 and C2 which has [A, B, C, D] and [X, Y, Z] categories/levels. When C1 and C2 are used as aesthetics or facets, problems arise when we encounter empty combinations. Let $S_{i,j}$ be the set of combination of the levels of C1 and C2. In this example, we have 12 such sets $S_{i,j}$ because i can take 4 values and j can take 3 values.  -->
-
-<!-- Thus, the common link that differentiates harmonies from clashes are: -->
-
-<!--   a) There should not be any levels of the faceted variable which is empty for one or more levels of the factor plotted across x-axis. -->
-
-<!--   b) There should not be any level of the factor plotted across x-axis which doesn't have values for all levels of factors plotted across facets. -->
 
 # Data structure{#sec:data-structure}
 
