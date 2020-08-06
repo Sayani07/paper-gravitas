@@ -5,12 +5,13 @@ library(dplyr)
 cricket <-  read_csv("data-raw/deliveries_all.csv")
 matches <- read_csv("data-raw/matches_all.csv")
 
-cricket_season <- cricket %>% left_join(matches, by = c("match_id" ="id")
+cricket_season <- cricket %>% left_join(matches, by = c("match_id" ="id"))
 
 # each over needs to have 6 balls
 
 cricket_fltr_ball <- cricket_season %>%
-  filter(wide_runs + noball_runs== 0) %>%    # filtering out scores that are gained by no balls or wide
+  filter(wide_runs + noball_runs== 0) %>% 
+  # filtering out scores that are gained by no balls or wide
   # still have to filter out overs for which number of balls per over less than 6
   group_by(batting_team, match_id, inning, over) %>%
   summarise(n_over = length(ball)) %>%

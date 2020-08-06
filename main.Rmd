@@ -1543,5 +1543,5 @@ The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news
 # Bibliography
 
 ```{r write-bib, eval = FALSE}
-write_bib(c("rmarkdown", "bookdown", "rticles", "knitr", "ggplot2", "dplyr", "tsibble", "gravitas", "ggpubr", "kableExtra", "magrittr"), file = "rpkgs.bib")
+write_bib(c("rmarkdown", "bookdown", "rticles", "knitr", "ggplot2", "dplyr", "tsibble", "gravitas", "ggpubr", "kableExtra", "magrittr", "readr", "lubridate", "renv","archive"), file = "rpkgs.bib")
 ```

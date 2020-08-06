@@ -2,12 +2,14 @@
 library(bookdown)
 library(rticles)
 library(knitr)
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
 library(tsibble)
 library(gravitas)
 library(ggpubr)
 library(kableExtra)
-library(tibble)
+library(magrittr)
+library(readr)
 
 ## ---- linear-time
 knitr::include_graphics("Figs/linear-ex.png")
