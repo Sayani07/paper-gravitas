@@ -6,15 +6,7 @@
 .data-raw
 .data
 cache/*
-!cache/smart_harmony
 main.log
 main.tex
 data-raw/CD_INTERVAL_READING_ALL_NO_QUOTES.csv
-harmony_select.R
-tikz_diagram.tex
-wm_hd.png
 main_nsComments.pdf
-algo_validation.Rmd
-algo_rank_harmony.Rmd
-algo_validation.html
-algo_rank_harmony.html
