@@ -48,9 +48,11 @@ include_graphics("Figs/data-struc-diffcol.png")
 
 ## ----allFig
 load("data/sm_cust50.rds")
+sm_cust50 <- sm_cust50 %>% as_tsibble(regular = FALSE)
+
 cust50 <- sm_cust50 %>%  distinct(customer_id)
 
-VIC <- sm_cust50 %>% as_tsibble(regular = FALSE) %>% 
+VIC <- sm_cust50 %>% 
   filter(customer_id==cust50$customer_id[2])
 
 scene1 <-  VIC %>%

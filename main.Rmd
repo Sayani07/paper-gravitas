@@ -1181,7 +1181,7 @@ In \autoref{fig:bothcust} (b), <!--the distribution of energy consumption is plo
 
 <!-- From the Gestalt theory with the same data  <$C1$ $C2$, `general_supply_kwh`>, mapping $C1$ on the x-axis vs facet might lead to different insights. -->
 
-```{r harmony-tab, echo=FALSE, cache=TRUE}
+```{r harmony-tab, echo=FALSE}
 ```
 
 <!-- # smart_meter10 %>% gran_advice("wknd_wday", "hour_day") -->
