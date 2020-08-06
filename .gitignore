@@ -7,4 +7,5 @@ data/*.csv
 cache/*
 *.log
 *.tex
+figure/
 main_nsComments.pdf
