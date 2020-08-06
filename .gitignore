@@ -3,10 +3,8 @@
 .Rhistory
 .RData
 .Ruserdata
-.data-raw
-.data
+data/*.csv
 cache/*
-main.log
-main.tex
-data-raw/CD_INTERVAL_READING_ALL_NO_QUOTES.csv
+*.log
+*.tex
 main_nsComments.pdf
