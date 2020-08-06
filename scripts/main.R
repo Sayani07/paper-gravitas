@@ -3,15 +3,9 @@ library(bookdown)
 library(rticles)
 library(knitr)
 library(tidyverse)
-library(lubridate)
-library(lvplot)
-library(ggridges)
 library(tsibble)
-if (requireNamespace("gravitas") == F)
-  remotes::install_github("Sayani07/gravitas")
 library(gravitas)
 library(ggpubr)
-library(xtable)
 library(kableExtra)
 library(tibble)
 
@@ -194,6 +188,13 @@ hierarchy_model <- tibble::tibble(
   `period length/conversion operator (K)` = c(20, 2, "k(match, season)", 1)
 )
 
+knitr::kable(hierarchy_model,
+             format = "latex",
+             booktabs = TRUE,
+             caption = "Hierarchy table for cricket where overs are nested within an innings, innings nested within a match and matches within a season.") %>%
+  #row_spec(0, bold = TRUE)%>%
+  kable_styling()
+
 ## ----cricex
 cricket_tsibble <- cricket %>%
   mutate(data_index = row_number()) %>%
@@ -310,3 +311,4 @@ cricket_data %>%
         legend.key = element_blank(), panel.background = element_blank(), strip.background = element_blank(),
         plot.background = element_blank(), complete = TRUE, panel.grid.major = element_line(colour = "#E0E0E0"),
         panel.border = element_rect(colour = "#E0E0E0", fill = NA))
+

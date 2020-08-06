@@ -1398,13 +1398,6 @@ The method is not only restricted to temporal data, and can be generalized to ma
 \noindent The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each innings has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like \autoref{tab:hierarchy-cric}. However, even if the situation is not periodic, it can be interesting to visualize the distribution of a measured variable to shed light on the aperiodic behavior of a non-temporal data set similar to aperiodic events like formal meetings, workshops, conferences, school semesters in a temporal set up. <!--There are many interesting questions that could possibly be answered with such a data set irrespective of the type of cyclic granularities.-->
 
 ```{r hierarchy-cric}
-
-knitr::kable(hierarchy_model,
-             format = "latex",
-             booktabs = TRUE,
-             caption = "Hierarchy table for cricket where overs are nested within an inning, innings nested within a match and matches within a season.") %>%
-  #row_spec(0, bold = TRUE)%>%
-  kable_styling()
 ```
 
  <!--We will explore a few interesting questions and understand how the proposed approach in the paper can help answer some of the questions.-->
@@ -1505,7 +1498,7 @@ R package `gravitas`. --> A missing piece in the package `gravitas` is the  comp
 
 # Acknowledgements {-}
 
-The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages and Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built during the [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Spyrison for many useful discussions, sketching figures and feedback on the manuscript. More details about the package can be found on the package website [sayani07.github.io/gravitas](https://sayani07.github.io/gravitas/). This article was created with `knitr` [@knitr, @R-knitr] and `rmarkdown` [@rmarkdown, @R-rmarkdown]. This paper's Github repository, [github.com/Sayani07/paper-gravitas](https://github.com/Sayani07/paper-gravitas), contains all materials required to reproduce this article and the code is also available online in the supplemental materials.
+The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience of developing R packages and Dr. Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of smart meter application. The package `gravitas` was built during the [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Spyrison for many useful discussions, sketching figures and feedback on the manuscript. More details about the package can be found on the package website [sayani07.github.io/gravitas](https://sayani07.github.io/gravitas/). This article was created with `knitr` [@knitr2015, @R-knitr] and `rmarkdown` [@rmarkdown2018, @R-rmarkdown]. This paper's Github repository, [github.com/Sayani07/paper-gravitas](https://github.com/Sayani07/paper-gravitas), contains all materials required to reproduce this article and the code is also available online in the supplemental materials.
 
 <!-- # Appendix -->
 
@@ -1550,5 +1543,5 @@ The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news
 # Bibliography
 
 ```{r write-bib, eval = FALSE}
-write_bib(c("dplyr", "tidyr", "tsibble", "magrittr", "rlang", "gravitas", "knitr", "rmarkdown"), file = "rpkgs.bib")
+write_bib(c("rmarkdown", "bookdown", "rticles", "knitr", "ggplot2", "dplyr", "tsibble", "gravitas", "ggpubr", "kableExtra", "magrittr"), file = "rpkgs.bib")
 ```
