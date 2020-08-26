@@ -55,13 +55,13 @@ kable(table_greg,
 include_graphics("Figs/data-struc-diffcol.png")
 
 ## ----allFig
-load("data/sm_cust50.rds")
-sm_cust50 <- sm_cust50 %>% as_tsibble(regular = FALSE)
+# load("data/sm_cust50.rds")
+# sm_cust50 <- sm_cust50 %>% as_tsibble(regular = FALSE)
+# 
+# cust50 <- sm_cust50 %>% distinct(customer_id)
 
-cust50 <- sm_cust50 %>% distinct(customer_id)
-
-VIC <- sm_cust50 %>%
-  filter(customer_id == cust50$customer_id[2])
+VIC <- gravitas::smart_meter10 %>%
+  filter(customer_id == "10006486")
 
 scene1 <- VIC %>%
   prob_plot("quarter_year", "wknd_wday",
@@ -85,8 +85,6 @@ scene2 <- VIC %>%
   ylab("") +
   xlab("quarters of the year") +
   scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + theme_minimal()
-
-
 
 
 scene3 <- VIC %>%
