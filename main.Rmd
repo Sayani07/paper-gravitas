@@ -57,11 +57,11 @@ opts_chunk$set(
   cache = TRUE, cache.path = "cache/",
   out.width = ifelse(is_html_output(), "100%", "\\textwidth")
 )
-#knitr::opts_knit$set(root.dir = here::here())
+# knitr::opts_knit$set(root.dir = here::here())
 ```
 
 ```{r external, include = FALSE, cache = FALSE}
-read_chunk('scripts/main.R')
+read_chunk("scripts/main.R")
 ```
 
 ```{r load}
@@ -1543,5 +1543,5 @@ The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news
 # Bibliography
 
 ```{r write-bib, eval = FALSE}
-write_bib(c("rmarkdown", "bookdown", "rticles", "knitr", "ggplot2", "dplyr", "tsibble", "gravitas", "ggpubr", "kableExtra", "magrittr", "readr", "lubridate", "renv","archive"), file = "rpkgs.bib")
+write_bib(c("rmarkdown", "bookdown", "rticles", "knitr", "ggplot2", "dplyr", "tsibble", "gravitas", "ggpubr", "kableExtra", "magrittr", "readr", "lubridate", "renv", "archive"), file = "rpkgs.bib")
 ```

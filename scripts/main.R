@@ -21,26 +21,32 @@ knitr::include_graphics("Figs/circular-ex.png")
 knitr::include_graphics("Figs/aperiodic-ex3.png")
 
 ## ----tab-mayan
-table_mayan <- tibble(`linear (G)` = c("kin", "uinal", "tun", "katun", "baktun"),
-                      `single-order-up cyclic (C)` = c("kin-of-uinal","uinal-of-tun"," tun-of-katun", "katun-of-baktun", 1),
-                      `period length/conversion operator (K)`= c(20, 18, 20, 20, 1))
+table_mayan <- tibble(
+  `linear (G)` = c("kin", "uinal", "tun", "katun", "baktun"),
+  `single-order-up cyclic (C)` = c("kin-of-uinal", "uinal-of-tun", " tun-of-katun", "katun-of-baktun", 1),
+  `period length/conversion operator (K)` = c(20, 18, 20, 20, 1)
+)
 kable(table_mayan,
-      format = "latex",
-      booktabs = TRUE,
-      align = "l",
-      caption = "Hierarchy table for Mayan calendar with circular single-order-up granularities.") %>%
+  format = "latex",
+  booktabs = TRUE,
+  align = "l",
+  caption = "Hierarchy table for Mayan calendar with circular single-order-up granularities."
+) %>%
   kable_styling()
 
-##----tab-gregorian
-table_greg <- tibble(`linear (G)` = c("minute", "hour", "day", "month", "year"),
-                     `single-order-up cyclic (C)` = c("minute-of-hour","hour-of-day","day-of-month", "month-of-year", 1),
-                     `period length/conversion operator (K)` = c(60, 24, "k(day, month)", 12, 1))
+## ----tab-gregorian
+table_greg <- tibble(
+  `linear (G)` = c("minute", "hour", "day", "month", "year"),
+  `single-order-up cyclic (C)` = c("minute-of-hour", "hour-of-day", "day-of-month", "month-of-year", 1),
+  `period length/conversion operator (K)` = c(60, 24, "k(day, month)", 12, 1)
+)
 
 kable(table_greg,
-      format = "latex",
-      booktabs = TRUE,
-      caption = "Hierarchy table for the Gregorian calendar with both circular and quasi-circular single-order-up granularities.") %>%
-  #row_spec(0, bold = TRUE) %>%
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Hierarchy table for the Gregorian calendar with both circular and quasi-circular single-order-up granularities."
+) %>%
+  # row_spec(0, bold = TRUE) %>%
   kable_styling()
 
 ## ----data-structure
@@ -50,32 +56,32 @@ include_graphics("Figs/data-struc-diffcol.png")
 load("data/sm_cust50.rds")
 sm_cust50 <- sm_cust50 %>% as_tsibble(regular = FALSE)
 
-cust50 <- sm_cust50 %>%  distinct(customer_id)
+cust50 <- sm_cust50 %>% distinct(customer_id)
 
-VIC <- sm_cust50 %>% 
-  filter(customer_id==cust50$customer_id[2])
+VIC <- sm_cust50 %>%
+  filter(customer_id == cust50$customer_id[2])
 
-scene1 <-  VIC %>%
+scene1 <- VIC %>%
   prob_plot("quarter_year", "wknd_wday",
-            response = "general_supply_kwh",
-            plot_type = "lv",
-            symmetric = FALSE
+    response = "general_supply_kwh",
+    plot_type = "lv",
+    symmetric = FALSE
   ) +
   ylab("") +
-  #xlab("weekend/weekday") +
-  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + xlab("")+ 
+  # xlab("weekend/weekday") +
+  scale_fill_brewer(palette = "Dark2") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + xlab("") +
   theme_minimal()
 
 
 scene2 <- VIC %>%
   prob_plot("wknd_wday",
-            "quarter_year",
-            response = "general_supply_kwh",
-            plot_type = "lv",
-            symmetric = FALSE
+    "quarter_year",
+    response = "general_supply_kwh",
+    plot_type = "lv",
+    symmetric = FALSE
   ) +
   ylab("") +
-  xlab("quarters of the year")  +
+  xlab("quarters of the year") +
   scale_fill_brewer(palette = "Paired") + theme(legend.position = "right") + ggtitle("") + scale_y_log10() + theme_minimal()
 
 
@@ -83,37 +89,45 @@ scene2 <- VIC %>%
 
 scene3 <- VIC %>%
   prob_plot("quarter_year",
-            "month_year",
-            response = "general_supply_kwh",
-            plot_type = "lv",
-            symmetric = FALSE
+    "month_year",
+    response = "general_supply_kwh",
+    plot_type = "lv",
+    symmetric = FALSE
   ) +
   ylab("") +
-  xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10()+ theme_minimal()
+  xlab("months of the year") + theme(legend.position = "right") + scale_fill_brewer(palette = "Set2") + ggtitle("") + scale_y_log10() + theme_minimal()
 
 gg_fig <- ggarrange(scene3,
-                    ggarrange(scene1, scene2, ncol = 2, labels = c("b", "c")),
-                    nrow = 2, labels = "a")
-#label.y = "electricity demand [KWh]"\
+  ggarrange(scene1, scene2, ncol = 2, labels = c("b", "c")),
+  nrow = 2, labels = "a"
+)
+# label.y = "electricity demand [KWh]"\
 
 
 ggpubr::annotate_figure(gg_fig,
-                        left = text_grob("electricity demand [KWh]",  rot = 90)) + theme_minimal()
+  left = text_grob("electricity demand [KWh]", rot = 90)
+) + theme_minimal()
 
 
 ## ----search
 smart_meter %>%
-  search_gran(filter_out = c("semester", 
-                             "quarter",
-                             "fortnight"))
+  search_gran(filter_out = c(
+    "semester",
+    "quarter",
+    "fortnight"
+  ))
 
 ## ----search_gran_limit2
-smart_meter10 %>% search_gran(
-  highest_unit = "month",
-  filter_out = c("hhour", "fortnight"))%>%
-  knitr::kable(format = "latex",
-               booktabs = TRUE) %>%
-  #row_spec(0, bold = TRUE)%>%
+smart_meter10 %>%
+  search_gran(
+    highest_unit = "month",
+    filter_out = c("hhour", "fortnight")
+  ) %>%
+  knitr::kable(
+    format = "latex",
+    booktabs = TRUE
+  ) %>%
+  # row_spec(0, bold = TRUE)%>%
   kable_styling()
 
 ## ----harmony-tab
@@ -121,69 +135,76 @@ sm <- smart_meter10 %>%
   filter(customer_id %in% c(10017936))
 
 harmonies <- sm %>%
-  harmony(ugran = "month",
-          filter_in = "wknd_wday", 
-          filter_out = c("hhour", "fortnight")) %>%
-  rename(`facet variable` = facet_variable,
-         `x-axis variable` = x_variable,
-         `facet levels` = facet_levels,
-         `x-axis levels` = x_levels) 
+  harmony(
+    ugran = "month",
+    filter_in = "wknd_wday",
+    filter_out = c("hhour", "fortnight")
+  ) %>%
+  rename(
+    `facet variable` = facet_variable,
+    `x-axis variable` = x_variable,
+    `facet levels` = facet_levels,
+    `x-axis levels` = x_levels
+  )
 
 
 knitr::kable(harmonies,
-             format = "latex",
-             booktabs = TRUE,
-             caption = "Harmonies with a pair of cyclic granularity one placed on facet and the other on x-axis. Out of 42 possible combinations of cyclic granularities, only 16 are harmony pairs.") %>%
-  #row_spec(0, bold = TRUE) %>%
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Harmonies with a pair of cyclic granularity one placed on facet and the other on x-axis. Out of 42 possible combinations of cyclic granularities, only 16 are harmony pairs."
+) %>%
+  # row_spec(0, bold = TRUE) %>%
   kable_styling()
 
 ## ----bothcust
 cust2_quantile <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
-            "hour_day",
-            response = "general_supply_kwh",
-            plot_type = "quantile",
-            symmetric = TRUE,
-            quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+    "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    symmetric = TRUE,
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
   ) +
   scale_y_sqrt() +
-  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("")+ 
+  ylab("electricity demand [KWh]") + xlab("hours of the day") + ggtitle("") + ylab("") +
   theme_minimal()
 
 cust2_violin <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("wknd_wday",
-            "hour_day",
-            response = "general_supply_kwh",
-            plot_type = "violin"
+    "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "violin"
   ) +
   scale_y_sqrt() +
   ylab("") + xlab("hours of the day") + ggtitle("") +
-  scale_x_discrete( breaks = seq(0, 23, 5))+ 
+  scale_x_discrete(breaks = seq(0, 23, 5)) +
   theme_minimal()
 
 cust2_box <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
   prob_plot("hour_day",
-            "wknd_wday",
-            response = "general_supply_kwh",
-            plot_type = "boxplot"
+    "wknd_wday",
+    response = "general_supply_kwh",
+    plot_type = "boxplot"
   ) +
   scale_y_sqrt() +
   xlab("") +
   ggtitle("") + ylab("") +
-  scale_x_discrete(labels = c('wday','wend')) +
-  ggplot2::theme(axis.text.x = element_text(size = 7))+ 
+  scale_x_discrete(labels = c("wday", "wend")) +
+  ggplot2::theme(axis.text.x = element_text(size = 7)) +
   theme_minimal()
 
 
 gg_fig <- ggarrange(cust2_box,
-                    ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("b", "c")),
-                    ncol = 2, labels = "a")
+  ggarrange(cust2_quantile, cust2_violin, nrow = 2, labels = c("b", "c")),
+  ncol = 2, labels = "a"
+)
 
 ggpubr::annotate_figure(gg_fig,
-                        left = text_grob("electricity demand [KWh]",  rot = 90))
+  left = text_grob("electricity demand [KWh]", rot = 90)
+)
 
 ## ----hierarchy-cric
 hierarchy_model <- tibble::tibble(
@@ -193,10 +214,11 @@ hierarchy_model <- tibble::tibble(
 )
 
 knitr::kable(hierarchy_model,
-             format = "latex",
-             booktabs = TRUE,
-             caption = "Hierarchy table for cricket where overs are nested within an innings, innings nested within a match and matches within a season.") %>%
-  #row_spec(0, bold = TRUE)%>%
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Hierarchy table for cricket where overs are nested within an innings, innings nested within a match and matches within a season."
+) %>%
+  # row_spec(0, bold = TRUE)%>%
   kable_styling()
 
 ## ----cricex
@@ -216,13 +238,13 @@ cricket_tsibble %>%
   )) %>%
   mutate(inning = paste0("innings: ", inning)) %>%
   prob_plot("inning",
-            "over",
-            response = "runs_per_over",
-            hierarchy_model,
-            plot_type = "lv"
+    "over",
+    response = "runs_per_over",
+    hierarchy_model,
+    plot_type = "lv"
   ) +
   scale_fill_brewer(palette = "Dark2") +
-  #ggtitle("(a) Runs per over across over faceted by inning") +
+  # ggtitle("(a) Runs per over across over faceted by inning") +
   theme(legend.position = "right") +
   ggtitle("a") +
   ylab("runs per over") +
@@ -231,10 +253,10 @@ cricket_tsibble %>%
   ggplot2::theme(
     strip.text = ggplot2::element_text(
       size = 10,
-      margin = ggplot2::margin(b=0, t=0)
+      margin = ggplot2::margin(b = 0, t = 0)
     )
-  ) +  theme_minimal() 
-#geom_smooth(aes( x = over,
+  ) + theme_minimal()
+# geom_smooth(aes( x = over,
 #                               y=runs_per_over), method = lm, #formula = y ~ splines::bs(x, 3), se = FALSE)
 
 cricket_all <- read_csv("data-raw/deliveries_all.csv")
@@ -260,7 +282,7 @@ cricket_season <- cricket_all %>% left_join(matches_all, by = c("match_id" = "id
 cricket_dot_field <- cricket_season %>%
   mutate(
     fielding_proxy = if_else(dismissal_kind %in%
-                               c("caught", "caught and bowled"), 1, 0),
+      c("caught", "caught and bowled"), 1, 0),
     dot_ball_proxy = if_else(total_runs == 0, 1, 0),
     wicket_proxy = if_else(is.na(dismissal_kind), 0, 1)
   ) %>%
@@ -274,7 +296,7 @@ cricket_dot_field <- cricket_season %>%
   ) %>%
   summarise(
     runs_per_over = sum(total_runs),
-    run_rate = sum(total_runs)*6 / length(total_runs),
+    run_rate = sum(total_runs) * 6 / length(total_runs),
     fielding_wckts = sum(fielding_proxy),
     dot_balls = sum(dot_ball_proxy)
   ) %>%
@@ -292,27 +314,29 @@ cricket_data <- cricket_tsibble %>%
     lag_field = lag(field),
     lag_dot = lag(dot)
   ) %>%
-  filter(lag_field != 0, lag_dot != 0) 
+  filter(lag_field != 0, lag_dot != 0)
 
 cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
 
 # filter(fielding_wckts %in% c(0,1)) %>%
 #
 cricket_data %>%
-  filter(over!=1) %>%
+  filter(over != 1) %>%
   prob_plot("over", "lag_field",
-            hierarchy_model,
-            response = "run_rate",
-            plot_type = "quantile",
-            symmetric = FALSE,
-            quantile_prob = c(0.25, 0.5, 0.75)) +
-  #ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
-  ylab("runs per over")  +
+    hierarchy_model,
+    response = "run_rate",
+    plot_type = "quantile",
+    symmetric = FALSE,
+    quantile_prob = c(0.25, 0.5, 0.75)
+  ) +
+  # ggtitle("(b) Runs per over across overs faceted by number of wickets in previous over") +
+  ylab("runs per over") +
   xlab("number of wickets in previous over") +
   ggtitle("b") +
   theme(plot.title = element_text(face = "bold")) +
-  theme(axis.ticks = element_blank(), legend.background = element_blank(),
-        legend.key = element_blank(), panel.background = element_blank(), strip.background = element_blank(),
-        plot.background = element_blank(), complete = TRUE, panel.grid.major = element_line(colour = "#E0E0E0"),
-        panel.border = element_rect(colour = "#E0E0E0", fill = NA))
-
+  theme(
+    axis.ticks = element_blank(), legend.background = element_blank(),
+    legend.key = element_blank(), panel.background = element_blank(), strip.background = element_blank(),
+    plot.background = element_blank(), complete = TRUE, panel.grid.major = element_line(colour = "#E0E0E0"),
+    panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+  )
