@@ -35,7 +35,7 @@ abstract: |
  The methods are implemented in the open source R package `gravitas`, providing functions for creating granularities and exploring the associated time series which are consistent with a tidy workflow (@Grolemund2018-po), and the probability distributions can be examined using the range of graphics available in `ggplot2` [@Wickham2009pk].
 bibliography: [bibliography.bib]
 preamble: >
-  \usepackage{mathtools,amssymb,booktabs,amsthm}
+  \usepackage{mathtools,amssymb,booktabs,amsthm,todonotes}
   \def\mod{~\text{mod}~}
   \newtheorem{definition}{Definition}
   \usepackage{mathptmx}
@@ -255,7 +255,7 @@ $Q_4 =$ week-of-month && $P_4 = 5, 4$\\
 \end{table}
 
 \begin{definition}\label{def:quasicircular}
-A \textbf{quasi-circular granularity} $Q_{B, G'}$ relates linear granularity $G'$ and bottom granularity $B$ if
+A \textbf{quasi-circular granularity} $Q_{B, G'}$ relates linear granularity $G'$ and bottom granularity $B$ if\todo{This is not a condition. What is $Q$ used for?}
 \begin{equation}\label{eq:quasi}
 Q_{B, G'}(z) =
 z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert, \quad \text{for}\quad z \in T_{k},
@@ -263,14 +263,14 @@ z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert, \quad \text{for}\quad z \in T_{k}
 where
 $z$ denotes the index set,
 $B$ groups periodically into $G'$ with irregular mapping,
-$P'$ and $R'$ are the period of the grouping $(B, G')$ and the number of granules of $G'$ in $P'$,
-$T_w$ are the sets of indices of $B$ describing $G'(w)$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$,
+$R'$ is the number of granules of $G'$ in each repetition of the grouping,
+$T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$,
 and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{definition}
 
-For example, suppose consecutive granules of $G'$ are alternately made up of $7$ and $5$ granules of $B$ within each period of the grouping ($B$, $G'$). Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$. Here, $T_0 = \{0, 1, \dots, 6\}$ and $T_1 = \{7, \dots 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
+For example, suppose consecutive granules of $G'$ are alternately made up of $7$ and $5$ granules of $B$ within each period, so that $R'=2$ Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$. Here, $T_0 = \{0, 1, \dots, 6\}$ and $T_1 = \{7, \dots 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
 $$
-  Q_{B,H'}(10)  = 10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert =3
+  Q_{B,H'}(10)  = 10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert = 10 - 7 = 3
 $$
 since $10 \in T_{1}$.
 
@@ -281,7 +281,7 @@ If linear granularity $G'$ is periodical with respect to $B$ with irregular mapp
 
 ## Aperiodic {#sec:aperiodic-gran-def}
 
-Aperiodic time granularities are the ones which can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no reasonably small period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduled event. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities.
+Aperiodic time granularities are those that can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no reasonably small period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduled event. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities.
 
 Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider $n$ aperiodic linear granularities $M_i$,  $i \in \{1, 2, \dots, n\}$, such that Definition \ref{def:periodical} does not hold true with respect to $B$. However, $B \trianglelefteq M_i$. Then according to Definition \ref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$. Suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
 
@@ -291,7 +291,7 @@ Aperiodic cyclic granularities are defined using aperiodic linear granularities.
 (ref:aperiodic-example) Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years.
 
 \begin{definition}\label{def:aperiodic}
-An \textbf{aperiodic cyclic granularity} $A_{B, M}$ relates a linear granularity $M$ to the bottom granularity $B$, if
+An \textbf{aperiodic cyclic granularity} $A_{B, M}$ relates a linear granularity $M$ to the bottom granularity $B$, if\todo{This is not a condition. What is $A$ used for?}
 \begin{equation}\label{eq:aperiodic}
 \begin{split}
 A_{B, M}(z) & =
@@ -306,7 +306,7 @@ $z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
 $B$ denotes a full-integer labelled bottom granularity which groups into linear granularity $M$ but not periodically, $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$.
 \end{definition}
 
-Consider a school semester which always lasts for 18 weeks and 2 days, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 16 days. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years. \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. It is interesting to note here that $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years.
+Consider a school semester which always lasts for 18 weeks and 2 days, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 16 days. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years. \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. Here, $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years.
 
 ## Relativities {#sec:cyclic-calendar}
 
@@ -321,19 +321,20 @@ For example, \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan cal
 ```{r tab-mayan}
 ```
 
-It is interesting to note, that in the Mayan calendar, like most calendars, that day is the basic unit of time [@Reingold2001-kf]. The structuring of larger units, weeks, months, years and cycle of years, though, varies substantially. An exception is the French revolutionary calendar, which divides each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined. Note that it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only and that the cyclic granularity $C_{G(\ell),G(m)}$ is either circular or quasi-circular.
+Like most calendars, the Mayan calender used the day as the basic unit of time [@Reingold2001-kf]. The structuring of larger units, weeks, months, years and cycle of years, though, varies substantially between calendars. For example,  the French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined. Note that it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only, and that the cyclic granularity $C_{G(\ell),G(m)}$ is either circular or quasi-circular.
 
 \begin{definition}\label{def:norderup}
 The hierarchy table contains \textbf{multiple-order-up} granularities which are cyclic granularities that are nested within multiple levels.
 A \textbf{single-order-up} is a cyclic granularity which is nested within a single level. It is a special case of multiple-order-up granularity.
 \end{definition}
 
-In the Mayan calendar (Table \@ref(tab:tab-mayan)), kin-of-tun or kin-of-baktun are examples of multiple-order-up granularities and single-order-up granularities are kin-of-uinal, uinal-of-tun etc.
+\noindent In the Mayan calendar (Table \@ref(tab:tab-mayan)), kin-of-tun or kin-of-baktun are examples of multiple-order-up granularities and single-order-up granularities are kin-of-uinal, uinal-of-tun etc.
 
 ## Computation
 
-In this section, we will see how to obtain cyclic granularities through an algebraic representation of other cyclic granularities. This is similar to calendar algebra in @Ning_2002 for linear granularities but caters to computation of cyclic granularities. We shall refer to it as through cyclic calendar algebra operations. The cyclic calendar algebra consists of broadly two kinds of operations:
-(1) **single-to-multiple** and (2) **multiple-to-single** which entails the representation of _multiple-order-up_ cyclic granularities from _single-order-up_ cyclic granularities respectively.
+Following the calendar algebra of @Ning_2002 for linear granularities, we can define cyclic calendar algebra to compute cyclic granularities. Cyclic calendar algebra comprises two kinds of operations:
+(1) **single-to-multiple** (the calculation of _multiple-order-up_ cyclic granularities from _single-order-up_ cyclic granularities) and (2) **multiple-to-single** (the reverse).
+
 
 ### Single-to-multiple {#sec:single-to-multiple}
 
