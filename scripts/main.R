@@ -165,7 +165,7 @@ harmonies %>%
     caption = "Harmonies with a pair of cyclic granularity one placed on facet and the other on x-axis. Out of 42 possible combinations of cyclic granularities, only 16 are harmony pairs."
   ) %>%
   # row_spec(0, bold = TRUE) %>%
-  kable_styling()
+  kable_styling(latex_options = "hold_position")
 
 ## ----bothcust
 cust2_quantile <- smart_meter10 %>%
