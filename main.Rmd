@@ -23,7 +23,7 @@ keywords:
 - statistical distributions
 - time granularities
 - calendar algebra
-- periodicties
+- periodicities
 - grammar of graphics
 - R
 
@@ -255,68 +255,55 @@ $Q_4 =$ week-of-month && $P_4 = 5, 4$\\
 \end{table}
 
 \begin{definition}\label{def:quasicircular}
-A \textbf{quasi-circular granularity} $Q_{B, G'}$ relates linear granularity $G'$ and bottom granularity $B$ if\todo{This is not a condition. What is $Q$ used for?}
+A \textbf{quasi-circular granularity} $Q_{B, G'}$ is formed when bottom granularity $B$ groups periodically into linear granularity $G'$ with irregular mapping such that the granularities are given by
 \begin{equation}\label{eq:quasi}
 Q_{B, G'}(z) =
 z - \sum_{w=0}^{k-1}\vert T_{w \mod R'} \vert, \quad \text{for}\quad z \in T_{k},
 \end{equation}
 where
 $z$ denotes the index set,
-$B$ groups periodically into $G'$ with irregular mapping,
 $R'$ is the number of granules of $G'$ in each repetition of the grouping,
 $T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$,
 and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{definition}
 
-For example, suppose consecutive granules of $G'$ are alternately made up of $7$ and $5$ granules of $B$ within each period, so that $R'=2$ Then $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$. Here, $T_0 = \{0, 1, \dots, 6\}$ and $T_1 = \{7, \dots 11\}$. Hence using Definition \autoref{def:quasicircular} we will have:
-$$
-  Q_{B,H'}(10)  = 10 - \sum_{w=0}^{1-1}\vert T_{w \mod 2}\vert = 10 - 7 = 3
-$$
-since $10 \in T_{1}$.
+For example, day-of-year is quasi-periodic with either 365 or 366 granules of $B$ (days) within each period of $G'$ (years). The pattern repeats every $R'=400$ years. So $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$.
 
-If linear granularity $G'$ is periodical with respect to $B$ with irregular mapping, then there exist $R'$, $P' \in \mathbb{Z}_+$ such that if $G'(w) = \bigcup_{z \in T_w}B(z)$ then $$G'(w) = \bigcup_{z \in T_w \mod R'} B(P'*\lfloor w/R' \rfloor + z)$$ (from Definition \ref{def:periodical}). Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ in Definition \autoref{def:quasicircular} denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition \autoref{def:quasicircular}.
-
-```{r quasi-circular-example, echo = FALSE, out.width = "100%",fig.cap = "Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester Terminology and intuition of quasi-circular granularities are shown. Panel a shows the time domain distributed as linear granularities $B$ (bottom granularity), $G$, $H'$ and quasi-circular granularities $Q(B, G)$ and $Q(B, H')$. Both $Q(B, G)$ and $Q(B, H')$ have repeating patterns unlike $G$ or $H'$ and the patterns are guided by the distribution of $B$ within $G$ and $H'$ and remains constant within a period shown by the hashed arrows. Panel b depicts the intuition through a measuring tape analogy where the folds are not of same length but has same length over a period.", fig.pos="!htb"}
-```
 
 ## Aperiodic {#sec:aperiodic-gran-def}
 
-Aperiodic time granularities are those that can not be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no reasonably small period within which their behavior remains constant. A classic example can be that of Easter, whose dates repeat only after 5,700,000 years. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduled event. All of these are recurring events, but with non-periodic patterns. As such, plausible $P_i$ from \autoref{tab:quasi} could be possibly infinite for aperiodic granularities.
+Aperiodic time granularities are those that cannot be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no reasonably small period within which their behavior remains constant. A classic example is Easter (in the western tradition) whose dates repeat only after 5.7 million years. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduled event. All of these are recurring events, but with non-periodic patterns. Consequently, $P_i$ (as given in \autoref{tab:quasi}) are essentially infinite for aperiodic granularities.
 
-Aperiodic cyclic granularities are defined using aperiodic linear granularities. Consider $n$ aperiodic linear granularities $M_i$,  $i \in \{1, 2, \dots, n\}$, such that Definition \ref{def:periodical} does not hold true with respect to $B$. However, $B \trianglelefteq M_i$. Then according to Definition \ref{def:groupsinto}, for each index $j$ there exists a (possibly infinite) subset $T_{\{i_j\}}$ of the integers such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$. Suppose $M = \bigcup_{i=1}^{n}M_{i}$ is formed by collecting the granules of $\{M_1, M_2, \dots, M_n\}$. Here, index ${\{i_j\}}$ stands for the $j^{\text{th}}$ granule of the $i^{\text{th}}$ linear aperiodic granularity.
+\begin{definition}\label{def:aperiodic}
+An \textbf{aperiodic cyclic granularity} is formed when bottom granularity $B$ groups aperiodically into linear granularity $M$ such that the granularities are given by
+\begin{equation}\label{eq:aperiodic}
+A_{B, M}(z) = \begin{cases}
+                  i, & \text{for}\quad z \in T_{i_j} \\
+                  0  & \text{otherwise},
+                \end{cases}
+\end{equation}
+where
+$z$ denotes the index set,
+$T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$.
+\end{definition}
+
 
 ```{r aperiodic-example, echo=FALSE, out.width = "100%", fig.cap= "(ref:aperiodic-example)", fig.pos="!htb"}
 ```
 
-(ref:aperiodic-example) Quasi-circular and aperiodic cyclic granularities illustrated through linear (a) and stack (b) display of time. The linear display shows linear granularities days, weeks, semester weeks, semester week type distributed linearly from past to future. Here a semester lasts for 18.3 weeks, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 1.3 weeks. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 18.3 weeks will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years.
+(ref:aperiodic-example) Quasi-circular and aperiodic cyclic granularities illustrated through (a) linear and (b) stacked displays of time. The linear display shows granularities days, weeks, semester weeks, semester week type distributed over linear time. Here a semester lasts for 18 weeks and 2 days, each starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week, an in-session period of 7 weeks, a 1-week study break, before final exams which continue for 16 days. This pattern remains same for all semester and hence $Q_{H, M}$ with $P$ = 128 days will be a quasi-circular granularity with repeating patterns. $A_{B, M}$ will be an aperiodic cyclic granularity since the placement of the semester within an year varies across years.
 
-\begin{definition}\label{def:aperiodic}
-An \textbf{aperiodic cyclic granularity} $A_{B, M}$ relates a linear granularity $M$ to the bottom granularity $B$, if\todo{This is not a condition. What is $A$ used for?}
-\begin{equation}\label{eq:aperiodic}
-\begin{split}
-A_{B, M}(z) & =
-\begin{cases}
-i, & \text{for}\quad z \in T_{i_j} \\
-0  & \text{otherwise}
-\end{cases}
-\end{split}
-\end{equation}
-where,
-$z \in \mathbb{Z}_{\geq 0}$ denotes the index set,
-$B$ denotes a full-integer labelled bottom granularity which groups into linear granularity $M$ but not periodically, $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$.
-\end{definition}
-
-Consider a school semester which always lasts for 18 weeks and 2 days, starting with one week of orientation followed by an in-session period of 6 weeks, a semester-break of 1 week and again an in-session period of 7 weeks and 1 week study break before final exams which continue for 16 days. Let the linear granularities $M_1$ and $M_2$ denote in-session semester period and semester break periods respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the semester week type are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day of the semester week type would be an aperiodic cyclic granularity. This is because the placement of the semester within an year would vary across years. \autoref{fig:aperiodic-example} b shows the stack display of time with granules representing same categories (semester break/in-session) stacked on top of one another. \autoref{fig:aperiodic-example} (a) representing the linear display of time is useful in manifesting how the categories would be determined with respect to the bottom granularities using Definition \ref{def:aperiodic}. Here, $Q_{H, M}$ denoting semester week of the semester week type would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years.
+For example, consider the school semester shown in \autoref{fig:aperiodic-example}. Let the linear granularities $M_1$ and $M_2$ denote the in-session semester period and semester break period respectively. Both $M_1$, $M_2$ and $M = M_{1}\bigcup M_{2}$ denoting the "semester week type" are aperiodic with respect to days ($B$) or weeks ($G$). Hence $A_{B, M}$ denoting day-of-the-"semester week type" would be an aperiodic cyclic granularity, because the placement of the semester within an year would vary across years. Here, $Q_{H, M}$ denoting week-of-the-"semester week type" would be a quasi-circular granularity since the distribution of semester weeks within a semester is assumed to remain constant over years.
 
 ## Relativities {#sec:cyclic-calendar}
 
-The hierarchical structure of time creates a natural nested ordering which can be used in the computation of relative pairs of granularities. This is illustrated using two examples, a Mayan calendar, which is simple, in addition to the more complex Gregorian calendar.
+The hierarchical structure of time creates a natural nested ordering which can be used in the computation of relative pairs of granularities.
 
 \begin{definition}\label{def:hierarchy}
-The nested ordering of linear granularities can be organized into a \textbf{hierarchy table}, denoted as $H_n: (G, C, K)$, which arranges them from lowest to highest in order. It shows how the $n$ granularities relate through $K$, and how the cyclic granularities, $C$. can be defined relative to the linear granularities. Let $G_{\ell}$ and $G_{m}$ represent the linear granularity of order $\ell$ and $m$ respectively with $\ell<m$. Then $K \equiv P(\ell,m)$ represents the period length of the grouping $(G_{\ell}, G_{m})$, if $C_{G_{\ell}, G_{m}}$ is a circular granularity and $K \equiv k(\ell,m)$ represents the operation to obtain $G_{m}$ from $G_{\ell}$, if $C_{G_{\ell}, G_{m}}$ is quasi-circular.
+The nested ordering of linear granularities can be organized into a \textbf{hierarchy table}, denoted as $H_n: (G, C, K)$, which arranges them from lowest to highest in order. It shows how the $n$ granularities relate through $K$, and how the cyclic granularities, $C$, can be defined relative to the linear granularities. Let $G_{\ell}$ and $G_{m}$ represent the linear granularity of order $\ell$ and $m$ respectively with $\ell<m$. Then $K \equiv P(\ell,m)$ represents the period length of the grouping $(G_{\ell}, G_{m})$, if $C_{G_{\ell}, G_{m}}$ is a circular granularity and $K \equiv k(\ell,m)$ represents the operation to obtain $G_{m}$ from $G_{\ell}$, if $C_{G_{\ell}, G_{m}}$ is quasi-circular.
 \end{definition}
 
-For example, \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan calendar. In the Mayan calendar, one day is referred to as a kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal (about a year); 1 katun = 20 tun (20 years) and 1 baktun = 20 katun.
+For example, \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan calendar. In the Mayan calendar, one day was referred to as a kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal (about a year); 1 katun = 20 tun (20 years) and 1 baktun = 20 katun.
 
 ```{r tab-mayan}
 ```
@@ -335,10 +322,9 @@ A \textbf{single-order-up} is a cyclic granularity which is nested within a sing
 Following the calendar algebra of @Ning_2002 for linear granularities, we can define cyclic calendar algebra to compute cyclic granularities. Cyclic calendar algebra comprises two kinds of operations:
 (1) **single-to-multiple** (the calculation of _multiple-order-up_ cyclic granularities from _single-order-up_ cyclic granularities) and (2) **multiple-to-single** (the reverse).
 
-
 ### Single-to-multiple {#sec:single-to-multiple}
 
-Methods to obtain multiple-order-up granularity will be different based on if the hierarchy consists of all circular single-order-up granularities or a mix of circular and quasi-circular single-order-up granularities. The methods require the use of integer arithmetic, and hence it is important that the label mapping of the individual single-order-up granularity is an identity function, that is, $L(x) = x\quad \forall x$. The label mapping of the resultant multiple-order-up granularity can be chosen depending on the context. Circular single-order-up granularities can be used recursively to obtain a multiple-order-up circular granularity using Equation \ref{eq:eq7} for $\ell < m - 1$ and $P(i, j) = 1, \quad \forall i = j \in \{0, 1, \dots, m-\ell-1\}$.
+Methods to obtain multiple-order-up granularity will depend on whether the hierarchy consists of all circular single-order-up granularities or a mix of circular and quasi-circular single-order-up granularities. The methods require the use of integer arithmetic, and hence it is important that the label mapping of the individual single-order-up granularity is an identity function, $L(x) = x$ for all $x$. The label mapping of the resultant multiple-order-up granularity can be chosen depending on the context. Circular single-order-up granularities can be used recursively to obtain a multiple-order-up circular granularity using Equation \ref{eq:eq7} for $\ell < m - 1$ and $P(i, j) = 1, \quad \forall i = j \in \{0, 1, \dots, m-\ell-1\}$.
 \begin{equation} \label{eq:eq7}
 \begin{split}
 C_{G_\ell,G_m}(z) & = C_{G_\ell,G_{\ell+1}}(z) + P(\ell, \ell+1)C_{G_{\ell+1},G_m}(z)\\
@@ -357,7 +343,7 @@ C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(
                &~~~ + 18*20\lfloor z/20*18*20\rfloor \mod 20 \\
 \end{split}
 \end{equation}
-We consider the case of only one quasi-circular single order-up granularity in the hierarchy table while computing a multiple-order-up quasi-circular granularity. Any multiple-order-up quasi-circular granularity $C_{\ell, m}(z)$ could then be obtained as a dicrete combination of circular and quasi-circular granularities.
+We consider the case of only one quasi-circular single order-up granularity in the hierarchy table while computing a multiple-order-up quasi-circular granularity. Any multiple-order-up quasi-circular granularity $C_{\ell, m}(z)$ could then be obtained as a discrete combination of circular and quasi-circular granularities.
 
 Depending on the order of the combination, again two different approaches need to be employed leading to the following cases:
 
@@ -376,7 +362,7 @@ C_{G_\ell,G_{m}}(z) & = C_{G_{\ell},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\ve
 \end{equation}
 where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{\ell}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
-Consider a hierarchy using linear granularties from a Gregorian calendar in \autoref{tab:tab-gregorian}. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities with day-of-month as the only single-order-up quasi-circular granularity.
+Consider a hierarchy using linear granularities from a Gregorian calendar in \autoref{tab:tab-gregorian}. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities with day-of-month as the only single-order-up quasi-circular granularity.
 
 Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we then have:
 $$
@@ -435,7 +421,7 @@ An example when there will be no empty combinations could be where $C_i$ and $C_
 
 ## Summarizing the measured variable {#sec:summarize-measured}
 
-Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organised data structure. Summarizing the distribution of the measured variable using these multiple observations could be a potential way to explore and bring forward different features of the data.
+Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organized data structure. Summarizing the distribution of the measured variable using these multiple observations could be a potential way to explore and bring forward different features of the data.
 
 However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $K$ and $L$ categories respectively. Let $nobs$ be the number of observations for a combination of levels from $(C_i, C_j)$. Now, $nobs$ might be equal for all combinations on an average so that $nobs = (T + 1)/(KL)$ as $T\rightarrow\infty$ or ideally take any value between $\{0, 1, \dots, T\}$. The statistical transformation used for summarizing the measured variable should be chosen in line with $nobs$. For example, it might be useful to compute deciles for summarization only when $nobs \ge 10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month are likely to suffer from this problem.
 
