@@ -51,9 +51,6 @@ table_greg %>%
   # row_spec(0, bold = TRUE) %>%
   kable_styling()
 
-## ----data-structure
-include_graphics("Figs/data-struc-diffcol.png")
-
 ## ----allFig
 VIC <- gravitas::smart_meter10 %>%
   filter(customer_id == "10006486")

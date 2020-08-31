@@ -35,7 +35,7 @@ abstract: |
  The methods are implemented in the open source R package `gravitas`, providing functions for creating granularities and exploring the associated time series which are consistent with a tidy workflow (@Grolemund2018-po), and the probability distributions can be examined using the range of graphics available in `ggplot2` [@Wickham2009pk].
 bibliography: [bibliography.bib]
 preamble: >
-  \usepackage{mathtools,amssymb,booktabs,amsthm,todonotes}
+  \usepackage{mathtools,amssymb,booktabs,amsthm,todonotes,colortbl}
   \def\mod{~\text{mod}~}
   \newtheorem{definition}{Definition}
   \usepackage{mathptmx}
@@ -43,6 +43,8 @@ preamble: >
   \DeclareCaptionStyle{italic}{labelfont={bf},textfont={it},labelsep=colon}
   \captionsetup[figure]{style=italic,format=hang,singlelinecheck=true}
   \captionsetup[table]{style=italic,format=hang,singlelinecheck=true}
+  \def\novspacing{\setlength{\aboverulesep}{0pt}\setlength{\belowrulesep}{0pt}}
+  \def\vspacing{\setlength{\aboverulesep}{0.4ex}\setlength{\belowrulesep}{0.65ex}}
 output:
   bookdown::pdf_book:
     base_format: rticles::asa_article
@@ -384,18 +386,39 @@ Single-order-up quasi-circular granularity can be obtained from multiple-order-u
 
 # Data structure{#sec:data-structure}
 
-Effective exploration and visualization benefits from well-organized data structures. @wang2020tsibble introduced a tidy data structure, tsibble, to support exploration and modeling of temporal data. This forms the basis of the structure for cyclic granularities. A tsibble consists of an index, key and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.
+Effective exploration and visualization benefits from well-organized data structures. @wang2020tsibble introduced the tidy "tsibble" data structure to support exploration and modeling of temporal data. This forms the basis of the structure for cyclic granularities. A tsibble comprises an index, optional key(s), and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.
 
-All cyclic granularities can be expressed in terms of the index set, and hence, we introduce the data structure in Figure \@ref(fig:data-structure). This basic structure of a tsibble (index, key, measurements) is augmented by columns of cyclic granularities. The total number of cyclic granularities would be based on the number of linear granularities considered in the hierarchy table and presence of any aperiodic cyclic granularities, for example, if we have $n$ periodic linear granularities in the hierarchy table, $n(n-1)/2$ circular or quasi-circular cyclic granularities could be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that could originate from $N_L$ periodic and aperiodic linear granularities. Any attempt to encode all or many of these cyclic granularities at the same time to develop insights on periodicity might fail or otherwise become too numerous for comprehensive human consumption. Instead, this big problem is broken down by focusing on pair of cyclic granularities ($C_i$, $C_j$) at a time for $i, j \in \{1, 2, \dots, N_C\}$. Data sets of the form <$C_i$, $C_j$, $v$> then forms the basis for exploration and analysis of the measured variable $v$.
+\novspacing
 
-```{r data-structure, fig.cap = "(ref:data-structure)", fig.pos="!htb"}
+```{r data-structure, fig.pos="!htb"}
+library(dplyr)
+as.data.frame(matrix(" ", ncol=7, nrow=1)) %>%
+  mutate(
+    V1 = cell_spec(V1, "latex", background="#dbe3f1"),
+    V2 = cell_spec(V2, "latex", background="#dbe3f1"),
+    V3 = cell_spec(V3, "latex", background="#dbe3f1"),
+    V4 = cell_spec(V4, "latex", background="#fdf2d0"),
+    V5 = cell_spec(V5, "latex", background="#fdf2d0"),
+    V6 = cell_spec(V6, "latex", background="#fdf2d0"),
+    V7 = cell_spec(V7, "latex", background="#fdf2d0"),
+  ) %>%
+  knitr::kable(format='latex',
+               booktabs=TRUE,
+               escape=FALSE,
+               caption = "The data structure for exploring periodicities in data by including cyclic granularities in the tsibble structure with index, key and measured variables.",
+               col.names = c("\\cellcolor[HTML]{dbe3f1}{index}","\\cellcolor[HTML]{dbe3f1}{key}","\\cellcolor[HTML]{dbe3f1}{measurements}","$C_1$","$C_2$","$\\cdots$","$C_{N_C}$")
+  ) %>%
+  row_spec(0, bold=TRUE,background="#fdf2d0") %>%
+  kable_styling(position = "center")
 ```
 
-(ref:data-structure) The data structure for exploring periodicities in data by including cyclic granularities in the tsibble structure with index, key and measured variables.
+\vspacing
+
+All cyclic granularities can be expressed in terms of the index set. \autoref{tab:data-structure} shows the tsibble structure (index, key, measurements) augmented by columns of cyclic granularities. The total number of cyclic granularities depends on the number of linear granularities considered in the hierarchy table and the presence of any aperiodic cyclic granularities. For example, if we have $n$ periodic linear granularities in the hierarchy table, then $n(n-1)/2$ circular or quasi-circular cyclic granularities can be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that can originate from the underlying periodic and aperiodic linear granularities. Simultaneously encoding more than a few of these cyclic granularities when visualizing the data overwhelms human comprehension. Instead, we focus on visualizing the data split by pairs of cyclic granularities ($C_i$, $C_j$). Data sets of the form <$C_i$, $C_j$, $v$> then forms the basis for exploration and analysis of the measured variable $v$.
 
 ## Harmonies and clashes {#sec:synergy}
 
-The way cyclic granularities relate become important when we consider the data structure in Figure \@ref(fig:data-structure). Let us consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k \in \mathbb{N}, k \leq K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell \in \mathbb{N}, \ell \leq L\}$. Here, $A_k$'s or $B_\ell$'s are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. Data subsets for each combination of levels ($A_k$, $B_\ell$) like <$A_k$, $B_\ell$, $v(s)$> can be obtained for all $k \in {1, 2, \dots, K}$ and $\ell \in {1, 2, \dots, L}$ which will lead to $KL$ data subsets. Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $KL$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities.
+The way cyclic granularities relate become important when we consider the data structure in \autoref{tab:data-structure}. Let us consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k \in \mathbb{N}, k \leq K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell \in \mathbb{N}, \ell \leq L\}$. Here, $A_k$'s or $B_\ell$'s are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. Data subsets for each combination of levels ($A_k$, $B_\ell$) like <$A_k$, $B_\ell$, $v(s)$> can be obtained for all $k \in {1, 2, \dots, K}$ and $\ell \in {1, 2, \dots, L}$ which will lead to $KL$ data subsets. Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $KL$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities.
 
 \begin{definition}\label{def:harmony}
 A \textbf{clash} is a pair of cyclic granularities which contains structurally, event-driven or build-based empty combinations of its categories.
