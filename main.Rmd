@@ -308,7 +308,7 @@ For example, \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan cal
 ```{r tab-mayan}
 ```
 
-Like most calendars, the Mayan calender used the day as the basic unit of time [@Reingold2001-kf]. The structuring of larger units, weeks, months, years and cycle of years, though, varies substantially between calendars. For example,  the French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined. Note that it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only, and that the cyclic granularity $C_{G(\ell),G(m)}$ is either circular or quasi-circular.
+Like most calendars, the Mayan calendar used the day as the basic unit of time [@Reingold2001-kf]. The structuring of larger units, weeks, months, years and cycle of years, though, varies substantially between calendars. For example,  the French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined. Note that it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only, and that the cyclic granularity $C_{G(\ell),G(m)}$ is either circular or quasi-circular.
 
 \begin{definition}\label{def:norderup}
 The hierarchy table contains \textbf{multiple-order-up} granularities which are cyclic granularities that are nested within multiple levels.
@@ -324,28 +324,24 @@ Following the calendar algebra of @Ning_2002 for linear granularities, we can de
 
 ### Single-to-multiple {#sec:single-to-multiple}
 
-Methods to obtain multiple-order-up granularity will depend on whether the hierarchy consists of all circular single-order-up granularities or a mix of circular and quasi-circular single-order-up granularities. The methods require the use of integer arithmetic, and hence it is important that the label mapping of the individual single-order-up granularity is an identity function, $L(x) = x$ for all $x$. The label mapping of the resultant multiple-order-up granularity can be chosen depending on the context. Circular single-order-up granularities can be used recursively to obtain a multiple-order-up circular granularity using Equation \ref{eq:eq7} for $\ell < m - 1$ and $P(i, j) = 1, \quad \forall i = j \in \{0, 1, \dots, m-\ell-1\}$.
+Methods to obtain multiple-order-up granularity will depend on whether the hierarchy consists of all circular single-order-up granularities or a mix of circular and quasi-circular single-order-up granularities. Circular single-order-up granularities can be used recursively to obtain a multiple-order-up circular granularity using
 \begin{equation} \label{eq:eq7}
-\begin{split}
-C_{G_\ell,G_m}(z) & = C_{G_\ell,G_{\ell+1}}(z) + P(\ell, \ell+1)C_{G_{\ell+1},G_m}(z)\\
-  & = C_{G_\ell,G_{\ell+1}}(z) + P(\ell, \ell+1)( C_{G_{\ell+1},G_{\ell+2}}(z) + P(\ell+1, \ell+2)C_{G_{\ell+2}, G_m}(z)) \\
-  & = C_{G_\ell,G_{\ell+1}}(z) + P(\ell, \ell+1)C_{G_{\ell+1},G_{\ell+2}}(z) + P(\ell, \ell+1)P(\ell+1, \ell+2)C_{G_{\ell+2}, G_{m}}\\
-  & = C_{G_\ell,G_{\ell+1}}(z) + P(\ell, \ell+1)C_{G_{\ell+1},G_{\ell+2}}(z) + P(\ell, \ell+2)C_{G_{\ell+2},G_{\ell+m}}(z)\\
-  &\vdots\\
-  & = \sum_{i=0}^{m - \ell - 1} P(\ell, \ell+i)C_{G_{\ell+i},G_{\ell+i+1}}(z)\\
-\end{split}
+C_{G_\ell,G_m}(z)
+  = \sum_{i=0}^{m - \ell - 1} P(\ell, \ell+i)C_{G_{\ell+i},G_{\ell+i+1}}(z),
 \end{equation}
-For example, the multiple-order-up granularity $C_{uinal,katun}$ for Mayan calendar could be obtained using Equation \ref{eq:eq8}.
-\begin{equation} \label{eq:eq8}
-\begin{split}
-C_{uinal, baktun}(z)  = & C_{uinal, tun}(z) + P(uinal, tun)C_{tun,katun}(z) + P(uinal, katun)C_{katun, baktun}(z) \\
-               = & \lfloor z/20\rfloor \mod 18 + 18*\lfloor z/20*18\rfloor \mod 20  \\
-               &~~~ + 18*20\lfloor z/20*18*20\rfloor \mod 20 \\
-\end{split}
-\end{equation}
-We consider the case of only one quasi-circular single order-up granularity in the hierarchy table while computing a multiple-order-up quasi-circular granularity. Any multiple-order-up quasi-circular granularity $C_{\ell, m}(z)$ could then be obtained as a discrete combination of circular and quasi-circular granularities.
+where $\ell < m - 1$ and $P(i, i) = 1$ for $i=0,1,\dots,m-\ell-1$, and
+$C_{B, G}(z)  = z\mod P(B, G)$ as per Equation \eqref{eq:circular-gran}.
 
-Depending on the order of the combination, again two different approaches need to be employed leading to the following cases:
+For example, the multiple-order-up granularity $C_{\text{uinal},\text{katun}}$ for the Mayan calendar could be obtained using
+\begin{align*}
+C_{\text{uinal}, \text{baktun}}(z)  &=  C_{\text{uinal}, \text{tun}}(z) + P(\text{uinal}, \text{tun})C_{\text{tun},\text{katun}}(z) + P(\text{uinal},\text{katun})C_{\text{katun}, \text{baktun}}(z) \\
+               &=  \lfloor z/20\rfloor \mod 18 + 18\lfloor 18z/20\rfloor \mod 20
+                + 18\times20\lfloor 18\times20\times z/20\rfloor \mod 20.
+\end{align*}
+
+Now consider the case where there is one quasi-circular single order-up granularity in the hierarchy table while computing a multiple-order-up quasi-circular granularity. Any multiple-order-up quasi-circular granularity $C_{\ell, m}(z)$ could then be obtained as a discrete combination of circular and quasi-circular granularities.
+
+Depending on the order of the combination, two different approaches need to be employed leading to the following cases:
 
   * $C_{\ell,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
 \begin{equation} \label{eq:multifromsingle-quasi1}
@@ -362,9 +358,10 @@ C_{G_\ell,G_{m}}(z) & = C_{G_{\ell},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\ve
 \end{equation}
 where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{\ell}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
-Consider a hierarchy using linear granularities from a Gregorian calendar in \autoref{tab:tab-gregorian}. This is an example of a hierarchy structure which has both circular and quasi-circular single-order-up granularities with day-of-month as the only single-order-up quasi-circular granularity.
+```{r tab-gregorian}
+```
 
-Using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}, we then have:
+For example, the Gregorian calendar (\autoref{tab:tab-gregorian}) has day-of-month as a single-order-up quasi-circular granularity, with the other granularities being circular. Using Equations \eqref{eq:multifromsingle-quasi1} and \eqref{eq:multifromsingle-quasi2}, we then have:
 $$
   C_{hour, month}(z) = C_{hour, day}(z) + P(hour, day)*C_{day, month}(z)
 $$
@@ -373,20 +370,17 @@ $$
 $$
 where $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$.
 
-```{r tab-gregorian}
-```
-
 ### Multiple-to-single {#sec:multiple-to-single}
 
-Similar to single-to-multiple operations, multiple-to-single operations involve different approaches for all circular single-order-up granularities and a mix of circular and quasi-circular single-order-up granularities in the hierarchy. For a hierarchy table $H_n: (G, C, K)$ with only circular single-order-up granularities in the hierarchy and $\ell_1, \ell_2, m_1, m_2 \in {1, 2, \dots, n}$ and $\ell_2<\ell_1$ and $m_2>m_1$, multiple-order-up granularities could be obtained using \ref{eq:all-circular-multiple}.
+Similar to single-to-multiple operations, multiple-to-single operations involve different approaches for all circular single-order-up granularities and a mix of circular and quasi-circular single-order-up granularities in the hierarchy. For a hierarchy table $H_n: (G, C, K)$ with only circular single-order-up granularities and $\ell_1, \ell_2, m_1, m_2 \in {1, 2, \dots, n}$ and $\ell_2<\ell_1$ and $m_2>m_1$, multiple-order-up granularities can be obtained using \eqref{eq:all-circular-multiple}.
 \begin{equation} \label{eq:all-circular-multiple}
 C_{G_{\ell_1}, G_{m_1}}(z) = \lfloor C_{G_{\ell_2}, G_{m_2}}(z)/P(\ell_2,\ell_1) \rfloor \mod P(\ell_1, m_1)
 \end{equation}
-For example, in Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun from uinal-of-baktun, since $C_{tun, katun}(z) = \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20$.
+For example, in the Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun from uinal-of-baktun, since $C_{tun, katun}(z) = \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20$.
 
 #### Multiple order-up quasi-circular granularities {#sec:quasi-circular-multiple}
 
-Single-order-up quasi-circular granularity could be obtained from multiple-order-up quasi-circular granularity and single/multiple-order-up circular granularity using Equations \ref{eq:multifromsingle-quasi1} and \ref{eq:multifromsingle-quasi2}.
+Single-order-up quasi-circular granularity can be obtained from multiple-order-up quasi-circular granularity and single/multiple-order-up circular granularity using Equations \eqref{eq:multifromsingle-quasi1} and \eqref{eq:multifromsingle-quasi2}.
 
 # Data structure{#sec:data-structure}
 
@@ -421,7 +415,7 @@ An example when there will be no empty combinations could be where $C_i$ and $C_
 
 ## Summarizing the measured variable {#sec:summarize-measured}
 
-Restructuring time from linear to cyclic time granularities leads to re-organisation of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organized data structure. Summarizing the distribution of the measured variable using these multiple observations could be a potential way to explore and bring forward different features of the data.
+Restructuring time from linear to cyclic time granularities leads to re-organization of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organized data structure. Summarizing the distribution of the measured variable using these multiple observations could be a potential way to explore and bring forward different features of the data.
 
 However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $K$ and $L$ categories respectively. Let $nobs$ be the number of observations for a combination of levels from $(C_i, C_j)$. Now, $nobs$ might be equal for all combinations on an average so that $nobs = (T + 1)/(KL)$ as $T\rightarrow\infty$ or ideally take any value between $\{0, 1, \dots, T\}$. The statistical transformation used for summarizing the measured variable should be chosen in line with $nobs$. For example, it might be useful to compute deciles for summarization only when $nobs \ge 10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month are likely to suffer from this problem.
 
@@ -501,7 +495,7 @@ If the data for all keys are visualized together, it might lead to Simpson's par
 
 ## T20 cricket data of Indian Premiere League {#sec:cricket}
 
-The method is not only restricted to temporal data, and can be generalized to many hierarchical granularities (with continuous and uni-directional nature). We illustrate this with an application to the sport cricket. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In the Twenty20 format, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus, similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. The idea of cyclic granularities can be likewise mapped to this hierarchy. Example granularites then include ball of the over, over of the innings and ball of the innings. Although most of these cyclic granularities are circular in design of the hierarchy, in application of the rules some granularities are aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an innings finishes before the over finishes. Thus, the cyclic granularity ball-of-over will be circular in most cases and aperiodic in others.
+The method is not only restricted to temporal data, and can be generalized to many hierarchical granularities (with continuous and uni-directional nature). We illustrate this with an application to the sport cricket. Although there is no conventional time component in cricket, each ball can be thought to represent an ordering from past to future with the game progressing forward with each ball. In the Twenty20 format, an over will consist of 6 balls (with some exceptions), an innings is restricted to a maximum of 20 overs, a match will consist of 2 innings and a season consists of several matches. Thus, similar to time, there is a hierarchy where ball is nested within overs, overs nested within innings and innings within matches. The idea of cyclic granularities can be likewise mapped to this hierarchy. Example granularities then include ball of the over, over of the innings and ball of the innings. Although most of these cyclic granularities are circular in design of the hierarchy, in application of the rules some granularities are aperiodic. For example, in most cases an over will consist of 6 balls with some exceptions like wide balls or when an innings finishes before the over finishes. Thus, the cyclic granularity ball-of-over will be circular in most cases and aperiodic in others.
 
 The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. The ball by ball data for IPL season 2008 to 2016 is fetched from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data across overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016) such that each over has 6 balls, each innings has 20 overs and each match has 2 innings. This could be useful in a periodic world when we wish to compute any circular/quasi-circular granularity based on a hierarchy table which look like \autoref{tab:hierarchy-cric}. However, even if the situation is not periodic, it can be interesting to visualize the distribution of a measured variable to shed light on the aperiodic behavior of a non-temporal data set similar to aperiodic events like formal meetings, workshops, conferences, school semesters in a temporal set up.
 
@@ -523,7 +517,7 @@ Exploratory data analysis and data analysis in general involve many iterations o
 
 A missing piece in the package `gravitas` is the computation of cyclic aperiodic granularities which would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functions can be imported in the `gravitas` package to accommodate for aperiodic cyclic granularities. Another future direction of work could be to further refine the search of harmonies by only selecting pairs of cyclic granularities for which variation in measured variable is significant and rating these selected harmony pairs in order of importance for exploration.
 
-# Acknowledgements {-}
+# Acknowledgments {-}
 
 The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience in developing R packages, and Dr Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of the smart meter application. The package `gravitas` was built during the [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Spyrison for many useful discussions, sketching figures and feedback on the manuscript. More details about the package can be found at [sayani07.github.io/gravitas](https://sayani07.github.io/gravitas/). This article was created with `knitr` [@knitr2015, @R-knitr] and `rmarkdown` [@rmarkdown2018, @R-rmarkdown]. The Github repository, [github.com/Sayani07/paper-gravitas](https://github.com/Sayani07/paper-gravitas), contains all materials required to reproduce this article and the code is also available online in the supplemental materials.
 
