@@ -176,7 +176,7 @@ where $H$, $D$ and $W$ denote hours, days and weeks respectively.
 
 Cyclic granularities represent cyclical repetitions in time. They can be thought of as additional categorizations of time that are not linear. Cyclic granularities can be constructed from two linear granularities, that relate periodically; the resulting cycles can be either _regular_ (**circular**), or _irregular_ (**quasi-circular**).
 
-## Circular {#sec:circular-gran-def}
+## Circular granularities {#sec:circular-gran-def}
 
 \begin{definition}\label{def:circular}
 A \textbf{circular granularity} $C_{B, G}$ relates linear granularity $G$ to bottom granularity $B$ if
@@ -236,7 +236,7 @@ day-of-week                                  &
 \label{tab:definitions}
 \end{table}
 
-## Quasi-circular {#sec:quasi-circular-gran-def}
+## Quasi-circular granularities {#sec:quasi-circular-gran-def}
 
 A **quasi-circular** granularity cannot be defined using modular arithmetic  because of the irregular mapping. However, they are still formed with linear granularities, one of which groups periodically into the other. \autoref{tab:quasi} shows some examples of quasi-circular granularities.
 
@@ -272,7 +272,7 @@ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 For example, day-of-year is quasi-periodic with either 365 or 366 granules of $B$ (days) within each period of $G'$ (years). The pattern repeats every $R'=400$ years. So $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$.
 
 
-## Aperiodic {#sec:aperiodic-gran-def}
+## Aperiodic granularities {#sec:aperiodic-gran-def}
 
 Aperiodic time granularities are those that cannot be specified as a periodic repetition of a pattern of granules. Most public holidays repeat every year, but there is no reasonably small period within which their behavior remains constant. A classic example is Easter (in the western tradition) whose dates repeat only after 5.7 million years. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduled event. All of these are recurring events, but with non-periodic patterns. Consequently, $P_i$ (as given in \autoref{tab:quasi}) are essentially infinite for aperiodic granularities.
 
@@ -324,7 +324,7 @@ A \textbf{single-order-up} is a cyclic granularity which is nested within a sing
 Following the calendar algebra of @Ning_2002 for linear granularities, we can define cyclic calendar algebra to compute cyclic granularities. Cyclic calendar algebra comprises two kinds of operations:
 (1) **single-to-multiple** (the calculation of _multiple-order-up_ cyclic granularities from _single-order-up_ cyclic granularities) and (2) **multiple-to-single** (the reverse).
 
-### Single-to-multiple {#sec:single-to-multiple}
+### Single-to-multiple order-up {-}
 
 Methods to obtain multiple-order-up granularity will depend on whether the hierarchy consists of all circular single-order-up granularities or a mix of circular and quasi-circular single-order-up granularities. Circular single-order-up granularities can be used recursively to obtain a multiple-order-up circular granularity using
 \begin{equation} \label{eq:eq7}
@@ -368,7 +368,7 @@ $$
 $$
 where $T_w$ is such that $month(w) = \bigcup_{z \in T_w}day(z)$.
 
-### Multiple-to-single {#sec:multiple-to-single}
+### Multiple-to-single order-up {-}
 
 Similar to single-to-multiple operations, multiple-to-single operations involve different approaches for all circular single-order-up granularities and a mix of circular and quasi-circular single-order-up granularities in the hierarchy. For a hierarchy table $H_n: (G, C, K)$ with only circular single-order-up granularities and $\ell_1, \ell_2, m_1, m_2 \in {1, 2, \dots, n}$ and $\ell_2<\ell_1$ and $m_2>m_1$, multiple-order-up granularities can be obtained using \eqref{eq:all-circular-multiple}.
 \begin{equation} \label{eq:all-circular-multiple}
@@ -376,11 +376,11 @@ C_{G_{\ell_1}, G_{m_1}}(z) = \lfloor C_{G_{\ell_2}, G_{m_2}}(z)/P(\ell_2,\ell_1)
 \end{equation}
 For example, in the Mayan Calendar, it is possible to compute the single-order-up granularity tun-of-katun from uinal-of-baktun, since $C_{tun, katun}(z) = \lfloor C_{uinal, baktun}(z)/18\rfloor \mod 20$.
 
-#### Multiple order-up quasi-circular granularities {#sec:quasi-circular-multiple}
+### Multiple order-up quasi-circular granularities {-}
 
 Single-order-up quasi-circular granularity can be obtained from multiple-order-up quasi-circular granularity and single/multiple-order-up circular granularity using Equations \eqref{eq:multifromsingle-quasi1} and \eqref{eq:multifromsingle-quasi2}.
 
-# Data structure{#sec:data-structure}
+# Data structure {#sec:data-structure}
 
 Effective exploration and visualization benefits from well-organized data structures. @wang2020tsibble introduced the tidy "tsibble" data structure to support exploration and modeling of temporal data. This forms the basis of the structure for cyclic granularities. A tsibble comprises an index, optional key(s), and measured variables. An index is a variable with inherent ordering from past to present and a key is a set of variables that define observational units over time. A linear granularity is a mapping of the index set to subsets of the time domain. For example, if the index of a tsibble is days, then a linear granularity might be weeks, months or years. A bottom granularity is represented by the index of the tsibble.
 
@@ -481,7 +481,7 @@ Visualizing distributions can be misleading if statistical transformations are p
 
 Smart meters provide large quantities of measurements on energy usage for households across Australia. One of the customer trials [@smart-meter] conducted as part of the Smart Grid Smart City project in Newcastle, New South Wales and some parts of Sydney provides customer wise data on energy consumption for every half hour from February 2012 to March 2014. The idea here is to show how to visualize the distribution of the energy consumption across different cyclic granularities in a systematic way to identify different behavioral patterns.
 
-### Cyclic granularities search and computation:
+### Cyclic granularities search and computation {-}
 
 The tsibble object `smart_meter10` from R package `gravitas` [@R-gravitas] consisting of `reading_datetime`, `customer_id` and `general_supply_kwh` denoting the index, key and measured variable of the tsibble is used to facilitate the systematic exploration. While trying to explore the energy behavior of these customers systematically across cyclic time granularities, the first thing to consider is which cyclic time granularities we can look at exhaustively. Let us consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, month, year). Since the interval of this tsibble is 30 minutes, the temporal granularities may range from half-hour to year. Considering $6$ linear granularities half-hour, hour, day, week, month and year in the hierarchy table, $N_C = (6*5/2) = 15$. If $N_C$ seem too large, the smallest and largest linear granularities could be considered to be removed for analysis. Granularities half-year and year are removed to have $N_C = (4*3/2) = 6$ and obtain cyclic granularities namely "hour_day", "hour_week", "hour_month", "day_week", "day_month" and "week_month", read as "hour of the day", etc. Further, we add cyclic granularity day-type( "wknd_wday") to capture weekend and weekday behavior. Now that we have a list of cyclic granularities to look at, we should be able to compute them using Section&nbsp;\ref{sec:cyclic-calendar}.
 
