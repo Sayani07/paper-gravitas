@@ -179,7 +179,7 @@ Cyclic granularities represent cyclical repetitions in time. They can be thought
 ## Circular {#sec:circular-gran-def}
 
 \begin{definition}\label{def:circular}
-A \textbf{circular granularity} $C_{B, G}$ relates linear granularity $G$ to bottom granularity $B$, if
+A \textbf{circular granularity} $C_{B, G}$ relates linear granularity $G$ to bottom granularity $B$ if
 \begin{equation} \label{eq:circular-gran}
 \begin{split}
 C_{B, G}(z) & = z\mod P(B, G) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
@@ -347,16 +347,12 @@ Depending on the order of the combination, two different approaches need to be e
 
   * $C_{\ell,m'}(z)$ is circular and $C_{m',m}(z)$ is quasi-circular
 \begin{equation} \label{eq:multifromsingle-quasi1}
-\begin{split}
-C_{G_\ell,G_{m}}(z) & = C_{G_{\ell},G_{m'}}(z) + P(\ell, m')C_{G_{m'},G_{m}}(z) \\
-\end{split}
+C_{G_\ell,G_{m}}(z) = C_{G_{\ell},G_{m'}}(z) + P(\ell, m')C_{G_{m'},G_{m}}(z)
 \end{equation}
 
   * $C_{\ell,m'}(z)$ is quasi-circular and $C_{m',m}(z)$ is circular
 \begin{equation} \label{eq:multifromsingle-quasi2}
-\begin{split}
-C_{G_\ell,G_{m}}(z) & = C_{G_{\ell},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{w} \vert)\\
-\end{split}
+C_{G_\ell,G_{m}}(z)  = C_{G_{\ell},G_{m'}}(z) + \sum_{w=0}^{C_{m',m}(z) -1}(\vert T_{w} \vert)
 \end{equation}
 where, $T_w$ is such that $G_{m'}(w) = \bigcup_{z \in T_w}G_{\ell}$ and $\vert T_w \vert$ is the cardinality of set $T_w$.
 
@@ -414,25 +410,25 @@ as.data.frame(matrix(" ", ncol=7, nrow=1)) %>%
 
 \vspacing
 
-All cyclic granularities can be expressed in terms of the index set. \autoref{tab:data-structure} shows the tsibble structure (index, key, measurements) augmented by columns of cyclic granularities. The total number of cyclic granularities depends on the number of linear granularities considered in the hierarchy table and the presence of any aperiodic cyclic granularities. For example, if we have $n$ periodic linear granularities in the hierarchy table, then $n(n-1)/2$ circular or quasi-circular cyclic granularities can be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that can originate from the underlying periodic and aperiodic linear granularities. Simultaneously encoding more than a few of these cyclic granularities when visualizing the data overwhelms human comprehension. Instead, we focus on visualizing the data split by pairs of cyclic granularities ($C_i$, $C_j$). Data sets of the form <$C_i$, $C_j$, $v$> then forms the basis for exploration and analysis of the measured variable $v$.
+All cyclic granularities can be expressed in terms of the index set. \autoref{tab:data-structure} shows the tsibble structure (index, key, measurements) augmented by columns of cyclic granularities. The total number of cyclic granularities depends on the number of linear granularities considered in the hierarchy table and the presence of any aperiodic cyclic granularities. For example, if we have $n$ periodic linear granularities in the hierarchy table, then $n(n-1)/2$ circular or quasi-circular cyclic granularities can be constructed. Let $N_C$ be the total number of contextual circular, quasi-circular and aperiodic cyclic granularities that can originate from the underlying periodic and aperiodic linear granularities. Simultaneously encoding more than a few of these cyclic granularities when visualizing the data overwhelms human comprehension. Instead, we focus on visualizing the data split by pairs of cyclic granularities ($C_i$, $C_j$). Data sets of the form <$C_i$, $C_j$, $v$> then allow exploration and analysis of the measured variable $v$.
 
 ## Harmonies and clashes {#sec:synergy}
 
-The way cyclic granularities relate become important when we consider the data structure in \autoref{tab:data-structure}. Let us consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k \in \mathbb{N}, k \leq K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell \in \mathbb{N}, \ell \leq L\}$. Here, $A_k$'s or $B_\ell$'s are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. Data subsets for each combination of levels ($A_k$, $B_\ell$) like <$A_k$, $B_\ell$, $v(s)$> can be obtained for all $k \in {1, 2, \dots, K}$ and $\ell \in {1, 2, \dots, L}$ which will lead to $KL$ data subsets. Now, some situations can lead to few or many of these sets being empty. We will discuss few cases, where one or more of these $KL$ sets will be empty either due to the structure of the calendar, duration and location of events in a calendar or just by the construction of the cyclic granularities.
+The way granularities are related is important when we consider data visualizations. Consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k=1,\dots,K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell =1,\dots,L\}$. Here, $A_k$ and $B_\ell$ are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. There are $KL$ such data subsets, one for each combination of levels ($A_k$, $B_\ell$). Some of these sets may be empty due to the structure of the calendar, or because of the duration and location of events in a calendar, or because of the construction of the cyclic granularities.
 
 \begin{definition}\label{def:harmony}
-A \textbf{clash} is a pair of cyclic granularities which contains structurally, event-driven or build-based empty combinations of its categories.
+A \textbf{clash} is a pair of cyclic granularities that contains structurally, event-driven or build-based empty combinations of categories.
 \end{definition}
 
 \begin{definition}\label{def:clash}
 A \textbf{harmony} is a pair of cyclic granularities that does not contain any empty combinations of its categories.
 \end{definition}
 
-First, empty combinations can arise due to the structure of the calendar or hierarchy. These are called "structurally" empty combinations. Let us take a specific example, where $C_i$ be day-of-month with 31 levels and $C_j$ be week-of-month with 5 levels. There will be $31\times 5=155$ sets $S_{k\ell}$ corresponding to possible combinations of $C_i$ and $C_j$. Many of these like $S_{1,5}$, $S_{21,2}$ are empty. This is also intuitive since the first day of the month can never correspond to fifth week of the month. Hence the pair (day-of-month, week-of-month) is a clash.
+Structurally empty combinations can arise due to the structure of the calendar or hierarchy. For example, let $C_i$ be day-of-month with 31 levels and $C_j$ be week-of-month with 5 levels. There will be $31\times 5=155$ sets $S_{k\ell}$ corresponding to possible combinations of $C_i$ and $C_j$. Many of these are empty. For example, $S_{1,5}$ is empty because the first day of the month can never correspond to the fifth week of the month. Hence the pair (day-of-month, week-of-month) is a clash.
 
-Second, empty combinations can turn up due to differences in event location or duration in a calendar. These are called "event-driven" empty combinations. Let us consider $C_i$ be day-of-week with 7 levels and $C_j$ be WorkingDay/NonWorkingDay with 2 levels. While potentially all of these 14 sets $S_{k\ell}$ can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these will probably have very few observations. For example, there are few (if any) public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
+Event-driven empty combinations arise due to differences in event location or duration in a calendar. For example, let $C_i$ be day-of-week with 7 levels and $C_j$ be WorkingDay/NonWorkingDay with 2 levels. While potentially all of these 14 sets $S_{k\ell}$ can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these will probably have very few observations. For example, there are few (if any) public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
 
-Third, empty combinations can be a result of how granularities are constructed. These are called "build-based" empty combinations. Let $C_i$ be Business-days, which are days from Monday to Friday except holidays and $C_j$ be day-of-month. Then the days denoting weekends in a month would not correspond to any Business days. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularities does.
+Build-based empty combinations are a result of how granularities are constructed. For example, let $C_i$ be business-days (days from Monday to Friday other than holidays) and let $C_j$ be day-of-month. Then the days denoting weekends in a month would not correspond to any business days. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularities does.\todo{This seems like it is related to the calendar structure to me. I'm not sure of the distinction.}
 
 An example when there will be no empty combinations could be where $C_i$ and $C_j$ maps index set to day-of-week and month-of-year respectively. Here $C_i$ can have 7 levels while $C_j$ can have 12 levels. So there are $12\times7=84$ sets $S_{k\ell}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
 
