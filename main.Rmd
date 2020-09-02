@@ -414,29 +414,25 @@ All cyclic granularities can be expressed in terms of the index set. \autoref{ta
 
 ## Harmonies and clashes {#sec:synergy}
 
-The way granularities are related is important when we consider data visualizations. Consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k=1,\dots,K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell =1,\dots,L\}$. Here, $A_k$ and $B_\ell$ are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. There are $KL$ such data subsets, one for each combination of levels ($A_k$, $B_\ell$). Some of these sets may be empty due to the structure of the calendar, or because of the duration and location of events in a calendar, or because of the construction of the cyclic granularities.
-
-\begin{definition}\label{def:harmony}
-A \textbf{clash} is a pair of cyclic granularities that contains structurally, event-driven or build-based empty combinations of categories.
-\end{definition}
+The way granularities are related is important when we consider data visualizations. Consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k=1,\dots,K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell =1,\dots,L\}$. Here, $A_k$ and $B_\ell$ are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. There are $KL$ such data subsets, one for each combination of levels ($A_k$, $B_\ell$). Some of these sets may be empty due to the structure of the calendar, or because of the duration and location of events in a calendar.
 
 \begin{definition}\label{def:clash}
+A \textbf{clash} is a pair of cyclic granularities that contains empty combinations of categories.
+\end{definition}
+
+\begin{definition}\label{def:harmony}
 A \textbf{harmony} is a pair of cyclic granularities that does not contain any empty combinations of its categories.
 \end{definition}
 
 Structurally empty combinations can arise due to the structure of the calendar or hierarchy. For example, let $C_i$ be day-of-month with 31 levels and $C_j$ be week-of-month with 5 levels. There will be $31\times 5=155$ sets $S_{k\ell}$ corresponding to possible combinations of $C_i$ and $C_j$. Many of these are empty. For example, $S_{1,5}$ is empty because the first day of the month can never correspond to the fifth week of the month. Hence the pair (day-of-month, week-of-month) is a clash.
 
-Event-driven empty combinations arise due to differences in event location or duration in a calendar. For example, let $C_i$ be day-of-week with 7 levels and $C_j$ be WorkingDay/NonWorkingDay with 2 levels. While potentially all of these 14 sets $S_{k\ell}$ can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these will probably have very few observations. For example, there are few (if any) public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
+Event-driven empty combinations arise due to differences in event location or duration in a calendar. For example, let $C_i$ be day-of-week with 7 levels and $C_j$ be working-day/non-working-day with 2 levels. While potentially all of these 14 sets $S_{k\ell}$ can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these will probably have very few observations. For example, there are few (if any) public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
 
-Build-based empty combinations are a result of how granularities are constructed. For example, let $C_i$ be business-days (days from Monday to Friday other than holidays) and let $C_j$ be day-of-month. Then the days denoting weekends in a month would not correspond to any business days. This is different from structurally empty combinations because structure of the calendar does not lead to these missing combinations, but the construction of the granularities does.\todo{This seems like it is related to the calendar structure to me. I'm not sure of the distinction.}
+An example of a harmony is where $C_i$ and $C_j$ denote day-of-week and month-of-year respectively. So $C_i$ will have 7 levels while $C_j$ will have 12 levels, giving $12\times7=84$ sets $S_{k\ell}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
 
-An example when there will be no empty combinations could be where $C_i$ and $C_j$ maps index set to day-of-week and month-of-year respectively. Here $C_i$ can have 7 levels while $C_j$ can have 12 levels. So there are $12\times7=84$ sets $S_{k\ell}$. All of these are non-empty because every day-of-week can occur in every month. Hence, the pair (day-of-week, month-of-year) is a harmony.
+## Near-clashes {#sec:near-clashes}
 
-## Summarizing the measured variable {#sec:summarize-measured}
-
-Restructuring time from linear to cyclic time granularities leads to re-organization of the data structure, where each level of a cyclic granularity corresponds to multiple values of the measured variable. It is common to see summarization of these multiple values through aggregation or an unique summary statistic like mean or median to have each level of cyclic granularity correspond to an unique value of the measured variable. However, this approach hides the distributions of the measured variable induced by the re-organized data structure. Summarizing the distribution of the measured variable using these multiple observations could be a potential way to explore and bring forward different features of the data.
-
-However, we need to consider the effect of number of observations on the summarization even for harmonies. Consider a data set with $(T + 1)$ observations, and two cyclic granularities $C_i$ and $C_j$ with $K$ and $L$ categories respectively. Let $nobs$ be the number of observations for a combination of levels from $(C_i, C_j)$. Now, $nobs$ might be equal for all combinations on an average so that $nobs = (T + 1)/(KL)$ as $T\rightarrow\infty$ or ideally take any value between $\{0, 1, \dots, T\}$. The statistical transformation used for summarizing the measured variable should be chosen in line with $nobs$. For example, it might be useful to compute deciles for summarization only when $nobs \ge 10$. Rarely occurring categories such as the 366th day of the year, or the 31st day of the month are likely to suffer from this problem.
+Suppose $C_i$ denotes day-of-year and $C_j$ denotes day-of-week. While any day of the week can occur on any day of the year, some combinations will be very rare. For example, the 366th day of the year will only coincide with a Wednesday approximately every 28 years on average. We refer to these as "near-clashes".
 
 # Visualization {#sec:visualization}
 
