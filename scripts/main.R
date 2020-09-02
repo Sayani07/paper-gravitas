@@ -159,7 +159,7 @@ harmonies %>%
   kable(
     format = "latex",
     booktabs = TRUE,
-    caption = "Harmonies with a pair of cyclic granularity one placed on facet and the other on x-axis. Out of 42 possible combinations of cyclic granularities, only 16 are harmony pairs."
+    caption = "Harmonies with pairs of cyclic granularities, one mapped to facets and the other to the x-axis. Only 16 of 42 possible combinations of cyclic granularities are harmony pairs."
   ) %>%
   # row_spec(0, bold = TRUE) %>%
   kable_styling(latex_options = "hold_position")
