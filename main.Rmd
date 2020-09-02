@@ -148,7 +148,7 @@ $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) 
 
 \noindent For example, both $day \trianglelefteq week$ and $day \preceq week$ hold, since every granule of $week$ is the union of some set of granules of day and each day is a subset of a $week$. The relationship has period 7.
 
-The relationship $day \trianglelefteq month$ has a more complicated period.  If leap years are ignored, each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year. With the inclusion of leap years, the grouping period is 400 years.
+The relationship $day \trianglelefteq month$ has a more complicated period. If leap years are ignored, each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year. With the inclusion of leap years, the grouping period is 400 years.
 
 \begin{definition}\label{def:periodical}
 A granularity $G$ is \textbf{periodical} with respect to a granularity $H$ if:
@@ -193,7 +193,7 @@ $B$ groups periodically into $G$ with regular mapping and period $P(B, G)$.
 ```{r circular-dow, echo=FALSE, fig.cap= "(ref:circular-dow)",fig.pos="!htb"}
 ```
 
-(ref:circular-dow) a. Index sets for some linear and circular granularities.  b. Circular granularities can be constructed by slicing the linear granularity into pieces and stacking them.
+(ref:circular-dow) a. Index sets for some linear and circular granularities. b. Circular granularities can be constructed by slicing the linear granularity into pieces and stacking them.
 
 \autoref{fig:circular-dow} illustrates some linear and cyclical granularities. Cyclical granularities are constructed be cutting the linear granularity into pieces, and stacking them to match the cycles (as shown in b). $B, G, H$ (day, week, fortnight, respectively) are linear granularities. The circular granularity $C_{B, G}$ (day-of-week) is constructed from $B$ and $G$, while  circular granularity $C_{B, H}$ (day-of-fortnight) is constructed from $B$ and $H$. These overlapping cyclical granularities share elements from the linear granularity. Each of $C_{B , G}$ and $C_{B , H}$ consist of repeated patterns $\{0, 1, \dots, 6\}$ and $\{0, 1, \dots, 13\}$ with $P=7$ and $P=14$ respectively.
 
@@ -448,7 +448,7 @@ Drawing from the grammar of graphics, we consider visualizing the distribution o
 
 ## Choice of statistical transformations and geometric objects
 
-Plot selection is dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is one that can display distributions using kernel density estimates or descriptive statistics. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@Mcgill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estiatmes include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots, and highest density region (HDR) boxplots [@Hyndman1996-ft]. Each type of density display has parameters that need to be estimated from the data. Each is equipped with some benefits and challenges that should be borne in mind while using them for exploration.
+Plot selection is dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is one that can display distributions using kernel density estimates or descriptive statistics. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@Mcgill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots, and highest density region (HDR) boxplots [@Hyndman1996-ft]. Each type of density display has parameters that need to be estimated from the data. Each is equipped with some benefits and challenges that should be borne in mind while using them for exploration.
 
 ## Facet and aesthetic variables {#sec:aesthetics}
 
@@ -458,14 +458,14 @@ The levels of cyclic granularities affect plotting choices since space and resol
 
 ### Synergy of cyclic granularities {-}
 
-The synergy of the two cyclic granularities will affect plotting choices for exploratory analysis. Cyclic granularities that form clashes (Section \@ref(sec:synergy)) or near-clashes lead to potentially ineffective graphs.  Harmonies tend to be more useful for exploring patterns.
+The synergy of the two cyclic granularities will affect plotting choices for exploratory analysis. Cyclic granularities that form clashes (Section \@ref(sec:synergy)) or near-clashes lead to potentially ineffective graphs. Harmonies tend to be more useful for exploring patterns.
 
 \autoref{fig:allFig} (a) shows the distribution of half-hourly electricity consumption through letter value plots across months of the year faceted by quarters of the year. This plot does not work because quarter-of-the-year clashes with month-of-the-year, leading to empty subsets. For example, the first quarter never corresponds to December.
 
 ```{r allFig, fig.pos="!htb", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
 ```
 
-(ref:allFig) Distribution of energy consumption displayed through letter value plots: (a) across month-of-year faceted by quarter-of-year; (b) across weekday/weekend faceted by quarter-of-year; (c) across quarter-of-year faceted by weekday/weekend. Plot (a) shows a clash since there are empty combinations.  Plots (b) and (c) show harmonies since each quarter includes both weekdays and weekends. It can be seen in (b) that for every quarter (mapped to facet), weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently. Plot (c) switch the granularities mapped to the x-axis and the facets and helps to compare quarters within weekdays and weekends. For example, for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends.
+(ref:allFig) Distribution of energy consumption displayed through letter value plots: (a) across month-of-year faceted by quarter-of-year; (b) across weekday/weekend faceted by quarter-of-year; (c) across quarter-of-year faceted by weekday/weekend. Plot (a) shows a clash since there are empty combinations. Plots (b) and (c) show harmonies since each quarter includes both weekdays and weekends. It can be seen in (b) that for every quarter (mapped to facet), weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently. Plot (c) switch the granularities mapped to the x-axis and the facets and helps to compare quarters within weekdays and weekends. For example, for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends.
 
 ### Interchangeability of mappings {-}
 
@@ -532,21 +532,24 @@ Here, wickets per over is an aperiodic cyclic granularity, so it does not  appea
 
 # Discussion {#sec:discussion}
 
-Exploratory data analysis and data analysis in general involve many iterations of finding and summarizing patterns. With temporal data available at ever finer scales, exploring periodicity can become overwhelming with so many possible granularities to explore. This work provides a framework to systematically explore distribution of an univariate measured variable across two cyclic time granularities by creating any cyclic granularity, ranking a list of harmonies and thereby identifying possible distribution plots for effective visualization based on relationship and levels of the cyclic granularities.
+Exploratory data analysis involve many iterations of finding and summarizing patterns. With temporal data available at ever finer scales, exploring periodicity can become overwhelming with so many possible granularities to explore. This work provides tools to classify and compute possible cyclic granularities from an ordered (usually temporal) index. We also provide a framework to systematically explore the distribution of a univariate variable conditional on two cyclic time granularities using visualizations based on the synergy and levels of the cyclic granularities.
 
-A missing piece in the package `gravitas` is the computation of cyclic aperiodic granularities which would require computing aperiodic linear granularities first. A few R packages like `almanac` and `gs` provide functionality to create recurring events that are not periodic. These functions can be imported in the `gravitas` package to accommodate for aperiodic cyclic granularities. Another future direction of work could be to further refine the search of harmonies by only selecting pairs of cyclic granularities for which variation in measured variable is significant and rating these selected harmony pairs in order of importance for exploration.
+The `gravitas` package provides very general tools to compute and manipulate cyclic granularities, and to generate plots displaying distributions conditional on those granularities.
+
+A missing piece in the package `gravitas` is the computation of cyclic aperiodic granularities which would require computing aperiodic linear granularities first. A few R packages including `almanac` and `gs` provide the tools to create recurring aperiodic events. These functions can be used with the `gravitas` package to accommodate aperiodic cyclic granularities.
+
+We propose producing plots based on pairs of cyclic granularities that form harmonies rather than clashes or near-clashes. A future direction of work could be to further refine the selection of appropriate pairs of granularities by identifying those for which the differences between the displayed distributions is greatest, and rating these selected harmony pairs in order of importance for exploration.
 
 # Acknowledgments {-}
 
-The authors would like to thank the cohort [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for sharing their wisdom and experience in developing R packages, and Dr Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of the smart meter application. The package `gravitas` was built during the [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Spyrison for many useful discussions, sketching figures and feedback on the manuscript. More details about the package can be found at [sayani07.github.io/gravitas](https://sayani07.github.io/gravitas/). This article was created with `knitr` [@knitr2015, @R-knitr] and `rmarkdown` [@rmarkdown2018, @R-rmarkdown]. The Github repository, [github.com/Sayani07/paper-gravitas](https://github.com/Sayani07/paper-gravitas), contains all materials required to reproduce this article and the code is also available online in the supplemental materials.
+Thanks to the [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team) at Monash University for sharing their wisdom and experience in developing R packages, and Dr Peter Toscas [from Data61 CSIRO](https://data61.csiro.au/) for providing useful inputs on improving the analysis of the smart meter application. The package `gravitas` was built during the [Google Summer of Code, 2019](https://summerofcode.withgoogle.com/archive/). We would also like to thank Nicholas Spyrison for many useful discussions, sketching figures and feedback on the manuscript. More details about the package can be found at [sayani07.github.io/gravitas](https://sayani07.github.io/gravitas/). This article was created with `knitr` [@knitr2015, @R-knitr] and `rmarkdown` [@rmarkdown2018, @R-rmarkdown]. The Github repository, [github.com/Sayani07/paper-gravitas](https://github.com/Sayani07/paper-gravitas), contains all materials required to reproduce this article and the code is also available online in the supplemental materials.
 
 # Supplementary Materials
 
 **Data and scripts:** Data sets and R code to reproduce all figures in this article (main.Rmd).
 
+\noindent
 **R-package:** The ideas presented in this article have been implemented in the open-source R [@R-language] package `gravitas` [@R-gravitas], available from CRAN. The R-package facilitates manipulation of single and multiple-order-up time granularities through cyclic calendar algebra, check feasibility of creating plots or drawing inferences for any two cyclic granularities by providing list of harmonies and recommend prospective probability distributions through factors described in the article. Version 0.1.2 of the package was used for the results presented in the article and is available on Github (https://github.com/Sayani07/gravitas).
-
-**R-packages:** Each of the R packages used in this article are available online with URLs provided in the bibliography.
 
 # Bibliography
 
