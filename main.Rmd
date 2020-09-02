@@ -436,40 +436,46 @@ Suppose $C_i$ denotes day-of-year and $C_j$ denotes day-of-week. While any day o
 
 # Visualization {#sec:visualization}
 
-The grammar of graphics introduced a framework to construct statistical graphics by relating data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by @Wickham2009pk, which is an alternate and modified parametrization of the grammar suggests that graphics are made up of distinct layers of grammatical elements. Drawing from the grammar of graphics, if <$C_i$, $C_j$, $v$> serves as the basis of visualizing the distribution of the measured variable, the following layers can be specified:
+The grammar of graphics introduced a framework to construct statistical graphics by relating the data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by @Wickham2009pk gives an alternative and modified parametrization of the grammar, and suggests that graphics are made up of distinct layers of grammatical elements.
 
-- Data: <$C_i$, $C_j$, $v$>
-- Aesthetic mapping (mapping of variables to elements of the plot): $C_i$ mapped to $x$ position and $v$ to $y$ position
-- Statistical transformation (data summarization): any descriptive or smoothing statistics that summarizes distribution of $v$
-- Geometric objects (physical representation of the data): any geometry displaying distribution, for example, boxplot, letter value, violin, ridge or highest density region plots
-- Facet (split plots): $C_j$
+Drawing from the grammar of graphics, we consider visualizing the distribution of the measure variable $v$ conditional on the values of two granularities, $C_i$ and $C_j$. The following layers can be specified:
+
+- Data: <$C_i$, $C_j$, $v$>;
+- Aesthetic mapping (mapping of variables to elements of the plot): $C_i$ mapped to $x$ position and $v$ to $y$ position;
+- Facet (split plots): $C_j$;
+- Statistical transformation (data summarization): any descriptive or smoothing statistics that summarizes the distribution of $v$;
+- Geometric objects (physical representation of the data): any geometry displaying the distribution; for example, boxplot, letter value, violin, ridge or highest density region plots.
 
 ## Choice of statistical transformations and geometric objects
 
-Choice of plots are dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is the one that can display distributions. We will discuss few conventional and recent ways to plot distributions using both Kernel density estimates and descriptive statistics. Descriptive statistics based displays include box plots [@Tukey1977-jx] or different variations of it like notched box plots [@Mcgill1978-hg]. More recent ways are the letter-value box plot [@Hofmann2017-sg] or quantile plots which display quantiles instead of quartiles in a traditional boxplot. Kernel density based plots for displaying a distribution include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots, highest density regions (HDR) box [@Hyndman1996-ft]. Each type of density display has different parameters, that need to be estimated given the data. Each is equipped with some benefits and challenges which should be borne in mind while using them for exploration.
+Plot selection is dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is one that can display distributions using kernel density estimates or descriptive statistics. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@Mcgill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estiatmes include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots, and highest density region (HDR) boxplots [@Hyndman1996-ft]. Each type of density display has parameters that need to be estimated from the data. Each is equipped with some benefits and challenges that should be borne in mind while using them for exploration.
 
-## Facet and aesthetic variables
+## Facet and aesthetic variables {#sec:aesthetics}
 
-### Levels {#sec:levels}
+### Levels {-}
 
-The levels of cyclic granularities has a role to play on the choice of plots since space and resolution might become a problem with too many levels. A potential approach could be to categorize the levels as very high/high/medium/low for each cyclic granularity and define some criteria based on usual cognitive power, display size available and the aesthetic mappings. Default values for these categorizations could be chosen based on levels of common temporal granularities like days of the month, days of the fortnight or days of the week.
+The levels of cyclic granularities affect plotting choices since space and resolution may be problematic with too many levels. A potential approach could be to categorize the number of levels as low/medium/high/very high for each cyclic granularity and define some criteria based on human cognitive power, available display size and the aesthetic mappings. Default values for these categorizations could be chosen based on levels of common temporal granularities like days of the month, days of the fortnight, or days of the week.
 
-### Synergy of cyclic granularities {#sec:vis-interaction}
+### Synergy of cyclic granularities {-}
 
-For data sets of the form ($C_i$, $C_j$, $v$) $\forall i, j \in N_C$, if there are levels of $C_i$ (or $C_j$) not spanned by levels of $C_j$ (or $C_i$), empty sets are formed leading to potential ineffective graphs. The conjecture is that the synergy of these cyclic granularities are thus playing a role while deciding if the resulting plot would be a good candidate for exploratory analysis. Harmonies are pairs of granularities that do not contain empty combinations and could possibly be useful for exploring patterns. However, plotting clashes should be avoided since they might contain combinations which are empty or have too few observations. For illustration, \autoref{fig:allFig} (a) shows the distribution of half-hourly electricity consumption through letter value plot across months of the year faceted by quarters of the year. This plot does not work because every quarter does not correspond to all months of the year, for example, the first quarter of the year would never correspond to the month December of an year.
+The synergy of the two cyclic granularities will affect plotting choices for exploratory analysis. Cyclic granularities that form clashes (Section \@ref(sec:synergy)) or near-clashes lead to potentially ineffective graphs.  Harmonies tend to be more useful for exploring patterns.
 
-```{r allFig, out.width="100%", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
+\autoref{fig:allFig} (a) shows the distribution of half-hourly electricity consumption through letter value plots across months of the year faceted by quarters of the year. This plot does not work because quarter-of-the-year clashes with month-of-the-year, leading to empty subsets. For example, the first quarter never corresponds to December.
+
+```{r allFig, out.width="100%", fig.pos="!htb", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
 ```
 
-(ref:allFig) Distribution of energy consumption displayed through letter value plots. Plot (a) displays consumption across month-of-year faceted by quarters of the year, (b) across weekday/weekend faceted by quarters of the year and (c) across quarters of the year faceted by weekday/weekend. Plots (b) and (c) both show harmonies since each quarter consists of both weekdays and weekends. Conversely, weekend and weekday can occur in every quarter. Analysts should avoid plotting such clashes. Plot (b) helps to compare weekends and weekdays for each quarter. It can be seen that for every quarter weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently, whereas, Plot (c) helps to compare quarters within weekdays and weekends. For example, the quartile spread of consumption shrinks/lowers from first to fourth quarter for weekdays, whereas this pattern is not true for weekends. Plot (a) shows a clash since all quarters do not correspond to all months of the year.
+(ref:allFig) Distribution of energy consumption displayed through letter value plots: (a) across month-of-year faceted by quarter-of-year; (b) across weekday/weekend faceted by quarter-of-year; (c) across quarter-of-year faceted by weekday/weekend. Plot (a) shows a clash since there are empty combinations.  Plots (b) and (c) show harmonies since each quarter includes both weekdays and weekends. It can be seen in (b) that for every quarter (mapped to facet), weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently. Plot (c) switch the granularities mapped to the x-axis and the facets and helps to compare quarters within weekdays and weekends. For example, for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends.
 
-### Interchangeability of mappings
+### Interchangeability of mappings {-}
 
-We will discuss the effect of the mapping of cyclic granularities in this section. When we consider data sets of the form <$C_i$, $C_j$, $v$> with $C_i$ mapped to $x$ position and $C_j$ to facets, then $A_k$'s are placed in close proximity and each $B_\ell$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case $A_k$'s are compared against each other within each group. With the mapping of $C_i$ and $C_j$ reversed, emphasis will shift to different behavior of the variables. \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
+When $C_i$ is mapped to the $x$ position and $C_j$ to facets, then the $A_k$ levels are juxtaposed and each $B_\ell$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case the $A_k$s are compared against each other within each group. With the mapping of $C_i$ and $C_j$ reversed, the emphasis will shift to comparing $B_\ell$ levels rather than $A_k$ levels.
+
+For example, \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
 
 ## Number of observations and statistical transformations
 
-Visualizing distributions can be misleading if statistical transformations are performed on rarely occurring categories (Section&nbsp;\ref{sec:summarize-measured}). Even when there are no rarely occurring events, number of observations might vary hugely within or across each facet. This might happen due to missing observations in the data or uneven locations of events in time domain. In such cases, the statistical transformations should be used with caution as sample sizes would directly affect both the variance and consequently the confidence interval of the estimators.
+Visualizing distributions can be misleading if statistical transformations are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, the statistical transformations should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed.
 
 # Applications {#sec:application}
 
@@ -487,9 +493,9 @@ The tsibble object `smart_meter10` from R package `gravitas` [@R-gravitas] consi
 ```{r search_gran_limit2, echo = FALSE, eval = FALSE}
 ```
 
-### Screening and visualizing harmonies
+### Screening and visualizing harmonies {-}
 
-From the search list, $N_C = 7$ cyclic granularities are chosen for which we would like to derive insights of energy behavior. Recalling the data structure <$C_i$, $C_j$, `general_supply_kwh`> for exploration $\forall i, j \in \{1, 2, \ldots, 7\}$, each of these $7$ cyclic granularities can either be mapped to x-axis or to facet. Choosing $2$ of the possible $7$ granularities, which is equivalent to having $^{7}P_2 = 42$ candidates for visualization. Harmonies can be identified among those $42$ possibilities to narrow the search. \autoref{tab:harmony-tab} shows $16$ harmony pairs after removing clashes and any cyclic granularities with levels more than $31$, as effective exploration becomes difficult with many levels (Section&nbsp;\ref{sec:levels}).
+From the search list, $N_C = 7$ cyclic granularities are chosen for which we would like to derive insights of energy behavior. Recalling the data structure <$C_i$, $C_j$, `general_supply_kwh`> for exploration $\forall i, j \in \{1, 2, \ldots, 7\}$, each of these $7$ cyclic granularities can either be mapped to x-axis or to facet. Choosing $2$ of the possible $7$ granularities, which is equivalent to having $^{7}P_2 = 42$ candidates for visualization. Harmonies can be identified among those $42$ possibilities to narrow the search. \autoref{tab:harmony-tab} shows $16$ harmony pairs after removing clashes and any cyclic granularities with levels more than $31$, as effective exploration becomes difficult with many levels (Section&nbsp;\ref{sec:aesthetics}).
 
 
 ```{r harmony-tab, echo=FALSE}
