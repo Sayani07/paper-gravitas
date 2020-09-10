@@ -97,8 +97,7 @@ This work provides tools for systematically exploring bivariate granularities wi
 
   * provide a formal characterization of cyclic granularities;
   * facilitate manipulation of single- and multiple-order-up time granularities through cyclic calendar algebra;
-  * develop an approach to check the feasibility of creating plots or drawing inferences for any two cyclic granularities;
-  * recommend prospective probability distributions for exploring distributions of a univariate dependent variable across pairs of granularities.
+  * develop an approach to check the feasibility of creating plots or drawing inferences for any two cyclic granularities.
 
 The remainder of the paper is organized as follows: Section&nbsp;\ref{sec:linear-time} provides some background material on linear granularities and calendar algebra for computing different linear granularities. Section&nbsp;\ref{sec:cyclic-gran} formally characterizes different cyclic time granularities by extending the framework of linear time granularities, and introducing cyclic calendar algebra for computing cyclic time granularities. The data structure for exploring the conditional distributions of the associated time series across pairs of cyclic time granularities is discussed in Section&nbsp;\ref{sec:data-structure}. Section&nbsp;\ref{sec:visualization} discusses the role of different factors in constructing an informative and trustworthy visualization. Section&nbsp;\ref{sec:application} examines how systematic exploration can be carried out for a temporal and non-temporal application. Finally, we summarize our results and discuss possible future directions in Section&nbsp;\ref{sec:discussion}.
 
@@ -549,7 +548,7 @@ Thanks to the [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash
 **Data and scripts:** Data sets and R code to reproduce all figures in this article (main.Rmd).
 
 \noindent
-**R-package:** The ideas presented in this article have been implemented in the open-source R [@R-language] package `gravitas` [@R-gravitas], available from CRAN. The R-package facilitates manipulation of single and multiple-order-up time granularities through cyclic calendar algebra, checks feasibility of creating plots or drawing inferences for any two cyclic granularities by providing list of harmonies and recommends prospective probability distributions through factors described in the article. Version 0.1.3 of the package was used for the results presented in the article and is available on Github (https://github.com/Sayani07/gravitas).
+**R-package:** The ideas presented in this article have been implemented in the open-source R [@R-language] package `gravitas` [@R-gravitas], available from CRAN. The R-package facilitates manipulation of single and multiple-order-up time granularities through cyclic calendar algebra, checks feasibility of creating plots or drawing inferences for any two cyclic granularities by providing list of harmonies and recommends possible visual summaries through factors described in the article. Version 0.1.3 of the package was used for the results presented in the article and is available on Github (https://github.com/Sayani07/gravitas).
 
 # Bibliography
 
