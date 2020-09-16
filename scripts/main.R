@@ -332,7 +332,7 @@ cricket_data %>%
   xlab("number of wickets in previous over") +
   ggtitle("b") +
   theme(
-    plot.title = element_text(face = "bold"),
+    plot.title = element_text(hjust = 0),
     axis.ticks = element_blank(),
     legend.background = element_blank(),
     legend.key = element_blank(),
