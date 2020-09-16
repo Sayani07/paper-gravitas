@@ -316,6 +316,7 @@ cricket_data <- cricket_tsibble %>%
   filter(lag_field != 0, lag_dot != 0)
 
 cricket_data$lag_field <- factor(cricket_data$field, levels = c("0", "1+"))
+#cricket_data$over <- factor(cricket_data$over, levels = seq(1:20))
 
 cricket_data %>%
   filter(over != 1) %>%
