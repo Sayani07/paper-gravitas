@@ -447,9 +447,7 @@ Drawing from the grammar of graphics, we consider visualizing the distribution o
 
 ## Data summarization and geometric objects
 
-Plot selection is dictated by the statistical transformations and geometric objects used for the visualization. The basic plot choice for our data structure is one that can display distributions using kernel density estimates or descriptive statistics. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@McGill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots, and highest density region (HDR) boxplots [@Hyndman1996-ft]. Each type of density display has parameters that need to be estimated from the data. Each has its own strengths and weaknesses that should be borne in mind while using them for exploration.
-
-\noindent Visualizing distributions can be uninformative or potentially misleading if data summarization are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed.
+Plot selection is dictated by the choice of data summarization and geometric objects used for the visualization. The basic plot choice for our data structure is one that can display distributions using kernel density estimates or descriptive statistics. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@McGill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots, and highest density region (HDR) boxplots [@Hyndman1996-ft]. Each type of density display has parameters that need to be estimated from the data. Each has its own strengths and weaknesses that should be borne in mind while using them for exploration. Visualizing distributions can be uninformative or potentially misleading if data summarization are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed.
 
 ## Facet and aesthetic variables {#sec:aesthetics}
 
@@ -474,9 +472,6 @@ When $C_i$ is mapped to the $x$ position and $C_j$ to facets, then the $A_k$ lev
 
 For example, \autoref{fig:allFig} (b) shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig} (c) shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig} (b) helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig} (c) helps to compare quarters within weekend and weekday.
 
-## Number of observations and statistical transformations
-
-Visualizing distributions can be misleading if statistical transformations are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, the statistical transformations should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed.
 
 # Applications {#sec:application}
 
@@ -547,7 +542,7 @@ Thanks to the [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash
 
 # Supplementary Materials
 
-**Data and scripts:** Data sets and R code to reproduce all figures in this article (main.Rmd).
+**Data and scripts:** Data sets and R code to reproduce all figures in this article (main.R).
 
 \noindent
 **R-package:** The ideas presented in this article have been implemented in the open-source R [@R-language] package `gravitas` [@R-gravitas], available from CRAN. The R-package facilitates manipulation of single and multiple-order-up time granularities through cyclic calendar algebra, checks feasibility of creating plots or drawing inferences for any two cyclic granularities by providing list of harmonies and recommends possible visual summaries through factors described in the article. Version 0.1.3 of the package was used for the results presented in the article and is available on Github (https://github.com/Sayani07/gravitas).
