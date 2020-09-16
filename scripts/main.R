@@ -296,7 +296,7 @@ cricket_dot_field <- cricket_season %>%
   summarise(
     runs_per_over = sum(total_runs),
     run_rate = sum(total_runs) * 6 / length(total_runs),
-    fielding_wckts = sum(fielding_proxy),
+    wckts = sum(wicket_proxy),
     dot_balls = sum(dot_ball_proxy)
   ) %>%
   mutate(diff_run_rate = c(0, diff(run_rate)))
@@ -308,7 +308,7 @@ cricket_tsibble <- cricket_dot_field %>%
 
 cricket_data <- cricket_tsibble %>%
   mutate(
-    field = if_else(fielding_wckts == 0, "0", "1+"),
+    field = if_else(wckts == 0, "0", "1+"),
     dot = if_else(dot_balls == 0, "no dot balls", ">0 dot balls"),
     lag_field = lag(field),
     lag_dot = lag(dot)
