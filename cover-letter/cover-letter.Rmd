@@ -8,17 +8,16 @@ fromphone: +61 4 2388 9998
 fromsignature: signature.png
 toname: Editor
 toaddress: Journal of Computational and Graphical Statistics
-opening: Dear Dr McCormick
+opening: Dear Dr McCormick,
 closing: Best wishes
 spacing: 1.4
 output: MonashEBSTemplates::letter
 ---
-I am very excited to submit an original research article entitled “ Visualizing probability distributions across bivariate cyclic temporal granularities” by Sayani Gupta, Rob J Hyndman, Dianne Cook, and Antony Unwin for your consideration for publication in the Journal of Computational and Graphical Statistics.
 
-We believe that this manuscript is appropriate for publication by the Journal of Computational and Graphical Statistics because it deals with the interaction of the disintegration of time innovatively by exploiting the hierarchical structure of time and provides direction on systematically exploring periodicities of large amounts of high-frequency time series data. The method is also applicable for non-temporal data, which has a similar nested hierarchical structure as time.
+Please consider my article entitled “Visualizing probability distributions across bivariate cyclic temporal granularities” co-authored by Rob J Hyndman, Dianne Cook, and Antony Unwin for publication in the Journal of Computational and Graphical Statistics.
 
+We believe that this manuscript is appropriate for publication by the Journal of Computational and Graphical Statistics because it makes unique computational and graphical contributions for analyzing temporal data and also non-temporal data with a nested hierarchical structure.
 
-The manuscript is original, and no part has been published before, nor is any part of it under consideration for publication at another journal. The preprint has been uploaded to arXiv and submitted to be added to Monash EBS working papers. 
-
+The manuscript is original, and no part has been published before, nor is any part of it under consideration for publication at another journal. A preprint has been made available at arXiv and submitted to be added to Monash EBS working papers. 
 
 Thank you for your consideration!
