@@ -336,7 +336,7 @@ $C_{B, G}(z)  = z\mod P(B, G)$ as per Equation \eqref{eq:circular-gran}.
 For example, the multiple-order-up granularity $C_{\text{uinal},\text{katun}}$ for the Mayan calendar could be obtained using
 \begin{align*}
 C_{\text{uinal}, \text{baktun}}(z)  &=  C_{\text{uinal}, \text{tun}}(z) + P(\text{uinal}, \text{tun})C_{\text{tun},\text{katun}}(z) + P(\text{uinal},\text{katun})C_{\text{katun}, \text{baktun}}(z) \\
-               &=  \lfloor z/20\rfloor \mod 18 + 18\lfloor 18z/20\rfloor \mod 20
+               &=  \lfloor z/20\rfloor \mod 18 + 18\lfloor 18\times z/20\rfloor \mod 20
                 + 18\times20\lfloor 18\times20\times z/20\rfloor \mod 20.
 \end{align*}
 
