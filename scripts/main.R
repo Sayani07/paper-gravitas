@@ -69,7 +69,10 @@ scene1 <- VIC %>%
   theme(legend.position = "right") +
   ggtitle("") +
   scale_y_log10() +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    #panel.grid.major = element_line(colour = "#E0E0E0"),
+    panel.border = element_rect(colour = "#E0E0E0", fill = NA))
 
 scene2 <- VIC %>%
   prob_plot(
@@ -84,7 +87,10 @@ scene2 <- VIC %>%
   theme(legend.position = "right") +
   ggtitle("") +
   scale_y_log10() +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    #panel.grid.major = element_line(colour = "#E0E0E0"),
+    panel.border = element_rect(colour = "#E0E0E0", fill = NA))
 
 scene3 <- VIC %>%
   prob_plot(
@@ -99,7 +105,10 @@ scene3 <- VIC %>%
   scale_fill_brewer(palette = "Set2") +
   ggtitle("") +
   scale_y_log10() +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    #panel.grid.major = element_line(colour = "#E0E0E0"),
+    panel.border = element_rect(colour = "#E0E0E0", fill = NA))
 
 gg_fig <- ggarrange(
   scene3,
