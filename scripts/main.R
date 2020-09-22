@@ -188,7 +188,9 @@ cust2_quantile <- smart_meter10 %>%
   # ylab("electricity demand [KWh]") +
   xlab("hours of the day") +
   ggtitle("") +
-  theme_minimal()
+  theme_minimal() +
+  theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+  )
 
 cust2_violin <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
@@ -202,7 +204,9 @@ cust2_violin <- smart_meter10 %>%
   xlab("hours of the day") +
   ggtitle("") +
   scale_x_discrete(breaks = seq(0, 23, 5)) +
-  theme_minimal()
+  theme_minimal() +
+  theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+  )
 
 cust2_box <- smart_meter10 %>%
   filter(customer_id %in% c(10017936)) %>%
@@ -217,7 +221,9 @@ cust2_box <- smart_meter10 %>%
   scale_x_discrete(labels = c("wday", "wend")) +
   scale_y_sqrt() +
   theme(axis.text.x = element_text(size = 7)) +
-  theme_minimal()
+  theme_minimal() +
+ theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+)
 
 gg_fig <- ggarrange(
   cust2_box,
@@ -280,7 +286,9 @@ cricket_tsibble %>%
   theme(
     strip.text = element_text(size = 10, margin = margin(b = 0, t = 0))
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+)
 
 cricket_all <- read_csv("data-raw/deliveries_all.csv")
 matches_all <- read_csv("data-raw/matches_all.csv")
