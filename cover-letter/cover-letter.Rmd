@@ -18,6 +18,6 @@ Please consider my article entitled “Visualizing probability distributions acr
 
 We believe that this manuscript is appropriate for publication by the Journal of Computational and Graphical Statistics because it makes unique computational and graphical contributions for analyzing temporal data and also non-temporal data with a nested hierarchical structure.
 
-The manuscript is original, and no part has been published before, nor is any part of it under consideration for publication at another journal. A preprint has been made available at arXiv and submitted to be added to Monash EBS working papers. 
+The manuscript is original. A preprint has been made available at arXiv and Monash EBS working paper series, but no part has been published before, nor is any part of it under consideration for publication at another journal.
 
 Thank you for your consideration!
