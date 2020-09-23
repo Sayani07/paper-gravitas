@@ -12,13 +12,13 @@ library(ggpubr)
 library(kableExtra)
 
 ## ---- linear-time
-include_graphics("Figs/linear-ex.png")
+include_graphics("img/linear-ex.png")
 
 ## ---- circular-dow
-include_graphics("Figs/circular-ex.png")
+include_graphics("img/circular-ex.png")
 
 ## ----aperiodic-example
-include_graphics("Figs/aperiodic-ex3.png")
+include_graphics("img/aperiodic-ex3.png")
 
 ## ----tab-mayan
 table_mayan <- tibble(
