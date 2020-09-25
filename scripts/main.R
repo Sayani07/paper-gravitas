@@ -281,14 +281,13 @@ cricket_tsibble %>%
   theme(legend.position = "right") +
   ggtitle("a") +
   ylab("runs per over") +
-  xlab("overs of the innings") +
-  theme(plot.title = element_text(face = "bold")) +
-  theme(
-    strip.text = element_text(size = 10, margin = margin(b = 0, t = 0))
-  ) +
+  xlab("overs of the innings")  +
   theme_minimal() +
   theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
-)
+) + 
+  theme(plot.title = element_text(face = "bold"),
+        strip.text = element_text(size = 10, margin = margin(b = 0, t = 0))
+  )
 
 cricket_all <- read_csv("data-raw/deliveries_all.csv")
 matches_all <- read_csv("data-raw/matches_all.csv")
@@ -349,7 +348,7 @@ cricket_data %>%
   xlab("number of wickets in previous over") +
   ggtitle("b") +
   theme(
-    plot.title = element_text(hjust = 0),
+    plot.title = element_text(hjust = 0, face = "bold"),
     axis.ticks = element_blank(),
     legend.background = element_blank(),
     legend.key = element_blank(),
