@@ -1,0 +1,42 @@
+---
+title: Response to reviewers
+author: JCGS-20-344
+output:
+  MonashEBSTemplates::memo:
+    includes:
+      in_header: preamble2.tex
+fontfamily: mathpazo
+---
+
+We thank the reviewers for their helpful feedback which has led to many improvements in the paper. The point by point description of changes are below: the reviewers' comments are in red and our response is in black.
+
+This manuscript has undergone an overhaul to address reviewer's comments:
+
+1. 
+2. 
+3. 
+4. 
+
+Along with these major changes, we have done lots of minor tweaks to improve the manuscript.
+
+# Reviewer 1 comments {-}
+
+> comment 1.
+
+response
+
+
+> comment 2
+
+response
+
+> comment 3
+
+response
+
+> comment 4
+
+response
+
+
+
