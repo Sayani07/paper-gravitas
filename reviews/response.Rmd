@@ -1,6 +1,6 @@
 ---
 title: Response to reviewers
-author: JCGS-20-344
+author: "JCGS-20-344"
 output:
   MonashEBSTemplates::memo:
     includes:
@@ -8,16 +8,9 @@ output:
 fontfamily: mathpazo
 ---
 
-We thank the reviewers for their helpful feedback which has led to many improvements in the paper. The point by point description of changes are below: the reviewers' comments are in red and our response is in black.
+We would really like to thank the editor and the reviewers for their encouragement and detailed feedback which has helped to improve the paper in terms of both concision and precision and as well as reaching out to more readers.
+The point by point description of changes are below: the reviewers' comments are in red and our response is in black.
 
-This manuscript has undergone an overhaul to address reviewer's comments:
-
-1. 
-2. 
-3. 
-4. 
-
-Along with these major changes, we have done lots of minor tweaks to improve the manuscript.
 
 # Reviewer 1 comments {-}
 
@@ -30,9 +23,10 @@ response
 
 response
 
-> comment 3
+> I have to confess that I do not know anything about the sport cricket and it may be unthinkable for people from countries where cricket is a national sport, but I really had difficulties to follow the example in Section 6.2. The basic hierarchical concept of over—inning--match--season was understandable, but I think that some parts need to be revisited and clarified for also reaching readers not knowledgeable in cricket. Especially the discussion on the interesting questions raised are a bit difficult to follow without knowing much about cricket. For example some terms should be at least briefly explained or removed if not necessary for the explanation, e.g., Twenty20 format, fielding, bowling, dismissal, wicket. I do know a lot about different sports and also the basic idea and structure in many sports, but cricket was never on my radar. Apologise my ignorance about cricket.
 
-response
+Thanks for the advice. We have added a description of the game cricket in the first paragraph of Section 6.2 so that each new terminology applicable for cricket (and relevant for the following analysis) is highlighted in italics and briefly explained. We believe that this will help the readers not knowledgeable in cricket to also follow the presented analysis.
+
 
 > comment 4
 

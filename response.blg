@@ -1,0 +1,5 @@
+[0] Config.pm:304> INFO - This is Biber 2.12
+[0] Config.pm:307> INFO - Logfile is 'response.blg'
+[39] biber-darwin:315> INFO - === Thu Mar 25, 2021, 10:44:52
+[70] Utils.pm:209> ERROR - Cannot find control file 'response.bcf'! - Did latex run successfully on your .tex file before you ran biber?
+[70] Biber.pm:114> INFO - ERRORS: 1
