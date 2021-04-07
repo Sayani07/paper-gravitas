@@ -146,9 +146,11 @@ A linear granularity $G$ \textbf{groups into} a linear granularity $H$, denoted
 $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) subset $S$ of the integers such that $H(j) = \bigcup_{i \in S}G(i).$
 \end{definition}
 
-\noindent For example, both $day \trianglelefteq week$ and $day \preceq week$ hold, since every granule of $week$ is the union of some set of granules of day and each day is a subset of a $week$. The relationship has period 7.
+\noindent For example, both $day \trianglelefteq week$ and $day \preceq week$ hold, since every granule of $week$ is the union of some set of granules of day and each day is a subset of a $week$.
 
-The relationship $day \trianglelefteq month$ has a more complicated period. If leap years are ignored, each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year. With the inclusion of leap years, the grouping period is 400 years.
+<!-- # talk about period after definition 6 after you have explained period -->
+<!-- The relationship has period 7. -->
+<!-- The relationship $day \trianglelefteq month$ has a more complicated period. If leap years are ignored, each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year. With the inclusion of leap years, the grouping period is 400 years. -->
 
 \begin{definition}\label{def:periodical}
 A granularity $G$ is \textbf{periodical} with respect to a granularity $H$ if:
@@ -156,7 +158,10 @@ A granularity $G$ is \textbf{periodical} with respect to a granularity $H$ if:
 (2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
 
-For example, day is periodical with respect to week with $R=1$ and $P=7$, while (if we ignore leap years) day is periodical with respect to month with $R=12$ and $P=365$.
+If $G$ groups into $H$, it would imply that any granule $H(i)$ is the union of some granules of $G$, for example, $G(a_1), G(a_2), \dots, G(a_k)$. Condition (2) in Definition \ref{def:periodical} implies that if $H(i + R) \neq \emptyset$, then $H(i + R) = \bigcup (G(a_1 + P), G(a_2 + P), \dots, G(a_k + P))$, resulting in a "periodic" pattern of the composition of $H$ using granules of $G$. In this pattern, each granule of $H$ is shifted by $P$ granules of $G$. $P$ is called the \textbf{Period} (@Bettini2000-qk).
+
+For example, day is periodical with respect to week with $R=1$ and $P=7$, while (if we ignore leap years) day is periodical with respect to month with $R=12$ and $P=365$ as any month would consist of same number of days across years.
+Since the idea of period involves a pair of granularities, we say that the pair $(day, week)$ has period 7, while the pair $(day, month)$ has a period 365 (ignoring leap years). 
 
 Granularities can also be periodical with respect to other granularities, except for a finite number of periods where they behave in an anomalous way; these are called **quasi-periodic** relationships [@Bettini2000-vy]. In a Gregorian calendar with leap years, day groups quasi-periodically into month with the exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
 
