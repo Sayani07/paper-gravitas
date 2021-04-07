@@ -39,3 +39,11 @@ response
 > What is the definition of "period"? Is the period defined on the grouping or on the granularity?Is the period denoted by P or (R, P) in Definition 6? From Pages 6 Line 55 to Page 7 Line 7, period was referred to an integer (7), and two time granularities (one year and 400 years). Are they consistent?
 
 Period is defined for a pair of granularities $(G, H)$. In Definition 6, the period is defined by $P$, which is briefly defined while explaining Definition 6. Thanks for pointing out the inconsistencies. We have now made it consistent.
+
+> What is the definition of "grouping"? Though "G groups into H" was defined in Definition 5, there is not a notation of grouping $(G, H)$ until we see grouping $(day, month)$ at
+Page 7 Line 7. Please rephrase the sentence each month is a grouping of the same number of days over years on Page 7 Line 5.
+
+We have used the term "pair" instead "grouping" to avoid conflict with the definition of "groups into" and rephrased the sentence.
+
+> What is the definition of aperiodic linear granularities? On Page 11, Definition 10, $M_i$ are aperiodic linear granularities. If $M_i$ are aperiodic, then is $M$ also an aperiodic linear granularity? What is the relationship between aperiodic linear granularity and aperiodic
+cyclic granularity?
