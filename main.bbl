@@ -155,10 +155,6 @@ Wilke, C.~O.  \harvardyearleft 2020\harvardyearright , {\em ggridges: Ridgeline
 \newblock R package version 0.5.2.
 \newline\harvardurl{https://CRAN.R-project.org/package=ggridges}
 
-\harvarditem{Wilkinson}{1999}{Wilkinson1999-nk}
-Wilkinson, L.  \harvardyearleft 1999\harvardyearright , {\em The Grammar of
-  Graphics}, Springer, New York.
-
 \harvarditem{Xie}{2015}{knitr2015}
 Xie, Y.  \harvardyearleft 2015\harvardyearright , {\em Dynamic Documents with
   {R} and knitr}, 2nd edn, Chapman and Hall/CRC, Boca Raton, Florida.

@@ -441,21 +441,23 @@ Suppose $C_i$ denotes day-of-year and $C_j$ denotes day-of-week. While any day o
 
 # Visualization {#sec:visualization}
 
-The grammar of graphics introduced a framework to construct statistical graphics by relating the data space to the graphic space [@Wilkinson1999-nk]. The layered grammar of graphics proposed by @Wickham2009pk gives an alternative and modified parametrization of the grammar, and suggests that graphics are made up of distinct layers of grammatical elements.
+We consider visualizing the distribution of the continuous variable ($v$) conditional on the values of two granularities , $C_i$ and $C_j$. Since $C_i$ and $C_j$ are factors or categorical variables, data subsets corresponding to each combination of their levels form a subgroup and the visualization amounts to having displays of distributions for different subgroups. A potential way to have such a display is to plot the response variable $(v)$ on the y-axis and the levels of $C_i (C_j)$ on the x-axis, conditional on the levels of $C_j (C_i)$. This means, carrying out the same plot corresponding to each level of the conditioning variable.
 
-Drawing from the grammar of graphics, we consider visualizing the distribution of the measured variable $v$ conditional on the values of two granularities, $C_i$ and $C_j$. The following layers can be specified:
+<!-- When a data is made up of different groups, it is often informative to compare the distribution of the variables across the groups. -->
 
-- Data: <$C_i$, $C_j$, $v$>;
-- Aesthetic mapping (mapping of variables to elements of the plot): $C_i$ mapped to $x$ position and $v$ to $y$ position;
-- Facet (split plots): $C_j$;
-- Data summarization: any descriptive or smoothing statistics that summarizes the distribution of $v$;
-- Geometric objects (physical representation of the data): any geometry displaying the distribution; for example, boxplot, letter value, violin, ridge or highest density region plots.
 
-## Data summarization and geometric objects
+## Plot options 
 
-Plot selection is dictated by the choice of data summarization and geometric objects used for the visualization. The basic plot choice for our data structure is one that can display distributions using kernel density estimates or descriptive statistics. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@McGill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) boxplots [@Hyndman1996-ft]. Each type of density display has parameters that need to be estimated from the data. Each has its own strengths and weaknesses that should be borne in mind while using them for exploration. Visualizing distributions can be uninformative or potentially misleading if data summarization are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed.
+Plotting each point for each combination through dot plots or rug plots is not useful for our data structure since that leads to a blob of points for each subgroup. Further, they are anyway a poor choice for large datasets. Hence, the basic plot choice for our data structure is one that can display distributions. For displaying the distribution of continuous data graphically, many options are available. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@McGill1978-hg], letter-value plots [@Hofmann2017-sg] or quantile plots. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) boxplots [@Hyndman1996-ft]. One of the best approaches in exploratory data analysis is to draw a variety of plots to reveal information while keeping in mind the drawbacks and benefits of each of the plot choices. For example, boxplots obscure multimodality, and interpretation of density estimates and histograms may change depending on the bandwidth and bin widths respectively.
 
-## Facet and aesthetic variables {#sec:aesthetics}
+## Data summarization
+
+Each plot option has parameters that need to be estimated or summarized from the data.
+For example, for histogram, empirical distribution is estimated, for boxplot or its variation, number summaries are computed, for violin or any density-based plots, the density of the variable's distribution needs to be estimated. This data estimation or summarization could be potentially misleading if they are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed. 
+
+## Comparisons by sub-groups
+
+<!-- While it is often beneficial to compare distributions in this way, there are some caveats that we should be kept in mind while exploring these displays, subject to our data structure as follows: -->
 
 ### Levels {-}
 
@@ -463,20 +465,16 @@ The levels of cyclic granularities affect plotting choices since space and resol
 
 ### Synergy of cyclic granularities {-}
 
-The synergy of the two cyclic granularities will affect plotting choices for exploratory analysis. Cyclic granularities that form clashes (Section \@ref(sec:synergy)) or near-clashes lead to potentially ineffective graphs. Harmonies tend to be more useful for exploring patterns.
-
-\autoref{fig:allFig}a shows the distribution of half-hourly electricity consumption through letter value plots across months of the year faceted by quarters of the year. This plot does not work because quarter-of-the-year clashes with month-of-the-year, leading to empty subsets. For example, the first quarter never corresponds to December.
+The synergy of the two cyclic granularities will affect plotting choices for exploratory analysis. Cyclic granularities that form clashes (Section \@ref(sec:synergy)) or near-clashes lead to potentially ineffective graphs. Harmonies tend to be more useful for exploring patterns. \autoref{fig:allFig}a shows the distribution of half-hourly electricity consumption through letter value plots across months of the year faceted by quarters of the year. This plot does not work because quarter-of-the-year clashes with month-of-the-year, leading to empty subsets. For example, the first quarter never corresponds to December.
 
 ```{r allFig, fig.pos="!htb", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
 ```
 
 (ref:allFig) Distribution of energy consumption displayed through letter value plots: plot a across month-of-year faceted by quarter-of-year; plot b across weekday/weekend faceted by quarter-of-year; plot c across quarter-of-year faceted by weekday/weekend. Plot a shows a clash since there are empty combinations. Plots b and c show harmonies since each quarter includes both weekdays and weekends. It can be seen in plot b that for every quarter (mapped to facet), weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently. This is probably because of lower temperatures in the second quarter compared to the first quarter (summer in Australia). Plot c switches the granularities mapped to the x-axis and the facets and helps to compare quarters within weekdays and weekends. For example, for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends.
 
-### Interchangeability of mappings {-}
+### Conditioning variable {-}
 
-When $C_i$ is mapped to the $x$ position and $C_j$ to facets, then the $A_k$ levels are juxtaposed and each $B_\ell$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case the $A_k$s are compared against each other within each group. With the mapping of $C_i$ and $C_j$ reversed, the emphasis will shift to comparing $B_\ell$ levels rather than $A_k$ levels.
-
-For example, \autoref{fig:allFig}b shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig}c shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig}b helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig}c helps to compare quarters within weekend and weekday.
+When $C_i$ is mapped to the $x$ position and $C_j$ to facets, then the $A_k$ levels are juxtaposed and each $B_\ell$ represent a group/facet. Gestalt theory suggests that when items are placed in close proximity, people assume that they are in the same group because they are close to one another and apart from other groups. Hence, in this case the $A_k$s are compared against each other within each group. With the mapping of $C_i$ and $C_j$ reversed, the emphasis will shift to comparing $B_\ell$ levels rather than $A_k$ levels. For example, \autoref{fig:allFig}b shows the letter value plot across weekday/weekend faceted by quarters of the year and \autoref{fig:allFig}c shows the same two cyclic granularities with their mapping reversed. \autoref{fig:allFig}b helps us to compare weekday and weekend within each quarter and \autoref{fig:allFig}c helps to compare quarters within weekend and weekday.
 
 
 # Applications {#sec:application}
