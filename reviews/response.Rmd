@@ -9,41 +9,78 @@ fontfamily: mathpazo
 ---
 
 We would really like to thank the editor and the reviewers for their encouragement and detailed feedback which has helped to improve the paper in terms of both concision and precision as well as reaching out to more readers.
-The point by point description of changes are below: the reviewers' comments are in red and our response is in black.
+The point by point description of changes are below:
 
 
 # Reviewer 1 comments {-}
 
-> I am not convinced that it is required to introduce the concept of grammar of graphics and embed the used visualization in this framework on such a level of detail like in Section 5. Of course some elements of the grammar of graphics are used in Section 5.2 to argue about facets, levels, aesthetic variables, and mappings, but if the reader does not know about this framework, the introduction and explanations about this concept/framework provided in Section 5 is not enough to follow the later argumentation. I would like to see some more details on the concept/framework on the grammar of graphics, or not using the concepts in the parts of Section 5.2 and paraphrasing it without using the terms from the grammar of graphics. I think that it is doable to explain the construction of the visualization without using this concept/framework, because the mappings are quite straight forward. I would like to see (a) either extend the introduction to grammar of graphics and the basics needed to argue in more detail about the embedding of your visualisations using this concept/framework, or (b) remove it.
+Q1. I am not convinced that it is required to introduce the concept of grammar of graphics and embed the used visualization in this framework on such a level of detail like in Section 5. Of course some elements of the grammar of graphics are used in Section 5.2 to argue about facets, levels, aesthetic variables, and mappings, but if the reader does not know about this framework, the introduction and explanations about this concept/framework provided in Section 5 is not enough to follow the later argumentation. I would like to see some more details on the concept/framework on the grammar of graphics, or not using the concepts in the parts of Section 5.2 and paraphrasing it without using the terms from the grammar of graphics. I think that it is doable to explain the construction of the visualization without using this concept/framework, because the mappings are quite straight forward. I would like to see (a) either extend the introduction to grammar of graphics and the basics needed to argue in more detail about the embedding of your visualisations using this concept/framework, or (b) remove it.
 
-response
+A1. removed.
 
+Q2. It is not clear from the paragraph in Section 5.1 what basic plot choices are implemented and used and supported for visualisation. There is only the list of plots to display descriptive statistics provided. It would be important to describe which are implemented and possible to use. The later examples use primarily letter-value plots, then also box-plots, violin plots and line charts with area quantile plots. The letter-value plots are used in major examples of the paper, therefore I would argue to provide some more details on this visual representation and what the 5 colours and letters mean (e.g. LV=letter value, M = median, F = fourths, E = eighths, D = sixteenths, C = thirty-seconds), as it is not as widely known like standard box-plots. This would help greatly in better following the argumentation and explanations.
 
-> comment 2
+A2. added in Section 5.1
 
-response
+Q3. I have to confess that I do not know anything about the sport cricket and it may be unthinkable for people from countries where cricket is a national sport, but I really had difficulties to follow the example in Section 6.2. The basic hierarchical concept of over—inning--match--season was understandable, but I think that some parts need to be revisited and clarified for also reaching readers not knowledgeable in cricket. Especially the discussion on the interesting questions raised are a bit difficult to follow without knowing much about cricket. For example some terms should be at least briefly explained or removed if not necessary for the explanation, e.g., Twenty20 format, fielding, bowling, dismissal, wicket. I do know a lot about different sports and also the basic idea and structure in many sports, but cricket was never on my radar. Apologise my ignorance about cricket.
 
-> I have to confess that I do not know anything about the sport cricket and it may be unthinkable for people from countries where cricket is a national sport, but I really had difficulties to follow the example in Section 6.2. The basic hierarchical concept of over—inning--match--season was understandable, but I think that some parts need to be revisited and clarified for also reaching readers not knowledgeable in cricket. Especially the discussion on the interesting questions raised are a bit difficult to follow without knowing much about cricket. For example some terms should be at least briefly explained or removed if not necessary for the explanation, e.g., Twenty20 format, fielding, bowling, dismissal, wicket. I do know a lot about different sports and also the basic idea and structure in many sports, but cricket was never on my radar. Apologise my ignorance about cricket.
-
-Thanks for the advice. We have added a description of the game cricket in the first paragraph of Section 6.2 so that each new terminology applicable for cricket (and relevant for the following analysis) is highlighted in italics and briefly explained. We believe that this will help the readers not knowledgeable in cricket to also follow the presented analysis.
-
-
-> comment 4
-
-response
+A3. Thanks for the advice. We have added a description of the game cricket in the first paragraph of Section 6.2 so that each new terminology applicable for cricket (and relevant for the following analysis) is highlighted in italics and briefly explained. We believe that this will help the readers not knowledgeable in cricket to also follow the presented analysis.
 
 
-# Reviewer 2 comments {-}
+# Reviewer 2 comments
 
+## Notation/Definition clarification
 
-> What is the definition of "period"? Is the period defined on the grouping or on the granularity?Is the period denoted by P or (R, P) in Definition 6? From Pages 6 Line 55 to Page 7 Line 7, period was referred to an integer (7), and two time granularities (one year and 400 years). Are they consistent?
+Q1.What is the definition of "period"? Is the period defined on the grouping or on the granularity?Is the period denoted by P or (R, P) in Definition 6? From Pages 6 Line 55 to Page 7 Line 7, period was referred to an integer (7), and two time granularities (one year and 400 years). Are they consistent?
 
-Period is defined for a pair of granularities $(G, H)$. In Definition 6, the period is defined by $P$, which is briefly defined while explaining Definition 6. Thanks for pointing out the inconsistencies. We have now made it consistent.
+A1. Period is defined for a pair of granularities $(G, H)$. In Definition 6, the period is defined by $P$, which is briefly defined while explaining Definition 6. Thanks for pointing out the inconsistencies. We have now made it consistent.
 
-> What is the definition of "grouping"? Though "G groups into H" was defined in Definition 5, there is not a notation of grouping $(G, H)$ until we see grouping $(day, month)$ at
+Q2. What is the definition of "grouping"? Though "G groups into H" was defined in Definition 5, there is not a notation of grouping $(G, H)$ until we see grouping $(day, month)$ at
 Page 7 Line 7. Please rephrase the sentence each month is a grouping of the same number of days over years on Page 7 Line 5.
 
-We have used the term "pair" instead "grouping" to avoid conflict with the definition of "groups into" and rephrased the sentence.
+A2. We have used the term "pair" instead "grouping" to avoid conflict with the definition of "groups into" and rephrased the sentence.
 
-> What is the definition of aperiodic linear granularities? On Page 11, Definition 10, $M_i$ are aperiodic linear granularities. If $M_i$ are aperiodic, then is $M$ also an aperiodic linear granularity? What is the relationship between aperiodic linear granularity and aperiodic
+Q3. What is the definition of aperiodic linear granularities? On Page 11, Definition 10, $M_i$ are aperiodic linear granularities. If $M_i$ are aperiodic, then is $M$ also an aperiodic linear granularity? What is the relationship between aperiodic linear granularity and aperiodic
 cyclic granularity?
+
+A3. 
+
+Q4. $w$ in $T_w$ is not well defined for circular granularities in Section 3.2 & 3.5. The definition of $T_w$ uses $T_w$  itself in the formula making it hard to understand. Relevantly, what is the interpretation of $k$ where w = 0; 1; :::; k-1? In my opinion, the number of cycles
+should be defined for cyclic granularities, for example, $w_{B,G}(z) = \lfloor z/P(B;G) \rfloor$, which
+represent the cycle that the granule is in.
+
+A4. 
+
+## Places that need clarification
+
+
+
+## Other questions of interest.
+
+Q1. Page 6, Definition 5, should S be a contiguous set of integers or not necessary?
+
+A1. Not necessary. 
+<!-- Consider an example, where $B$ is the bottom granularity denoting day, $G$ denotes every alternate business days (Monday, Wednesday and Friday) and $H$ denotes weeks. Here, $G \trianglelefteq H$. -->
+
+Q2. Page 6, what is the difference between finer than and group into in Definitions 4 and 5? On Page 7, Line 34, they are used as alternative choices. Can you give an example
+that $G \preceq H$ does not imply $G  \trianglelefteq H$, or vice versa? "finer than" is not used a lot in this paper. If the two concepts are similar, why not pick one of them?
+
+
+A2. If $G \trianglelefteq H$, then every granule of $H$ can be expressed as an union of some set of granules in $G$. If $G \preceq H$, then every granule of $G$ is a subset of some granule of $H$. These are not equivalent.
+Consider an example, where $G_1$ denotes "weekend" and $H_1$ denotes "week". Then, $G_1 \preceq H_1$, but $G_1 \ntrianglelefteq H_1$. Consider another example, with $G_2$ denotes "days" and $H_2$ denotes "business-week". Then, $G_2 \npreceq H_2$, but $G_2 \ntrianglelefteq H_2$, since each business-week can be expressed as an union of some days, but Saturdays and Sundays are not subset of any business-week.
+Further, consider an example with  $H_3$ denoting "public holidays", then $G \npreceq H_3$ and $G \ntrianglelefteq H_3$.    
+
+
+Q3. Page 16, Line 13, multiple order-up quasi-circular granularities. The equations for this
+operation are not trivial to be ignored. Should be added if possible.
+
+A3. 
+
+Q4. Can the time granularity concept be extended to continuous time domain?
+
+A4. Linear granularities are defined for continuous time domain. For continuous time domains, the dependent variable is specified for every value of time $t$, whereas, in applications we generally have the values of the dependent variable for discrete time intervals. Hence, we will restrict ourselves to explore only discrete time domain. 
+
+## Other minor issues.
+
+corrected.
+  
