@@ -441,21 +441,30 @@ Suppose $C_i$ denotes day-of-year and $C_j$ denotes day-of-week. While any day o
 
 # Visualization {#sec:visualization}
 
-We consider visualizing the distribution of the continuous variable ($v$) conditional on the values of two granularities , $C_i$ and $C_j$. Since $C_i$ and $C_j$ are factors or categorical variables, data subsets corresponding to each combination of their levels form a subgroup and the visualization amounts to having displays of distributions for different subgroups. A potential way to have such a display is to plot the response variable $(v)$ on the y-axis and the levels of $C_i (C_j)$ on the x-axis, conditional on the levels of $C_j (C_i)$. This means, carrying out the same plot corresponding to each level of the conditioning variable.
+The purpose is to visualize the distribution of the continuous variable ($v$) conditional on the values of two granularities , $C_i$ and $C_j$. Since $C_i$ and $C_j$ are factors or categorical variables, data subsets corresponding to each combination of their levels form a subgroup and the visualization amounts to having displays of distributions for different subgroups. The response variable $(v)$ is plotted on the y-axis and the levels of $C_i (C_j)$ on the x-axis, conditional on the levels of $C_j (C_i)$. This means, carrying out the same plot corresponding to each level of the conditioning variable. This is consistent with the widely used grammar of graphics
+which is a framework to construct statistical graphics by relating the data space to the graphic space [@Wilkinson1999-nk, @Wickham2009pk].  
+
 
 <!-- When a data is made up of different groups, it is often informative to compare the distribution of the variables across the groups. -->
 
-
-## Plot options 
-
-Plotting each point for each combination through dot plots or rug plots is not useful for our data structure since that leads to a blob of points for each subgroup. Further, they are anyway a poor choice for large datasets. Hence, the basic plot choice for our data structure is one that can display distributions. For displaying the distribution of continuous data graphically, many options are available. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@McGill1978-hg] or quantile plots. Letter-Value plots [@Hofmann2017-sg] are an useful advancement to boxplots that defines boxes recursively to visualize the different partitions of a dataset. Letter values are order statistics with specific depths. The median ($M$) divides the data set into half halves. Each of the next steps splits the remaining parts into two separate regions so that the fourths ($F$), eighths ($E$), sixteenths ($D$) etc. are obtained. They are useful for displaying the distribution of the data beyond the quantiles specially for large data, when boxplots could hide the interesting patterns at the tails of the dataset by tagging them as outliers. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) boxplots [@Hyndman1996-ft]. One of the best approaches in exploratory data analysis is to draw a variety of plots to reveal information while keeping in mind the drawbacks and benefits of each of the plot choices. For example, boxplots obscure multimodality, and interpretation of density estimates and histograms may change depending on the bandwidth and bin widths respectively.
-
 ## Data summarization
 
-Each plot option has parameters that need to be estimated or summarized from the data.
-For example, for histogram, empirical distribution is estimated, for boxplot or its variation, number summaries are computed, for violin or any density-based plots, the density of the variable's distribution needs to be estimated. This data estimation or summarization could be potentially misleading if they are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed. 
+There are several ways to summarize a distribution like estimating empirical distribution or density of the variable's distribution, computing few number summaries or quantiles. This data estimation or summarization could be potentially misleading if they are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed. 
 
-## Comparisons by sub-groups
+<!-- Each plot option has parameters that need to be estimated or summarized from the data. -->
+<!-- For example, for histogram, empirical distribution is estimated, for boxplot or its variation, number summaries are computed, for violin or any density-based plots, the density of the variable's distribution needs to be estimated. -->
+
+
+## Display choices for univariate distributions
+
+<!-- Plotting each point for each combination through dot plots or rug plots is not useful for our data structure since that leads to a blob of points for each subgroup. Further, they are anyway a poor choice for large datasets. Hence, -->
+
+The basic plot choice for our data structure is one that can display distributions. For displaying the distribution of continuous univariate variable graphically, many options are available. Displays based on descriptive statistics include variations of box plots [@Tukey1977-jx] such as notched box plots [@McGill1978-hg] or quantile plots. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) boxplots [@Hyndman1996-ft]. The less commonly used Letter-Value plots [@Hofmann2017-sg] is a midway between boxplots and density plots. Letter values are order statistics with specific depths. The median ($M$) divides the data set into halves. Each of the next steps splits the remaining parts into two separate regions so that the fourths ($F$), eighths ($E$), sixteenths ($D$) etc. are obtained. They display the distributions beyond the quantiles specially for large data,
+where boxplots mislabel data points as outliers.
+One of the best approaches in exploratory data analysis is to draw a variety of plots to reveal information while keeping in mind the drawbacks and benefits of each of the plot choices. For example, boxplots obscure multimodality, and interpretation of density estimates and histograms may change depending on the bandwidth and bin widths respectively.
+
+
+## Comparison across sub-groups induced by conditioning
 
 <!-- While it is often beneficial to compare distributions in this way, there are some caveats that we should be kept in mind while exploring these displays, subject to our data structure as follows: -->
 
