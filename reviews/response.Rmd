@@ -66,8 +66,7 @@ A2. "Number of periods" rephrased as "spans of time". Bettini & De Sibi (2000) s
 
 Q3. Page 8, Definition 8, what is the "period" P(B,G)? Is it same as P in Definition 6? Is it a mapping or function?
 
-It is the same but stressed to make it clear that the period will be a "function" of two granularities $B$ and $G$. 
-
+A3. It is the same but stressed to make it clear that the period will be a "function" of two granularities $B$ and $G$. 
 
 
 Q4. Page 10, Line 14, Q4 week-of-month is probably not a good example for quasi-circular granularities. By Definition 4, week cannot be grouped into month, because there could exist $week(i) \subset month(j)$ when the $i^{th}$ week crosses two months. Similarly, week is not finer than month by Definition 5. Since periodicity is defined on top of grouping, and circular is defined on top of periodicity, the scenario of Q4 cannot be defined. On the other hand, the period length for week-of-month is not an integer, but it is an integer for Q1 - Q3.
@@ -81,11 +80,22 @@ A5. R' is the number of granules of G' in the period P. For example, the groupin
 
 Q6.  Page 11, Definition 10, what is the interpretation of n where i = 1, ..., n?
 
-n is the number of Aperiodic linear granularities.
+A6. n is the number of Aperiodic linear granularities.
 
 Q7. Page 14, Lines 26-27. Is z the original index for the bottom granularity? If yes, why $C_{katun, baktun}(z) = \lfloor 18 × 20 × z/20 \rfloor mod 20$? Shouldn't it be $z mod 20$? If not, then what is $z$? By Definition 8, $z \in Z$ is the original time index based on the bottom granularity, but here $z$ seems to be defined as the time index based on granularity katun.
  
-A7. $z$ is the original index for the bottom granularity $kin$. So, $C_{kin, uinal}(z) = z mod 20$. For $C_{katun,baktun}(z)$, we first need to have katun in terms of kin through the operation $18*20*z/20$
+A7. $z$ is the original index for the bottom granularity $kin$. So, $C_{kin, uinal}(z) = z mod 20$. 
+
+For $C_{katun,baktun}(z)$, we first need to have katun in terms of kin through the operation $18*20*z/20$
+
+The following formula which expresses any circular granularity relating two linear granularities is utilized to come up with the equations:
+$$
+  C_{G, H}(z) = \lfloor z/P(B,G) \rfloor\mod P(G,H),
+$$
+$C_{katun,baktun}(z) = \lfloor z/P(kin,katun) \rfloor\mod P(katun,baktun)$
+
+$C_{katun,baktun}(z) = \lfloor z/(20*18*20) \rfloor\mod 20$
+and so on.
 
 
 Q8.  Page 11, lines 22-33. The explanation of Figure 3 is confusing. If the week-of-the- semester week type is a quasi-circular granularity, then the day-of-the-semester week type can be also quasi-circular granularity, as all days are nested in weeks. Actually the notation should not be "week-of-the-semester week type", but "semester week-of-the- semester week type". The relationship between G and H should be clarified. It will be clearer if the authors can make a granularity "semester day" (U) from B. Therefore we have the following granularities.
@@ -93,10 +103,11 @@ Q8.  Page 11, lines 22-33. The explanation of Figure 3 is confusing. If the week
 semester week -of-the-semester week type
 *$Q_{U,M}$ : quasi-circular granularity, semester day-of-the-semester week type.
 
+A8. done (to be)
 
-Page 20, Line 47, "for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends" is hard to be justified. By Figure the IQR is given by the height of blue (LV=F) boxes. They are the largest in Quarter 2 and smallest in Quarter 4 for both weekdays and weekends.
+Q9. Page 20, Line 47, "for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends" is hard to be justified. By Figure the IQR is given by the height of blue (LV=F) boxes. They are the largest in Quarter 2 and smallest in Quarter 4 for both weekdays and weekends.
 
-rephrased.
+A9. rephrased.
 
 ## Other questions of interest.
 
@@ -125,5 +136,5 @@ A4. Linear granularities are defined for continuous time domain. For continuous 
 
 ## Other minor issues.
 
-corrected.
+done.
   
