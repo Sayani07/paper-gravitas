@@ -49,7 +49,10 @@ Q4. $w$ in $T_w$ is not well defined for circular granularities in Section 3.2 &
 should be defined for cyclic granularities, for example, $w_{B,G}(z) = \lfloor z/P(B;G) \rfloor$, which
 represent the cycle that the granule is in.
 
-A4. 
+A4. R' is the number of granules of $G'$ in each cycle.
+If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one cycle, we can find the composition of any granule of $G'$ beyond a cycle since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition 9.
+
+
 
 ## Places that need clarification
 
