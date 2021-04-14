@@ -43,7 +43,8 @@ A2. We have used the term "pair" instead "grouping" to avoid conflict with the d
 Q3. What is the definition of aperiodic linear granularities? On Page 11, Definition 10, $M_i$ are aperiodic linear granularities. If $M_i$ are aperiodic, then is $M$ also an aperiodic linear granularity? What is the relationship between aperiodic linear granularity and aperiodic
 cyclic granularity?
 
-A3. 
+A3. Aperiodic linear granularities are those that can not be defined by Definition 6. If $M_i$ is periodic, then $M = \bigcup M_i$ is periodic, but if each $M_i$'s are aperiodic, then $M$ could be periodic or aperiodic. In Definition 10, we want $M$ to be aperiodic. Definition 10 and introduction of Section 3.3 briefly rephrased to improve clarity.
+
 
 Q4. $w$ in $T_w$ is not well defined for circular granularities in Section 3.2 & 3.5. The definition of $T_w$ uses $T_w$  itself in the formula making it hard to understand. Relevantly, what is the interpretation of $k$ where w = 0; 1; :::; k-1? In my opinion, the number of cycles
 should be defined for cyclic granularities, for example, $w_{B,G}(z) = \lfloor z/P(B;G) \rfloor$, which
