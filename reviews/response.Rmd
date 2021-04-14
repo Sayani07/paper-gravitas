@@ -4,7 +4,6 @@ author: "JCGS-20-344"
 output:
   MonashEBSTemplates::memo:
     includes:
-      in_header: preamble2.tex
 fontfamily: mathpazo
 ---
 
@@ -54,7 +53,47 @@ A4.
 
 ## Places that need clarification
 
+Q1. Page 7, Definition 6. Is "the number of granules of H" finite or infinite? If each granule $G(i)$ has the index $i \in Z_{>=0}$, then the phrase is similar as "the number of non-negative integers."
 
+A1. Number of granules of $H$ should be finite. Question
+
+Q2. Page 7, Lines 19-20. It is claimed that quasi-periodic relationship has a finite number of periods where granularities behave in an anomalous way. What does the finite number of periods mean and why is it finite? Does it mean a finite number of granularity groupings? Does it mean a finite number of irregular cycles? By Definition 4 of Bettini & De Sibi (2000), $E_1, . . . , E_z$ are the granularity exceptions, but the number of granularity exceptions does not have to be finite.
+
+A2. "Number of periods" rephrased as "spans of time". Bettini & De Sibi (2000) states in P57 L17 while introducing quasi-periodic relationships that " except for a finite number of spans of time where they behave in an anomalous way."
+
+Q3. Page 8, Definition 8, what is the "period" P(B,G)? Is it same as P in Definition 6? Is it a mapping or function?
+
+It is the same but stressed to make it clear that the period will be a "function" of two granularities $B$ and $G$. 
+
+
+
+Q4. Page 10, Line 14, Q4 week-of-month is probably not a good example for quasi-circular granularities. By Definition 4, week cannot be grouped into month, because there could exist $week(i) \subset month(j)$ when the $i^{th}$ week crosses two months. Similarly, week is not finer than month by Definition 5. Since periodicity is defined on top of grouping, and circular is defined on top of periodicity, the scenario of Q4 cannot be defined. On the other hand, the period length for week-of-month is not an integer, but it is an integer for Q1 - Q3.
+
+A4. That's right. Alternatively, if we define the linear granularity week such that a week ends when a month ends, then week groups into months in a quasi-periodic way where the period length of week-of-month would be either 4 or 5, since any month could only be composed of either 4 or 5 weeks. week-of-month is a cyclic granularity that could be important for certain contexts and hence it makes sense
+to define weeks like that. The first, second, third week-of-month corresponds to first, second, third quarter of the month and so on.
+
+Q5.  Page 10, Definition 9, is R' similar as the period P of the grouping (B,G')? Is R' a constant or variable with irregular mapping?
+
+A5. R' is the number of granules of G' in the period P. For example, the grouping (day, month) has period 365 (ignoring leap years), then R = 12, since there are 12 months in 365 days. Given a period, R' is constant.
+
+Q6.  Page 11, Definition 10, what is the interpretation of n where i = 1, ..., n?
+
+n is the number of Aperiodic linear granularities.
+
+Q7. Page 14, Lines 26-27. Is z the original index for the bottom granularity? If yes, why $C_{katun, baktun}(z) = \lfloor 18 × 20 × z/20 \rfloor mod 20$? Shouldn't it be $z mod 20$? If not, then what is $z$? By Definition 8, $z \in Z$ is the original time index based on the bottom granularity, but here $z$ seems to be defined as the time index based on granularity katun.
+ 
+A7. $z$ is the original index for the bottom granularity $kin$. So, $C_{kin, uinal}(z) = z mod 20$. For $C_{katun,baktun}(z)$, we first need to have katun in terms of kin through the operation $18*20*z/20$
+
+
+Q8.  Page 11, lines 22-33. The explanation of Figure 3 is confusing. If the week-of-the- semester week type is a quasi-circular granularity, then the day-of-the-semester week type can be also quasi-circular granularity, as all days are nested in weeks. Actually the notation should not be "week-of-the-semester week type", but "semester week-of-the- semester week type". The relationship between G and H should be clarified. It will be clearer if the authors can make a granularity "semester day" (U) from B. Therefore we have the following granularities.
+*$Q_{H,M}$ : quasi-circular granularity, 
+semester week -of-the-semester week type
+*$Q_{U,M}$ : quasi-circular granularity, semester day-of-the-semester week type.
+
+
+Page 20, Line 47, "for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends" is hard to be justified. By Figure the IQR is given by the height of blue (LV=F) boxes. They are the largest in Quarter 2 and smallest in Quarter 4 for both weekdays and weekends.
+
+rephrased.
 
 ## Other questions of interest.
 
