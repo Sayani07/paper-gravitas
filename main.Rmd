@@ -169,7 +169,7 @@ Granularities can also be periodical with respect to other granularities, except
 The \textbf{order} of a linear granularity is the level of coarseness associated with a linear granularity. A linear granularity G will have lower order than H if each granule of G is composed of lower number of granules of bottom granularity than each granule of H.
 \end{definition}
 
-With two linear granularities $G$ and $H$, if $G$ *groups into* or *finer than* $H$ then $G$ is of lower order than $H$. For example, if the bottom granularity is day, then granularity week will have lower order than month since each week consist of fewer days than each month.
+With two linear granularities $G$ and $H$, if $G$ *groups into* or *finer than* $H$ then $G$ is of lower order than $H$. For example, if the bottom granularity is hour, then granularity day will have lower order than week since each day consist of fewer hours than each week.
 
 Granules in any granularity may be aggregated to form a coarser granularity. A system of multiple granularities in lattice structures is referred to as a **calendar** by @Dyreson_2000. Linear time granularities are computed through "calendar algebra" operations [@Ning_2002] designed to generate new granularities recursively from the bottom granularity. For example, due to the constant length of day and week, we can derive them from hour using
 $$
@@ -254,7 +254,6 @@ Quasi-circular granularity && Possible period lengths\\
 $Q_1 =$ day-of-month && $P_1 = 31, 30, 29, 28$\\
 $Q_2 =$ hour-of-month && $P_2 = 24\times 31, 24\times 30, 24\times 29, 24\times 28$\\
 $Q_3 =$ day-of-year && $P_3 = 366, 365$\\
-$Q_4 =$ week-of-month && $P_4 = 5, 4$\\
 \bottomrule
 \end{tabular}
 \caption{Examples of quasi-circular granularities relating two linear granularities with irregular mapping leading to several possible period lengths.}
@@ -430,7 +429,7 @@ A \textbf{clash} is a pair of cyclic granularities that contains empty combinati
 A \textbf{harmony} is a pair of cyclic granularities that does not contain any empty combinations of its categories.
 \end{definition}
 
-Structurally empty combinations can arise due to the structure of the calendar or hierarchy. For example, let $C_i$ be day-of-month with 31 levels and $C_j$ be week-of-month with 5 levels. There will be $31\times 5=155$ sets $S_{k\ell}$ corresponding to possible combinations of $C_i$ and $C_j$. Many of these are empty. For example, $S_{1,5}$ is empty because the first day of the month can never correspond to the fifth week of the month. Hence the pair (day-of-month, week-of-month) is a clash.
+Structurally empty combinations can arise due to the structure of the calendar or hierarchy. For example, let $C_i$ be day-of-month with 31 levels and $C_j$ be day-of-year with 365 levels. There will be $31\times 365=11315$ sets $S_{k\ell}$ corresponding to possible combinations of $C_i$ and $C_j$. Many of these are empty. For example, $S_{1,5}$ is empty because the first day of the month can never correspond to the fifth day of the year. Hence the pair (day-of-month, day-of-year) is a clash.
 
 Event-driven empty combinations arise due to differences in event location or duration in a calendar. For example, let $C_i$ be day-of-week with 7 levels and $C_j$ be working-day/non-working-day with 2 levels. While potentially all of these 14 sets $S_{k\ell}$ can be non-empty (it is possible to have a public holiday on any day-of-week), in practice many of these will probably have very few observations. For example, there are few (if any) public holidays on Wednesdays or Thursdays in any given year in Melbourne, Australia.
 
