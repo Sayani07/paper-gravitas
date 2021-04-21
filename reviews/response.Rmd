@@ -49,16 +49,17 @@ Q4. $w$ in $T_w$ is not well defined for circular granularities in Section 3.2 &
 should be defined for cyclic granularities, for example, $w_{B,G}(z) = \lfloor z/P(B;G) \rfloor$, which
 represent the cycle that the granule is in.
 
-A4. R' is the number of granules of $G'$ in each cycle.
-If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one cycle, we can find the composition of any granule of $G'$ beyond a cycle since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition 9.
+A4. $w$ denotes the index set of $G'$.  $R'$ is the number of granules of $G'$ in each period.$T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$ does not use the definition of $T_w$. For example, if $B$ is `day` and $G'$ is `month`, then $G'(0) = {B(0)\cup B(2)\cup \dots \cup B(30)}$, $G'(1) = {B(31)\cup B(32)\cup \dots \cup B(58)}$ corresponding to January and February. Then $T_0 = \{0, 1, 2, \dots, 30\}$ and $T_1 = \{31, 32, \dots, 58\}$. If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. For example, if $z = 31$ then $z \in T_1$ and thus $k = 1$.
+(Should this be added to paper?)
 
+<!-- Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition 9. -->
 
 
 ## Places that need clarification
 
 Q1. Page 7, Definition 6. Is "the number of granules of H" finite or infinite? If each granule $G(i)$ has the index $i \in Z_{>=0}$, then the phrase is similar as "the number of non-negative integers."
 
-A1. Number of granules of $H$ should be finite. 
+A1. Number of granules of $H$ should be finite. Definition rephrased to account for that.
 
 Q2. Page 7, Lines 19-20. It is claimed that quasi-periodic relationship has a finite number of periods where granularities behave in an anomalous way. What does the finite number of periods mean and why is it finite? Does it mean a finite number of granularity groupings? Does it mean a finite number of irregular cycles? By Definition 4 of Bettini & De Sibi (2000), $E_1, . . . , E_z$ are the granularity exceptions, but the number of granularity exceptions does not have to be finite.
 
@@ -75,7 +76,7 @@ A4. removed
 
 Q5.  Page 10, Definition 9, is R' similar as the period P of the grouping (B,G')? Is R' a constant or variable with irregular mapping?
 
-A5. R' is the number of granules of G' in the period P. For example, the grouping (day, month) has period 365 (ignoring leap years), then R = 12, since there are 12 months in 365 days. Given a period, R' is constant.
+A5. R' is the number of granules of G' in the period P. For example, the grouping (day, month) has period 365 (ignoring leap years), then R = 12, since there are 12 months in 365 days. Given a period P, R' is constant.
 
 Q6.  Page 11, Definition 10, what is the interpretation of n where i = 1, ..., n?
 
@@ -84,7 +85,6 @@ A6. n is the number of Aperiodic linear granularities. Added in Definition 10.
 Q7. Page 14, Lines 26-27. Is z the original index for the bottom granularity? If yes, why $C_{katun, baktun}(z) = \lfloor 18 × 20 × z/20 \rfloor mod 20$? Shouldn't it be $z mod 20$? If not, then what is $z$? By Definition 8, $z \in Z$ is the original time index based on the bottom granularity, but here $z$ seems to be defined as the time index based on granularity katun.
  
 A7. $z$ is the original index for the bottom granularity $kin$. But the second line is replaced since the point is to show how the value of a multiple-order-up granularity can be obtained as a function of single-order-up granularities. It is sufficient to know the values of the single order granularities at $z$ and not the exact value of $z$, so we chose to not expand it using $z$.
-
 
 
 Q8.  Page 11, lines 22-33. The explanation of Figure 3 is confusing. If the week-of-the- semester week type is a quasi-circular granularity, then the day-of-the-semester week type can be also quasi-circular granularity, as all days are nested in weeks. Actually the notation should not be "week-of-the-semester week type", but "semester week-of-the- semester week type". The relationship between G and H should be clarified. It will be clearer if the authors can make a granularity "semester day" (U) from B. Therefore we have the following granularities.
@@ -96,11 +96,11 @@ A8. done (to be)
 
 Q9. Page 20, Line 47, "for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends" is hard to be justified. By Figure the IQR is given by the height of blue (LV=F) boxes. They are the largest in Quarter 2 and smallest in Quarter 4 for both weekdays and weekends.
 
-A9. rephrased.
+A9. removed.
 
 ## Other questions of interest.
 
-Q1. Page 6, Definition 5, should S be a contiguous set of integers or not necessary?
+Q1. Page 6, Definition 5, should $S$ be a contiguous set of integers or not necessary?
 
 A1. Not necessary. 
 <!-- Consider an example, where $B$ is the bottom granularity denoting day, $G$ denotes every alternate business days (Monday, Wednesday and Friday) and $H$ denotes weeks. Here, $G \trianglelefteq H$. -->
@@ -110,18 +110,19 @@ that $G \preceq H$ does not imply $G  \trianglelefteq H$, or vice versa? "finer 
 
 
 A2. If $G \trianglelefteq H$, then every granule of $H$ can be expressed as an union of some set of granules in $G$. If $G \preceq H$, then every granule of $G$ is a subset of some granule of $H$. These are not equivalent.
-Consider an example, where $G_1$ denotes "weekend" and $H_1$ denotes "week". Then, $G_1 \preceq H_1$, but $G_1 \ntrianglelefteq H_1$. Consider another example, with $G_2$ denotes "days" and $H_2$ denotes "business-week". Then, $G_2 \npreceq H_2$, but $G_2 \ntrianglelefteq H_2$, since each business-week can be expressed as an union of some days, but Saturdays and Sundays are not subset of any business-week.
-Further, consider an example with  $H_3$ denoting "public holidays", then $G \npreceq H_3$ and $G \ntrianglelefteq H_3$.    
+Consider an example, where $G_1$ denotes "weekend" and $H_1$ denotes "week". Then, $G_1 \preceq H_1$, but $G_1 \ntrianglelefteq H_1$. Consider another example, with $G_2$ denotes "days" and $H_2$ denotes "business-week". Then, $G_2 \npreceq H_2$, but $G_2 \trianglelefteq H_2$, since each business-week can be expressed as an union of some days, but Saturdays and Sundays are not subset of any business-week.
+Further, consider an example with  $H_3$ denoting "public holidays", then $G_1 \npreceq H_3$ and $G_1 \ntrianglelefteq H_3$.    
+(Should this be added to paper?)
 
 
 Q3. Page 16, Line 13, multiple order-up quasi-circular granularities. The equations for this
 operation are not trivial to be ignored. Should be added if possible.
 
-A3. 
+A3. Exactly equations (5) and (6) are to be utilized for this operation (with sides interchanged) and hence not added again.
 
 Q4. Can the time granularity concept be extended to continuous time domain?
 
-A4. Linear granularities are defined for continuous time domain. For continuous time domains, the dependent variable is specified for every value of time $t$, whereas, in applications we generally have the values of the dependent variable for discrete time intervals. Hence, we will restrict ourselves to explore only discrete time domain. 
+A4. For continuous time domains, the dependent variable is specified for every value of time $t$, whereas, in applications we generally have the values of the dependent variable for discrete time domain Hence, we will restrict ourselves to explore only discrete time domain. 
 
 ## Other minor issues.
 

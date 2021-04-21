@@ -65,7 +65,7 @@ scene1 <- VIC %>%
   ylab("") +
   xlab("") +
   # xlab("weekend/weekday") +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(type = "seq", direction = -1) +
   theme(legend.position = "right") +
   ggtitle("") +
   scale_y_log10() +
@@ -83,14 +83,16 @@ scene2 <- VIC %>%
   ) +
   ylab("") +
   xlab("quarters of the year") +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(type = "seq", direction = -1) +
   theme(legend.position = "right") +
   ggtitle("") +
   scale_y_log10() +
   theme_minimal() +
   theme(
     #panel.grid.major = element_line(colour = "#E0E0E0"),
-    panel.border = element_rect(colour = "#E0E0E0", fill = NA))
+    panel.border = element_rect(colour = "#E0E0E0",
+                                fill = NA),
+    panel.grid.major.x = element_blank())
 
 scene3 <- VIC %>%
   prob_plot(
@@ -102,13 +104,15 @@ scene3 <- VIC %>%
   ylab("") +
   xlab("months of the year") +
   theme(legend.position = "right") +
-  scale_fill_brewer(palette = "Set2") +
+  scale_fill_brewer(type = "seq", direction = -1) +
   ggtitle("") +
   scale_y_log10() +
   theme_minimal() +
   theme(
     #panel.grid.major = element_line(colour = "#E0E0E0"),
-    panel.border = element_rect(colour = "#E0E0E0", fill = NA))
+    panel.border = element_rect(colour = "#E0E0E0",
+                                fill = NA),
+    panel.grid.major.x = element_blank())
 
 gg_fig <- ggarrange(
   scene3,
@@ -276,7 +280,7 @@ cricket_tsibble %>%
     hierarchy_model,
     plot_type = "lv"
   ) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(type = "seq", palette = "Blues", direction = -1) +
   # ggtitle("(a) Runs per over across over faceted by inning") +
   theme(legend.position = "right") +
   ggtitle("a") +
@@ -286,8 +290,9 @@ cricket_tsibble %>%
   theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
 ) + 
   theme(plot.title = element_text(face = "bold"),
-        strip.text = element_text(size = 10, margin = margin(b = 0, t = 0))
-  )
+        strip.text = element_text(size = 10, margin = margin(b = 0, t = 0)),
+                                  panel.grid.major.x = element_blank())
+
 
 cricket_all <- read_csv("data-raw/deliveries_all.csv")
 matches_all <- read_csv("data-raw/matches_all.csv")
@@ -342,7 +347,8 @@ cricket_data %>%
     response = "run_rate",
     plot_type = "quantile",
     symmetric = FALSE,
-    quantile_prob = c(0.25, 0.5, 0.75)
+    quantile_prob = c(0.25, 0.5, 0.75),
+    size = 2
   ) +
   ylab("runs per over") +
   xlab("number of wickets in previous over") +
@@ -355,7 +361,8 @@ cricket_data %>%
     panel.background = element_blank(),
     strip.background = element_blank(),
     plot.background = element_blank(),
+    panel.grid.major.x = element_blank(),
     complete = TRUE,
     panel.grid.major = element_line(colour = "#E0E0E0"),
     panel.border = element_rect(colour = "#E0E0E0", fill = NA)
-  )
+  ) + scale_colour_manual(values = c("#7093DB", 	"#3A5FCD", "#22316C"))
