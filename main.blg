@@ -3,9 +3,10 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: agsm.bst
 Database file #1: bibliography.bib
+Warning--I didn't find a database entry for "stryjewski201040"
 You've used 30 entries,
             2909 wiz_defined-function locations,
-            836 strings with 9597 characters,
+            837 strings with 9613 characters,
 and the built_in function-call counts, 125240 in all, are:
 = -- 20371
 > -- 1739
@@ -44,3 +45,4 @@ warning$ -- 0
 while$ -- 655
 width$ -- 0
 write$ -- 423
+(There was 1 warning)

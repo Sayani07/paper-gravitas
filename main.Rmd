@@ -343,20 +343,23 @@ $C_{B, G}(z)  = z\mod P(B, G)$ as per Equation \eqref{eq:circular-gran}.
 For example, the multiple-order-up granularity $C_{\text{uinal},\text{katun}}$ for the Mayan calendar could be obtained using
 \begin{align*}
 C_{\text{uinal}, \text{baktun}}(z)  &=  C_{\text{uinal}, \text{tun}}(z) + P(\text{uinal}, \text{tun})C_{\text{tun},\text{katun}}(z) + P(\text{uinal},\text{katun})C_{\text{katun}, \text{baktun}}(z) \\
-               &=  \lfloor z/20\rfloor \mod 18 + 18\lfloor 18\times z/20\rfloor \mod 20
-                + 18\times20\lfloor 18\times20\times z/20\rfloor \mod 20.
+         &=  C_{\text{uinal}, \text{tun}}(z) + 18 \times{ C_{\text{tun},\text{katun}}(z)} + 18 \times 20 \times{C_{\text{katun}, \text{baktun}}(z)}
 \end{align*}
+
+
+<!--                &=  \lfloor \frac{z}{20}\rfloor \mod 18 + 18\lfloor  \frac{z}{20 \times18} \rfloor \mod 20 -->
+<!--                 + 18 \times20 \lfloor \frac{z}{(20\times18\times20} \rfloor \mod 20 -->
 
 Now consider the case where there is one quasi-circular single order-up granularity in the hierarchy table while computing a multiple-order-up quasi-circular granularity. Any multiple-order-up quasi-circular granularity $C_{\ell, m}(z)$ could then be obtained as a discrete combination of circular and quasi-circular granularities.
 
 Depending on the order of the combination, two different approaches need to be employed leading to the following cases:
 
-  * $C_{G_{\ell},G_{m'}}(z)$ is circular and $C_{G_{m'},G_{m}}(z)$ is quasi-circular
+  * $C_{G_{\ell},G_{m'}}$ is circular and $C_{G_{m'},G_{m}}$ is quasi-circular
 \begin{equation} \label{eq:multifromsingle-quasi1}
 C_{G_\ell,G_{m}}(z) = C_{G_{\ell},G_{m'}}(z) + P(\ell, m')C_{G_{m'},G_{m}}(z)
 \end{equation}
 
-  * $C_{G_{\ell},G_{m'}}(z)$ is quasi-circular and $C_{G_{m'},G_{m}}(z)$ is circular
+  * $C_{G_{\ell},G_{m'}}$ is quasi-circular and $C_{G_{m'},G_{m}}$ is circular
 \begin{equation} \label{eq:multifromsingle-quasi2}
 C_{G_\ell,G_{m}}(z)  = C_{G_{\ell},G_{m'}}(z) + \sum_{w=0}^{C_{G_{m'},G_{m}}(z) -1}(\vert T_{w} \vert)
 \end{equation}
@@ -480,7 +483,8 @@ The synergy of the two cyclic granularities will affect plotting choices for exp
 ```{r allFig, fig.pos="!htb", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
 ```
 
-(ref:allFig) Distribution of energy consumption displayed through letter value plots: plot a across month-of-year faceted by quarter-of-year; plot b across weekday/weekend faceted by quarter-of-year; plot c across quarter-of-year faceted by weekday/weekend. Plot a shows a clash since there are empty combinations. Plots b and c show harmonies since each quarter includes both weekdays and weekends. It can be seen in plot b that for every quarter (mapped to facet), weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently. This is probably because of lower temperatures in the second quarter compared to the first quarter (summer in Australia). Plot c switches the granularities mapped to the x-axis and the facets and helps to compare quarters within weekdays and weekends. For example, for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends.
+(ref:allFig) Distribution of energy consumption displayed through letter value plots: plot a across month-of-year faceted by quarter-of-year; plot b across weekday/weekend faceted by quarter-of-year; plot c across quarter-of-year faceted by weekday/weekend. Plot a shows a clash since there are empty combinations. Plots b and c show harmonies since each quarter includes both weekdays and weekends. It can be seen in plot b that for every quarter (mapped to facet), weekend and weekday consumption are fairly similar except for the second quarter where the letter values below D and E behave differently. This is probably because of lower temperatures in the second quarter compared to the first quarter (summer in Australia). Plot c switches the granularities mapped to the x-axis and the facets and helps to compare quarters within weekdays and weekends. 
+<!-- For example, for weekdays the interquartile range of consumption reduces over the year, whereas this pattern is not true for weekends. -->
 
 ### Conditioning variable {-}
 

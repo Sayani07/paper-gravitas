@@ -30,9 +30,9 @@ A3. Thanks for the advice. We have added a description of the game cricket in th
 
 ## Notation/Definition clarification
 
-Q1.What is the definition of "period"? Is the period defined on the grouping or on the granularity?Is the period denoted by P or (R, P) in Definition 6? From Pages 6 Line 55 to Page 7 Line 7, period was referred to an integer (7), and two time granularities (one year and 400 years). Are they consistent?
+Q1.What is the definition of "period"? Is the period defined on the grouping or on the granularity? Is the period denoted by P or (R, P) in Definition 6? From Pages 6 Line 55 to Page 7 Line 7, period was referred to an integer (7), and two time granularities (one year and 400 years). Are they consistent?
 
-A1. Period is defined for a pair of granularities $(G, H)$. In Definition 6, the period is defined by $P$, which is briefly defined while explaining Definition 6. Thanks for pointing out the inconsistencies. We have now made it consistent.
+A1. Period is defined for a pair of granularities $(G, H)$. In Definition 6, the period is defined by $P$, which is briefly defined while explaining Definition 6. We have now made the notations consistent.
 
 Q2. What is the definition of "grouping"? Though "G groups into H" was defined in Definition 5, there is not a notation of grouping $(G, H)$ until we see grouping $(day, month)$ at
 Page 7 Line 7. Please rephrase the sentence each month is a grouping of the same number of days over years on Page 7 Line 5.
@@ -58,7 +58,7 @@ If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. Here $w \mod R'$ r
 
 Q1. Page 7, Definition 6. Is "the number of granules of H" finite or infinite? If each granule $G(i)$ has the index $i \in Z_{>=0}$, then the phrase is similar as "the number of non-negative integers."
 
-A1. Number of granules of $H$ should be finite. Question
+A1. Number of granules of $H$ should be finite. 
 
 Q2. Page 7, Lines 19-20. It is claimed that quasi-periodic relationship has a finite number of periods where granularities behave in an anomalous way. What does the finite number of periods mean and why is it finite? Does it mean a finite number of granularity groupings? Does it mean a finite number of irregular cycles? By Definition 4 of Bettini & De Sibi (2000), $E_1, . . . , E_z$ are the granularity exceptions, but the number of granularity exceptions does not have to be finite.
 
@@ -71,8 +71,7 @@ A3. It is the same but stressed to make it clear that the period will be a "func
 
 Q4. Page 10, Line 14, Q4 week-of-month is probably not a good example for quasi-circular granularities. By Definition 4, week cannot be grouped into month, because there could exist $week(i) \subset month(j)$ when the $i^{th}$ week crosses two months. Similarly, week is not finer than month by Definition 5. Since periodicity is defined on top of grouping, and circular is defined on top of periodicity, the scenario of Q4 cannot be defined. On the other hand, the period length for week-of-month is not an integer, but it is an integer for Q1 - Q3.
 
-A4. That's right. Alternatively, if we define the linear granularity week such that a week ends when a month ends, then week groups into months in a quasi-periodic way where the period length of week-of-month would be either 4 or 5, since any month could only be composed of either 4 or 5 weeks. week-of-month is a cyclic granularity that could be important for certain contexts and hence it makes sense
-to define weeks like that. The first, second, third week-of-month corresponds to first, second, third quarter of the month and so on.
+A4. removed
 
 Q5.  Page 10, Definition 9, is R' similar as the period P of the grouping (B,G')? Is R' a constant or variable with irregular mapping?
 
@@ -80,22 +79,12 @@ A5. R' is the number of granules of G' in the period P. For example, the groupin
 
 Q6.  Page 11, Definition 10, what is the interpretation of n where i = 1, ..., n?
 
-A6. n is the number of Aperiodic linear granularities.
+A6. n is the number of Aperiodic linear granularities. Added in Definition 10.
 
 Q7. Page 14, Lines 26-27. Is z the original index for the bottom granularity? If yes, why $C_{katun, baktun}(z) = \lfloor 18 × 20 × z/20 \rfloor mod 20$? Shouldn't it be $z mod 20$? If not, then what is $z$? By Definition 8, $z \in Z$ is the original time index based on the bottom granularity, but here $z$ seems to be defined as the time index based on granularity katun.
  
-A7. $z$ is the original index for the bottom granularity $kin$. So, $C_{kin, uinal}(z) = z mod 20$. 
+A7. $z$ is the original index for the bottom granularity $kin$. But the second line is replaced since the point is to show how the value of a multiple-order-up granularity can be obtained as a function of single-order-up granularities. It is sufficient to know the values of the single order granularities at $z$ and not the exact value of $z$, so we chose to not expand it using $z$.
 
-For $C_{katun,baktun}(z)$, we first need to have katun in terms of kin through the operation $18*20*z/20$
-
-The following formula which expresses any circular granularity relating two linear granularities is utilized to come up with the equations:
-$$
-  C_{G, H}(z) = \lfloor z/P(B,G) \rfloor\mod P(G,H),
-$$
-$C_{katun,baktun}(z) = \lfloor z/P(kin,katun) \rfloor\mod P(katun,baktun)$
-
-$C_{katun,baktun}(z) = \lfloor z/(20*18*20) \rfloor\mod 20$
-and so on.
 
 
 Q8.  Page 11, lines 22-33. The explanation of Figure 3 is confusing. If the week-of-the- semester week type is a quasi-circular granularity, then the day-of-the-semester week type can be also quasi-circular granularity, as all days are nested in weeks. Actually the notation should not be "week-of-the-semester week type", but "semester week-of-the- semester week type". The relationship between G and H should be clarified. It will be clearer if the authors can make a granularity "semester day" (U) from B. Therefore we have the following granularities.
