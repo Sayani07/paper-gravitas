@@ -155,7 +155,7 @@ $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) 
 \begin{definition}\label{def:periodic}
 A granularity $G$ is \textbf{periodic} with respect to a finite granularity $H$ if:
 (1) $G \trianglelefteq H$; and
-(2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z_\geq 0}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
+(2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z}_{\geq 0}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
 \end{definition}
 
 If $G$ groups into $H$, it would imply that any granule $H(i)$ is the union of some granules of $G$, for example, $G(a_1), G(a_2), \dots, G(a_k)$. Condition (2) in Definition \ref{def:periodic} implies that if $H(i + R) \neq \emptyset$, then $H(i + R) = \bigcup (G(a_1 + P), G(a_2 + P), \dots, G(a_k + P))$, resulting in a "periodic" pattern of the composition of $H$ using granules of $G$. In this pattern, each granule of $H$ is shifted by $P$ granules of $G$. $P$ is called the \textbf{Period} (@Bettini2000-qk).
