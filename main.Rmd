@@ -38,7 +38,6 @@ bibliography: [bibliography.bib]
 preamble: >
   \usepackage{mathtools,amssymb,booktabs,amsthm,todonotes,colortbl}
   \def\mod{~\text{mod}~}
-  \newtheorem{definition}{Definition}
   \usepackage{mathptmx}
   \usepackage{caption}
   \DeclareCaptionStyle{italic}{labelfont={bf},textfont={it},labelsep=colon}
