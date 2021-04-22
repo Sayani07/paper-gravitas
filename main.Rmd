@@ -163,8 +163,7 @@ If $G$ groups into $H$, it would imply that any granule $H(i)$ is the union of s
 For example, day is periodic with respect to week with $R=1$ and $P=7$, while (if we ignore leap years) day is periodic with respect to month with $R=12$ and $P=365$ as any month would consist of same number of days across years.
 Since the idea of period involves a pair of granularities, we say that the pair $(day, week)$ has period 7, while the pair $(day, month)$ has a period 365 (ignoring leap years). 
 
-Granularities can also be periodic with respect to other granularities, "except for a finite number of spans of
-time where they behave in an anomalous way"; these are called **quasi-periodic** relationships [@Bettini2000-vy]. In a Gregorian calendar with leap years, day groups quasi-periodically into month with the exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
+Granularities can also be periodic with respect to other granularities, _"except for a finite number of spans of time where they behave in an anomalous way"_; these are called **quasi-periodic** relationships [@Bettini2000-vy]. In a Gregorian calendar with leap years, day groups quasi-periodically into month with the exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
 
 \begin{defn}\label{def:order}
 The \textbf{order} of a linear granularity is the level of coarseness associated with a linear granularity. A linear granularity G will have lower order than H if each granule of G is composed of lower number of granules of bottom granularity than each granule of H.
@@ -452,7 +451,7 @@ which is a framework to construct statistical graphics by relating the data spac
 
 <!-- When a data is made up of different groups, it is often informative to compare the distribution of the variables across the groups. -->
 
-## Data summarization
+## Data summarization 
 
 There are several ways to summarize a distribution like estimating empirical distribution or density of the variable's distribution, computing few number summaries or quantiles. This data estimation or summarization could be potentially misleading if they are performed on rarely occurring categories (Section&nbsp;\ref{sec:near-clashes}). Even when there are no rarely occurring events, the number of observations may vary greatly within or across each facet, due to missing observations or uneven locations of events in the time domain. In such cases, data summarization should be used with caution as sample sizes will directly affect the accuracy of the estimated quantities being displayed. 
 
@@ -464,12 +463,12 @@ There are several ways to summarize a distribution like estimating empirical dis
 
 <!-- Plotting each point for each combination through dot plots or rug plots is not useful for our data structure since that leads to a blob of points for each subgroup. Further, they are anyway a poor choice for large datasets. Hence, -->
 
-The basic plot choice for our data structure is one that can display distributions. For displaying the distribution of continuous univariate variable, many options are available. Displays based on descriptive statistics include box plots [@Tukey1977-jx] and its variation such as notched box plots [@McGill1978-hg] or other variations as mentioned in [@stryjewski201040]. They also include line or area quantile plots which can display any quantiles and not only quartiles like in a boxplot. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) plots [@Hyndman1996-ft]. The less commonly used Letter-Value plots [@Hofmann2017-sg] is a midway between boxplots and density plots. Letter values are order statistics with specific depths. The median ($M$) divides the data set into halves. Each of the next letter values splits the remaining parts into two separate regions so that the fourths ($F$), eighths ($E$), sixteenths ($D$) etc. are obtained. They are useful for displaying the distributions beyond the quartiles specially for large data,
+The basic plot choice for our data structure is one that can display distributions. For displaying the distribution of continuous univariate variable, many options are available. Displays based on descriptive statistics include box plots [@Tukey1977-jx] and its variation such as notched box plots [@McGill1978-hg] or other variations as mentioned in [@Wickham2011-yl]. They also include line or area quantile plots which can display any quantiles and not only quartiles like in a boxplot. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) plots [@Hyndman1996-ft]. The less commonly used Letter-Value plots [@Hofmann2017-sg] is a midway between boxplots and density plots. Letter values are order statistics with specific depths. The median ($M$) divides the data set into halves. Each of the next letter values splits the remaining parts into two separate regions so that the fourths ($F$), eighths ($E$), sixteenths ($D$) etc. are obtained. They are useful for displaying the distributions beyond the quartiles specially for large data,
 where boxplots mislabel data points as outliers.
 One of the best approaches in exploratory data analysis is to draw a variety of plots to reveal information while keeping in mind the drawbacks and benefits of each of the plot choices. For example, boxplots obscure multimodality, and interpretation of density estimates and histograms may change depending on the bandwidth and bin widths respectively. In R package `gravitas` [@R-gravitas], boxplots, violin, ridge, letter-value, line and area quantile plots are implemented, but it is potentially possible to use any plots which can display the distribution of the data.
 
 
-## Comparison across sub-groups induced by conditioning
+## Comparison across sub-groups induced by conditioning {#sec:aesthetics}
 
 <!-- While it is often beneficial to compare distributions in this way, there are some caveats that we should be kept in mind while exploring these displays, subject to our data structure as follows: -->
 
