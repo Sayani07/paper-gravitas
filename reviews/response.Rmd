@@ -15,11 +15,11 @@ The point by point description of changes are below:
 
 Q1. I am not convinced that it is required to introduce the concept of grammar of graphics and embed the used visualization in this framework on such a level of detail like in Section 5. Of course some elements of the grammar of graphics are used in Section 5.2 to argue about facets, levels, aesthetic variables, and mappings, but if the reader does not know about this framework, the introduction and explanations about this concept/framework provided in Section 5 is not enough to follow the later argumentation. I would like to see some more details on the concept/framework on the grammar of graphics, or not using the concepts in the parts of Section 5.2 and paraphrasing it without using the terms from the grammar of graphics. I think that it is doable to explain the construction of the visualization without using this concept/framework, because the mappings are quite straight forward. I would like to see (a) either extend the introduction to grammar of graphics and the basics needed to argue in more detail about the embedding of your visualisations using this concept/framework, or (b) remove it.
 
-A1. removed.
+A1. Removed.
 
 Q2. It is not clear from the paragraph in Section 5.1 what basic plot choices are implemented and used and supported for visualisation. There is only the list of plots to display descriptive statistics provided. It would be important to describe which are implemented and possible to use. The later examples use primarily letter-value plots, then also box-plots, violin plots and line charts with area quantile plots. The letter-value plots are used in major examples of the paper, therefore I would argue to provide some more details on this visual representation and what the 5 colours and letters mean (e.g. LV=letter value, M = median, F = fourths, E = eighths, D = sixteenths, C = thirty-seconds), as it is not as widely known like standard box-plots. This would help greatly in better following the argumentation and explanations.
 
-A2. added in Section 5.1
+A2. Added in Section 5.1
 
 Q3. I have to confess that I do not know anything about the sport cricket and it may be unthinkable for people from countries where cricket is a national sport, but I really had difficulties to follow the example in Section 6.2. The basic hierarchical concept of over—inning--match--season was understandable, but I think that some parts need to be revisited and clarified for also reaching readers not knowledgeable in cricket. Especially the discussion on the interesting questions raised are a bit difficult to follow without knowing much about cricket. For example some terms should be at least briefly explained or removed if not necessary for the explanation, e.g., Twenty20 format, fielding, bowling, dismissal, wicket. I do know a lot about different sports and also the basic idea and structure in many sports, but cricket was never on my radar. Apologise my ignorance about cricket.
 
@@ -49,8 +49,9 @@ Q4. $w$ in $T_w$ is not well defined for circular granularities in Section 3.2 &
 should be defined for cyclic granularities, for example, $w_{B,G}(z) = \lfloor z/P(B;G) \rfloor$, which
 represent the cycle that the granule is in.
 
-A4. $w$ denotes the index set of $G'$.  $R'$ is the number of granules of $G'$ in each period.$T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$ does not use the definition of $T_w$. For example, if $B$ is `day` and $G'$ is `month`, then $G'(0) = {B(0)\cup B(2)\cup \dots \cup B(30)}$, $G'(1) = {B(31)\cup B(32)\cup \dots \cup B(58)}$ corresponding to January and February. Then $T_0 = \{0, 1, 2, \dots, 30\}$ and $T_1 = \{31, 32, \dots, 58\}$. If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. For example, if $z = 31$ then $z \in T_1$ and thus $k = 1$.
-(Should this be added to paper?)
+A4. Definition of $w$ and $R'$ included in Definition 9.
+
+$T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$ does not use the definition of $T_w$. For example, if $B$ is `day` and $G'$ is `month`, then $G'(0) = {B(0)\cup B(2)\cup \dots \cup B(30)}$, $G'(1) = {B(31)\cup B(32)\cup \dots \cup B(58)}$ corresponding to January and February. Then $T_0 = \{0, 1, 2, \dots, 30\}$ and $T_1 = \{31, 32, \dots, 58\}$. If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. For example, if $z = 31$ then $z \in T_1$ and thus $k = 1$. 
 
 <!-- Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition 9. -->
 
@@ -76,7 +77,7 @@ A4. removed
 
 Q5.  Page 10, Definition 9, is R' similar as the period P of the grouping (B,G')? Is R' a constant or variable with irregular mapping?
 
-A5. R' is the number of granules of G' in the period P. For example, the grouping (day, month) has period 365 (ignoring leap years), then R = 12, since there are 12 months in 365 days. Given a period P, R' is constant.
+A5. R' is the number of granules of G' in the period P. For example, the grouping (day, month) has period 365 (ignoring leap years), then R = 12, since there are 12 months in 365 days. Given a period P, R' is constant. Another example included in the paper.
 
 Q6.  Page 11, Definition 10, what is the interpretation of n where i = 1, ..., n?
 
@@ -84,8 +85,7 @@ A6. n is the number of Aperiodic linear granularities. Added in Definition 10.
 
 Q7. Page 14, Lines 26-27. Is z the original index for the bottom granularity? If yes, why $C_{katun, baktun}(z) = \lfloor 18 × 20 × z/20 \rfloor mod 20$? Shouldn't it be $z mod 20$? If not, then what is $z$? By Definition 8, $z \in Z$ is the original time index based on the bottom granularity, but here $z$ seems to be defined as the time index based on granularity katun.
  
-A7. $z$ is the original index for the bottom granularity $kin$. But the second line is replaced since the point is to show how the value of a multiple-order-up granularity can be obtained as a function of single-order-up granularities. It is sufficient to know the values of the single order granularities at $z$ and not the exact value of $z$, so we chose to not expand it using $z$.
-
+A7. $z$ is the original index for the bottom granularity $kin$. The equation is modified since we removed the line expressing the multiple-order-up granularities in terms of $z$. The point is to show how the value of a multiple-order-up granularity can be obtained when values of single-order-up granularities are available. It is sufficient to know the values of the single order-up-granularities at $z$ and not the exact value of $z$, so we chose to not expand it using $z$.
 
 Q8.  Page 11, lines 22-33. The explanation of Figure 3 is confusing. If the week-of-the- semester week type is a quasi-circular granularity, then the day-of-the-semester week type can be also quasi-circular granularity, as all days are nested in weeks. Actually the notation should not be "week-of-the-semester week type", but "semester week-of-the- semester week type". The relationship between G and H should be clarified. It will be clearer if the authors can make a granularity "semester day" (U) from B. Therefore we have the following granularities.
 *$Q_{H,M}$ : quasi-circular granularity, 
@@ -122,7 +122,7 @@ A3. Exactly equations (5) and (6) are to be utilized for this operation (with si
 
 Q4. Can the time granularity concept be extended to continuous time domain?
 
-A4. For continuous time domains, the dependent variable is specified for every value of time $t$, whereas, in applications we generally have the values of the dependent variable for discrete time domain Hence, we will restrict ourselves to explore only discrete time domain. 
+A4. It is not clear how to extend the granularity concepts to continuous time.
 
 ## Other minor issues.
 
