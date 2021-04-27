@@ -1,0 +1,184 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Aigner et~al.]{Aigner, Miksch, Schumann \harvardand\
+  Tominski}{2011}{aigner2011visualization}
+Aigner, W., Miksch, S., Schumann, H. \harvardand\ Tominski, C.
+  \harvardyearleft 2011\harvardyearright , {\em Visualization of time-oriented
+  data}, Springer Science \& Business Media.
+
+\harvarditem[Allaire et~al.]{Allaire, Xie, McPherson, Luraschi, Ushey, Atkins,
+  Wickham, Cheng, Chang \harvardand\ Iannone}{2020}{R-rmarkdown}
+Allaire, J., Xie, Y., McPherson, J., Luraschi, J., Ushey, K., Atkins, A.,
+  Wickham, H., Cheng, J., Chang, W. \harvardand\ Iannone, R.  \harvardyearleft
+  2020\harvardyearright , {\em rmarkdown: Dynamic Documents for R}.
+\newblock R package version 2.1.
+\newline\harvardurl{https://github.com/rstudio/rmarkdown}
+
+\harvarditem{Bettini \harvardand\ De~Sibi}{2000}{Bettini2000-vy}
+Bettini, C. \harvardand\ De~Sibi, R.  \harvardyearleft 2000\harvardyearright ,
+  `Symbolic representation of user-defined time granularities', {\em Ann. Math.
+  Artif. Intell.} {\bf 30}(1),~53--92.
+
+\harvarditem[Bettini et~al.]{Bettini, Dyreson, Evans, Snodgrass \harvardand\
+  Wang}{1998}{Bettini1998-ed}
+Bettini, C., Dyreson, C.~E., Evans, W.~S., Snodgrass, R.~T. \harvardand\ Wang,
+  X.~S.  \harvardyearleft 1998\harvardyearright , A glossary of time
+  granularity concepts, {\em in} O.~Etzion, S.~Jajodia \harvardand\ S.~Sripada,
+  eds, `Temporal Databases: Research and Practice', Springer Berlin Heidelberg,
+  Berlin, Heidelberg, pp.~406--413.
+
+\harvarditem[Bettini et~al.]{Bettini, Jajodia \harvardand\
+  Wang}{2000}{Bettini2000-qk}
+Bettini, C., Jajodia, S. \harvardand\ Wang, S.  \harvardyearleft
+  2000\harvardyearright , {\em Time Granularities in Databases, Data Mining,
+  and Temporal Reasoning}, Springer Science \& Business Media.
+
+\harvarditem{{Department of the Environment and Energy}}{2018}{smart-meter}
+{Department of the Environment and Energy}  \harvardyearleft
+  2018\harvardyearright , {\em Smart-Grid Smart-City Customer Trial Data},
+  Australian Government, Department of the Environment and Energy.
+\newline\harvardurl{https://data.gov.au/dataset/4e21dea3-9b87-4610-94c7-15a8a77907ef}
+
+\harvarditem[Dyreson et~al.]{Dyreson, Evans, Lin \harvardand\
+  Snodgrass}{2000}{Dyreson_2000}
+Dyreson, C., Evans, W., Lin, H. \harvardand\ Snodgrass, R.  \harvardyearleft
+  2000\harvardyearright , `Efficiently supporting temporal granularities', {\em
+  {IEEE} Transactions on Knowledge and Data Engineering} {\bf 12}(4),~568--587.
+
+\harvarditem{Goodwin \harvardand\ Dykes}{2012}{Goodwin_2012}
+Goodwin, S. \harvardand\ Dykes, J.  \harvardyearleft 2012\harvardyearright ,
+  Visualising variations in household energy consumption, {\em in} `2012 {IEEE}
+  Conference on Visual Analytics Science and Technology ({VAST})', {IEEE},
+  Seattle, WA, pp.~217--218.
+
+\harvarditem{Grolemund \harvardand\ Wickham}{2011}{Grolemund2011-vm}
+Grolemund, G. \harvardand\ Wickham, H.  \harvardyearleft 2011\harvardyearright
+  , `Dates and times made easy with {lubridate}', {\em Journal of Statistical
+  Software} {\bf 40}(3),~1--25.
+\newline\harvardurl{http://www.jstatsoft.org/v40/i03/}
+
+\harvarditem{Grolemund \harvardand\ Wickham}{2017}{Grolemund2018-po}
+Grolemund, G. \harvardand\ Wickham, H.  \harvardyearleft 2017\harvardyearright
+  , {\em {R} for data science}, O'Reilly Media.
+
+\harvarditem[Gupta et~al.]{Gupta, Hyndman, Cook \harvardand\
+  Unwin}{2020}{R-gravitas}
+Gupta, S., Hyndman, R., Cook, D. \harvardand\ Unwin, A.  \harvardyearleft
+  2020\harvardyearright , {\em gravitas: Explore Probability Distributions for
+  Bivariate Temporal Granularities}.
+\newblock R package version 0.1.3.
+\newline\harvardurl{https://github.com/Sayani07/gravitas/}
+
+\harvarditem{Hintze \harvardand\ Nelson}{1998}{Hintze1998-zi}
+Hintze, J.~L. \harvardand\ Nelson, R.~D.  \harvardyearleft
+  1998\harvardyearright , `Violin plots: A box plot-density trace synergism',
+  {\em American Statistician} {\bf 52}(2),~181--184.
+
+\harvarditem[Hofmann et~al.]{Hofmann, Wickham \harvardand\
+  Kafadar}{2017}{Hofmann2017-sg}
+Hofmann, H., Wickham, H. \harvardand\ Kafadar, K.  \harvardyearleft
+  2017\harvardyearright , `Letter-value plots: boxplots for large data', {\em
+  J. Comput. Graph. Stat.} {\bf 26}(3),~469--477.
+
+\harvarditem{Hyndman}{1996}{Hyndman1996-ft}
+Hyndman, R.~J.  \harvardyearleft 1996\harvardyearright , `Computing and
+  graphing highest density regions', {\em American Statistician} {\bf
+  50}(2),~120--126.
+
+\harvarditem{Laird-Smith}{2020}{R-gs}
+Laird-Smith, J.  \harvardyearleft 2020\harvardyearright , {\em gs: A grammar of
+  recurring calendar events}.
+\newblock R package version 0.0.0.9000.
+\newline\harvardurl{https://github.com/jameslairdsmith/gs}
+
+\harvarditem[McGill et~al.]{McGill, Tukey \harvardand\
+  Larsen}{1978}{McGill1978-hg}
+McGill, R., Tukey, J.~W. \harvardand\ Larsen, W.~A.  \harvardyearleft
+  1978\harvardyearright , `Variations of box plots', {\em American
+  Statistician} {\bf 32}(1),~12--16.
+
+\harvarditem[Ning et~al.]{Ning, Wang \harvardand\ Jajodia}{2002}{Ning_2002}
+Ning, P., Wang, X.~S. \harvardand\ Jajodia, S.  \harvardyearleft
+  2002\harvardyearright , `An algebraic representation of calendars', {\em Ann.
+  Math. Artif. Intell.} {\bf 36}(1),~5--38.
+
+\harvarditem[Potter et~al.]{Potter, Kniss, Riesenfeld \harvardand\
+  Johnson}{2010}{Potter2010-qc}
+Potter, K., Kniss, J., Riesenfeld, R. \harvardand\ Johnson, C.~R.
+  \harvardyearleft 2010\harvardyearright , `Visualizing summary statistics and
+  uncertainty', {\em Comput. Graph. Forum} {\bf 29}(3),~823--832.
+
+\harvarditem{{R Core Team}}{2020}{R-language}
+{R Core Team}  \harvardyearleft 2020\harvardyearright , {\em R: A Language and
+  Environment for Statistical Computing}, R Foundation for Statistical
+  Computing, Vienna, Austria.
+\newline\harvardurl{https://www.R-project.org/}
+
+\harvarditem{Reingold \harvardand\ Dershowitz}{2018}{Reingold2001-kf}
+Reingold, E.~M. \harvardand\ Dershowitz, N.  \harvardyearleft
+  2018\harvardyearright , {\em Calendrical Calculations}, 4th edn, Cambridge
+  University Press.
+
+\harvarditem{Tukey}{1977}{Tukey1977-jx}
+Tukey, J.~W.  \harvardyearleft 1977\harvardyearright , {\em Exploratory data
+  analysis}, Addison-Wesley, Reading, Mass.
+
+\harvarditem{Vaughan}{2020}{R-almanac}
+Vaughan, D.  \harvardyearleft 2020\harvardyearright , {\em almanac: Tools for
+  Working with Recurrence Rules}.
+\newblock R package version 0.1.1.
+\newline\harvardurl{https://CRAN.R-project.org/package=almanac}
+
+\harvarditem[Wang et~al.]{Wang, Cook \harvardand\ Hyndman}{2020{\em
+  a}}{wang2020calendar}
+Wang, E., Cook, D. \harvardand\ Hyndman, R.~J.  \harvardyearleft 2020{\em
+  a}\harvardyearright , `Calendar-based graphics for visualizing people's daily
+  schedules', {\em Journal of Computational and Graphical Statistics} .
+\newblock to appear.
+
+\harvarditem[Wang et~al.]{Wang, Cook \harvardand\ Hyndman}{2020{\em
+  b}}{wang2020tsibble}
+Wang, E., Cook, D. \harvardand\ Hyndman, R.~J.  \harvardyearleft 2020{\em
+  b}\harvardyearright , `A new tidy data structure to support exploration and
+  modeling of temporal data', {\em Journal of Computational and Graphical
+  Statistics} .
+\newblock to appear.
+
+\harvarditem{Wickham}{2016}{Wickham2009pk}
+Wickham, H.  \harvardyearleft 2016\harvardyearright , {\em ggplot2: Elegant
+  Graphics for Data Analysis}, Springer-Verlag New York.
+\newline\harvardurl{http://ggplot2.org}
+
+\harvarditem{Wickham \harvardand\ Stryjewski}{2012}{Wickham2012-vr}
+Wickham, H. \harvardand\ Stryjewski, L.  \harvardyearleft 2012\harvardyearright
+  , `40 years of boxplots'.
+
+\harvarditem{Wilke}{2020}{R-ggridges}
+Wilke, C.~O.  \harvardyearleft 2020\harvardyearright , {\em ggridges: Ridgeline
+  Plots in 'ggplot2'}.
+\newblock R package version 0.5.2.
+\newline\harvardurl{https://CRAN.R-project.org/package=ggridges}
+
+\harvarditem{Wilkinson}{1999}{Wilkinson1999-nk}
+Wilkinson, L.  \harvardyearleft 1999\harvardyearright , {\em The Grammar of
+  Graphics}, Springer, New York.
+
+\harvarditem{Xie}{2015}{knitr2015}
+Xie, Y.  \harvardyearleft 2015\harvardyearright , {\em Dynamic Documents with
+  {R} and knitr}, 2nd edn, Chapman and Hall/CRC, Boca Raton, Florida.
+\newline\harvardurl{https://yihui.org/knitr/}
+
+\harvarditem{Xie}{2020}{R-knitr}
+Xie, Y.  \harvardyearleft 2020\harvardyearright , {\em knitr: A General-Purpose
+  Package for Dynamic Report Generation in R}.
+\newblock R package version 1.28.
+\newline\harvardurl{https://yihui.org/knitr/}
+
+\harvarditem[Xie et~al.]{Xie, Allaire \harvardand\
+  Grolemund}{2018}{rmarkdown2018}
+Xie, Y., Allaire, J. \harvardand\ Grolemund, G.  \harvardyearleft
+  2018\harvardyearright , {\em R Markdown: The Definitive Guide}, Chapman and
+  Hall/CRC, Boca Raton, Florida.
+\newline\harvardurl{https://bookdown.org/yihui/rmarkdown}
+
+\end{thebibliography}

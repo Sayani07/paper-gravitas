@@ -109,11 +109,7 @@ Q2. Page 6, what is the difference between finer than and group into in Definiti
 that $G \preceq H$ does not imply $G  \trianglelefteq H$, or vice versa? "finer than" is not used a lot in this paper. If the two concepts are similar, why not pick one of them?
 
 
-A2. If $G \trianglelefteq H$, then every granule of $H$ can be expressed as an union of some set of granules in $G$. If $G \preceq H$, then every granule of $G$ is a subset of some granule of $H$. These are not equivalent.
-Consider an example, where $G_1$ denotes "weekend" and $H_1$ denotes "week". Then, $G_1 \preceq H_1$, but $G_1 \ntrianglelefteq H_1$. Consider another example, with $G_2$ denotes "days" and $H_2$ denotes "business-week". Then, $G_2 \npreceq H_2$, but $G_2 \trianglelefteq H_2$, since each business-week can be expressed as an union of some days, but Saturdays and Sundays are not subset of any business-week.
-Further, consider an example with  $H_3$ denoting "public holidays", then $G_1 \npreceq H_3$ and $G_1 \ntrianglelefteq H_3$.    
-(Should this be added to paper?)
-
+A2. If $G \trianglelefteq H$, then every granule of $H$ can be expressed as an union of some set of granules in $G$. If $G \preceq H$, then every granule of $G$ is a subset of some granule of $H$. These are not equivalent. Examples added in the paper after their definition in Page 6.
 
 Q3. Page 16, Line 13, multiple order-up quasi-circular granularities. The equations for this
 operation are not trivial to be ignored. Should be added if possible.
