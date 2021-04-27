@@ -365,4 +365,7 @@ cricket_data %>%
     complete = TRUE,
     panel.grid.major = element_line(colour = "#E0E0E0"),
     panel.border = element_rect(colour = "#E0E0E0", fill = NA)
-  ) + scale_colour_manual(values = c("#7093DB", 	"#3A5FCD", "#22316C"))
+  ) + scale_colour_manual(values = c("#7093DB", 	"#3A5FCD", "#22316C")) +
+  guides(color = guide_legend(reverse = TRUE)) +
+  scale_x_discrete(labels = c("0", "1+")) +
+  geom_line(size = 0.8)
