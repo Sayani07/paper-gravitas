@@ -13,3 +13,8 @@ data-raw/*.7z
 cover-letter/signature.png
 viz_rewrite.pdf
 viz_rewrite.Rmd
+reviews/response.bcf
+reviews/response.run.xml
+reviews/response.synctex.gz
+
+
