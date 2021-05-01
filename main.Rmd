@@ -40,6 +40,7 @@ preamble: >
   \def\mod{~\text{mod}~}
   \usepackage{mathptmx}
   \usepackage{caption}
+  \newtheorem{defn}{Definition}
   \DeclareCaptionStyle{italic}{labelfont={bf},textfont={it},labelsep=colon}
   \captionsetup[figure]{style=italic,format=hang,singlelinecheck=true}
   \captionsetup[table]{style=italic,format=hang,singlelinecheck=true}
@@ -107,22 +108,22 @@ Discrete abstractions of time such as weeks, months or holidays can be thought o
 
 ## Definitions
 
-\begin{definition}\label{def:definition}
+\begin{defn}\label{def:definition}
 A \textbf{time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
-\end{definition}
+\end{defn}
 
 \noindent The time domain is assumed to be *discrete*, and there is unique predecessor and successor for every element in the time domain except for the first and last.
 
-\begin{definition}\label{def:index set}
+\begin{defn}\label{def:index set}
 The \textbf{index set}, $Z=\{z: z \in \mathbb{Z}_{\geq 0}\}$, uniquely maps the time instants to the set of non-negative integers.
-\end{definition}
+\end{defn}
 
-\begin{definition}\label{def:linear}
+\begin{defn}\label{def:linear}
 A \textbf{linear granularity} is a mapping $G$ from the index set, $Z$, to subsets of the time domain such that:
   (1) if $i < j$ and $G(i)$ and $G(j)$ are non-empty, then each element of $G(i)$ is less than all elements of $G(j)$; and
   (2) if $i < k < j$ and $G(i)$ and $G(j)$ are non-empty, then $G(k)$ is non-empty.
 Each non-empty subset $G(i)$ is called a \textbf{granule}.
-\end{definition}
+\end{defn}
 
 \noindent This implies that the granules in a linear granularity are non-overlapping, continuous and ordered. The indexing for each granule can also be associated with a textual representation, called the label. A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**. \autoref{fig:linear-time} illustrates some common linear time granularities. Here, "hour" is the bottom granularity and "day", "week", "month" and "year" are linear granularities formed by mapping the index set to subsets of the hourly time domain. If we have "hour" running from $\{0, 1, \dots,t\}$, we will have "day" running from $\{0, 1, \dots, \lfloor t/24\rfloor\}$. These linear granularities are uni-directional and non-repeating.
 
@@ -135,15 +136,15 @@ Each non-empty subset $G(i)$ is called a \textbf{granule}.
 
 Properties of pairs of granularities fall into various categories.
 
-\begin{definition}\label{def:finerthan}
+\begin{defn}\label{def:finerthan}
 A linear granularity $G$ is \textbf{finer than} a linear granularity $H$, denoted $G \preceq H$, if for each index $i$, there exists an index $j$ such that
 $G(i) \subset H(j).$
-\end{definition}
+\end{defn}
 
-\begin{definition}\label{def:groupsinto}
+\begin{defn}\label{def:groupsinto}
 A linear granularity $G$ \textbf{groups into} a linear granularity $H$, denoted
 $G \trianglelefteq H$, if for each index $j$ there exists a (possibly infinite) subset $S$ of the integers such that $H(j) = \bigcup_{i \in S}G(i).$
-\end{definition}
+\end{defn}
 
 \noindent For example, both $day \trianglelefteq week$ and $day \preceq week$ hold, since every granule of $week$ is the union of some set of granules of day and each day is a subset of a $week$. These definitions are not equivalent. Consider another example, where $G_1$ denotes "weekend" and $H_1$ denotes "week". Then, $G_1 \preceq H_1$, but $G_1 \ntrianglelefteq H_1$. Further, with $G_2$ denoting "days" and $H_2$ denoting "business-week", $G_2 \npreceq H_2$, but $G_2 \trianglelefteq H_2$, since each business-week can be expressed as an union of some days, but Saturdays and Sundays are not subset of any business-week.
 Moreover, with  $H_3$ denoting "public holidays", $G_1 \npreceq H_3$ and $G_1 \ntrianglelefteq H_3$.  
@@ -152,11 +153,11 @@ Moreover, with  $H_3$ denoting "public holidays", $G_1 \npreceq H_3$ and $G_1 \n
 <!-- The relationship has period 7. -->
 <!-- The relationship $day \trianglelefteq month$ has a more complicated period. If leap years are ignored, each month is a grouping of the same number of days over years, hence the period of the grouping $(day, month)$ is one year. With the inclusion of leap years, the grouping period is 400 years. -->
 
-\begin{definition}\label{def:periodical}
+\begin{defn}\label{def:periodical}
 A granularity $G$ is \textbf{periodical} with respect to a finite granularity $H$ if:
 (1) $G \trianglelefteq H$; and
 (2) there exist $R$, $P \in \mathbb{Z}_+$, where $R$ is less than the number of granules of $H$, such that for all $i \in \mathbb{Z_\geq 0}$, if $H(i) = \bigcup_{j \in S}G(j)$ and $H (i + R) \neq \phi$ then $H (i + R) = \bigcup_{j \in S} G(j + P)$.
-\end{definition}
+\end{defn}
 
 If $G$ groups into $H$, it would imply that any granule $H(i)$ is the union of some granules of $G$, for example, $G(a_1), G(a_2), \dots, G(a_k)$. Condition (2) in Definition \ref{def:periodical} implies that if $H(i + R) \neq \emptyset$, then $H(i + R) = \bigcup (G(a_1 + P), G(a_2 + P), \dots, G(a_k + P))$, resulting in a "periodic" pattern of the composition of $H$ using granules of $G$. In this pattern, each granule of $H$ is shifted by $P$ granules of $G$. $P$ is called the \textbf{Period} (@Bettini2000-qk).
 
@@ -165,9 +166,9 @@ Since the idea of period involves a pair of granularities, we say that the pair 
 
 Granularities can also be periodical with respect to other granularities, except for a finite number of periods where they behave in an anomalous way; these are called **quasi-periodic** relationships [@Bettini2000-vy]. In a Gregorian calendar with leap years, day groups quasi-periodically into month with the exceptions of the time domain corresponding to $29^{\text{th}}$ February of any year.
 
-\begin{definition}\label{def:order}
+\begin{defn}\label{def:order}
 The \textbf{order} of a linear granularity is the level of coarseness associated with a linear granularity. A linear granularity G will have lower order than H if each granule of G is composed of lower number of granules of bottom granularity than each granule of H.
-\end{definition}
+\end{defn}
 
 With two linear granularities $G$ and $H$, if $G$ *groups into* or *finer than* $H$ then $G$ is of lower order than $H$. For example, if the bottom granularity is hour, then granularity day will have lower order than week since each day consist of fewer hours than each week.
 
@@ -183,7 +184,7 @@ Cyclic granularities represent cyclical repetitions in time. They can be thought
 
 ## Circular granularities {#sec:circular-gran-def}
 
-\begin{definition}\label{def:circular}
+\begin{defn}\label{def:circular}
 A \textbf{circular granularity} $C_{B, G}$ relates linear granularity $G$ to bottom granularity $B$ if
 \begin{equation} \label{eq:circular-gran}
 \begin{split}
@@ -193,7 +194,7 @@ C_{B, G}(z) & = z\mod P(B, G) \quad \forall z \in \mathbb{Z}_{\geq 0} \\
 where
 $z$ denotes the index set,
 $B$ groups periodically into $G$ with regular mapping and period $P(B, G)$.
-\end{definition}
+\end{defn}
 
 ```{r circular-dow, echo=FALSE, fig.cap= "(ref:circular-dow)",fig.pos="!htb"}
 ```
@@ -260,7 +261,7 @@ $Q_3 =$ day-of-year && $P_3 = 366, 365$\\
 \label{tab:quasi}
 \end{table}
 
-\begin{definition}\label{def:quasicircular}
+\begin{defn}\label{def:quasicircular}
 A \textbf{quasi-circular granularity} $Q_{B, G'}$ is formed when bottom granularity $B$ groups periodically into linear granularity $G'$ with irregular mapping such that the granularities are given by
 \begin{equation}\label{eq:quasi}
 Q_{B, G'}(z) =
@@ -272,7 +273,7 @@ $w$ denotes the index of $G'$,
 $R'$ is the number of granules of $G'$ in each period of $(B, G')$,
 $T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$,
 and $\vert T_w \vert$ is the cardinality of set $T_w$.
-\end{definition}
+\end{defn}
 
 For example, day-of-year is quasi-periodic with either 365 or 366 granules of $B$ (days) within each period of $G'$ (years). The pattern repeats every $4$ years (ignoring leap seconds). Hence $R'= 4$. $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$.
 
@@ -282,7 +283,7 @@ For example, day-of-year is quasi-periodic with either 365 or 366 granules of $B
 Aperiodic linear granularities are those that cannot be specified as a periodic repetition of a pattern of granules as described in Definition \ref{def:periodical}. Aperiodic cyclic granularities capture repetitions of these aperiodic linear granularities.
 Examples include public holidays which repeat every year, but there is no reasonably small period within which their behavior remains constant. A classic example is Easter (in the western tradition) whose dates repeat only after 5.7 million years [@Reingold2001-kf]. In Australia, if a standard public holiday falls on a weekend, a substitute public holiday will sometimes be observed on the first non-weekend day (usually Monday) after the weekend. Examples of aperiodic granularity may also include school holidays or a scheduled event. All of these are recurring events, but with non-periodic patterns. Consequently, $P_i$ (as given in \autoref{tab:quasi}) are essentially infinite for aperiodic granularities.
 
-\begin{definition}\label{def:aperiodic}
+\begin{defn}\label{def:aperiodic}
 An \textbf{aperiodic cyclic granularity} is formed when bottom granularity $B$ groups into an aperiodic linear granularity $M$ such that the granularities are given by
 \begin{equation}\label{eq:aperiodic}
 A_{B, M}(z) = \begin{cases}
@@ -293,7 +294,7 @@ A_{B, M}(z) = \begin{cases}
 where
 $z$ denotes the index set,
 $T_{i_j}$ are the sets of indices of $B$ describing aperiodic linear granularities $M_{i}$ such that $M_{i}(j) = \bigcup_{z \in T_{i_j}}B(z)$, and $M = \bigcup_{i=1}^{n}M_{i}$, $n$ being the number of  aperiodic linear granularities in consideration.
-\end{definition}
+\end{defn}
 
 
 ```{r aperiodic-example, echo=FALSE, fig.cap= "(ref:aperiodic-example)", fig.pos="!htb"}
@@ -308,9 +309,9 @@ For example, consider the school semester shown in \autoref{fig:aperiodic-exampl
 
 The hierarchical structure of time creates a natural nested ordering which can be used in the computation of relative pairs of granularities.
 
-\begin{definition}\label{def:hierarchy}
+\begin{defn}\label{def:hierarchy}
 The nested ordering of linear granularities can be organized into a \textbf{hierarchy table}, denoted as $H_n: (G, C, K)$, which arranges them from lowest to highest in order. It shows how the $n$ granularities relate through $K$, and how the cyclic granularities, $C$, can be defined relative to the linear granularities. Let $G_{\ell}$ and $G_{m}$ represent the linear granularity of order $\ell$ and $m$ respectively with $\ell<m$. Then $K \equiv P(\ell,m)$ represents the period length of the grouping $(G_{\ell}, G_{m})$, if $C_{G_{\ell}, G_{m}}$ is a circular granularity and $K \equiv k(\ell,m)$ represents the operation to obtain $G_{m}$ from $G_{\ell}$, if $C_{G_{\ell}, G_{m}}$ is quasi-circular.
-\end{definition}
+\end{defn}
 
 For example, \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan calendar. In the Mayan calendar, one day was referred to as a kin and the calendar was structured such that 1 kin = 1 day; 1 uinal = 20 kin; 1 tun  = 18 uinal (about a year); 1 katun = 20 tun (20 years) and 1 baktun = 20 katun.
 
@@ -319,10 +320,10 @@ For example, \autoref{tab:tab-mayan} shows the hierarchy table for the Mayan cal
 
 Like most calendars, the Mayan calendar used the day as the basic unit of time [@Reingold2001-kf]. The structuring of larger units, weeks, months, years and cycle of years, though, varies substantially between calendars. For example,  the French revolutionary calendar divided each day into 10 "hours", each "hour" into 100 "minutes" and each "minute" into 100 "seconds", the duration of which is 0.864 common seconds. Nevertheless, for any calendar a hierarchy table can be defined. Note that it is not always possible to organize an aperiodic linear granularity in a hierarchy table. Hence, we assume that the hierarchy table consists of periodic linear granularities only, and that the cyclic granularity $C_{G(\ell),G(m)}$ is either circular or quasi-circular.
 
-\begin{definition}\label{def:norderup}
+\begin{defn}\label{def:norderup}
 The hierarchy table contains \textbf{multiple-order-up} granularities which are cyclic granularities that are nested within multiple levels.
 A \textbf{single-order-up} is a cyclic granularity which is nested within a single level. It is a special case of multiple-order-up granularity.
-\end{definition}
+\end{defn}
 
 \noindent In the Mayan calendar (Table \@ref(tab:tab-mayan)), kin-of-tun or kin-of-baktun are examples of multiple-order-up granularities and single-order-up granularities are kin-of-uinal, uinal-of-tun etc.
 
@@ -426,13 +427,13 @@ All cyclic granularities can be expressed in terms of the index set. \autoref{ta
 
 The way granularities are related is important when we consider data visualizations. Consider two cyclic granularities $C_i$ and $C_j$, such that $C_i$ maps index set to a set $\{A_k \mid k=1,\dots,K\}$ and $C_j$ maps index set to a set $\{B_\ell \mid \ell =1,\dots,L\}$. Here, $A_k$ and $B_\ell$ are the levels/categories corresponding to $C_i$ and $C_j$ respectively. Let $S_{k\ell}$ be a subset of the index set such that for all $s \in S_{k\ell}$, $C_i(s) = A_k$ and $C_j(s) = B_\ell$. There are $KL$ such data subsets, one for each combination of levels ($A_k$, $B_\ell$). Some of these sets may be empty due to the structure of the calendar, or because of the duration and location of events in a calendar.
 
-\begin{definition}\label{def:clash}
+\begin{defn}\label{def:clash}
 A \textbf{clash} is a pair of cyclic granularities that contains empty combinations of categories.
-\end{definition}
+\end{defn}
 
-\begin{definition}\label{def:harmony}
+\begin{defn}\label{def:harmony}
 A \textbf{harmony} is a pair of cyclic granularities that does not contain any empty combinations of its categories.
-\end{definition}
+\end{defn}
 
 Structurally empty combinations can arise due to the structure of the calendar or hierarchy. For example, let $C_i$ be day-of-month with 31 levels and $C_j$ be day-of-year with 365 levels. There will be $31\times 365=11315$ sets $S_{k\ell}$ corresponding to possible combinations of $C_i$ and $C_j$. Many of these are empty. For example, $S_{1,5}$ is empty because the first day of the month can never correspond to the fifth day of the year. Hence the pair (day-of-month, day-of-year) is a clash.
 
@@ -466,7 +467,7 @@ There are several ways to summarize a distribution like estimating empirical dis
 
 The basic plot choice for our data structure is one that can display distributions. For displaying the distribution of continuous univariate variable, many options are available. Displays based on descriptive statistics include box plots [@Tukey1977-jx] and its variation such as notched box plots [@McGill1978-hg] or other variations as mentioned in @Wickham2012-vr. They also include line or area quantile plots which can display any quantiles and not only quartiles like in a boxplot. Plots based on kernel density estimates include violin plots [@Hintze1998-zi], summary plot [@Potter2010-qc], ridge line plots [@R-ggridges], and highest density region (HDR) plots [@Hyndman1996-ft]. The less commonly used Letter-Value plots [@Hofmann2017-sg] is a midway between boxplots and density plots. Letter values are order statistics with specific depths, for example, the median ($M$) is a letter value which divides the data set into halves. Each of the next letter values splits the remaining parts into two separate regions so that the fourths ($F$), eighths ($E$), sixteenths ($D$) etc. are obtained. They are useful for displaying the distributions beyond the quartiles specially for large data,
 where boxplots mislabel data points as outliers.
-One of the best approaches in exploratory data analysis is to draw a variety of plots to reveal information while keeping in mind the drawbacks and benefits of each of the plot choices. For example, boxplots might give an idea of the distribution at a glance while occupying less space by design, but they obscure multimodality.  Interpretation of density estimates and histograms may change depending on the bandwidth and bin widths respectively.
+One of the best approaches in exploratory data analysis is to draw a variety of plots to reveal information while keeping in mind the drawbacks and benefits of each of the plot choices. For example, boxplots obscure multimodality, and interpretation of density estimates and histograms may change depending on the bandwidth and binwidths respectively. In R package `gravitas` [@R-gravitas], boxplots, violin, ridge, letter-value, line and area quantile plots are implemented, but it is potentially possible to use any plots which can display the distribution of the data.
 
 
 ## Comparison across sub-groups induced by conditioning {#sec:aesthetics}
