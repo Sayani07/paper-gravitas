@@ -73,7 +73,9 @@ scene1 <- VIC %>%
   theme_minimal() +
   theme(
     #panel.grid.major = element_line(colour = "#E0E0E0"),
-    panel.border = element_rect(colour = "#E0E0E0", fill = NA))
+    panel.border = element_rect(colour = "#E0E0E0",
+                                fill = NA),
+    panel.grid.major.x = element_blank())
 
 scene2 <- VIC %>%
   prob_plot(
@@ -112,16 +114,16 @@ scene3 <- VIC %>%
   theme(
     #panel.grid.major = element_line(colour = "#E0E0E0"),
     panel.border = element_rect(colour = "#E0E0E0",
-                                fill = NA),
-    panel.grid.major.x = element_blank())
+                                fill = NA))
+    #panel.grid.major.x = element_blank())
 
 gg_fig <- ggarrange(
   scene3,
   ggarrange(
     scene1, scene2,
-    ncol = 2, labels = c("b", "c")
+    ncol = 2, labels = c("(b)", "(c)")
   ),
-  nrow = 2, labels = "a"
+  nrow = 2, labels = "(a)", common.legend = TRUE
 )
 # label.y = "electricity demand [KWh]"
 
