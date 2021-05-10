@@ -25,6 +25,7 @@ Q3. I have to confess that I do not know anything about the sport cricket and it
 
 A3. Thanks for the advice. We have added a description of the game cricket in the first paragraph of Section 6.2 so that each new terminology applicable for cricket (and relevant for the following analysis) is highlighted in italics and briefly explained. We believe that this will help the readers not knowledgeable in cricket to also follow the presented analysis.
 
+\newpage
 
 # Reviewer 2 comments
 
@@ -51,7 +52,7 @@ represent the cycle that the granule is in.
 
 A4. Definition of $w$ and $R'$ included in Definition 9.
 
-$T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$ does not use the definition of $T_w$. For example, if $B$ is `day` and $G'$ is `month`, then $G'(0) = {B(0)\cup B(1)\cup \dots \cup B(30)}$, $G'(1) = {B(31)\cup B(32)\cup \dots \cup B(58)}$ corresponding to January and February. Then $T_0 = \{0, 1, 2, \dots, 30\}$ and $T_1 = \{31, 32, \dots, 58\}$. If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. For example, if $z = 31$ then $z \in T_1$ and thus $k = 1$. 
+$T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$. For example, if $B$ is `day` and $G'$ is `month`, then $G'(0) = {B(0)\cup B(1)\cup \dots \cup B(30)}$, $G'(1) = {B(31)\cup B(32)\cup \dots \cup B(58)}$ corresponding to January and February. Then $T_0 = \{0, 1, 2, \dots, 30\}$ and $T_1 = \{31, 32, \dots, 58\}$. If $z$ belongs to $k^{th}$ granule of $G'$, then $z \in T_k$. For example, if $z = 31$ then $z \in T_1$ and thus $k = 1$. 
 
 <!-- Here $w \mod R'$ represents the index that must be shifted to obtain $G'(w)$. The idea here is if we know the composition of each of the granules of $G'$ in terms of granules of $B$ for one period, we can find the composition of any granule of $G'$ beyond a period since the "pattern" repeats itself along the time domain due to the periodic property. The periodic property also ensures that $\vert T_w \vert = \vert T_{w\mod R'} \vert$ since every $w^{\text{th}}$ and $(w+R')^{\text{th}}$ granule of $G'$ will have the same number of granules of $B$. The term $\sum_{w=0}^{k-1}\vert T_{w}\vert$ denotes the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$. Since $\vert T_w \vert = \vert T_{w\mod R'} \vert$, the number of granules of $B$ till the $(k-1)^{\text{th}}$ granule of $G'$ becomes $\sum_{w=0}^{k-1}\vert T_{w \mod R'}\vert$ in Definition 9. -->
 
@@ -62,9 +63,9 @@ Q1. Page 7, Definition 6. Is "the number of granules of H" finite or infinite? I
 
 A1. Number of granules of $H$ should be finite. Definition rephrased to account for that.
 
-Q2. Page 7, Lines 19-20. It is claimed that quasi-periodic relationship has a finite number of periods where granularities behave in an anomalous way. What does the finite number of periods mean and why is it finite? Does it mean a finite number of granularity groupings? Does it mean a finite number of irregular cycles? By Definition 4 of Bettini & De Sibi (2000), $E_1, . . . , E_z$ are the granularity exceptions, but the number of granularity exceptions does not have to be finite.
+Q2. Page 7, Lines 19-20. It is claimed that quasi-periodic relationship has a finite number of periods where granularities behave in an anomalous way. What does the finite number of periods mean and why is it finite? Does it mean a finite number of granularity groupings? Does it mean a finite number of irregular cycles? By Definition 4 of Bettini & De Sibi (2000), $E_1, \dots, E_z$ are the granularity exceptions, but the number of granularity exceptions does not have to be finite.
 
-A2. "Number of periods" rephrased as "spans of time". Bettini & De Sibi (2000) states in P57 L17 while introducing quasi-periodic relationships that " except for a finite number of spans of time where they behave in an anomalous way."
+A2. "Number of periods" rephrased as "spans of time". Bettini & De Sibi (2000) states in P57 L17 while introducing quasi-periodic relationships that "except for a finite number of spans of time where they behave in an anomalous way".
 
 Q3. Page 8, Definition 8, what is the "period" P(B,G)? Is it same as P in Definition 6? Is it a mapping or function?
 
@@ -115,7 +116,7 @@ A2. If $G \trianglelefteq H$, then every granule of $H$ can be expressed as an u
 Q3. Page 16, Line 13, multiple order-up quasi-circular granularities. The equations for this
 operation are not trivial to be ignored. Should be added if possible.
 
-A3. Exactly equations (5) and (6) are to be utilized for this operation (with sides interchanged) and hence not added again.
+A3. Equations (5) and (6) are used for this operation (with sides interchanged) and hence are not added again.
 
 Q4. Can the time granularity concept be extended to continuous time domain?
 
