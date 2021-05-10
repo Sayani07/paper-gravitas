@@ -18,7 +18,7 @@ include_graphics("img/linear-ex.png")
 include_graphics("img/circular-ex.png")
 
 ## ----aperiodic-example
-include_graphics("img/aperiodic_revised.png")
+include_graphics("img/aperiodic-revised2.png")
 #include_graphics("img/aperiodic-ex3.png")
 
 ## ----tab-mayan
@@ -121,9 +121,9 @@ gg_fig <- ggarrange(
   scene3,
   ggarrange(
     scene1, scene2,
-    ncol = 2, labels = c("(b)", "(c)")
+    ncol = 2, labels = c("b", "c")
   ),
-  nrow = 2, labels = "(a)", common.legend = TRUE
+  nrow = 2, labels = "a", common.legend = TRUE
 )
 # label.y = "electricity demand [KWh]"
 
