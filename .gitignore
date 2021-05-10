@@ -16,5 +16,5 @@ viz_rewrite.Rmd
 reviews/response.bcf
 reviews/response.run.xml
 reviews/response.synctex.gz
-
+^\~\$*
 
