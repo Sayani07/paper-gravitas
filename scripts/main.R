@@ -4,6 +4,8 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(tsibble)
+library(patchwork)
+library(lvplot)
 if (requireNamespace("gravitas") == FALSE) {
   remotes::install_github("Sayani07/gravitas")
 }
@@ -57,15 +59,14 @@ VIC <- gravitas::smart_meter10 %>%
   filter(customer_id == "10006486")
 
 scene1 <- VIC %>%
-  prob_plot(
-    "quarter_year", "wknd_wday",
-    response = "general_supply_kwh",
-    plot_type = "lv",
-    symmetric = FALSE
-  ) +
+  create_gran("quarter_year") %>% 
+  create_gran("wknd_wday") %>% 
+  ggplot(aes(x = wknd_wday, 
+             y = general_supply_kwh)) +
+  facet_wrap(~quarter_year, nrow = 1) +
+  geom_lv(aes(fill = ..LV..), k = 5) +
   ylab("") +
   xlab("") +
-  # xlab("weekend/weekday") +
   scale_fill_brewer(type = "seq", direction = -1) +
   theme(legend.position = "right") +
   ggtitle("") +
@@ -75,7 +76,31 @@ scene1 <- VIC %>%
     #panel.grid.major = element_line(colour = "#E0E0E0"),
     panel.border = element_rect(colour = "#E0E0E0",
                                 fill = NA),
-    panel.grid.major.x = element_blank())
+    panel.grid.major.x = element_blank(),
+    legend.position = "top")
+  
+
+
+# VIC %>%
+#   prob_plot(
+#     "quarter_year", "wknd_wday",
+#     response = "general_supply_kwh",
+#     plot_type = "lv",
+#     symmetric = FALSE
+#   ) +
+#   ylab("") +
+#   xlab("") +
+#   scale_fill_brewer(type = "seq", direction = -1) +
+#   theme(legend.position = "right") +
+#   ggtitle("") +
+#   scale_y_log10() +
+#   theme_minimal() +
+#   theme(
+#     #panel.grid.major = element_line(colour = "#E0E0E0"),
+#     panel.border = element_rect(colour = "#E0E0E0",
+#                                 fill = NA),
+#     panel.grid.major.x = element_blank(),
+#     legend.position = "top")
 
 scene2 <- VIC %>%
   prob_plot(
@@ -86,8 +111,7 @@ scene2 <- VIC %>%
   ) +
   ylab("") +
   xlab("quarters of the year") +
-  scale_fill_brewer(type = "seq", direction = -1) +
-  theme(legend.position = "right") +
+  scale_fill_brewer(type = "seq", direction = -1)  +
   ggtitle("") +
   scale_y_log10() +
   theme_minimal() +
@@ -95,7 +119,8 @@ scene2 <- VIC %>%
     #panel.grid.major = element_line(colour = "#E0E0E0"),
     panel.border = element_rect(colour = "#E0E0E0",
                                 fill = NA),
-    panel.grid.major.x = element_blank())
+    panel.grid.major.x = element_blank())+
+  theme(legend.position = "none")
 
 scene3 <- VIC %>%
   prob_plot(
@@ -106,7 +131,6 @@ scene3 <- VIC %>%
   ) +
   ylab("") +
   xlab("months of the year") +
-  theme(legend.position = "right") +
   scale_fill_brewer(type = "seq", direction = -1) +
   ggtitle("") +
   scale_y_log10() +
@@ -114,17 +138,36 @@ scene3 <- VIC %>%
   theme(
     #panel.grid.major = element_line(colour = "#E0E0E0"),
     panel.border = element_rect(colour = "#E0E0E0",
-                                fill = NA))
+                                fill = NA)) +
+  theme(legend.position = "none",
+        axis.text.x=element_text(angle = 90, vjust = 0.5)) 
     #panel.grid.major.x = element_blank())
 
+# gg_fig <- ggarrange(
+#   scene3,
+#   ggarrange(
+#     scene1, scene2,
+#     ncol = 2, labels = c("b", "c")
+#   ),
+#   nrow = 2, labels = "a", common.legend = TRUE
+# )
+
+# 
+# gg_fig <- scene1/ (scene2 + scene3) 
+# 
+# gg_fig + annotate(label = "something")
+#   
+
 gg_fig <- ggarrange(
-  scene3,
-  ggarrange(
-    scene1, scene2,
-    ncol = 2, labels = c("b", "c")
-  ),
-  nrow = 2, labels = "a", common.legend = TRUE
-)
+   scene1,
+   ggarrange(
+     scene2, scene3,
+     ncol = 2, labels = c("b", "c")
+   ),
+   nrow = 2, labels = "a", common.legend = TRUE
+ )
+
+
 # label.y = "electricity demand [KWh]"
 
 gg_fig %>%
