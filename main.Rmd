@@ -127,7 +127,7 @@ Each non-empty subset $G(i)$ is called a \textbf{granule}.
 
 \noindent This implies that the granules in a linear granularity are non-overlapping, continuous and ordered. The indexing for each granule can also be associated with a textual representation, called the label. A discrete time model often uses a fixed smallest linear granularity named by @Bettini1998-ed **bottom granularity**. \autoref{fig:linear-time} illustrates some common linear time granularities. Here, "hour" is the bottom granularity and "day", "week", "month" and "year" are linear granularities formed by mapping the index set to subsets of the hourly time domain. If we have "hour" running from $\{0, 1, \dots,t\}$, we will have "day" running from $\{0, 1, \dots, \lfloor t/24\rfloor\}$. These linear granularities are uni-directional and non-repeating.
 
-```{r linear-time, echo=FALSE, fig.cap="(ref:linear-time)", fig.pos="!htb"}
+```{r linear-time, echo=FALSE, fig.cap="(ref:linear-time)", fig.pos="!htbp"}
 ```
 
 (ref:linear-time) Illustration of time domain, linear granularities and index set. Hour, day, week, month and year are linear granularities and can also be considered to be time domains. These are ordered with ordering guided by integers and hence is unidirectional and non-repeating. Hours could also be considered the index set, and a bottom granularity.
@@ -483,7 +483,7 @@ The levels of cyclic granularities affect plotting choices since space and resol
 
 The synergy of the two cyclic granularities will affect plotting choices for exploratory analysis. Cyclic granularities that form clashes (Section \@ref(sec:synergy)) or near-clashes lead to potentially ineffective graphs. Harmonies tend to be more useful for exploring patterns. \autoref{fig:allFig}a shows the distribution of half-hourly electricity consumption through letter value plots across months of the year conditional on quarters of the year. This plot does not work because quarter-of-year clashes with month-of-year, leading to empty subsets. For example, the first quarter never corresponds to December.
 
-```{r allFig, fig.pos="!htb", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
+```{r allFig, fig.pos="!p", fig.align= 'left',echo=FALSE, eval=TRUE, warning=FALSE,message = FALSE, fig.cap= "(ref:allFig)", fig.show = 'hold'}
 ```
 
 (ref:allFig) Distribution of energy consumption displayed through letter value plots to illustrate harmonies and clashes and how change in x-axis and facet mappings change emphasis. **c** shown across month-of-year faceted by quarter-of-year is a clash, as there are empty sets. For example, November can never correspond to Quarter 1. **a** shown across quarter-of-year faceted by weekday/weekend do not include any empty sets and hence is a harmony. The same is true for **b**, which shows the same two cyclic granularities as **a** with reverse mapping. There are no empty combination since each quarter contains both weekdays and weekends. In **a**, it is easier to compare across weekday type (x-axis) within a quarter (facet); within quarter 2, more mass occupied the lower tail on the weekends (letter value E with depth 1/8) relative to that of the weekdays (letter value D 1/16). Coversely, **b** exaggerates differences across quarters (x-axis now) within a specific weekday type; within weekends, the lower letter values C and D for the first and forth quarter are higher than the other quarters.
@@ -519,7 +519,7 @@ Using these seven cyclic granularities, we want to explore patterns of energy be
 ```{r harmony-tab, echo=FALSE}
 ```
 
-```{r bothcust, fig.cap = "(ref:bothcust)", fig.pos="!htb"}
+```{r bothcust, fig.cap = "(ref:bothcust)", fig.pos="!p"}
 ```
 
 (ref:bothcust) Energy consumption of a single customer shown with different distribution displays, and granularity arrangements. Two granularities are used: 1. hour of the day; and 2. weekday/weekend. **a** shows granularity 2 faceted by granularity 1; **b** and **c** shows the reverse mapping. **a** allows comparison of usage by workday within each hour of the day using side-by-side boxplots, showing that on work days there is more consumption early in the day. **b** and **c** examine the temporal trend of consumption over the course of a day, separately for the type of day. **b** uses an area quantile to emphasize the time component; e.g., median consumption shows prolonged high usage in the morning on weekdays. **c** uses a violin plot emphasizes subtler distributional differences across hours, showing that morning use on weekdays is bimodal, and on some work days there is low usage possibly indicating the person is working from home or having a late start.
