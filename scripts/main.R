@@ -20,7 +20,7 @@ include_graphics("img/linear-ex.png")
 include_graphics("img/circular-ex.png")
 
 ## ----aperiodic-example
-include_graphics("img/aperiodic-revised2.png")
+include_graphics("img/aperiodic-ex.png")
 #include_graphics("img/aperiodic-ex3.png")
 
 ## ----tab-mayan
