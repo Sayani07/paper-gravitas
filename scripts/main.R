@@ -81,27 +81,6 @@ scene1 <- VIC %>%
   
 
 
-# VIC %>%
-#   prob_plot(
-#     "quarter_year", "wknd_wday",
-#     response = "general_supply_kwh",
-#     plot_type = "lv",
-#     symmetric = FALSE
-#   ) +
-#   ylab("") +
-#   xlab("") +
-#   scale_fill_brewer(type = "seq", direction = -1) +
-#   theme(legend.position = "right") +
-#   ggtitle("") +
-#   scale_y_log10() +
-#   theme_minimal() +
-#   theme(
-#     #panel.grid.major = element_line(colour = "#E0E0E0"),
-#     panel.border = element_rect(colour = "#E0E0E0",
-#                                 fill = NA),
-#     panel.grid.major.x = element_blank(),
-#     legend.position = "top")
-
 scene2 <- VIC %>%
   prob_plot(
     "wknd_wday", "quarter_year",
@@ -142,21 +121,6 @@ scene3 <- VIC %>%
   theme(legend.position = "none",
         axis.text.x=element_text(angle = 90, vjust = 0.5)) 
     #panel.grid.major.x = element_blank())
-
-# gg_fig <- ggarrange(
-#   scene3,
-#   ggarrange(
-#     scene1, scene2,
-#     ncol = 2, labels = c("b", "c")
-#   ),
-#   nrow = 2, labels = "a", common.legend = TRUE
-# )
-
-# 
-# gg_fig <- scene1/ (scene2 + scene3) 
-# 
-# gg_fig + annotate(label = "something")
-#   
 
 gg_fig <- ggarrange(
    scene1,
