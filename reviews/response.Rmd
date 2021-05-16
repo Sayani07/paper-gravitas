@@ -13,6 +13,8 @@ The point by point description of changes are below:
 
 # Reviewer 1 comments {-}
 
+## Detailed remarks
+
 Q1. I am not convinced that it is required to introduce the concept of grammar of graphics and embed the used visualization in this framework on such a level of detail like in Section 5. Of course some elements of the grammar of graphics are used in Section 5.2 to argue about facets, levels, aesthetic variables, and mappings, but if the reader does not know about this framework, the introduction and explanations about this concept/framework provided in Section 5 is not enough to follow the later argumentation. I would like to see some more details on the concept/framework on the grammar of graphics, or not using the concepts in the parts of Section 5.2 and paraphrasing it without using the terms from the grammar of graphics. I think that it is doable to explain the construction of the visualization without using this concept/framework, because the mappings are quite straight forward. I would like to see (a) either extend the introduction to grammar of graphics and the basics needed to argue in more detail about the embedding of your visualizations using this concept/framework, or (b) remove it.
 
 A1. Removed.
@@ -24,6 +26,10 @@ A2. Added in Section 5.1
 Q3. I have to confess that I do not know anything about the sport cricket and it may be unthinkable for people from countries where cricket is a national sport, but I really had difficulties to follow the example in Section 6.2. The basic hierarchical concept of over—inning--match--season was understandable, but I think that some parts need to be revisited and clarified for also reaching readers not knowledgeable in cricket. Especially the discussion on the interesting questions raised are a bit difficult to follow without knowing much about cricket. For example some terms should be at least briefly explained or removed if not necessary for the explanation, e.g., Twenty20 format, fielding, bowling, dismissal, wicket. I do know a lot about different sports and also the basic idea and structure in many sports, but cricket was never on my radar. Apologize my ignorance about cricket.
 
 A3. Thanks for the advice. We have added a description of the game cricket in the first paragraph of Section 6.2 so that each new terminology applicable for cricket (and relevant for the following analysis) is highlighted in italics and briefly explained. We believe that this will help the readers not knowledgeable in cricket to also follow the presented analysis.
+
+## Minor remarks
+
+Done
 
 \newpage
 
@@ -124,5 +130,5 @@ A4. It is not clear how to extend the granularity concepts to continuous time.
 
 ## Other minor issues.
 
-done.
+Done.
   

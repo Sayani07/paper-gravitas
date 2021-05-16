@@ -199,7 +199,7 @@ $B$ groups periodically into $G$ with regular mapping and period $P(B, G)$.
 ```{r circular-dow, echo=FALSE, fig.cap= "(ref:circular-dow)",fig.pos="!htb"}
 ```
 
-(ref:circular-dow) a. Index sets for some linear and circular granularities. b. Circular granularities can be constructed by slicing the linear granularity into pieces and stacking them.
+(ref:circular-dow) Index sets for some linear and circular granularities (a). Circular granularities can be constructed by slicing the linear granularity into pieces and stacking them (b).
 
 \autoref{fig:circular-dow} illustrates some linear and cyclical granularities. Cyclical granularities are constructed by cutting the linear granularity into pieces, and stacking them to match the cycles (as shown in b). $B, G, H$ (day, week, fortnight, respectively) are linear granularities. The circular granularity $C_{B, G}$ (day-of-week) is constructed from $B$ and $G$, while  circular granularity $C_{B, H}$ (day-of-fortnight) is constructed from $B$ and $H$. These overlapping cyclical granularities share elements from the linear granularity. Each of $C_{B , G}$ and $C_{B , H}$ consist of repeated patterns $\{0, 1, \dots, 6\}$ and $\{0, 1, \dots, 13\}$ with $P=7$ and $P=14$ respectively.
 
