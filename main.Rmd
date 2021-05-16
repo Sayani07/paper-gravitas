@@ -109,7 +109,7 @@ Discrete abstractions of time such as weeks, months or holidays can be thought o
 ## Definitions
 
 \begin{defn}\label{def:definition}
-A \textbf{time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time instants and $\le$ is a total order on $T$.
+A \textbf{time domain} is a pair $(T; \le)$ where $T$ is a non-empty set of time instants (equivalently, moments or points) and $\le$ is a total order on $T$.
 \end{defn}
 
 \noindent The time domain is assumed to be *discrete*, and there is unique predecessor and successor for every element in the time domain except for the first and last.
