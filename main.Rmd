@@ -170,7 +170,7 @@ Granularities can also be periodic with respect to other granularities, _"except
 The \textbf{order} of a linear granularity is the level of coarseness associated with a linear granularity. A linear granularity G will have lower order than H if each granule of G is composed of lower number of granules of bottom granularity than each granule of H.
 \end{defn}
 
-With two linear granularities $G$ and $H$, if $G$ *groups into* or *finer than* $H$ then $G$ is of lower order than $H$. For example, if the bottom granularity is hour, then granularity day will have lower order than week since each day consist of fewer hours than each week.
+With two linear granularities $G$ and $H$, if $G$ *groups into* or *finer than* $H$ then $G$ is of lower order than $H$. For example, if the bottom granularity is hour, then granularity $day$ will have lower order than $week$ since each day consist of fewer hours than each week.
 
 Granules in any granularity may be aggregated to form a coarser granularity. A system of multiple granularities in lattice structures is referred to as a **calendar** by @Dyreson_2000. Linear time granularities are computed through "calendar algebra" operations [@Ning_2002] designed to generate new granularities recursively from the bottom granularity. For example, due to the constant length of day and week, we can derive them from hour using
 $$
@@ -275,7 +275,7 @@ $T_w$ are the sets of indices of $B$ such that $G'(w) = \bigcup_{z \in T_w}B(z)$
 and $\vert T_w \vert$ is the cardinality of set $T_w$.
 \end{defn}
 
-For example, day-of-year is quasi-periodic with either 365 or 366 granules of $B$ (days) within each period of $G'$ (years). The pattern repeats every $4$ years (ignoring leap seconds). Hence $R'= 4$. $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$.
+For example, day-of-year is quasi-periodic with either 365 or 366 granules of $B$ (days) within each granule of $G'$ (years). The pattern repeats every $4$ years (ignoring leap seconds). Hence $R'= 4$. $Q_{B, G'}$ is a repetitive categorization of time, similar to circular granularities, except that the number of granules of $B$ is not the same across different granules of $G'$.
 
 
 ## Aperiodic granularities {#sec:aperiodic-gran-def}
