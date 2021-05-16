@@ -11,7 +11,7 @@ We would really like to thank the editor and the reviewers for their encourageme
 The point by point description of changes are below:
 
 
-# Reviewer 1 comments {-}
+# Reviewer 1 comments
 
 ## Detailed remarks
 
@@ -29,7 +29,7 @@ A3. Thanks for the advice. We have added a description of the game cricket in th
 
 ## Minor remarks
 
-Done
+Done.
 
 \newpage
 
@@ -106,7 +106,7 @@ Q9. Page 20, Line 47, "for weekdays the interquartile range of consumption reduc
 
 A9. removed.
 
-## Other questions of interest.
+## Other questions of interest
 
 Q1. Page 6, Definition 5, should $S$ be a contiguous set of integers or not necessary?
 
@@ -128,7 +128,7 @@ Q4. Can the time granularity concept be extended to continuous time domain?
 
 A4. It is not clear how to extend the granularity concepts to continuous time.
 
-## Other minor issues.
+## Other minor issues
 
 Done.
   
