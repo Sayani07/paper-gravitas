@@ -74,7 +74,7 @@ A3. It is the same but stressed to make it clear that the period will be a "func
 
 Q4. Page 10, Line 14, Q4 week-of-month is probably not a good example for quasi-circular granularities. By Definition 4, week cannot be grouped into month, because there could exist $week(i) \subset month(j)$ when the $i^{th}$ week crosses two months. Similarly, week is not finer than month by Definition 5. Since periodicity is defined on top of grouping, and circular is defined on top of periodicity, the scenario of Q4 cannot be defined. On the other hand, the period length for week-of-month is not an integer, but it is an integer for Q1 - Q3.
 
-A4. removed
+A4. Removed
 
 Q5.  Page 10, Definition 9, is R' similar as the period P of the grouping (B,G')? Is R' a constant or variable with irregular mapping?
 
