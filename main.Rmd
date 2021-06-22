@@ -224,7 +224,7 @@ minute-of-hour                               &
   $C_1 = z \mod 60$                     &
   $P_1 = \phantom{99}60$ \\
 minute-of-day                                &
-  $C_j = z \mod 60*24$                  &
+  $C_2 = z \mod 60*24$                  &
   $P_2= `r 60*24`$\\
 hour-of-day                                  &
   $C_3 = \lfloor z/60\rfloor\mod 24$    &
